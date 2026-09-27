@@ -7,26 +7,20 @@ export type JobState = "queued" | "active" | "completed" | "failed";
 export interface JobStatus {
   id: string;
   state: JobState;
-  /** Set when the job failed: the thrown error's message. */
   error?: string;
 }
 
 export interface Queue<T> {
-  /** Adds a job and returns its id. */
   add(data: T): Promise<string>;
-  /** Current status, or null for an unknown (or expired) id. */
   status(id: string): Promise<JobStatus | null>;
-  /** Stops taking jobs and waits for running ones. */
   close(): Promise<void>;
 }
 
 export interface QueueOptions {
   redis: Redis | null;
-  /** Jobs processed at the same time (default 1). */
   concurrency?: number;
 }
 
-/** Finished jobs are kept this long so clients can still poll their status. */
 const KEEP_S = 60 * 60;
 
 /**

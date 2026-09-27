@@ -1,6 +1,5 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-// @ts-expect-error plain JS module without types
 import { checkRegistryItem, parseArgs, planWrites, resolveTarget } from "../lib.js";
 
 const root = path.resolve("/tmp/project");

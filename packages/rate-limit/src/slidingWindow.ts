@@ -9,8 +9,6 @@ export interface SlidingWindowOptions {
   name: string;
   redis?: Redis | null;
 }
-
-// Sorted set of hit timestamps: drop old ones, count, add if under the limit. Atomic in Redis.
 const SCRIPT = `
 local t = redis.call('TIME')
 local now = tonumber(t[1]) * 1000 + math.floor(tonumber(t[2]) / 1000)
@@ -24,7 +22,6 @@ redis.call('ZADD', KEYS[1], now, ARGV[3])
 redis.call('PEXPIRE', KEYS[1], window)
 return {1, 0}`;
 
-/** Sliding-window log: at most `limit` hits in the last `windowMs`, no burst at window edges. */
 export function slidingWindow({ limit, windowMs, name, redis }: SlidingWindowOptions): Limiter {
   if (redis) {
     return {

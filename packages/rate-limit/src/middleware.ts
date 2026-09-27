@@ -3,12 +3,10 @@ import type { Limiter } from "./types";
 
 export interface RateLimitOptions {
   algorithm: Limiter;
-  /** Who is being limited, e.g. the client IP. */
   key: (req: Request) => string;
   message?: string;
 }
 
-/** Express middleware: 429 `{ error: "rate_limited", message }` with a Retry-After header. */
 export function rateLimit({
   algorithm,
   key,

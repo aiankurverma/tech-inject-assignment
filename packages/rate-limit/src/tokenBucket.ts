@@ -11,7 +11,6 @@ export interface TokenBucketOptions {
   redis?: Redis | null;
 }
 
-// Refill by elapsed time, then take one token if there is one. Atomic in Redis.
 const SCRIPT = `
 local t = redis.call('TIME')
 local now = tonumber(t[1]) * 1000 + math.floor(tonumber(t[2]) / 1000)
@@ -32,7 +31,6 @@ redis.call('HSET', KEYS[1], 'tokens', tostring(tokens), 'ts', now)
 redis.call('PEXPIRE', KEYS[1], math.ceil(capacity / rate))
 return {allowed, retry}`;
 
-/** Token bucket: allows bursts up to `capacity`, then `refillPerSecond` on average. */
 export function tokenBucket({
   capacity,
   refillPerSecond,

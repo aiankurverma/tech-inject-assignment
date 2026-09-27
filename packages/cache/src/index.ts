@@ -1,7 +1,6 @@
 import type { Redis } from "@ti/redis";
 
 export interface Cache {
-  /** The cached value, or undefined on a miss. */
   get<T>(key: string): Promise<T | undefined>;
   set(key: string, value: unknown, ttlSeconds?: number): Promise<void>;
   del(key: string): Promise<void>;

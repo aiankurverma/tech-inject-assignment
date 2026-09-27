@@ -7,11 +7,6 @@ export type Viewer = { kind: "anonymous" } | { kind: "customer"; plan: Plan };
 export type DenyReason = "not_found" | "sign_in_required" | "premium_required";
 export type AccessDecision = { allowed: true } | { allowed: false; reason: DenyReason };
 
-/**
- * The single access rule used by every protected request
- * (preview, source, copy, install, prompt, supporting files).
- * Drafts and unpublished items are invisible to everyone outside the admin API.
- */
 export function decideAccess(
   component: { status: ComponentStatus; access: AccessLevel },
   viewer: Viewer,
