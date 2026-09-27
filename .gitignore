@@ -11,3 +11,9 @@ examples/*/dist
 .claude/
 .turbo
 CLAUDE.md
+docs/CODEBASE_GUIDE.md
+plan.md
+requirement.md
+docs/reference/raw/
+docs/web-ui/
+docs/admin-ui/

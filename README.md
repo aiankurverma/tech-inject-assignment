@@ -267,7 +267,7 @@ Both passed locally earlier (flow B 15/15 against Atlas).
 ## AI tool usage
 
 - **Tool:** Claude Code (Claude Opus).
-- **One prompt used:** "start building these whole platform", after sharing `requirement.md`, `plan.md` and the captured CRM tokens.
+- **One prompt used:** "start building these whole platform", after sharing the assignment brief, a build plan and the captured CRM tokens.
 - **One corrected suggestion:** the first plan used the shadcn CLI as the installer. It was replaced with our own small CLI, because the brief requires "no silent overwrite", "rejects unsafe paths" and token auth from the environment, and those are only fully controllable (and testable) in our own code.
 - **Another correction:** Vitest 2 hoisted Vite 5 and broke the Vite 7 plugin types. It was fixed by moving to Vitest 3.
 
