@@ -86,15 +86,14 @@ Then start the main CSS with the three printed lines (Geist font import, `@impor
 
 ## Tests
 
-`npm run check` is clean; **47 unit tests** pass.
+`npm run check` is clean; **32 unit tests** pass.
 
-| File                                                 | Covers                                                       |
-| ---------------------------------------------------- | ------------------------------------------------------------ |
-| `packages/core/src/core.test.ts`                     | bundle validation, access table, registry/copy/prompt output |
-| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses      |
-| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                           |
-| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                            |
-| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                            |
+| File                                                 | Covers                                                  |
+| ---------------------------------------------------- | ------------------------------------------------------- |
+| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses |
+| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                      |
+| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                       |
+| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                       |
 
 ## Deployed checks (live, 2026-09-27)
 
