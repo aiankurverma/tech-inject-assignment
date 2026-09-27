@@ -14,4 +14,3 @@ export function isSafeRelativePath(path: string): boolean {
 export function aliasToPath(spec: string): string | null {
   return spec.startsWith("@/") ? spec.slice(2) : null;
 }
-  
