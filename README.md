@@ -181,17 +181,17 @@ The catalogue and the admin both have a Light / Dark / System switch. They share
 
 ## Test results
 
-**2026-09-25, local:** `npx vitest run` passed **76/76 tests** in 7 files. `npm run lint` is clean, and `npm run typecheck` passes in all 12 workspaces.
+**2026-09-27, local:** `npx vitest run` passed **83/83 tests** in 7 files. `npm run check` is clean (Prettier, ESLint, and `turbo run typecheck` in every workspace).
 
-| File                                                 | Tests | Covers                                                                                                                       |
-| ---------------------------------------------------- | ----: | ---------------------------------------------------------------------------------------------------------------------------- |
-| `apps/api/test/api.test.ts`                          |    26 | admin protection, publishing, premium access, CLI end to end, privileges, feature radar, admin access switch, infrastructure |
-| `packages/core/src/core.test.ts`                     |    15 | bundle validation, the access table, drafts hidden, registry/copy/prompt output with no token leaks                          |
-| `packages/cli/test/lib.test.ts`                      |    14 | unsafe paths, `--src` escape, overwrite rules, argument parsing, malformed registry responses                                |
-| `plugins/feature-radar/src/server/normalize.test.ts` |    10 | term normalising, real counts only (`null` below 5)                                                                          |
-| `packages/rate-limit/src/rate-limit.test.ts`         |     4 | sliding window, token bucket, 429 + Retry-After, fails open                                                                  |
-| `packages/cache/src/cache.test.ts`                   |     4 | get/set, TTL expiry, del/delPrefix, wrap                                                                                     |
-| `packages/queue/src/queue.test.ts`                   |     3 | async jobs and status, failures, concurrency                                                                                 |
+| File                                                 | Tests | Covers                                                                                                                                                                        |
+| ---------------------------------------------------- | ----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `apps/api/test/api.test.ts`                          |    32 | admin protection, publishing, premium access, CLI end to end, privileges, feature radar, admin access switch, infrastructure, refresh tokens (rotation, reuse, logout, block) |
+| `packages/core/src/core.test.ts`                     |    15 | bundle validation, the access table, drafts hidden, registry/copy/prompt output with no token leaks                                                                           |
+| `packages/cli/test/lib.test.ts`                      |    14 | unsafe paths, `--src` escape, overwrite rules, argument parsing, malformed registry responses                                                                                 |
+| `plugins/feature-radar/src/server/normalize.test.ts` |    10 | term normalising, real counts only (`null` below 5)                                                                                                                           |
+| `packages/rate-limit/src/rate-limit.test.ts`         |     4 | sliding window, token bucket, 429 + Retry-After, fails open                                                                                                                   |
+| `packages/cache/src/cache.test.ts`                   |     5 | get/set, TTL expiry, del/delPrefix, wrap, hit/miss hook                                                                                                                       |
+| `packages/queue/src/queue.test.ts`                   |     3 | async jobs and status, failures, concurrency                                                                                                                                  |
 
 Earlier checks (2026-09-24, not re-run since):
 
@@ -212,16 +212,16 @@ Earlier checks (2026-09-24, not re-run since):
 
 The live site was set up by hand in the Render dashboard (free plan). Deploys are manual: auto-deploy is off and there is no CI/CD pipeline (the GitHub Actions workflow was removed). To release, pick the commit in Render and deploy it.
 
-| Part       | Render resource                             | Notes                                                                                                                                                            |
-| ---------- | ------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| API + apps | Web service `techinject`                    | Node 22. Serves the API, the catalogue (`/`), the admin (`/admin/`) and `/cli/kitbase.tgz`. Health check `/api/health`                                           |
-| Preview    | Static site `techinject-preview`            | Headers set in the dashboard: `Access-Control-Allow-Origin: *`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`. CSP is a meta tag in the page |
-| Redis      | Key Value `techinject-redis` (`noeviction`) | Reached through its internal URL as `REDIS_URL`; not reachable from outside Render                                                                               |
-| Database   | MongoDB Atlas, database `techinject`        | `MONGODB_URI`                                                                                                                                                    |
+| Part       | Render resource                      | Notes                                                                                                                                                            |
+| ---------- | ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| API + apps | Web service (Node)                   | Node 22. Serves the API, the catalogue (`/`), the admin (`/admin/`) and `/cli/kitbase.tgz`. Health check `/api/health`                                           |
+| Preview    | Static site                          | Headers set in the dashboard: `Access-Control-Allow-Origin: *`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: no-referrer`. CSP is a meta tag in the page |
+| Redis      | Key Value (`noeviction`)             | Reached through its internal URL as `REDIS_URL`; not reachable from outside Render                                                                               |
+| Database   | MongoDB Atlas, database `techinject` | `MONGODB_URI`                                                                                                                                                    |
 
 Env var names set on the web service: `NODE_ENV`, `NODE_VERSION`, `MONGODB_URI`, `PUBLIC_ORIGIN`, `PREVIEW_ORIGIN`, `VITE_PREVIEW_ORIGIN`, `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `REDIS_URL`, `QUEUE_THRESHOLD_BYTES`, `KEEP_ALIVE_MINUTES` (13), plus the optional AI builder variables. On the preview site: `NODE_VERSION`, `VITE_PARENT_ORIGINS`. Values live only in the Render dashboard.
 
-The live Render services still use the old `techinject*` names, so the URLs did not change. `render.yaml` uses `kitbase*` names and describes the same setup for a fresh blueprint.
+`render.yaml` describes the same setup as a Render blueprint.
 
 Steps for a fresh setup:
 
@@ -235,7 +235,7 @@ Free plan limits: 750 instance hours per month, and the instance sleeps after 15
 
 ### Deployed checks
 
-Run against the live site on 2026-09-27 (commit `b2f8506`). All passed.
+Run against the live site on 2026-09-27. All passed.
 
 | Check              | Result                                                                                                                                                                                                                                                                                |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -248,7 +248,7 @@ Run against the live site on 2026-09-27 (commit `b2f8506`). All passed.
 | CLI re-run         | Re-running on identical files prints `unchanged` (exit 0). Uninstall (delete the added files, `npm uninstall` the printed deps) leaves an app that still builds                                                                                                                       |
 | Redis              | App log shows `redis connected` after deploy, no Redis errors; Key Value shows active connections. First request per component about 0.8 s, repeat about 0.35 s, slow again after 60 s (the cache TTL). Indirect evidence: keys were not inspected because the store is internal only |
 | Persistence        | After a manual redeploy of a new commit, all 28 components and their premium flags were still there                                                                                                                                                                                   |
-| Local              | `npm run check` clean; `npx vitest run` 76/76 tests                                                                                                                                                                                                                                   |
+| Local              | `npm run check` clean; `npx vitest run` 83/83 tests                                                                                                                                                                                                                                   |
 
 Not yet run on the live site (they need an admin and customer sign-in by the owner):
 
