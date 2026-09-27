@@ -1,9 +1,9 @@
 import { validateBundle } from "@ti/core";
 import type { Cache } from "@ti/cache";
 import { forgetPublished } from "./catalog";
-import { HttpError } from "./http";
-import { log } from "./logger";
-import { ComponentModel, type ComponentRecord } from "./models";
+import { HttpError } from "../utils/http";
+import { log } from "../utils/logger";
+import { ComponentModel, type ComponentRecord } from "../models";
 
 const validOrThrow = (input: unknown) => {
   const result = validateBundle(input);

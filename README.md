@@ -23,6 +23,8 @@ Stack: **MERN + TypeScript (strict) + Tailwind CSS v4**. MongoDB (Mongoose), Exp
 ```
 apps/
   api/       Express API. Also serves the built catalogue (/) and admin (/admin), so cookies are same-origin
+             src/ follows MVC: models/ (Mongoose), routes/ (controllers), services/ (logic),
+             middleware/ (auth guards), config/ (env), utils/ (errors, logger)
   web/       Public catalogue: shadcn-style landing page, docs layout, light/dark/system theme
   admin/     Admin dashboard: Overview, Components, Editor, Privileges, Feature radar (+ login)
   preview/   Sandboxed renderer on its own origin; compiles bundle TSX in the browser (sucrase)
@@ -130,7 +132,7 @@ The sidebar has **Overview**, **Components** (the list, plus the **Editor** to u
 - **Components:** publish/unpublish inline on each row. The row menu has Edit, Make free / Make premium, View in catalogue (published only), and Delete, which asks for confirmation first.
 - **Customers:** Block / Unblock the account and grant/revoke Premium. A blocked account cannot sign in, its API tokens stop working on the next request, and all its browser sessions (refresh tokens) are revoked, so unblocking does not revive old sessions.
 - **API:** `POST /api/admin/components/:slug/access` (`{ access: "free" | "premium" }`), `DELETE /api/admin/components/:slug`, `POST /api/admin/customers/:id/status` (`{ disabled }`), plus the existing publish, unpublish and `customers/:id/plan` routes.
-- **Access switch:** it updates the draft **and** the live published snapshot (`apps/api/src/routes.ts`), so switching a live component to premium locks it on the next request. Only the access label changes; the published source stays the same version.
+- **Access switch:** it updates the draft **and** the live published snapshot (`apps/api/src/routes/index.ts`), so switching a live component to premium locks it on the next request. Only the access label changes; the published source stays the same version.
 - Deleting is permanent. Copies already installed in consumer projects are not affected.
 - Tests: "privileges: customer enable/disable and component delete" and "admin access switch" (`apps/api/test/api.test.ts`).
 
@@ -171,7 +173,7 @@ The catalogue and the admin both have a Light / Dark / System switch. They share
 ## Security notes
 
 - **Admin:** separate cookie (`ti_admin`, path `/api/admin`) and JWT audience `admin`. Customer tokens can never pass as admin tokens. There is no endpoint that lets a customer change their own plan (tested).
-- **Sessions:** the access JWT lives 15 minutes; a 10-day refresh token (random, stored only as sha256 in `refreshtokens`, `apps/api/src/refresh.ts`) renews it. Every refresh rotates the token; reusing an old one more than 30 s later revokes the whole chain. Logout revokes the chain. The refresh cookie is only sent to `/api/auth` (customer) or `/api/admin` (admin). The frontend retries a request once after a 401 via `/refresh`, and `/api/auth/me` renews silently. CLI/agent tokens are separate and last until revoked.
+- **Sessions:** the access JWT lives 15 minutes; a 10-day refresh token (random, stored only as sha256 in `refreshtokens`, `apps/api/src/services/refresh.ts`) renews it. Every refresh rotates the token; reusing an old one more than 30 s later revokes the whole chain. Logout revokes the chain. The refresh cookie is only sent to `/api/auth` (customer) or `/api/admin` (admin). The frontend retries a request once after a 401 via `/refresh`, and `/api/auth/me` renews silently. CLI/agent tokens are separate and last until revoked.
 - **Cookies:** httpOnly and SameSite=strict (Secure in production). Cookie-authenticated writes also need a trusted `Origin`. Logins are rate-limited (sliding window, per IP).
 - **Caching and secrets:** protected responses are `Cache-Control: no-store`. Secrets come only from env. Logs are JSON and never contain bodies, cookies or tokens; the Redis error log carries only the message, never `REDIS_URL`.
 - **Premium storage:** premium sources live only in MongoDB and are served only through access-checked routes. They are never in the repo, the public bundle or static files. The repo only holds 3 premium **demo fixtures** (Data Table, Command Palette, Notifications), which the brief allows; protection is proven with a premium component uploaded at runtime that is not in the repo.

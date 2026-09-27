@@ -9,8 +9,8 @@ import {
   type Viewer,
 } from "@ti/core";
 import type { Cache } from "@ti/cache";
-import { ComponentModel, type ComponentRecord } from "./models";
-import { denyError } from "./http";
+import { ComponentModel, type ComponentRecord } from "../models";
+import { denyError } from "../utils/http";
 
 /** Published documents are cached briefly; admin writes call `forgetPublished` so changes show at once. */
 const CACHE_TTL_S = 60;

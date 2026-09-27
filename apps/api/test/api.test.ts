@@ -11,9 +11,9 @@ import request from "supertest";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { createCache } from "@ti/cache";
 import { createApp } from "../src/app";
-import { loadEnv } from "../src/env";
+import { loadEnv } from "../src/config/env";
 import { ApiToken, ComponentModel, Customer, RefreshToken } from "../src/models";
-import { loadTheme } from "../src/theme";
+import { loadTheme } from "../src/services/theme";
 
 const run = promisify(execFile);
 const CLI = fileURLToPath(new URL("../../../packages/cli/bin/kitbase.js", import.meta.url));
@@ -26,7 +26,6 @@ const env = loadEnv({
   ADMIN_PASSWORD: "admin-password-123",
   PUBLIC_ORIGIN: "http://localhost:4000",
 });
-// Tests reset the DB directly, so they also clear the catalogue cache before each test.
 const cache = createCache({ redis: null, prefix: "test:", defaultTtlSeconds: 60 });
 const app = createApp(env, loadTheme(), { cache });
 

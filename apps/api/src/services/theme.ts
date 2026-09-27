@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { ThemeFiles } from "@ti/core";
 
-const uiSrc = new URL("../../../packages/ui/src/", import.meta.url);
+const uiSrc = new URL("../../../../packages/ui/src/", import.meta.url);
 
 /** Theme files shipped with every component. Loaded once at startup from the repo. */
 export function loadTheme(): ThemeFiles {

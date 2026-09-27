@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
-import { RefreshToken } from "./models";
-import { log } from "./logger";
+import { RefreshToken } from "../models";
+import { log } from "../utils/logger";
 
 export type Audience = "customer" | "admin";
 

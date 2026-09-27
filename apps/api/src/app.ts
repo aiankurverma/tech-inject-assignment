@@ -9,12 +9,12 @@ import { createCache, type Cache } from "@ti/cache";
 import { rateLimit, slidingWindow, tokenBucket } from "@ti/rate-limit";
 import { createQueue } from "@ti/queue";
 import { ALLOWED_DEPENDENCIES, validateBundle, type ThemeFiles } from "@ti/core";
-import type { Env } from "./env";
-import { log } from "./logger";
-import { makeAuth, sameOriginWrites } from "./auth";
-import { errorHandler, HttpError } from "./http";
+import type { Env } from "./config/env";
+import { log } from "./utils/logger";
+import { makeAuth, sameOriginWrites } from "./middleware/auth";
+import { errorHandler, HttpError } from "./utils/http";
 import { adminRoutes, customerRoutes, publicRoutes } from "./routes";
-import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./drafts";
+import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
 import { featureRadarRoutes, type BuildJob } from "@ti/feature-radar/server";
 
 const root = (p: string) => fileURLToPath(new URL(`../../../${p}`, import.meta.url));

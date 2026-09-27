@@ -4,20 +4,25 @@ import { z } from "zod";
 import { slugSchema, validateBundle, type ThemeFiles } from "@ti/core";
 import type { Cache } from "@ti/cache";
 import type { Queue } from "@ti/queue";
-import type { Env } from "./env";
-import { CUSTOMER_REFRESH_COOKIE, newApiToken, safeEqual, type Auth } from "./auth";
-import { revokeSubjectRefresh } from "./refresh";
-import { forgetPublished, makeCatalog, placeholderThumbnail, previewPayload } from "./catalog";
-import { createDraft, updateDraft, type BundleJob } from "./drafts";
-import { HttpError } from "./http";
-import { log } from "./logger";
+import type { Env } from "../config/env";
+import { CUSTOMER_REFRESH_COOKIE, newApiToken, safeEqual, type Auth } from "../middleware/auth";
+import { revokeSubjectRefresh } from "../services/refresh";
+import {
+  forgetPublished,
+  makeCatalog,
+  placeholderThumbnail,
+  previewPayload,
+} from "../services/catalog";
+import { createDraft, updateDraft, type BundleJob } from "../services/drafts";
+import { HttpError } from "../utils/http";
+import { log } from "../utils/logger";
 import {
   ApiToken,
   ComponentModel,
   Customer,
   type ComponentRecord,
   type CustomerDoc,
-} from "./models";
+} from "../models";
 
 const slugParam = (req: Request) => {
   const parsed = slugSchema.safeParse(req.params.slug);

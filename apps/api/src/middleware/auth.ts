@@ -2,14 +2,13 @@ import crypto from "node:crypto";
 import jwt from "jsonwebtoken";
 import type { NextFunction, Request, Response } from "express";
 import type { Viewer } from "@ti/core";
-import type { Env } from "./env";
-import { ApiToken, Customer, type CustomerDoc } from "./models";
-import { HttpError } from "./http";
-import { issueRefresh, REFRESH_TTL_S, revokeRefresh, rotateRefresh } from "./refresh";
+import type { Env } from "../config/env";
+import { ApiToken, Customer, type CustomerDoc } from "../models";
+import { HttpError } from "../utils/http";
+import { issueRefresh, REFRESH_TTL_S, revokeRefresh, rotateRefresh } from "../services/refresh";
 
 export const CUSTOMER_COOKIE = "ti_session";
 export const ADMIN_COOKIE = "ti_admin";
-/** Refresh cookies are only sent to the endpoints that use them. */
 export const CUSTOMER_REFRESH_COOKIE = "ti_refresh";
 export const ADMIN_REFRESH_COOKIE = "ti_admin_refresh";
 const CUSTOMER_REFRESH_PATH = "/api/auth";

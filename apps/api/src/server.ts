@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import { closeRedis } from "@ti/redis";
 import { createApp } from "./app";
-import { loadEnv } from "./env";
-import { log } from "./logger";
-import { loadTheme } from "./theme";
+import { loadEnv } from "./config/env";
+import { log } from "./utils/logger";
+import { loadTheme } from "./services/theme";
 
 const env = loadEnv();
 await mongoose.connect(env.MONGODB_URI);
