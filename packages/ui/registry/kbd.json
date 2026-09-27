@@ -1,0 +1,24 @@
+{
+  "name": "Kbd",
+  "slug": "kbd",
+  "description": "Keyboard key hint used in command menus and shortcuts.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/kbd.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "kbd-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Key label or icon",
+      "required": true
+    }
+  ],
+  "usage": ""
+}

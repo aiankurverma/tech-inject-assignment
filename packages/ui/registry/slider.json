@@ -1,0 +1,50 @@
+{
+  "name": "Slider",
+  "slug": "slider",
+  "description": "Single-value slider with label and value header, used for win probability.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-slider"],
+  "files": ["components/crm/slider.tsx", "components/crm/segmented-meter.tsx"],
+  "examples": [
+    {
+      "title": "Win probability",
+      "file": "slider-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible label and header text",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "number",
+      "description": "Current value",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(v: number) => void",
+      "description": "Change handler",
+      "required": false
+    },
+    {
+      "name": "min / max / step",
+      "type": "number",
+      "description": "Range",
+      "default": "0 / 100 / 1",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(v: number) => string",
+      "description": "Header formatting",
+      "default": "v => v + '%'",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

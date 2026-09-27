@@ -1,0 +1,45 @@
+Add the "Page Header" component (v1.0.0) from the Kitbase component library to this React + TypeScript project.
+
+Steps:
+1. Check the project uses React 18+, TypeScript and Tailwind CSS v4, and that "@/..." resolves to the src folder (tsconfig "paths" and bundler alias). Add the alias if it is missing.
+2. From the project root run: npx --yes http://localhost:4000/cli/kitbase.tgz add page-header
+   This is a free component; no token is needed.
+   The installer writes only inside src/ and never overwrites changed files. If it reports a conflict, show it to the user and only use --overwrite if they approve.
+3. Install the dependencies it prints: npm install clsx tailwind-merge @radix-ui/react-slot lucide-react
+4. Import the theme once in the main CSS file, right after @import "tailwindcss";  ->  @import "./styles/crm-theme.css";
+5. Render the component using this example (change the data, keep class names and theme tokens):
+```tsx
+import { Bell, Menu, Search } from "lucide-react";
+import { StatusBadge } from "@/components/crm/badge";
+import { IconButton } from "@/components/crm/button";
+import { PageHeader, ProfileChip } from "@/components/crm/page-header";
+
+export default function Example() {
+  return (
+    <div className="w-[760px] max-w-full rounded-crm border border-crm-border bg-crm-bg">
+      <PageHeader
+        title="Companies"
+        badge={<StatusBadge>Active</StatusBadge>}
+        leading={
+          <IconButton label="Open navigation" className="md:hidden">
+            <Menu />
+          </IconButton>
+        }
+        actions={
+          <>
+            <IconButton label="Search">
+              <Search />
+            </IconButton>
+            <IconButton label="Notifications, 3 unread" dot>
+              <Bell />
+            </IconButton>
+            <ProfileChip name="Jensen Ackles" />
+          </>
+        }
+      />
+    </div>
+  );
+}
+```
+6. Keep the CRM theme: do not replace crm-* classes, radii, shadows or the Geist font with other styles.
+7. Verify: run the type check and the build (for example npx tsc --noEmit && npm run build), start the dev server and confirm the component renders with the dark CRM look. Report any errors and how you fixed them.

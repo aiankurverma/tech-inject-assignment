@@ -1,0 +1,54 @@
+{
+  "name": "Command Palette",
+  "slug": "command-palette",
+  "description": "Search dialog with live filtering and keyboard navigation (Up/Down, Enter, Esc) and a hint footer.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-dialog", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/command-palette.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "command-palette-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "open / onOpenChange",
+      "type": "boolean / (open: boolean) =\u003e void",
+      "description": "Controlled visibility",
+      "required": true
+    },
+    {
+      "name": "items",
+      "type": "{ id: string; keywords: string; render: ReactNode }[]",
+      "description": "Result rows",
+      "required": true
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) =\u003e void",
+      "description": "Called on click or Enter",
+      "required": true
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Input placeholder",
+      "default": "\"Search...\"",
+      "required": false
+    },
+    {
+      "name": "header",
+      "type": "ReactNode",
+      "description": "Column heading row",
+      "required": false
+    }
+  ],
+  "usage": "",
+  "access": "premium"
+}

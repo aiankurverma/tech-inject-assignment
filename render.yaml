@@ -1,0 +1,90 @@
+# Render blueprint: one Node service (API + catalogue + admin) and one static site (sandboxed preview).
+# Database: MongoDB Atlas (set MONGODB_URI). Secrets are set in the Render dashboard (sync: false).
+# Redis (Render Key Value) backs the catalogue cache, rate limits and job queue.
+services:
+  - type: web
+    name: kitbase
+    autoDeployTrigger: "off" # deploy manually from the Render dashboard
+    runtime: node
+    plan: free
+    buildCommand: npm ci --include=dev && npx turbo run build --filter=kitbase --filter=@ti/web --filter=@ti/admin
+    startCommand: npm start -w apps/api
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "22"
+      - key: MONGODB_URI
+        sync: false
+      - key: PUBLIC_ORIGIN
+        sync: false # e.g. https://kitbase.onrender.com
+      - key: PREVIEW_ORIGIN
+        sync: false # e.g. https://kitbase-preview.onrender.com
+      - key: VITE_PREVIEW_ORIGIN
+        sync: false # same as PREVIEW_ORIGIN (baked into the frontend build)
+      - key: TRUSTED_ORIGINS
+        value: ""
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          type: keyvalue
+          name: kitbase-redis
+          property: connectionString
+      - key: QUEUE_THRESHOLD_BYTES
+        value: "200000"
+      - key: KEEP_ALIVE_MINUTES
+        value: "13" # free plan sleeps after 15 idle minutes
+      # AI draft builder (feature-radar). All optional; no keys = AI builds disabled.
+      - key: AI_PROVIDER
+        sync: false # anthropic (default) or gemini
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FEATURE_BUILDER_MODEL
+        sync: false # e.g. claude-sonnet-5 or gemini-2.5-flash
+      - key: OPENROUTER_API_KEYS
+        sync: false # comma separated fallback keys
+      - key: OPENROUTER_MODEL
+        sync: false # e.g. openai/gpt-4o-mini
+      - key: OLLAMA_CLOUD_KEY
+        sync: false
+      - key: OLLAMA_CLOUD_MODEL
+        sync: false # e.g. gpt-oss:120b
+
+  - type: keyvalue
+    name: kitbase-redis
+    plan: free
+    maxmemoryPolicy: noeviction # BullMQ needs keys to stay; cache entries expire on their own
+    ipAllowList: [] # only reachable from Render services in this account
+
+  - type: web
+    name: kitbase-preview
+    autoDeployTrigger: "off" # deploy manually from the Render dashboard
+    runtime: static
+    buildCommand: npm ci --include=dev && npx turbo run build --filter=@ti/preview
+    staticPublishPath: apps/preview/dist
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: VITE_PARENT_ORIGINS
+        sync: false # e.g. https://kitbase.onrender.com
+    headers:
+      - path: /*
+        name: Content-Security-Policy
+        value: "default-src 'none'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'none'; form-action 'none'; base-uri 'none'"
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: "*" # sandboxed iframe has a null origin; module scripts need CORS
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: no-referrer

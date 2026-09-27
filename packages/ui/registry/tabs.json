@@ -1,0 +1,30 @@
+{
+  "name": "Tabs",
+  "slug": "tabs",
+  "description": "Underlined tabs with muted idle, hover and active states. Arrow keys move between tabs.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-tabs"],
+  "files": ["components/crm/tabs.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "tabs-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "defaultValue / value",
+      "type": "string",
+      "description": "Active tab",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Change handler",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,67 @@
+{
+  "name": "Button",
+  "slug": "button",
+  "description": "Pill button with the CRM raised look in primary, secondary, muted, ghost and danger variants, plus a round IconButton.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Variants",
+      "file": "button-1.tsx"
+    },
+    {
+      "title": "Sizes and states",
+      "file": "button-2.tsx"
+    },
+    {
+      "title": "Icon buttons",
+      "file": "button-3.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"primary\" | \"secondary\" | \"muted\" | \"ghost\" | \"danger\"",
+      "description": "Visual style",
+      "default": "\"secondary\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Height and padding",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a spinner and disables the button",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "asChild",
+      "type": "boolean",
+      "description": "Render the child element with button styles",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "label (IconButton)",
+      "type": "string",
+      "description": "Accessible name for icon-only buttons",
+      "required": true
+    },
+    {
+      "name": "dot (IconButton)",
+      "type": "boolean",
+      "description": "Small red notification dot",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Use primary for the main action on a view (one per area). Use IconButton for header actions and always pass a label."
+}

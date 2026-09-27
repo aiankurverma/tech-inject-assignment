@@ -1,0 +1,50 @@
+{
+  "name": "Select",
+  "slug": "select",
+  "description": "Form select with a dark list, selected dot and optional leading icons such as avatars.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-select", "lucide-react"],
+  "files": ["components/crm/select.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "select-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "options",
+      "type": "{ value: string; label: string; icon?: ReactNode }[]",
+      "description": "Choices",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "string",
+      "description": "Selected value",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Change handler",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Shown when empty",
+      "default": "\"Select...\"",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Error border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

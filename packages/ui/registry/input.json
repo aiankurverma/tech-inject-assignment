@@ -1,0 +1,55 @@
+{
+  "name": "Input",
+  "slug": "input",
+  "description": "Dark text input with prefix and error states, and a FormField wrapper for label, required mark, hint and error.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "dependencies": [],
+  "files": ["components/crm/input.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "prefix",
+      "type": "string",
+      "description": "Text inside the field before the value, e.g. \"$\"",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "label (FormField)",
+      "type": "string",
+      "description": "Field label",
+      "required": true
+    },
+    {
+      "name": "htmlFor (FormField)",
+      "type": "string",
+      "description": "id of the control",
+      "required": true
+    },
+    {
+      "name": "error (FormField)",
+      "type": "string",
+      "description": "Error message (announced)",
+      "required": false
+    },
+    {
+      "name": "hint (FormField)",
+      "type": "string",
+      "description": "Help text",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

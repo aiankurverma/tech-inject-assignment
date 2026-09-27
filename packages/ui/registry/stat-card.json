@@ -1,0 +1,36 @@
+{
+  "name": "Stat Card",
+  "slug": "stat-card",
+  "description": "Bordered label and value tile for KPIs, plus the uppercase SectionLabel heading.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/stat-card.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "stat-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Small caption",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "ReactNode",
+      "description": "Main value",
+      "required": true
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Icon before the label",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Dialog",
+  "slug": "dialog",
+  "description": "Centered modal with title, description, close button, bordered sections and a footer. Focus is trapped and Esc closes it.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-dialog", "@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/dialog.tsx", "components/crm/button.tsx", "components/crm/input.tsx"],
+  "examples": [
+    {
+      "title": "New company",
+      "file": "dialog-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Dialog title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Subtitle",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Action buttons",
+      "required": false
+    },
+    {
+      "name": "title (DialogSection)",
+      "type": "string",
+      "description": "Uppercase section heading",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

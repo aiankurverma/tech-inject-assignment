@@ -1,0 +1,57 @@
+{
+  "name": "Feedback States",
+  "slug": "feedback",
+  "description": "Loading skeletons plus empty and error states styled for the CRM theme.",
+  "category": "Feedback",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/feedback.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Loading",
+      "file": "feedback-1.tsx"
+    },
+    {
+      "title": "Empty",
+      "file": "feedback-2.tsx"
+    },
+    {
+      "title": "Error",
+      "file": "feedback-3.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title (EmptyState)",
+      "type": "string",
+      "description": "Main message",
+      "required": true
+    },
+    {
+      "name": "description (EmptyState)",
+      "type": "string",
+      "description": "Details",
+      "required": false
+    },
+    {
+      "name": "icon (EmptyState)",
+      "type": "ReactNode",
+      "description": "Icon in a round tile",
+      "required": false
+    },
+    {
+      "name": "action (EmptyState)",
+      "type": "ReactNode",
+      "description": "Button",
+      "required": false
+    },
+    {
+      "name": "tone (EmptyState)",
+      "type": "\"neutral\" | \"error\"",
+      "description": "Error uses role=alert",
+      "default": "\"neutral\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

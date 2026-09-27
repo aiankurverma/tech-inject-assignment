@@ -1,0 +1,60 @@
+{
+  "name": "Page Header",
+  "slug": "page-header",
+  "description": "Page top bar with title, status badge, icon actions and a profile chip that collapses on small screens.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/page-header.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "page-header-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Page title",
+      "required": true
+    },
+    {
+      "name": "badge",
+      "type": "ReactNode",
+      "description": "Next to the title",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Right side",
+      "required": false
+    },
+    {
+      "name": "leading",
+      "type": "ReactNode",
+      "description": "Before the title (e.g. menu button)",
+      "required": false
+    },
+    {
+      "name": "name (ProfileChip)",
+      "type": "string",
+      "description": "User name",
+      "required": true
+    },
+    {
+      "name": "compact (ProfileChip)",
+      "type": "boolean",
+      "description": "Avatar only",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,12 @@
+node_modules
+dist
+docs/reference/raw
+docs/reference/screens
+package-lock.json
+examples/consumer-cli/src/components
+examples/consumer-cli/src/lib
+examples/consumer-cli/src/styles
+.claude
+examples/consumer-copy/src
+examples/consumer-agent
+examples/*/dist

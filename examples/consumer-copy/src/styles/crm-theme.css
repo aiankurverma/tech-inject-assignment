@@ -1,0 +1,107 @@
+/* Kitbase CRM theme for Tailwind CSS v4.
+   Import once after @import "tailwindcss";  ->  @import "./styles/crm-theme.css"; */
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap");
+
+@theme {
+  --font-crm: "Geist", ui-sans-serif, system-ui, sans-serif;
+
+  --color-crm-bg: #161616;
+  --color-crm-fg: #f9fbff;
+  --color-crm-card: #1b1d20;
+  --color-crm-popover: #161616;
+  --color-crm-primary: #4124fb;
+  --color-crm-primary-fg: #f9fbff;
+  --color-crm-raised: #1e1e1e;
+  --color-crm-muted: #2a2a2a;
+  --color-crm-muted-fg: #7f7f7f;
+  --color-crm-border: #232323;
+  --color-crm-input: #393939;
+  --color-crm-ring: #676767;
+  --color-crm-sidebar: #171717;
+  --color-crm-subtle: #676767;
+  --color-crm-faint: #454545;
+  --color-crm-soft: #a4a4a4;
+  --color-crm-chip: #cfcfcf;
+  --color-crm-icon: #d0d4dd;
+  --color-crm-success: #22c55e;
+  --color-crm-warning: #fbbf24;
+  --color-crm-danger: #f97373;
+  --color-crm-trend: #00b562;
+  --color-crm-trend-muted: #395e4d;
+  --color-crm-track: #3a3a3a;
+  --color-crm-status: #16c89e;
+
+  --color-tag-blue-bg: #1d2b3e;
+  --color-tag-blue-border: #23354c;
+  --color-tag-blue-text: #bfdbfe;
+  --color-tag-purple-bg: #231f3a;
+  --color-tag-purple-border: #4b437b;
+  --color-tag-purple-text: #b7aee9;
+  --color-tag-green-bg: #1f3a2d;
+  --color-tag-green-border: #275137;
+  --color-tag-green-text: #b1ebc5;
+  --color-tag-moss-bg: #23451d;
+  --color-tag-moss-border: #2e5029;
+  --color-tag-moss-text: #b1ebc5;
+  --color-tag-red-bg: #3e1d1e;
+  --color-tag-red-border: #4c2324;
+  --color-tag-red-text: #febfc6;
+  --color-tag-orange-bg: #3e291d;
+  --color-tag-orange-border: #764d35;
+  --color-tag-orange-text: #eeb390;
+  --color-tag-amber-bg: #31221b;
+  --color-tag-amber-border: #6c4830;
+  --color-tag-amber-text: #fed7aa;
+  --color-tag-teal-bg: #102a27;
+  --color-tag-teal-border: #3b6149;
+  --color-tag-teal-text: #22c55e;
+  --color-tag-yellow-bg: #33301a;
+  --color-tag-yellow-border: #5a5228;
+  --color-tag-yellow-text: #fde68a;
+  --color-tag-neutral-bg: #2a2a2a;
+  --color-tag-neutral-border: #363636;
+  --color-tag-neutral-text: #cfcfcf;
+
+  --radius-crm: 0.5rem;
+
+  --shadow-crm-raised:
+    0 0 0 1px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --shadow-crm-primary:
+    0 4px 4px rgba(42, 42, 42, 0.32), 0 0 0 1px #0e0e0e, inset 0 4px 6px rgba(255, 255, 255, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15), inset 0 -8px 14px rgba(0, 0, 0, 0.15);
+  --shadow-crm-overlay: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px #0e0e0e;
+
+  --ease-crm: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --animate-crm-in: crm-in 150ms cubic-bezier(0.25, 1, 0.5, 1);
+  --animate-crm-sheet-in: crm-sheet-in 250ms cubic-bezier(0.25, 1, 0.5, 1);
+
+  @keyframes crm-in {
+    from {
+      opacity: 0;
+      transform: translateY(4px) scale(0.98);
+    }
+  }
+  @keyframes crm-sheet-in {
+    from {
+      transform: translateX(100%);
+    }
+  }
+}
+
+@utility crm-caption {
+  font-size: 12px;
+  line-height: 1;
+}
+@utility crm-lead {
+  font-size: 14px;
+  line-height: 1;
+}
+@utility crm-eyebrow {
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+

@@ -1,0 +1,47 @@
+{
+  "name": "Data Table",
+  "slug": "data-table",
+  "description": "Dense pipeline table: 38px headers, 42px rows, hover and selected rows, checkbox column and a footer bar with totals.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-checkbox", "lucide-react"],
+  "files": [
+    "components/crm/data-table.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/segmented-meter.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Pipeline",
+      "file": "data-table-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "selected (TableRow)",
+      "type": "boolean",
+      "description": "Highlights the row",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "align (TableHead/TableCell)",
+      "type": "\"left\" | \"right\"",
+      "description": "Text alignment",
+      "default": "\"left\"",
+      "required": false
+    },
+    {
+      "name": "cells (TableFooterBar)",
+      "type": "{ label: string; value?: ReactNode; onAdd?: () =\u003e void }[]",
+      "description": "Footer cells",
+      "required": true
+    }
+  ],
+  "usage": "",
+  "access": "premium"
+}

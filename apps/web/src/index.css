@@ -1,0 +1,151 @@
+@import "tailwindcss";
+@source "../../../packages/client/src";
+@source "../../../plugins/feature-radar/src/client";
+
+/* Class-based dark mode: <html class="dark"> is set by index.html / theme.tsx. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Shell palette, defined once. Pages use the semantic utilities below
+ * (bg-background, text-muted-foreground, border-border, bg-primary...).
+ * Component previews keep the dark CRM theme inside their sandboxed iframe.
+ */
+:root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+  --subtle: #fafafa;
+  --muted: #f5f5f5;
+  --muted-foreground: #737373;
+  --border: #e5e5e5;
+  --input: #e5e5e5;
+  --primary: #171717;
+  --primary-foreground: #fafafa;
+  --ring: #a3a3a3;
+
+  --sh-class: #0f172a;
+  --sh-identifier: #171717;
+  --sh-sign: #737373;
+  --sh-property: #1d4ed8;
+  --sh-entity: #7c3aed;
+  --sh-jsxliterals: #171717;
+  --sh-string: #047857;
+  --sh-keyword: #be123c;
+  --sh-comment: #a3a3a3;
+  color-scheme: light;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --subtle: #111111;
+  --muted: #262626;
+  --muted-foreground: #a1a1aa;
+  --border: rgb(255 255 255 / 0.1);
+  --input: rgb(255 255 255 / 0.15);
+  --primary: #fafafa;
+  --primary-foreground: #0a0a0a;
+  --ring: #737373;
+
+  --sh-class: #e5e5e5;
+  --sh-identifier: #e5e5e5;
+  --sh-sign: #8b8b94;
+  --sh-property: #93c5fd;
+  --sh-entity: #c4b5fd;
+  --sh-jsxliterals: #e5e5e5;
+  --sh-string: #86efac;
+  --sh-keyword: #fda4af;
+  --sh-comment: #71717a;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-subtle: var(--subtle);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-ring: var(--ring);
+}
+
+html {
+  scroll-padding-top: 5rem;
+}
+
+body {
+  @apply bg-background text-foreground antialiased;
+  font-family:
+    "Inter",
+    "Geist",
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  font-feature-settings:
+    "cv11" 1,
+    "ss01" 1;
+  text-rendering: optimizeLegibility;
+}
+
+code,
+pre,
+kbd {
+  font-family:
+    "Geist Mono", ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas,
+    monospace;
+}
+
+::selection {
+  @apply bg-primary text-primary-foreground;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Long-form documentation text. */
+  .doc-prose p,
+  .doc-prose li {
+    @apply leading-7 text-foreground/80;
+  }
+  .doc-prose :not(pre) > code {
+    @apply rounded-md border border-border bg-muted px-1.5 py-0.5 text-[0.85em] font-medium text-foreground;
+  }
+  .doc-prose :is(p, ul > li) a {
+    @apply font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-4 hover:decoration-foreground;
+  }
+  .doc-prose strong {
+    @apply font-semibold text-foreground;
+  }
+
+  /* The feature-radar notice ships light-only styles; tone them for dark mode. */
+  .dark .radar-notice [role="status"] {
+    @apply border-border bg-subtle text-muted-foreground;
+  }
+}
+
+/* Thin scrollbars for the side rails. */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

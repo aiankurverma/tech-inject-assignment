@@ -1,0 +1,15 @@
+{
+  "name": "@ti/queue",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "bullmq": "^6.3.8",
+    "@ti/redis": "*"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "name": "File Drop",
+  "slug": "file-drop",
+  "description": "Logo upload with preview tile, button, drag-and-drop and file type/size validation.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/file-drop.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "file-drop-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onFile",
+      "type": "(file: File) => void",
+      "description": "Called with a valid file",
+      "required": true
+    },
+    {
+      "name": "accept",
+      "type": "string",
+      "description": "Comma separated MIME types",
+      "default": "\"image/png,image/jpeg,image/webp,image/svg+xml\"",
+      "required": false
+    },
+    {
+      "name": "maxSize",
+      "type": "number",
+      "description": "Bytes",
+      "default": "2097152",
+      "required": false
+    },
+    {
+      "name": "hint",
+      "type": "string",
+      "description": "Help text",
+      "required": false
+    },
+    {
+      "name": "buttonLabel",
+      "type": "string",
+      "description": "Button text",
+      "default": "\"Upload logo\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

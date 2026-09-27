@@ -1,0 +1,45 @@
+{
+  "name": "Sparkline",
+  "slug": "sparkline",
+  "description": "Mini green bar chart for activity trends and a TrendStat with a big number and caption.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": [],
+  "files": ["components/crm/sparkline.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "sparkline-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "number[]",
+      "description": "Bar values",
+      "required": true
+    },
+    {
+      "name": "mutedBelow",
+      "type": "number",
+      "description": "Bars under this share of max use the muted colour",
+      "default": "0.35",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Pixel height",
+      "default": "14",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "default": "\"Activity trend\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Badge",
+  "slug": "badge",
+  "description": "Count badge for navigation totals and a status badge with a coloured dot.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "dependencies": [],
+  "files": ["components/crm/badge.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "badge-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "status (StatusBadge)",
+      "type": "\"active\" | \"warning\" | \"danger\" | \"neutral\"",
+      "description": "Dot colour",
+      "default": "\"active\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

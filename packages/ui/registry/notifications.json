@@ -1,0 +1,42 @@
+{
+  "name": "Notifications",
+  "slug": "notifications",
+  "description": "Notification popover with All/Unread filter, mark-all-read and rows with actor, quoted message, time and unread dot.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-popover", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/notifications.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "notifications-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "Notification[]",
+      "description": "id, actor?, text, quote?, time, context?, icon?, unread?",
+      "required": true
+    },
+    {
+      "name": "trigger",
+      "type": "ReactNode",
+      "description": "Element that opens the popover",
+      "required": true
+    },
+    {
+      "name": "onMarkAllRead",
+      "type": "() =\u003e void",
+      "description": "Mark-all handler",
+      "required": false
+    }
+  ],
+  "usage": "",
+  "access": "premium"
+}

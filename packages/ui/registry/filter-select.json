@@ -1,0 +1,42 @@
+{
+  "name": "Filter Select",
+  "slug": "filter-select",
+  "description": "Segmented pill trigger showing 'Label | Value' that opens a radio menu. Used for sort and filter toolbars.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "lucide-react"],
+  "files": ["components/crm/filter-select.tsx"],
+  "examples": [
+    {
+      "title": "Toolbar",
+      "file": "filter-select-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Muted prefix",
+      "required": true
+    },
+    {
+      "name": "options",
+      "type": "string[]",
+      "description": "Menu options",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Selected option",
+      "required": true
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Change handler",
+      "required": true
+    }
+  ],
+  "usage": ""
+}

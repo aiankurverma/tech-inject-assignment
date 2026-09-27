@@ -1,0 +1,59 @@
+{
+  "name": "App Sidebar",
+  "slug": "app-sidebar",
+  "description": "Dark app sidebar: brand header, sections, nav items with icons, counts and coloured dots, and a trial footer card.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/app-sidebar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "app-sidebar-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "icon (SidebarItem)",
+      "type": "ReactNode",
+      "description": "Leading icon",
+      "required": false
+    },
+    {
+      "name": "dotColor (SidebarItem)",
+      "type": "string",
+      "description": "CSS colour for a dot instead of an icon",
+      "required": false
+    },
+    {
+      "name": "count (SidebarItem)",
+      "type": "number",
+      "description": "Count badge",
+      "required": false
+    },
+    {
+      "name": "active (SidebarItem)",
+      "type": "boolean",
+      "description": "Current page",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "title (SidebarSection)",
+      "type": "string",
+      "description": "Uppercase section title",
+      "required": false
+    },
+    {
+      "name": "days / action (TrialCard)",
+      "type": "number / ReactNode",
+      "description": "Trial footer",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

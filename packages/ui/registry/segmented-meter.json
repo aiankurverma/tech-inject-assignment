@@ -1,0 +1,63 @@
+{
+  "name": "Segmented Meter",
+  "slug": "segmented-meter",
+  "description": "Win-probability bar made of small segments that shift red to amber to green, plus a ProgressRow for pipeline stages.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": [],
+  "files": ["components/crm/segmented-meter.tsx"],
+  "examples": [
+    {
+      "title": "Table meters",
+      "file": "segmented-meter-1.tsx"
+    },
+    {
+      "title": "Pipeline stages",
+      "file": "segmented-meter-2.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "0-100",
+      "required": true
+    },
+    {
+      "name": "segments",
+      "type": "number",
+      "description": "Segment count",
+      "default": "18",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"scale\" | \"danger\" | \"warning\" | \"success\"",
+      "description": "Colouring",
+      "default": "\"scale\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Tall thin (table) or short wide (panels)",
+      "default": "\"sm\"",
+      "required": false
+    },
+    {
+      "name": "showValue",
+      "type": "boolean",
+      "description": "Show % after the bar",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "default": "\"Progress\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

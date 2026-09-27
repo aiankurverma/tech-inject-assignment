@@ -1,0 +1,54 @@
+{
+  "name": "Sheet",
+  "slug": "sheet",
+  "description": "Side panel from the right (details), left (mobile nav) or bottom (mobile filters) with header, scroll body and sticky footer.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-dialog", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/sheet.tsx",
+    "components/crm/button.tsx",
+    "components/crm/stat-card.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Profile",
+      "file": "sheet-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "side",
+      "type": "\"right\" | \"left\" | \"bottom\"",
+      "description": "Edge to slide from",
+      "default": "\"right\"",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Header title (also the accessible name)",
+      "required": true
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Icon before the title",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Sticky footer",
+      "required": false
+    },
+    {
+      "name": "hideHeader",
+      "type": "boolean",
+      "description": "Visually hide the header",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

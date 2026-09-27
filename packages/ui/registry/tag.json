@@ -1,0 +1,49 @@
+{
+  "name": "Tag",
+  "slug": "tag",
+  "description": "Coloured pill tags in ten CRM colours for segments and stages, with a TagList that collapses extras into +N.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "dependencies": [],
+  "files": ["components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Colours",
+      "file": "tag-1.tsx"
+    },
+    {
+      "title": "Tag list",
+      "file": "tag-2.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "color",
+      "type": "\"blue\" | \"purple\" | \"green\" | \"moss\" | \"red\" | \"orange\" | \"amber\" | \"teal\" | \"yellow\" | \"neutral\"",
+      "description": "Colour set",
+      "default": "\"neutral\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Height",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "tags (TagList)",
+      "type": "{ label: string; color: TagColor }[]",
+      "description": "Tags to show",
+      "required": true
+    },
+    {
+      "name": "max (TagList)",
+      "type": "number",
+      "description": "Visible tags before +N",
+      "default": "2",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

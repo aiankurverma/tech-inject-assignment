@@ -1,0 +1,20 @@
+{
+  "name": "kitbase",
+  "version": "1.0.0",
+  "description": "Installer for the Kitbase component library",
+  "type": "module",
+  "bin": {
+    "kitbase": "bin/kitbase.js"
+  },
+  "files": [
+    "bin",
+    "lib.js",
+    "config.js"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "build": "node build.js"
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Account List Item",
+  "slug": "account-list-item",
+  "description": "Company row with logo tile, name, meta line, amount and win meter. Clickable when onClick is set.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/account-list-item.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/segmented-meter.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "account-list-item-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Company name",
+      "required": true
+    },
+    {
+      "name": "meta",
+      "type": "string",
+      "description": "Second line",
+      "required": true
+    },
+    {
+      "name": "amount",
+      "type": "number",
+      "description": "Pipeline value",
+      "required": true
+    },
+    {
+      "name": "probability",
+      "type": "number",
+      "description": "0-100",
+      "required": true
+    },
+    {
+      "name": "logo",
+      "type": "ReactNode",
+      "description": "Logo inside the tile",
+      "required": false
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "description": "Makes the row a button",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

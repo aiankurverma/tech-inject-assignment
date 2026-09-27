@@ -1,0 +1,55 @@
+{
+  "name": "Score Card",
+  "slug": "score-card",
+  "description": "Evaluation card with description, owner, update time and a star rating pill.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/score-card.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "score-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Card title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Body text",
+      "required": true
+    },
+    {
+      "name": "owner",
+      "type": "{ name: string; avatar?: string }",
+      "description": "Who scored it",
+      "required": true
+    },
+    {
+      "name": "updated",
+      "type": "string",
+      "description": "e.g. \"Updated 2h ago\"",
+      "required": true
+    },
+    {
+      "name": "rating",
+      "type": "number",
+      "description": "0-5 stars",
+      "required": true
+    },
+    {
+      "name": "ratingLabel",
+      "type": "string",
+      "description": "Text before stars",
+      "default": "\"High potential\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

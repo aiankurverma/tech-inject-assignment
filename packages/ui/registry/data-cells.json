@@ -1,0 +1,49 @@
+{
+  "name": "Data Cells",
+  "slug": "data-cells",
+  "description": "Table cell helpers: MoneyValue with muted currency, DateCell with interaction type, and ContactLine with mail/phone links.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/data-cells.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "data-cells-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "amount (MoneyValue)",
+      "type": "number",
+      "description": "Value",
+      "required": true
+    },
+    {
+      "name": "currency (MoneyValue)",
+      "type": "string",
+      "description": "Symbol",
+      "default": "\"$\"",
+      "required": false
+    },
+    {
+      "name": "date (DateCell)",
+      "type": "string",
+      "description": "Display date",
+      "required": true
+    },
+    {
+      "name": "type (DateCell)",
+      "type": "string",
+      "description": "Interaction type",
+      "required": false
+    },
+    {
+      "name": "email / phone (ContactLine)",
+      "type": "string",
+      "description": "Contact details",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

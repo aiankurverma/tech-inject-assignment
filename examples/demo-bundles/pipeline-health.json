@@ -1,0 +1,50 @@
+{
+  "name": "Pipeline Health",
+  "slug": "pipeline-health",
+  "description": "Company pipeline-health panel: overall win probability with a segmented bar per deal stage.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": [
+    {
+      "path": "components/crm/pipeline-health.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\n\nexport interface StageHealth {\n  label: string;\n  /** 0-100 */\n  value: number;\n  tone: \"danger\" | \"warning\" | \"success\";\n}\n\nexport interface PipelineHealthProps {\n  /** Overall win probability, 0-100. */\n  probability: number;\n  caption?: string;\n  stages: StageHealth[];\n  segments?: number;\n  className?: string;\n}\n\nconst toneClass = {\n  danger: \"bg-crm-danger\",\n  warning: \"bg-crm-warning\",\n  success: \"bg-crm-success\",\n} as const;\n\n/** Company \"Pipeline health\" panel: big win probability plus one segmented bar per stage. */\nexport function PipelineHealth({\n  probability,\n  caption = \"Win probability across all open deals\",\n  stages,\n  segments = 60,\n  className,\n}: PipelineHealthProps) {\n  return (\n    <section\n      className={cn(\"flex flex-col gap-4 font-crm text-crm-fg\", className)}\n      aria-label=\"Pipeline health\"\n    >\n      <h3 className=\"crm-eyebrow font-medium\">Pipeline health</h3>\n      <div>\n        <p className=\"text-[28px] leading-none font-semibold tabular-nums\">{probability}%</p>\n        <p className=\"mt-1.5 text-xs text-crm-soft\">{caption}</p>\n      </div>\n      {stages.map((s) => {\n        const filled = Math.round((Math.max(0, Math.min(100, s.value)) / 100) * segments);\n        return (\n          <div key={s.label} className=\"flex flex-col gap-2\">\n            <div className=\"flex items-center justify-between text-xs\">\n              <span>{s.label}</span>\n              <span className=\"tabular-nums\">{s.value}%</span>\n            </div>\n            <div\n              role=\"meter\"\n              aria-label={s.label}\n              aria-valuemin={0}\n              aria-valuemax={100}\n              aria-valuenow={s.value}\n              className=\"flex gap-[3px]\"\n            >\n              {Array.from({ length: segments }, (_, i) => (\n                <span\n                  key={i}\n                  className={cn(\n                    \"h-2 min-w-1 flex-1 rounded-[1px]\",\n                    i < filled ? toneClass[s.tone] : \"bg-crm-track\",\n                  )}\n                />\n              ))}\n            </div>\n          </div>\n        );\n      })}\n    </section>\n  );\n}\n"
+    }
+  ],
+  "examples": [
+    {
+      "title": "Company detail",
+      "code": "import { PipelineHealth } from \"@/components/crm/pipeline-health\";\n\nexport default function Example() {\n  return (\n    <div className=\"w-[440px] rounded-crm bg-crm-sidebar p-5\">\n      <PipelineHealth\n        probability={82}\n        stages={[\n          { label: \"Discovery\", value: 31, tone: \"danger\" },\n          { label: \"Evaluation\", value: 53, tone: \"warning\" },\n          { label: \"Procurement\", value: 31, tone: \"success\" },\n        ]}\n      />\n    </div>\n  );\n}\n"
+    }
+  ],
+  "props": [
+    {
+      "name": "probability",
+      "type": "number",
+      "required": true,
+      "description": "Overall win probability, 0-100"
+    },
+    {
+      "name": "stages",
+      "type": "{ label: string; value: number; tone: 'danger' | 'warning' | 'success' }[]",
+      "required": true,
+      "description": "One bar per stage"
+    },
+    {
+      "name": "caption",
+      "type": "string",
+      "default": "\"Win probability across all open deals\"",
+      "required": false,
+      "description": "Text under the number"
+    },
+    {
+      "name": "segments",
+      "type": "number",
+      "default": "60",
+      "required": false,
+      "description": "Segments per bar"
+    }
+  ],
+  "usage": "Reference: Sales CRM company detail sheet (docs/reference/screens/d42-company-details.png)."
+}

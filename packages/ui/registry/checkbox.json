@@ -1,0 +1,37 @@
+{
+  "name": "Checkbox",
+  "slug": "checkbox",
+  "description": "16px checkbox with the CRM yellow checked and indeterminate states. Keyboard accessible (Space).",
+  "category": "Forms",
+  "version": "1.0.0",
+  "dependencies": ["@radix-ui/react-checkbox", "lucide-react"],
+  "files": ["components/crm/checkbox.tsx"],
+  "examples": [
+    {
+      "title": "Select all",
+      "file": "checkbox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "checked",
+      "type": "boolean | \"indeterminate\"",
+      "description": "Controlled state",
+      "required": false
+    },
+    {
+      "name": "onCheckedChange",
+      "type": "(checked: boolean | \"indeterminate\") => void",
+      "description": "Change handler",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables the box",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
