@@ -280,4 +280,4 @@ Both passed locally earlier (flow B 15/15 against Atlas).
 - A recorded keyboard and mobile walkthrough is still to be done.
 - The AI keys used during development must be rotated before they are used in any deploy.
 - Agent prompt: run in clean `examples/consumer-agent` by an AI agent, which succeeded (`RESULT.md`). It found the Geist `@import` ordering bug, now fixed via one shared `CSS_SETUP` (Copy code, prompt and Get started; the zero-dependency CLI prints the same three lines). Two of its corrections came from my test setup (a pre-filled `package.json`), not from the prompt.
-- Time spent: _TBD by author_.
+- Time spent: about 6 hours.
