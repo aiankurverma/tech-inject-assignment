@@ -46,7 +46,6 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   const app = express();
   const auth = makeAuth(env);
 
-  // Infrastructure: Redis when REDIS_URL is set, in-memory fallbacks otherwise.
   const redis = getRedis();
   const cache =
     options.cache ??

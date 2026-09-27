@@ -89,14 +89,14 @@ Local URLs: catalogue http://localhost:4000, admin http://localhost:4000/admin/,
 
 ### Commands
 
-| Command                                    | What it does                                                                                    |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| `npm run check`                            | Prettier check, ESLint, `tsc` in every workspace, Vitest                                        |
-| `npm test`                                 | Unit tests plus API integration tests (needs MongoDB; `TEST_MONGODB_URI` overrides the default) |
-| `npm run build`                            | Build all apps and the CLI tarball                                                              |
-| `npm run seed`                             | Upsert the 2 test customers and the 26 repo components (3 marked premium as demo fixtures)      |
-| `npx tsx packages/ui/scripts/sync-deps.ts` | Recompute registry dependencies from imports                                                    |
-| `node scripts/capture-crm.mjs`             | Re-capture the 81 reference screenshots                                                         |
+| Command                                    | What it does                                                                               |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `npm run check`                            | Prettier check, ESLint, `tsc` in every workspace, Vitest                                   |
+| `npm test`                                 | Unit tests (no database needed)                                                            |
+| `npm run build`                            | Build all apps and the CLI tarball                                                         |
+| `npm run seed`                             | Upsert the 2 test customers and the 26 repo components (3 marked premium as demo fixtures) |
+| `npx tsx packages/ui/scripts/sync-deps.ts` | Recompute registry dependencies from imports                                               |
+| `node scripts/capture-crm.mjs`             | Re-capture the 81 reference screenshots                                                    |
 
 ## Using components (consumer)
 
@@ -136,7 +136,7 @@ The sidebar has **Overview**, **Components** (the list, plus the **Editor** to u
 - **API:** `POST /api/admin/components/:slug/access` (`{ access: "free" | "premium" }`), `DELETE /api/admin/components/:slug`, `POST /api/admin/customers/:id/status` (`{ disabled }`), plus the existing publish, unpublish and `customers/:id/plan` routes.
 - **Access switch:** it updates the draft **and** the live published snapshot (`apps/api/src/routes/index.ts`), so switching a live component to premium locks it on the next request. Only the access label changes; the published source stays the same version.
 - Deleting is permanent. Copies already installed in consumer projects are not affected.
-- Tests: "privileges: customer enable/disable and component delete" and "admin access switch" (`apps/api/test/api.test.ts`).
+- Checked on the live site: sign-in, Block / Unblock (see [Deployed checks](#deployed-checks)).
 
 ### Feature radar and AI draft builder
 
@@ -157,7 +157,7 @@ The sidebar has **Overview**, **Components** (the list, plus the **Editor** to u
 | `OPENROUTER_API_KEYS`, `OPENROUTER_MODEL` | Fallbacks: comma-separated keys, tried in order (default model `openai/gpt-4o-mini`) |
 | `OLLAMA_CLOUD_KEY`, `OLLAMA_CLOUD_MODEL`  | Last fallback (default model `gpt-oss:120b`)                                         |
 
-Tests: "feature-radar plugin" in `apps/api/test/api.test.ts` (search recording, protected admin routes, counts never inflated, generate returns 409/503/401 in the right cases, a valid AI bundle becomes a draft and is never auto-published, invalid output twice marks the build failed and creates nothing) and `normalize.test.ts`.
+Tests: `normalize.test.ts` (term normalising, real counts only).
 
 ### Redis, queue, cache and rate limits
 
@@ -166,7 +166,7 @@ These are wired in `apps/api/src/app.ts`. With `REDIS_URL` they use Redis. Witho
 - **Cache** (`@ti/cache`): published catalogue documents for 60 s, invalidated at once by admin writes.
 - **Rate limits** (`@ti/rate-limit`): the customer and admin logins use a sliding window (10 per 15 minutes per IP). The registry (capacity 60, 2/s) and feature search (capacity 30, 0.5/s) use a token bucket. In Redis both are atomic Lua scripts. If the store is down, the limiter fails open and logs an error.
 - **Queue** (`@ti/queue`): BullMQ on Redis, or in-process. AI draft builds always go through it. Bundle uploads larger than `QUEUE_THRESHOLD_BYTES` (default 200000) get `202 { status: "queued", jobId }`, and the admin polls `GET /api/admin/jobs/:id` until the job completes or fails.
-- Tests: `packages/cache`, `packages/queue`, `packages/rate-limit` unit tests and "infrastructure: cache, queue, rate limit" in the API tests.
+- Tests: `packages/cache`, `packages/queue`, `packages/rate-limit` unit tests.
 
 ### Theming
 
@@ -185,17 +185,16 @@ The catalogue and the admin both have a Light / Dark / System switch. They share
 
 ## Test results
 
-**2026-09-27, local:** `npx vitest run` passed **83/83 tests** in 7 files. `npm run check` is clean (Prettier, ESLint, and `turbo run typecheck` in every workspace).
+**2026-09-27, local:** `npx vitest run` passed **51/51 unit tests** in 6 files. `npm run check` is clean (Prettier, ESLint, and `turbo run typecheck` in every workspace).
 
-| File                                                 | Tests | Covers                                                                                                                                                                        |
-| ---------------------------------------------------- | ----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `apps/api/test/api.test.ts`                          |    32 | admin protection, publishing, premium access, CLI end to end, privileges, feature radar, admin access switch, infrastructure, refresh tokens (rotation, reuse, logout, block) |
-| `packages/core/src/core.test.ts`                     |    15 | bundle validation, the access table, drafts hidden, registry/copy/prompt output with no token leaks                                                                           |
-| `packages/cli/test/lib.test.ts`                      |    14 | unsafe paths, `--src` escape, overwrite rules, argument parsing, malformed registry responses                                                                                 |
-| `plugins/feature-radar/src/server/normalize.test.ts` |    10 | term normalising, real counts only (`null` below 5)                                                                                                                           |
-| `packages/rate-limit/src/rate-limit.test.ts`         |     4 | sliding window, token bucket, 429 + Retry-After, fails open                                                                                                                   |
-| `packages/cache/src/cache.test.ts`                   |     5 | get/set, TTL expiry, del/delPrefix, wrap, hit/miss hook                                                                                                                       |
-| `packages/queue/src/queue.test.ts`                   |     3 | async jobs and status, failures, concurrency                                                                                                                                  |
+| File                                                 | Tests | Covers                                                                                              |
+| ---------------------------------------------------- | ----: | --------------------------------------------------------------------------------------------------- |
+| `packages/core/src/core.test.ts`                     |    15 | bundle validation, the access table, drafts hidden, registry/copy/prompt output with no token leaks |
+| `packages/cli/test/lib.test.ts`                      |    14 | unsafe paths, `--src` escape, overwrite rules, argument parsing, malformed registry responses       |
+| `plugins/feature-radar/src/server/normalize.test.ts` |    10 | term normalising, real counts only (`null` below 5)                                                 |
+| `packages/rate-limit/src/rate-limit.test.ts`         |     4 | sliding window, token bucket, 429 + Retry-After, fails open                                         |
+| `packages/cache/src/cache.test.ts`                   |     5 | get/set, TTL expiry, del/delPrefix, wrap, hit/miss hook                                             |
+| `packages/queue/src/queue.test.ts`                   |     3 | async jobs and status, failures, concurrency                                                        |
 
 Earlier checks (2026-09-24, not re-run since):
 
@@ -252,7 +251,7 @@ Run against the live site on 2026-09-27. All passed.
 | CLI re-run         | Re-running on identical files prints `unchanged` (exit 0). Uninstall (delete the added files, `npm uninstall` the printed deps) leaves an app that still builds                                                                                                                       |
 | Redis              | App log shows `redis connected` after deploy, no Redis errors; Key Value shows active connections. First request per component about 0.8 s, repeat about 0.35 s, slow again after 60 s (the cache TTL). Indirect evidence: keys were not inspected because the store is internal only |
 | Persistence        | After a manual redeploy of a new commit, all 28 components and their premium flags were still there                                                                                                                                                                                   |
-| Local              | `npm run check` clean; `npx vitest run` 83/83 tests                                                                                                                                                                                                                                   |
+| Local              | `npm run check` clean; `npx vitest run` 51/51 unit tests                                                                                                                                                                                                                              |
 
 ### Keyboard, mobile and interaction checks
 
@@ -277,7 +276,7 @@ Not yet run on the live site:
 - **Journey A:** the admin uploads `examples/demo-bundles/pipeline-health.json`, validates, previews and publishes it, and it appears in the catalogue without a redeploy.
 - **Journey B:** a new premium component; a free user is blocked; grant Premium gives access; revoke blocks again.
 
-Both passed locally earlier (flow B 15/15 against Atlas).
+Both were run end to end earlier against a local server and Atlas (flow B: 15/15 checks).
 
 ### Recovery plan
 
