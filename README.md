@@ -266,7 +266,9 @@ Run on the live site on 2026-09-27 in a real browser (keyboard only, then a 375 
 
 Found and fixed during this check: search listed a description match ("File Drop") above the exact name match ("Button"). Results are now ranked by name match first (`apps/web/src/Search.tsx`).
 
-Not yet run on the live site (they need an admin and customer sign-in by the owner):
+Checked by the owner on the live site: admin, premium and free sign-in all work, and Block / Unblock on the Privileges page works (a blocked customer cannot sign in; unblocking lets them sign in again).
+
+Not yet run on the live site:
 
 - **Journey A:** the admin uploads `examples/demo-bundles/pipeline-health.json`, validates, previews and publishes it, and it appears in the catalogue without a redeploy.
 - **Journey B:** a new premium component; a free user is blocked; grant Premium gives access; revoke blocks again.
