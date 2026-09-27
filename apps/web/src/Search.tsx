@@ -53,9 +53,16 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return (components ?? []).filter(
-      (c) => !q || `${c.name} ${c.category} ${c.description}`.toLowerCase().includes(q),
-    );
+    const all = components ?? [];
+    if (!q) return all;
+    // Name matches first (exact, then prefix, then anywhere), then category/description matches.
+    const rank = (name: string) =>
+      name === q ? 0 : name.startsWith(q) ? 1 : name.includes(q) ? 2 : 3;
+    return all
+      .filter((c) => `${c.name} ${c.category} ${c.description}`.toLowerCase().includes(q))
+      .map((c, i) => ({ c, i, r: rank(c.name.toLowerCase()) }))
+      .sort((a, b) => a.r - b.r || a.i - b.i)
+      .map(({ c }) => c);
   }, [components, query]);
 
   useEffect(() => setActive(0), [query]);

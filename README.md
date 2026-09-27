@@ -250,6 +250,22 @@ Run against the live site on 2026-09-27. All passed.
 | Persistence        | After a manual redeploy of a new commit, all 28 components and their premium flags were still there                                                                                                                                                                                   |
 | Local              | `npm run check` clean; `npx vitest run` 83/83 tests                                                                                                                                                                                                                                   |
 
+### Keyboard, mobile and interaction checks
+
+Run on the live site on 2026-09-27 in a real browser (keyboard only, then a 375 px mobile viewport). All passed.
+
+| Check             | Result                                                                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| Focus visible     | Tab moves through the header links with a visible focus outline                                                                            |
+| Search            | `Ctrl+K` opens the search dialog with focus in the input; typing filters; arrow keys move and `Enter` opens the component; `Esc` closes it |
+| Preview/Code tabs | Arrow keys switch between Preview and Code (`role="tab"`, `aria-selected`); the example picker is a native `<select>`                      |
+| Sign-in form      | Labelled fields; Tab order is email, password, then Sign in                                                                                |
+| Mobile (375 px)   | No horizontal scroll; the header collapses to a menu button; the component page and live preview render correctly                          |
+| Mobile menu       | `Enter` on "Open navigation" opens the drawer (`aria-expanded="true"`, 33 links); `Esc` closes it and returns focus to the menu button     |
+| Premium lock      | A premium page shows the locked card with a Sign in button instead of code                                                                 |
+
+Found and fixed during this check: search listed a description match ("File Drop") above the exact name match ("Button"). Results are now ranked by name match first (`apps/web/src/Search.tsx`).
+
 Not yet run on the live site (they need an admin and customer sign-in by the owner):
 
 - **Journey A:** the admin uploads `examples/demo-bundles/pipeline-health.json`, validates, previews and publishes it, and it appears in the catalogue without a redeploy.
@@ -277,7 +293,6 @@ Both passed locally earlier (flow B 15/15 against Atlas).
 - The Redis cache evidence on the live site is indirect (timings and logs). The keys were not inspected because the Key Value store is internal only.
 - Free plan cold starts (about 50 s after 15 idle minutes) are mitigated by the keep-alive ping, not removed. The ping uses instance hours (750 per month on the free plan).
 - Deploys are manual; there is no CI/CD pipeline.
-- A recorded keyboard and mobile walkthrough is still to be done.
 - The AI keys used during development must be rotated before they are used in any deploy.
 - Agent prompt: run in clean `examples/consumer-agent` by an AI agent, which succeeded (`RESULT.md`). It found the Geist `@import` ordering bug, now fixed via one shared `CSS_SETUP` (Copy code, prompt and Get started; the zero-dependency CLI prints the same three lines). Two of its corrections came from my test setup (a pre-filled `package.json`), not from the prompt.
 - Time spent: about 6 hours.
