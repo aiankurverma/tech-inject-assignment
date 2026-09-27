@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { api } from "@ti/client";
-import type { Customer, FeatureRow, Summary } from "./types";
-import { absoluteTime, relativeTime } from "./types";
-import { useLoad } from "./useLoad";
-import { Thumb } from "./Thumb";
+import type { Customer, FeatureRow, Summary } from "../types";
+import { absoluteTime, relativeTime } from "../types";
+import { useLoad } from "../hooks/useLoad";
+import { Thumb } from "../components/Thumb";
 import {
   AccessBadge,
   Button,
@@ -31,7 +31,7 @@ import {
   buttonClass,
   cn,
   focusRing,
-} from "./ui";
+} from "../components/ui";
 
 function StatCard({
   label,

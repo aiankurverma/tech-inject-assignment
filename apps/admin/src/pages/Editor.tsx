@@ -20,8 +20,8 @@ import {
   Upload,
 } from "lucide-react";
 import { api, ApiError, PreviewFrame, type PreviewPayload } from "@ti/client";
-import type { Detail, Summary } from "./types";
-import { absoluteTime, errorMessage, relativeTime } from "./types";
+import type { Detail, Summary } from "../types";
+import { absoluteTime, errorMessage, relativeTime } from "../types";
 import {
   AccessBadge,
   Badge,
@@ -37,7 +37,7 @@ import {
   focusRing,
   selectClass,
   useToast,
-} from "./ui";
+} from "../components/ui";
 
 const TEMPLATE = JSON.stringify(
   {

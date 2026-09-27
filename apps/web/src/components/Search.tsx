@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CornerDownLeft, Lock, Search as SearchIcon } from "lucide-react";
 import { ComingSoonNotice } from "@ti/feature-radar/client";
-import { useSession } from "./session";
+import { useSession } from "../context/session";
 
 /** Header search: a trigger button plus a Ctrl/Cmd+K (or "/") command dialog over the components. */
 export function Search() {

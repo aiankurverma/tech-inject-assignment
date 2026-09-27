@@ -2,10 +2,10 @@ import { useMemo } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Boxes, ChevronRight, Plus, SearchX } from "lucide-react";
 import { api } from "@ti/client";
-import type { Access, ComponentStatus, Summary } from "./types";
-import { absoluteTime, relativeTime } from "./types";
-import { useLoad } from "./useLoad";
-import { Thumb } from "./Thumb";
+import type { Access, ComponentStatus, Summary } from "../types";
+import { absoluteTime, relativeTime } from "../types";
+import { useLoad } from "../hooks/useLoad";
+import { Thumb } from "../components/Thumb";
 import {
   AccessBadge,
   Badge,
@@ -26,7 +26,7 @@ import {
   cn,
   focusRing,
   selectClass,
-} from "./ui";
+} from "../components/ui";
 
 type StatusFilter = "all" | ComponentStatus;
 type AccessFilter = "all" | Access;

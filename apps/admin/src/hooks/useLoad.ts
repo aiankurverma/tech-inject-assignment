@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { errorMessage } from "./types";
+import { errorMessage } from "../types";
 
 export interface LoadState<T> {
   data: T | null;

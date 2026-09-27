@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { AlertCircle, Lock } from "lucide-react";
 import { api } from "@ti/client";
-import { ThemeToggle } from "./theme";
-import { errorMessage } from "./types";
-import { Button, inputClass } from "./ui";
+import { ThemeToggle } from "../context/theme";
+import { errorMessage } from "../types";
+import { Button, inputClass } from "../components/ui";
 
 export function Login({ onDone }: { onDone: () => void }) {
   const [error, setError] = useState<string | null>(null);

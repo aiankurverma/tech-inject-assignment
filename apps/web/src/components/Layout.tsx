@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { Lock, Menu, X } from "lucide-react";
-import { useSession } from "./session";
+import { useSession } from "../context/session";
 import { Search } from "./Search";
-import { ThemeToggle } from "./theme";
+import { ThemeToggle } from "../context/theme";
 import { btn, PlanBadge, Skeleton } from "./ui";
 
 export type TocItem = { id: string; label: string };

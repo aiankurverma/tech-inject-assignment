@@ -27,6 +27,8 @@ apps/
              middleware/ (auth guards), config/ (env), utils/ (errors, logger)
   web/       Public catalogue: shadcn-style landing page, docs layout, light/dark/system theme
   admin/     Admin dashboard: Overview, Components, Editor, Privileges, Feature radar (+ login)
+             web and admin src/: pages/ (screens), components/ (reusable UI),
+             context/ (session, theme state), hooks/, types/; data via @ti/client api()
   preview/   Sandboxed renderer on its own origin; compiles bundle TSX in the browser (sucrase)
 packages/
   core/        Pure rules: bundle schema + validation, access decision, registry/copy/prompt builders
@@ -127,7 +129,7 @@ The sidebar has **Overview**, **Components** (the list, plus the **Editor** to u
 
 ### Privileges
 
-`/admin/privileges` (`apps/admin/src/Privileges.tsx`) is one page for components and customers.
+`/admin/privileges` (`apps/admin/src/pages/Privileges.tsx`) is one page for components and customers.
 
 - **Components:** publish/unpublish inline on each row. The row menu has Edit, Make free / Make premium, View in catalogue (published only), and Delete, which asks for confirmation first.
 - **Customers:** Block / Unblock the account and grant/revoke Premium. A blocked account cannot sign in, its API tokens stop working on the next request, and all its browser sessions (refresh tokens) are revoked, so unblocking does not revive old sessions.
@@ -266,7 +268,7 @@ Run on the live site on 2026-09-27 in a real browser (keyboard only, then a 375 
 | Mobile menu       | `Enter` on "Open navigation" opens the drawer (`aria-expanded="true"`, 33 links); `Esc` closes it and returns focus to the menu button     |
 | Premium lock      | A premium page shows the locked card with a Sign in button instead of code                                                                 |
 
-Found and fixed during this check: search listed a description match ("File Drop") above the exact name match ("Button"). Results are now ranked by name match first (`apps/web/src/Search.tsx`).
+Found and fixed during this check: search listed a description match ("File Drop") above the exact name match ("Button"). Results are now ranked by name match first (`apps/web/src/components/Search.tsx`).
 
 Checked by the owner on the live site: admin, premium and free sign-in all work, and Block / Unblock on the Privileges page works (a blocked customer cannot sign in; unblocking lets them sign in again).
 

@@ -17,10 +17,10 @@ import {
   EyeOff,
 } from "lucide-react";
 import { api } from "@ti/client";
-import type { Customer, Summary } from "./types";
-import { errorMessage } from "./types";
-import { useLoad } from "./useLoad";
-import { Thumb } from "./Thumb";
+import type { Customer, Summary } from "../types";
+import { errorMessage } from "../types";
+import { useLoad } from "../hooks/useLoad";
+import { Thumb } from "../components/Thumb";
 import {
   AccessBadge,
   Badge,
@@ -43,7 +43,7 @@ import {
   cn,
   focusRing,
   useToast,
-} from "./ui";
+} from "../components/ui";
 
 type Tab = "components" | "customers";
 type CustomerFilter = "all" | "premium" | "free" | "disabled";

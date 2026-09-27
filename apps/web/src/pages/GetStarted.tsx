@@ -1,7 +1,7 @@
 import { CodeBlock } from "@ti/client";
 import { CSS_SETUP } from "@ti/core";
-import { Layout } from "../Layout";
-import { Breadcrumbs } from "../ui";
+import { Layout } from "../components/Layout";
+import { Breadcrumbs } from "../components/ui";
 
 const origin = typeof window !== "undefined" ? window.location.origin : "";
 

@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import { Layout } from "../Layout";
-import { btn } from "../ui";
+import { Layout } from "../components/Layout";
+import { btn } from "../components/ui";
 
 export function NotFound() {
   return (

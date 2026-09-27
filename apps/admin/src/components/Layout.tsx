@@ -11,7 +11,7 @@ import {
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { ThemeToggle } from "./theme";
+import { ThemeToggle } from "../context/theme";
 import { Badge, Button, cn, focusRing, useFocusTrap } from "./ui";
 
 interface NavItem {

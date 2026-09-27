@@ -26,7 +26,7 @@ import {
   XCircle,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import type { ComponentStatus } from "./types";
+import type { ComponentStatus } from "../types";
 
 export const cn = (...parts: (string | false | null | undefined)[]) =>
   parts.filter(Boolean).join(" ");

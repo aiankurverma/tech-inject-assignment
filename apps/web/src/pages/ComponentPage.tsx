@@ -9,9 +9,9 @@ import {
   PreviewFrame,
   type PreviewPayload,
 } from "@ti/client";
-import { Layout } from "../Layout";
-import { useSession } from "../session";
-import { AccessBadge, Breadcrumbs, btn, EmptyState, Skeleton, Tabs } from "../ui";
+import { Layout } from "../components/Layout";
+import { useSession } from "../context/session";
+import { AccessBadge, Breadcrumbs, btn, EmptyState, Skeleton, Tabs } from "../components/ui";
 
 interface Detail {
   slug: string;

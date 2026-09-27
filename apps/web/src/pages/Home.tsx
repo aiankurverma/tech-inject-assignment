@@ -2,9 +2,9 @@ import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Bot, Copy, PackageOpen, SearchX, Terminal, TriangleAlert } from "lucide-react";
 import { CopyButton } from "@ti/client";
-import { Layout } from "../Layout";
-import { useSession, type ListItem } from "../session";
-import { AccessBadge, btn, EmptyState, PageHeader, Skeleton } from "../ui";
+import { Layout } from "../components/Layout";
+import { useSession, type ListItem } from "../context/session";
+import { AccessBadge, btn, EmptyState, PageHeader, Skeleton } from "../components/ui";
 
 /** Thumbnails whose component is tiny in the capture get extra zoom. */
 /** Wide captures that should not be zoomed or centre-cropped in grid cards. */

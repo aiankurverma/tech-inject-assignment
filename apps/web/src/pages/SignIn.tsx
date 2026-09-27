@@ -1,9 +1,9 @@
 import { useState, type FormEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
-import { Layout } from "../Layout";
-import { useSession } from "../session";
-import { alertClass, btn, inputClass } from "../ui";
+import { Layout } from "../components/Layout";
+import { useSession } from "../context/session";
+import { alertClass, btn, inputClass } from "../components/ui";
 
 export function SignIn() {
   const { signIn } = useSession();

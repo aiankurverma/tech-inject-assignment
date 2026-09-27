@@ -2,9 +2,17 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { KeyRound, LogIn, TriangleAlert } from "lucide-react";
 import { api, CodeBlock } from "@ti/client";
-import { Layout } from "../Layout";
-import { useSession } from "../session";
-import { alertClass, btn, EmptyState, inputClass, PageHeader, PlanBadge, Skeleton } from "../ui";
+import { Layout } from "../components/Layout";
+import { useSession } from "../context/session";
+import {
+  alertClass,
+  btn,
+  EmptyState,
+  inputClass,
+  PageHeader,
+  PlanBadge,
+  Skeleton,
+} from "../components/ui";
 
 interface Token {
   id: string;
