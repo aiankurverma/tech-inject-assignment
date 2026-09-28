@@ -1,0 +1,54 @@
+{
+  "name": "Goal Tracker",
+  "slug": "goal-tracker",
+  "description": "Team goal tracker: progress bars with an expected-pace marker, run-rate projection, on-track/behind/at-risk status, per-team roll-ups, status filter and inline check-in logging with history; handles lower-is-better goals.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/goal-tracker.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Quarterly team goals",
+      "file": "goal-tracker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "goals",
+      "type": "Goal[]",
+      "description": "{ id, title, team, owner, unit, start?, target, startDate, endDate, checkIns }",
+      "required": true
+    },
+    {
+      "name": "asOf",
+      "type": "string",
+      "description": "Reference date for pace",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Currency for currency goals",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onCheckIn",
+      "type": "(goalId, value) => void",
+      "description": "Enables the check-in form",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "goalPace(goal, now) is exported."
+}

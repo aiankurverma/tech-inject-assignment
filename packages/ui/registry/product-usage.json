@@ -1,0 +1,74 @@
+{
+  "name": "Product Usage",
+  "slug": "product-usage",
+  "description": "Product adoption report: DAU/MAU stickiness, feature breadth, per-feature adoption with 12-week sparkline and week-over-week change, plan filter, search, sorting and low-adoption flags that skip newly launched features.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/product-usage.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Feature adoption by plan",
+      "file": "product-usage-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "features",
+      "type": "FeatureUsage[]",
+      "description": "{ id, name, area, weekly: Record<plan, number[]>, launchedAt? }",
+      "required": true
+    },
+    {
+      "name": "accountsByPlan",
+      "type": "Record<string, number>",
+      "description": "Active accounts per plan (adoption denominator)",
+      "required": true
+    },
+    {
+      "name": "dau",
+      "type": "number[]",
+      "description": "Daily active users series",
+      "required": false
+    },
+    {
+      "name": "mau",
+      "type": "number",
+      "description": "Monthly active users",
+      "required": false
+    },
+    {
+      "name": "lowAdoption",
+      "type": "number",
+      "description": "Adoption % flagged as lagging",
+      "default": "15",
+      "required": false
+    },
+    {
+      "name": "asOf",
+      "type": "string",
+      "description": "Reference date for 'new' features",
+      "required": false
+    },
+    {
+      "name": "onFeatureSelect",
+      "type": "(id) => void",
+      "description": "Row click",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ]
+}

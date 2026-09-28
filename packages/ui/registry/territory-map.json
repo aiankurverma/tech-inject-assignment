@@ -1,0 +1,79 @@
+{
+  "name": "Territory Map",
+  "slug": "territory-map",
+  "description": "Territory performance tile-grid map (no geo library): regions shaded by attainment, revenue, pipeline or accounts, arrow-key navigation between tiles, ranked list and a detail panel with coverage and revenue per account.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": [
+    "components/crm/territory-map.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "US sales territories",
+      "file": "territory-map-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "territories",
+      "type": "Territory[]",
+      "description": "{ code, name, col, row, revenue, quota, pipeline, accounts, owner?, winRate? }",
+      "required": true
+    },
+    {
+      "name": "metric",
+      "type": "\"attainment\" | \"revenue\" | \"pipeline\" | \"accounts\"",
+      "description": "Controlled shading metric",
+      "required": false
+    },
+    {
+      "name": "defaultMetric",
+      "type": "TerritoryMetric",
+      "description": "Uncontrolled metric",
+      "default": "\"attainment\"",
+      "required": false
+    },
+    {
+      "name": "onMetricChange",
+      "type": "(m) => void",
+      "description": "Metric change callback",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "string | null",
+      "description": "Controlled selected territory code",
+      "required": false
+    },
+    {
+      "name": "defaultSelected",
+      "type": "string | null",
+      "description": "Uncontrolled selection",
+      "default": "null",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(code) => void",
+      "description": "Selection callback",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ]
+}
