@@ -76,7 +76,7 @@ export function PresenceAvatars({
   const shown = list.slice(0, max);
   const hidden = list.length - shown.length;
   const active = list.filter((v) => v.eff === "online").length;
-  const avatarSize = size === "sm" ? "sm" : "md";
+  const avatarSize = size === "sm" ? "md" : "lg";
 
   return (
     <Popover>
@@ -85,7 +85,7 @@ export function PresenceAvatars({
           type="button"
           aria-label={`${list.length} ${list.length === 1 ? "person" : "people"} viewing, ${active} active. Show list`}
           className={cn(
-            "inline-flex items-center rounded-full p-0.5 font-crm outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
+            "inline-flex items-center rounded-full p-1 font-crm outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
             className,
           )}
         >
@@ -93,17 +93,23 @@ export function PresenceAvatars({
             <span
               key={v.id}
               className={cn(
-                "relative rounded-full ring-2 ring-crm-bg transition-opacity",
-                i > 0 && (size === "sm" ? "-ml-1.5" : "-ml-2.5"),
+                "relative shrink-0 rounded-full transition-opacity",
+                !v.color && "ring-2 ring-crm-card",
+                i > 0 &&
+                  (v.color || shown[i - 1]?.color ? "ml-2" : size === "sm" ? "-ml-2" : "-ml-3"),
                 v.eff !== "online" && "opacity-55",
               )}
-              style={{ boxShadow: v.color ? `0 0 0 3.5px ${v.color}` : undefined }}
+              style={{
+                boxShadow: v.color
+                  ? `0 0 0 2px var(--color-crm-card), 0 0 0 4px ${v.color}`
+                  : undefined,
+              }}
             >
               <Avatar name={v.name} src={v.src} size={avatarSize} />
               <StatusDot
                 status={v.eff}
-                size="sm"
-                className="absolute -right-0.5 -bottom-0.5 rounded-full ring-2 ring-crm-bg"
+                size="md"
+                className="absolute right-0 bottom-0 rounded-full ring-2 ring-crm-card"
                 aria-hidden
               />
             </span>
@@ -112,8 +118,8 @@ export function PresenceAvatars({
             <span
               aria-hidden
               className={cn(
-                "grid place-items-center rounded-full bg-crm-raised text-[10px] font-medium text-crm-soft ring-2 ring-crm-bg",
-                size === "sm" ? "-ml-1.5 size-5" : "-ml-2.5 size-8 text-xs",
+                "grid shrink-0 place-items-center rounded-full bg-crm-raised font-medium text-crm-soft ring-2 ring-crm-card",
+                size === "sm" ? "-ml-2 size-8 text-[11px]" : "-ml-3 size-12 text-sm",
               )}
             >
               +{hidden}

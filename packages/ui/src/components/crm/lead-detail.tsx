@@ -370,8 +370,9 @@ export function LeadDetail({
                     )}
                     {b.label}
                   </span>
-                  <input
-                    className={inputCls}
+                  <textarea
+                    rows={2}
+                    className={cn(inputCls, "h-auto min-h-9 resize-none py-1.5 leading-snug")}
                     placeholder={b.hint}
                     value={q[b.key] ?? ""}
                     disabled={done}

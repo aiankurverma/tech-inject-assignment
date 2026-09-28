@@ -139,8 +139,8 @@ export function NpCampaigns({
           <p className="text-xs text-crm-subtle">No campaigns in this phase.</p>
         </div>
       ) : (
-        <div className="grid gap-3 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
-          <ul className="grid gap-2 sm:grid-cols-2" aria-label="Campaign list">
+        <div className="grid items-start gap-3 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)]">
+          <ul className="grid content-start gap-2 sm:grid-cols-2" aria-label="Campaign list">
             {list.map(({ c, p }) => {
               const active = selected?.c.id === c.id;
               return (

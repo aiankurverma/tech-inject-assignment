@@ -126,7 +126,10 @@ export function ReLeadBoard({
     );
 
   return (
-    <section aria-label="Lead board" className={cn("flex flex-col gap-3 font-crm", className)}>
+    <section
+      aria-label="Lead board"
+      className={cn("flex w-full max-w-full min-w-0 flex-col gap-3 font-crm", className)}
+    >
       <div className="flex flex-wrap items-center gap-2">
         <SearchInput
           size="sm"
@@ -167,7 +170,7 @@ export function ReLeadBoard({
             ))}
           </select>
         </label>
-        <dl className="ml-auto flex gap-4 text-xs">
+        <dl className="ml-auto flex gap-4 pr-1 text-xs">
           <div>
             <dt className="text-crm-subtle">Weighted volume</dt>
             <dd className="font-medium text-crm-fg tabular-nums">{compact.format(weighted)}</dd>
@@ -190,7 +193,7 @@ export function ReLeadBoard({
           first contact: {slow.map((l) => l.name).join(", ")}
         </p>
       ) : null}
-      <div className="flex gap-2 overflow-x-auto pb-2">
+      <div className="flex max-w-full min-w-0 items-start gap-2 overflow-x-auto pr-1 pb-2">
         {reStages.map((s) => {
           const items = visible.filter((l) => l.stage === s.id);
           return (
@@ -205,7 +208,7 @@ export function ReLeadBoard({
                 if (lead) onOpen?.(lead);
               }}
               onDropDeal={(id) => move(id, s.id)}
-              className="max-h-[560px]"
+              className="max-h-[560px] w-[228px]"
             />
           );
         })}
