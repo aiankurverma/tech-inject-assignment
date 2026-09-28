@@ -117,13 +117,19 @@ export function HotelGuests({
   }, [guests, filter, query]);
 
   const guest = guests.find((g) => g.id === current);
+  const currentVisible = visible.some((g) => g.id === current);
 
   const onKey = (e: React.KeyboardEvent) => {
-    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
     e.preventDefault();
     const i = visible.findIndex((g) => g.id === current);
-    const next =
-      visible[Math.min(visible.length - 1, Math.max(0, i + (e.key === "ArrowDown" ? 1 : -1)))];
+    const target =
+      e.key === "Home"
+        ? 0
+        : e.key === "End"
+          ? visible.length - 1
+          : i + (e.key === "ArrowDown" ? 1 : -1);
+    const next = visible[Math.min(visible.length - 1, Math.max(0, target))];
     if (next) {
       select(next.id);
       listRef.current?.querySelector<HTMLElement>(`[data-id="${next.id}"]`)?.focus();
@@ -159,7 +165,11 @@ export function HotelGuests({
             { value: "all", label: "All" },
             { value: "in-house", label: "In house", count: guests.filter((g) => g.inHouse).length },
             { value: "vip", label: "VIP", count: guests.filter((g) => g.vip).length },
-            { value: "loyalty", label: "Loyalty" },
+            {
+              value: "loyalty",
+              label: "Loyalty",
+              count: guests.filter((g) => g.tier !== "none").length,
+            },
           ]}
         />
         {loading ? (
@@ -181,14 +191,21 @@ export function HotelGuests({
             {visible.map((g) => {
               const lt = guestLifetime(g);
               const active = g.id === current;
+              const focusable = active || (!currentVisible && g.id === visible[0]?.id);
               return (
                 <li
                   key={g.id}
                   data-id={g.id}
                   role="option"
                   aria-selected={active}
-                  tabIndex={active ? 0 : -1}
+                  tabIndex={focusable ? 0 : -1}
                   onClick={() => select(g.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      select(g.id);
+                    }
+                  }}
                   className={cn(
                     "flex cursor-pointer items-center gap-2 rounded-crm px-2 py-1.5 text-xs focus-visible:ring-2 focus-visible:ring-crm-ring/60 focus-visible:outline-none",
                     active ? "bg-crm-muted" : "hover:bg-crm-muted/50",

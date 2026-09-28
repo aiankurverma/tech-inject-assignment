@@ -356,7 +356,13 @@ export function HotelReservations({
                             size="sm"
                             variant="primary"
                             disabled={!r.room || conflict}
-                            title={!r.room ? "Assign a room first" : undefined}
+                            title={
+                              !r.room
+                                ? "Assign a room first"
+                                : conflict
+                                  ? "Resolve room conflict first"
+                                  : undefined
+                            }
                             onClick={() => onCheckIn(r)}
                           >
                             <LogIn /> Check in

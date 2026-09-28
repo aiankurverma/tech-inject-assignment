@@ -176,9 +176,14 @@ export function HotelDashboard({
                   <div
                     className={cn(
                       "w-full rounded-t-sm transition-colors",
-                      isToday ? "bg-crm-primary" : future ? "bg-crm-primary/35" : "bg-crm-subtle",
+                      isToday
+                        ? "bg-crm-primary"
+                        : future
+                          ? o > 95
+                            ? "bg-crm-warning/70"
+                            : "bg-crm-primary/35"
+                          : "bg-crm-subtle",
                       hover === i && "ring-2 ring-crm-ring/60",
-                      o > 95 && future && "bg-crm-warning/70",
                     )}
                     style={{ height: `${Math.max(2, o)}%` }}
                   />
