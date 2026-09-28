@@ -1,0 +1,56 @@
+{
+  "name": "Email Thread",
+  "slug": "email-thread",
+  "description": "Collapsible email conversation: read messages fold to previews, unread and latest stay open, older runs collapse, quoted history hides behind a toggle, reply/forward actions.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/email-thread.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Deal negotiation thread",
+      "file": "email-thread-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "subject",
+      "type": "string",
+      "description": "Thread subject",
+      "required": true
+    },
+    {
+      "name": "messages",
+      "type": "EmailMessage[]",
+      "description": "{ id, from, to, cc?, sentAt, body, attachments?, unread?, outbound? }",
+      "required": true
+    },
+    {
+      "name": "collapseAfter",
+      "type": "number",
+      "description": "Fold older messages beyond this many",
+      "default": "3",
+      "required": false
+    },
+    {
+      "name": "onReply",
+      "type": "(m) => void",
+      "description": "Reply clicked",
+      "required": false
+    },
+    {
+      "name": "onForward",
+      "type": "(m) => void",
+      "description": "Forward clicked",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Date formatting locale",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

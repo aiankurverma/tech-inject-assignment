@@ -1,0 +1,67 @@
+{
+  "name": "Agenda List",
+  "slug": "agenda-list",
+  "description": "Upcoming meetings grouped by Today/Tomorrow/date with live Now state, countdown, overlap warnings, tentative/cancelled states and a Join button that unlocks near start.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/agenda-list.tsx",
+    "components/crm/avatar-group.tsx",
+    "components/crm/avatar.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Today's meetings",
+      "file": "agenda-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "meetings",
+      "type": "AgendaMeeting[]",
+      "description": "{ id, title, start, end, kind?, location?, related?, attendees?, status? }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time; updates every 30s when omitted",
+      "required": false
+    },
+    {
+      "name": "hidePast",
+      "type": "boolean",
+      "description": "Hide meetings that already ended",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "joinWindow",
+      "type": "number",
+      "description": "Minutes before start when Join enables",
+      "default": "10",
+      "required": false
+    },
+    {
+      "name": "onJoin",
+      "type": "(m) => void",
+      "description": "Join clicked",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(m) => void",
+      "description": "Meeting clicked",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

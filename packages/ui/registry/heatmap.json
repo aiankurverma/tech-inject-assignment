@@ -1,0 +1,58 @@
+{
+  "name": "Heatmap",
+  "slug": "heatmap",
+  "description": "Day-of-week by hour activity grid with bucketed intensity, peak-slot highlight, legend, loading state and arrow-key cell navigation.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/heatmap.tsx"],
+  "examples": [
+    {
+      "title": "Best time to call",
+      "file": "heatmap-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "HeatmapCell[]",
+      "description": "{ day: 0-6 (Mon-Sun), hour: 0-23, value } entries; duplicates are summed",
+      "required": true
+    },
+    {
+      "name": "hours",
+      "type": "[number, number]",
+      "description": "First and last hour shown",
+      "default": "[8, 19]",
+      "required": false
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Unit used in labels",
+      "default": "\"activities\"",
+      "required": false
+    },
+    {
+      "name": "levels",
+      "type": "number",
+      "description": "Colour buckets (2-6)",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton",
+      "required": false
+    },
+    {
+      "name": "onCellSelect",
+      "type": "(cell: HeatmapCell) => void",
+      "description": "Called on click/Enter on a cell",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

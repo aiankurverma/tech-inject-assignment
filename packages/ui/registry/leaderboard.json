@@ -1,0 +1,76 @@
+{
+  "name": "Leaderboard",
+  "slug": "leaderboard",
+  "description": "Ranked sales reps by revenue, quota attainment or deal count with medals, rank movement arrows, relative bars and a pinned row for the current user.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/leaderboard.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Q3 leaderboard",
+      "file": "leaderboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "reps",
+      "type": "LeaderboardRep[]",
+      "description": "{ id, name, avatar?, team?, revenue, quota?, deals, previousRank? }",
+      "required": true
+    },
+    {
+      "name": "metric",
+      "type": "\"revenue\" | \"attainment\" | \"deals\"",
+      "description": "Controlled ranking metric",
+      "required": false
+    },
+    {
+      "name": "defaultMetric",
+      "type": "LeaderboardMetric",
+      "description": "Initial metric when uncontrolled",
+      "default": "\"revenue\"",
+      "required": false
+    },
+    {
+      "name": "onMetricChange",
+      "type": "(m) => void",
+      "description": "Metric tab changed",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Highlight and pin this rep when outside the top N",
+      "required": false
+    },
+    {
+      "name": "limit",
+      "type": "number",
+      "description": "Rows shown",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(rep) => void",
+      "description": "Row clicked",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

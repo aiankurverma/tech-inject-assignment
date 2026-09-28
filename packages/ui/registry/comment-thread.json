@@ -1,0 +1,87 @@
+{
+  "name": "Comment Thread",
+  "slug": "comment-thread",
+  "description": "Threaded record comments with replies, @mention highlighting, edit/delete own comments, resolve/reopen, show-more replies and optimistic saving/failed states.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/comment-thread.tsx",
+    "components/crm/comment-box.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/relative-time.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deal discussion",
+      "file": "comment-thread-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "comments",
+      "type": "ThreadComment[]",
+      "description": "{ id, author, body, createdAt, editedAt?, replies?, resolved?, pending? }",
+      "required": true
+    },
+    {
+      "name": "currentUser",
+      "type": "{ id, name, avatar? }",
+      "description": "Viewer; owns editable comments",
+      "required": true
+    },
+    {
+      "name": "mentionables",
+      "type": "Mentionable[]",
+      "description": "People offered after @",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onAdd",
+      "type": "(body, parentId, mentions) => void",
+      "description": "New comment or reply",
+      "required": true
+    },
+    {
+      "name": "onEdit",
+      "type": "(id, body) => void",
+      "description": "Save an edit",
+      "required": false
+    },
+    {
+      "name": "onDelete",
+      "type": "(id) => void",
+      "description": "Delete own comment",
+      "required": false
+    },
+    {
+      "name": "onResolve",
+      "type": "(id, resolved) => void",
+      "description": "Resolve or reopen a thread",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "(id) => void",
+      "description": "Retry a failed post",
+      "required": false
+    },
+    {
+      "name": "visibleReplies",
+      "type": "number",
+      "description": "Replies shown before Show more",
+      "default": "2",
+      "required": false
+    },
+    {
+      "name": "collapseResolved",
+      "type": "boolean",
+      "description": "Hide resolved threads behind a toggle",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
