@@ -2,6 +2,7 @@ import * as React from "react";
 import { Check, Minus, Package, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SearchInput } from "@/components/crm/search-input";
+import { Button } from "@/components/crm/button";
 
 export interface CatalogProduct {
   id: string;
@@ -80,6 +81,12 @@ export function ProductPicker({
     [products, cat, q],
   );
   const activeIdx = Math.min(active, Math.max(0, visible.length - 1));
+  const activeId = visible[activeIdx]?.id;
+
+  React.useEffect(() => {
+    if (!activeId) return;
+    document.getElementById(`${listId}-${activeId}`)?.scrollIntoView?.({ block: "nearest" });
+  }, [activeId, listId]);
 
   const setQty = (p: CatalogProduct, n: number) => {
     const max = p.stock ?? Infinity;
@@ -299,14 +306,9 @@ export function ProductPicker({
           )}
         </span>
         {onConfirm ? (
-          <button
-            type="button"
-            disabled={!chosen.length}
-            onClick={() => onConfirm(chosen)}
-            className="inline-flex h-[30px] cursor-pointer items-center rounded-full bg-crm-primary px-3 text-xs font-medium text-crm-primary-fg shadow-crm-primary outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60 disabled:pointer-events-none disabled:opacity-50"
-          >
+          <Button variant="primary" disabled={!chosen.length} onClick={() => onConfirm(chosen)}>
             {confirmLabel}
-          </button>
+          </Button>
         ) : null}
       </div>
     </div>

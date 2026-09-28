@@ -86,6 +86,8 @@ export function PaymentMethod({
 }: PaymentMethodProps) {
   const [menu, setMenu] = React.useState(false);
   const menuRef = React.useRef<HTMLDivElement>(null);
+  const triggerRef = React.useRef<HTMLButtonElement>(null);
+  const listRef = React.useRef<HTMLDivElement>(null);
   const brand = method.brand ?? "unknown";
   const exp =
     method.type === "card" && method.expMonth && method.expYear
@@ -101,6 +103,7 @@ export function PaymentMethod({
     const close = (e: MouseEvent) => {
       if (!menuRef.current?.contains(e.target as Node)) setMenu(false);
     };
+    listRef.current?.querySelector<HTMLButtonElement>("[role=menuitem]:not(:disabled)")?.focus();
     document.addEventListener("mousedown", close);
     return () => document.removeEventListener("mousedown", close);
   }, [menu]);
@@ -205,6 +208,7 @@ export function PaymentMethod({
         <div ref={menuRef} className="relative shrink-0">
           <button
             type="button"
+            ref={triggerRef}
             aria-haspopup="menu"
             aria-expanded={menu}
             aria-label={`Actions for ${name}`}
@@ -219,9 +223,33 @@ export function PaymentMethod({
           </button>
           {menu ? (
             <div
+              ref={listRef}
               role="menu"
+              aria-label={`Actions for ${name}`}
               onKeyDown={(e) => {
-                if (e.key === "Escape") setMenu(false);
+                e.stopPropagation();
+                if (e.key === "Escape" || e.key === "Tab") {
+                  if (e.key === "Escape") e.preventDefault();
+                  setMenu(false);
+                  triggerRef.current?.focus();
+                  return;
+                }
+                if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
+                e.preventDefault();
+                const items = Array.from(
+                  listRef.current?.querySelectorAll<HTMLButtonElement>(
+                    "[role=menuitem]:not(:disabled)",
+                  ) ?? [],
+                );
+                if (!items.length) return;
+                const at = items.indexOf(document.activeElement as HTMLButtonElement);
+                const next =
+                  e.key === "Home"
+                    ? 0
+                    : e.key === "End"
+                      ? items.length - 1
+                      : (at + (e.key === "ArrowDown" ? 1 : -1) + items.length) % items.length;
+                items[next]?.focus();
               }}
               className="absolute top-8 right-0 z-20 min-w-36 rounded-crm border border-crm-border bg-crm-popover p-1 shadow-crm-raised"
             >
@@ -237,6 +265,7 @@ export function PaymentMethod({
                     onClick={(e) => {
                       e.stopPropagation();
                       setMenu(false);
+                      triggerRef.current?.focus();
                       a.run(method.id);
                     }}
                     className={cn(

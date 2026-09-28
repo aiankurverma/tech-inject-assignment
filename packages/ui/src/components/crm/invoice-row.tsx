@@ -85,7 +85,7 @@ export function InvoiceRow({
   const date = new Intl.DateTimeFormat(locale, { day: "numeric", month: "short", year: "numeric" });
   const muted = invoice.status === "void";
   const iconBtn =
-    "inline-flex size-7 cursor-pointer items-center justify-center rounded-full text-crm-muted-fg outline-none hover:bg-crm-muted hover:text-crm-fg focus-visible:ring-2 focus-visible:ring-crm-ring/60 [&_svg]:size-3.5";
+    "inline-flex size-7 cursor-pointer items-center justify-center rounded-full text-crm-muted-fg outline-none hover:bg-crm-muted hover:text-crm-fg focus-visible:ring-2 focus-visible:ring-crm-ring/60 disabled:pointer-events-none disabled:opacity-40 [&_svg]:size-3.5";
 
   return (
     <div

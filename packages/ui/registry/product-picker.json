@@ -5,11 +5,12 @@
   "category": "Commerce and billing",
   "version": "1.0.0",
   "access": "free",
-  "dependencies": ["lucide-react"],
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
   "files": [
     "components/crm/product-picker.tsx",
     "components/crm/search-input.tsx",
-    "components/crm/kbd.tsx"
+    "components/crm/kbd.tsx",
+    "components/crm/button.tsx"
   ],
   "examples": [
     {

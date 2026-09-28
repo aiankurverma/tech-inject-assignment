@@ -172,7 +172,7 @@ export function OrderSummary({
           <dd className="tabular-nums">{loading ? skeleton : money.format(t.subtotal)}</dd>
         </div>
         {discounts.map((d, idx) => (
-          <div key={d.label} className={row}>
+          <div key={`${idx}-${d.label}`} className={row}>
             <dt className="truncate text-crm-soft">
               {d.label}
               {d.type === "percent" ? ` (${d.value}%)` : ""}

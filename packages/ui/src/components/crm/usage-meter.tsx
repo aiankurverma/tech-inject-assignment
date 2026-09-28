@@ -96,7 +96,7 @@ export function UsageMeter({
         role="meter"
         aria-labelledby={id}
         aria-valuemin={0}
-        aria-valuemax={limit ?? used}
+        aria-valuemax={limit === null ? used : Math.max(limit, used)}
         aria-valuenow={loading ? undefined : used}
         aria-valuetext={
           loading
