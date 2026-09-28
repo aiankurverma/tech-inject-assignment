@@ -1,0 +1,78 @@
+{
+  "name": "OTP Input",
+  "slug": "otp-input",
+  "description": "One-time-code boxes with auto-advance, backspace navigation, paste-to-fill, grouping and masking.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/otp-input.tsx"],
+  "examples": [
+    {
+      "title": "Grouped 6-digit code",
+      "file": "otp-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "length",
+      "type": "number",
+      "description": "Number of boxes",
+      "default": "6",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled code",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string) => void",
+      "description": "Called on every change",
+      "required": false
+    },
+    {
+      "name": "onComplete",
+      "type": "(value: string) => void",
+      "description": "Called when all boxes are filled",
+      "required": false
+    },
+    {
+      "name": "mode",
+      "type": "\"numeric\" | \"alphanumeric\"",
+      "description": "Accepted characters",
+      "default": "\"numeric\"",
+      "required": false
+    },
+    {
+      "name": "groupSize",
+      "type": "number",
+      "description": "Separator after every N boxes",
+      "required": false
+    },
+    {
+      "name": "mask",
+      "type": "boolean",
+      "description": "Hide characters",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error borders",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable all boxes",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "First box sets autocomplete=\"one-time-code\" so SMS/email autofill works."
+}

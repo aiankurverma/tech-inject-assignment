@@ -1,0 +1,71 @@
+{
+  "name": "Multi Select",
+  "slug": "multi-select",
+  "description": "Searchable multi select with coloured Tag chips, +N overflow, max selections and select-all/clear actions.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/multi-select.tsx", "components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Segments",
+      "file": "multi-select-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "options",
+      "type": "MultiSelectOption[]",
+      "description": "{ value, label, description?, color?, keywords?, disabled? }",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string[]",
+      "description": "Selected values",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(values: string[]) => void",
+      "description": "Called on toggle",
+      "required": false
+    },
+    {
+      "name": "maxChips",
+      "type": "number",
+      "description": "Chips before +N",
+      "default": "3",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Maximum selections",
+      "required": false
+    },
+    {
+      "name": "showActions",
+      "type": "boolean",
+      "description": "Select all / Clear footer",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty trigger text",
+      "default": "\"Select…\"",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Popover stays open while toggling. Enter/Space toggles, Backspace in an empty filter removes the last selection."
+}

@@ -40,19 +40,19 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `radio-group` — **B1** Radios or selectable cards, roving focus.
 - [x] `select` — Radix select.
 - [x] `slider` — Radix slider.
-- [ ] `number-input` — Stepper buttons, min/max, formatting.
-- [ ] `currency-input` — Locale money input.
+- [x] `number-input` — Stepper buttons, min/max, formatting.
+- [x] `currency-input` — Locale money input.
 - [ ] `phone-input` — Country code + number.
-- [ ] `password-input` — Show/hide, strength meter.
-- [ ] `otp-input` — One-time code boxes.
-- [ ] `search-input` — Icon, clear, shortcut hint.
-- [ ] `tag-input` — Free-form tokens.
-- [ ] `combobox` — Searchable single select.
-- [ ] `multi-select` — Searchable multi select with chips.
+- [x] `password-input` — Show/hide, strength meter.
+- [x] `otp-input` — One-time code boxes.
+- [x] `search-input` — Icon, clear, shortcut hint.
+- [x] `tag-input` — Free-form tokens.
+- [x] `combobox` — Searchable single select.
+- [x] `multi-select` — Searchable multi select with chips.
 - [x] `date-picker` — **B1** Popover calendar with min/max, keyboard grid.
 - [ ] `date-range-picker` — Two-month range + presets.
-- [ ] `time-picker` — Time slots / free entry.
-- [ ] `color-picker` — Swatches for tags and pipelines.
+- [x] `time-picker` — Time slots / free entry.
+- [x] `color-picker` — Swatches for tags and pipelines.
 
 ### Display (18)
 

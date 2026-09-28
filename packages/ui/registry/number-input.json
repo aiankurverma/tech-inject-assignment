@@ -1,0 +1,83 @@
+{
+  "name": "Number Input",
+  "slug": "number-input",
+  "description": "Numeric spinbutton with -/+ steppers, min/max clamping, step precision and Intl formatting on blur.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/number-input.tsx"],
+  "examples": [
+    {
+      "title": "Seats and percent",
+      "file": "number-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "number | null",
+      "description": "Controlled value",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: number | null) => void",
+      "description": "Called with the committed, clamped value",
+      "required": false
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "description": "Lower bound",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Upper bound",
+      "required": false
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "description": "Step for arrows and buttons",
+      "default": "1",
+      "required": false
+    },
+    {
+      "name": "precision",
+      "type": "number",
+      "description": "Decimal places kept",
+      "required": false
+    },
+    {
+      "name": "formatOptions",
+      "type": "Intl.NumberFormatOptions",
+      "description": "Display format when not focused",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Height",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "hideSteppers",
+      "type": "boolean",
+      "description": "Hide -/+ buttons",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Keys: ArrowUp/Down step (Shift x10), PageUp/PageDown x10, Home/End to min/max, Enter commits. Uncontrolled via defaultValue."
+}

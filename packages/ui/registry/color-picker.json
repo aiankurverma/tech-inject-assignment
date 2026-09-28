@@ -1,0 +1,66 @@
+{
+  "name": "Color Picker",
+  "slug": "color-picker",
+  "description": "Swatch picker for tag and pipeline colours: inline radiogroup grid plus a popover trigger, using the ten CRM tag colours.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/color-picker.tsx", "components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Popover and inline",
+      "file": "color-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "TagColor | null",
+      "description": "Selected colour",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(color: TagColor) => void",
+      "description": "Called on pick",
+      "required": false
+    },
+    {
+      "name": "swatches",
+      "type": "ColorSwatch[]",
+      "description": "{ value: TagColor, label }[]",
+      "default": "DEFAULT_SWATCHES",
+      "required": false
+    },
+    {
+      "name": "columns",
+      "type": "number",
+      "description": "Swatches per row",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "description": "Dot-only trigger (ColorPicker)",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Popover heading (ColorPicker)",
+      "default": "\"Colour\"",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "ColorSwatches is exported for inline use. Arrow keys move and select (radio semantics); click/Enter confirms and closes the popover."
+}

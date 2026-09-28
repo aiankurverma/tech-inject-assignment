@@ -1,0 +1,71 @@
+{
+  "name": "Tag Input",
+  "slug": "tag-input",
+  "description": "Free-form token field that turns typed or pasted text into removable coloured tags, with validation and a max count.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/tag-input.tsx", "components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Deal tags",
+      "file": "tag-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string[]",
+      "description": "Controlled tags",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(tags: string[]) => void",
+      "description": "Called when tags change",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Maximum tags",
+      "required": false
+    },
+    {
+      "name": "allowDuplicates",
+      "type": "boolean",
+      "description": "Allow repeated tags",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "validate",
+      "type": "(tag: string) => boolean | string",
+      "description": "Reject a tag; a string is shown as the error",
+      "required": false
+    },
+    {
+      "name": "delimiters",
+      "type": "string[]",
+      "description": "Characters that commit a tag",
+      "default": "[\",\", \";\"]",
+      "required": false
+    },
+    {
+      "name": "tagColor",
+      "type": "TagColor | ((tag: string) => TagColor)",
+      "description": "Tag colour",
+      "default": "\"neutral\"",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty field text",
+      "default": "\"Add tag…\"",
+      "required": false
+    }
+  ],
+  "usage": "Enter/Tab/comma adds, Backspace on empty removes the last tag, pasted lists are split. Changes are announced to screen readers."
+}
