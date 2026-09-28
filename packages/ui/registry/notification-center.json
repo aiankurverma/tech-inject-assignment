@@ -1,0 +1,68 @@
+{
+  "name": "Notification Center",
+  "slug": "notification-center",
+  "description": "Full notification inbox: filter tabs with counts, Today/Yesterday/This week groups, per-item read, snooze and archive, mark all read, and j/k keyboard triage.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/notification-center.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/notifications.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "CRM inbox",
+      "file": "notification-center-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "CenterNotification[]",
+      "description": "Notification plus createdAt, category, snoozedUntil?, archived?",
+      "required": true
+    },
+    {
+      "name": "onItemsChange",
+      "type": "(items) => void",
+      "description": "Receives the next list after any action",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "(item) => void",
+      "description": "Row click / Enter; item is marked read",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error state message",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry button in error state",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time",
+      "required": false
+    }
+  ],
+  "usage": "Reuses NotificationItem from notifications. Keys: j/k move, Enter open, e archive, u unread, s snooze."
+}

@@ -1,0 +1,59 @@
+{
+  "name": "ATS Candidate",
+  "slug": "ats-candidate",
+  "description": "Candidate record: profile and contact, stage stepper, salary vs band check, notice-based start date, scorecard roll-up with hiring signal, notes and advance/reject/hire actions.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "@radix-ui/react-tabs", "lucide-react"],
+  "files": [
+    "components/crm/ats-candidate.tsx",
+    "components/crm/textarea.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/tabs.tsx",
+    "components/crm/stepper.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/button.tsx",
+    "components/crm/avatar.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Candidate profile",
+      "file": "ats-candidate-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "candidate",
+      "type": "AtsCandidateRecord",
+      "description": "Profile, stages, stageIndex, band, scorecards, notes, status",
+      "required": true
+    },
+    {
+      "name": "onCandidateChange",
+      "type": "(candidate) => void",
+      "description": "Receives the updated record",
+      "required": true
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Author for new notes",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Salary currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override today",
+      "required": false
+    }
+  ],
+  "usage": "summarizeScorecards() is exported."
+}

@@ -1,0 +1,71 @@
+{
+  "name": "Real Estate Agent Dashboard",
+  "slug": "re-agent-dashboard",
+  "description": "Agent production dashboard: period KPIs, GCI goal pace and projection, net income with brokerage split, cap and transaction fees, and pending closings countdown.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/re-agent-dashboard.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Agent production YTD",
+      "file": "re-agent-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "agent",
+      "type": "string",
+      "description": "Agent name",
+      "required": true
+    },
+    {
+      "name": "transactions",
+      "type": "ReTransaction[]",
+      "description": "{ address, side, price, rate, status, closeDate, daysToContract }",
+      "required": true
+    },
+    {
+      "name": "gciGoal",
+      "type": "number",
+      "description": "Annual GCI goal",
+      "required": true
+    },
+    {
+      "name": "split",
+      "type": "number",
+      "description": "Agent share before cap",
+      "default": "0.7",
+      "required": false
+    },
+    {
+      "name": "transactionFee",
+      "type": "number",
+      "description": "Flat brokerage fee per closing",
+      "default": "395",
+      "required": false
+    },
+    {
+      "name": "cap",
+      "type": "number",
+      "description": "Annual brokerage cap",
+      "default": "18000",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override today",
+      "required": false
+    }
+  ],
+  "usage": "computeNet() is exported."
+}

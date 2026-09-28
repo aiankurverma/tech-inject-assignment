@@ -1,0 +1,68 @@
+{
+  "name": "Real Estate Lead Board",
+  "slug": "re-lead-board",
+  "description": "Buyer and seller lead board built on KanbanColumn: drag between stages, filter by type and agent, weighted volume and GCI estimate, overdue follow-ups and speed-to-lead alerts.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/re-lead-board.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/deal-card.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/kanban-column.tsx",
+    "components/crm/badge.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Brokerage lead board",
+      "file": "re-lead-board-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "leads",
+      "type": "ReLead[]",
+      "description": "{ name, kind, value, area, source, stage, agent, createdAt, firstContactAt?, nextFollowUp?, preApproved? }",
+      "required": true
+    },
+    {
+      "name": "onLeadsChange",
+      "type": "(leads) => void",
+      "description": "Receives leads after a stage move",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "(lead) => void",
+      "description": "Card click",
+      "required": false
+    },
+    {
+      "name": "speedToLeadHours",
+      "type": "number",
+      "description": "Hours before an uncontacted lead is flagged",
+      "default": "1",
+      "required": false
+    },
+    {
+      "name": "commissionRate",
+      "type": "number",
+      "description": "Rate for the GCI estimate",
+      "default": "0.025",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time",
+      "required": false
+    }
+  ],
+  "usage": "Stage probabilities are exported as reStages."
+}

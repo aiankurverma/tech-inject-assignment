@@ -1,0 +1,50 @@
+{
+  "name": "Real Estate Showings",
+  "slug": "re-showings",
+  "description": "Showing schedule grouped by day with confirm/cancel, same-agent overlap and drive-time conflict warnings, lockbox notes and post-showing interest + feedback capture.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/re-showings.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/button.tsx",
+    "components/crm/avatar.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Agent showing day",
+      "file": "re-showings-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "showings",
+      "type": "Showing[]",
+      "description": "{ address, start, durationMin, buyer, agent, status, access?, interest?, feedback? }",
+      "required": true
+    },
+    {
+      "name": "onShowingsChange",
+      "type": "(showings) => void",
+      "description": "Receives the next list",
+      "required": true
+    },
+    {
+      "name": "travelBufferMin",
+      "type": "number",
+      "description": "Minimum minutes between showings for one agent",
+      "default": "20",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time",
+      "required": false
+    }
+  ],
+  "usage": "findConflicts() is exported."
+}
