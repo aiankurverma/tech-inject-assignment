@@ -1,0 +1,68 @@
+{
+  "name": "Invite Accept",
+  "slug": "invite-accept",
+  "description": "Workspace invitation landing card with inviter, role scope, teams, live expiry countdown, wrong-account warning, name capture and async accept/decline plus expired/revoked/accepted states.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/invite-accept.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Invitation scenarios",
+      "file": "invite-accept-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "invitation",
+      "type": "Invitation",
+      "description": "Workspace, inviter, role, email, expiresAt, status, teams",
+      "required": true
+    },
+    {
+      "name": "currentUserEmail",
+      "type": "string",
+      "description": "Signed-in email; a mismatch blocks joining",
+      "required": false
+    },
+    {
+      "name": "requireName",
+      "type": "boolean",
+      "description": "Ask for a display name",
+      "required": false
+    },
+    {
+      "name": "onAccept",
+      "type": "(data: { name?: string }) => Promise<void> | void",
+      "description": "Accept handler; reject to show error",
+      "required": true
+    },
+    {
+      "name": "onDecline",
+      "type": "() => Promise<void> | void",
+      "description": "Decline handler",
+      "required": false
+    },
+    {
+      "name": "onSwitchAccount",
+      "type": "() => void",
+      "description": "Shown in the mismatch warning",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Fixed clock for tests/SSR",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

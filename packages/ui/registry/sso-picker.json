@@ -1,0 +1,61 @@
+{
+  "name": "SSO Picker",
+  "slug": "sso-picker",
+  "description": "Single sign-on chooser with email-domain routing to the right IdP (home realm discovery), enforced-SSO lockout, last-used hint, disabled providers and per-provider loading/error states.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/sso-picker.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/avatar.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Domain routing and providers",
+      "file": "sso-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "providers",
+      "type": "SsoProvider[]",
+      "description": "OAuth and SAML/OIDC providers",
+      "required": true
+    },
+    {
+      "name": "domainRules",
+      "type": "SsoDomainRule[]",
+      "description": "Email domain to provider rules; enforced hides other options",
+      "required": false
+    },
+    {
+      "name": "lastUsedId",
+      "type": "string",
+      "description": "Provider shown first with a Last used hint",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(providerId: string, email?: string) => Promise<void> | void",
+      "description": "Start the redirect; reject to show an error",
+      "required": true
+    },
+    {
+      "name": "onPasswordSignIn",
+      "type": "(email: string) => void",
+      "description": "Email/password fallback",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading",
+      "default": "\"Sign in to your workspace\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

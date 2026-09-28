@@ -1,0 +1,75 @@
+{
+  "name": "Workspace Create",
+  "slug": "workspace-create",
+  "description": "New workspace form with auto-derived URL slug (transliteration, format rules, reserved words), debounced availability check, data region, team size, brand colour and live preview.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-popover",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/workspace-create.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/color-picker.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "New workspace",
+      "file": "workspace-create-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onCreate",
+      "type": "(draft: WorkspaceDraft) => Promise<void> | void",
+      "description": "Create handler; reject to show error",
+      "required": true
+    },
+    {
+      "name": "checkSlug",
+      "type": "(slug: string) => Promise<\"available\" | \"taken\" | \"reserved\">",
+      "description": "Server availability check, debounced 350ms",
+      "required": false
+    },
+    {
+      "name": "domain",
+      "type": "string",
+      "description": "URL prefix",
+      "default": "\"kitbase.app/\"",
+      "required": false
+    },
+    {
+      "name": "regions",
+      "type": "SelectOption[]",
+      "description": "Data residency options",
+      "required": false
+    },
+    {
+      "name": "teamSizes",
+      "type": "{ value: string; label: string }[]",
+      "description": "Team size segments",
+      "required": false
+    },
+    {
+      "name": "defaultValues",
+      "type": "Partial<WorkspaceDraft>",
+      "description": "Prefill",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "description": "Shows Cancel",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
