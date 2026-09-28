@@ -1,0 +1,65 @@
+{
+  "name": "Deal Detail",
+  "slug": "deal-detail",
+  "description": "Deal record page: clickable pipeline stage bar, mark won / lost with a required loss reason, editable line items (qty, unit price, discount) with computed subtotal/discount/total, stakeholder roles with missing-champion warning, details and activity.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "@radix-ui/react-tabs", "lucide-react"],
+  "files": [
+    "components/crm/deal-detail.tsx",
+    "components/crm/activity-timeline.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/description-list.tsx",
+    "components/crm/pipeline-stage-bar.tsx",
+    "components/crm/tabs.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "deal-detail-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "deal",
+      "type": "DealRecord",
+      "description": "Initial record { id, name, company, owner, currency?, closeDate, source?, nextStep?, stage, outcome?, lostReason?, lineItems, stakeholders?, activities? }",
+      "required": true
+    },
+    {
+      "name": "stages",
+      "type": "PipelineStage[]",
+      "description": "Ordered pipeline stages",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(deal: DealRecord) => void",
+      "description": "Fires with the updated record on every edit",
+      "required": false
+    },
+    {
+      "name": "lostReasons",
+      "type": "string[]",
+      "description": "Options for closing as lost",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disables all edits",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

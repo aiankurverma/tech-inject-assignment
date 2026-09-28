@@ -1,0 +1,74 @@
+{
+  "name": "Ticket Detail",
+  "slug": "ticket-detail",
+  "description": "Support ticket workspace: threaded conversation with internal notes, reply composer with macros ({{requester}} placeholders) and send-as status, live first-response/resolution SLA timers (met/missed/paused), properties sidebar and requester card.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/ticket-detail.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/description-list.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "ticket-detail-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "ticket",
+      "type": "TicketRecord",
+      "description": "Initial { id, number, subject, requester, priority, status, assignee?, channel, tags?, createdAt, messages }",
+      "required": true
+    },
+    {
+      "name": "agents",
+      "type": "string[]",
+      "description": "Assignable agents",
+      "required": true
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Author of replies and notes",
+      "required": true
+    },
+    {
+      "name": "macros",
+      "type": "Macro[]",
+      "description": "{ id, label, body, setStatus? }",
+      "required": false
+    },
+    {
+      "name": "sla",
+      "type": "Record<priority, [firstResponseH, resolutionH]>",
+      "description": "SLA hours per priority",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "string",
+      "description": "Fixed ISO clock; ticks every 30s when omitted",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(t: TicketRecord) => void",
+      "description": "Fires on every update",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
