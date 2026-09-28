@@ -1,0 +1,52 @@
+{
+  "name": "Description List",
+  "slug": "description-list",
+  "description": "Semantic key/value list for record fields in stacked or inline layouts, 1-3 columns, empty placeholders and copy-to-clipboard.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/description-list.tsx", "components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Deal details",
+      "file": "description-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "DescriptionItem[]",
+      "description": "{ label, value?, copyValue?, icon?, fullWidth? }",
+      "required": true
+    },
+    {
+      "name": "layout",
+      "type": "\"stacked\" | \"inline\"",
+      "description": "Label above or beside the value",
+      "required": false,
+      "default": "\"stacked\""
+    },
+    {
+      "name": "columns",
+      "type": "1 | 2 | 3",
+      "description": "Grid columns from sm up",
+      "required": false,
+      "default": "1"
+    },
+    {
+      "name": "emptyText",
+      "type": "string",
+      "description": "Placeholder for empty values",
+      "required": false,
+      "default": "\"—\""
+    },
+    {
+      "name": "divided",
+      "type": "boolean",
+      "description": "Hairline dividers; defaults on for inline",
+      "required": false
+    }
+  ],
+  "usage": "Use for read-only record summaries; switch to PropertyPanel when fields must be editable."
+}

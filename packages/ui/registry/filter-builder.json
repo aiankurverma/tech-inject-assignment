@@ -1,0 +1,55 @@
+{
+  "name": "Filter Builder",
+  "slug": "filter-builder",
+  "description": "Field / operator / value rule editor with an AND/OR conjunction; operators and value inputs adapt to text, number, date and select fields.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/filter-builder.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deal filters",
+      "file": "filter-builder-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "FilterField[]",
+      "description": "{ value, label, type: \"text\" | \"number\" | \"date\" | \"select\", options? }",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "FilterGroup",
+      "description": "{ conjunction: \"and\" | \"or\", rules: FilterRule[] }",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value: FilterGroup) => void",
+      "description": "Called on every edit",
+      "required": true
+    },
+    {
+      "name": "onApply",
+      "type": "(value: FilterGroup) => void",
+      "description": "Shows an Apply button; omit to apply live",
+      "required": false
+    },
+    {
+      "name": "maxRules",
+      "type": "number",
+      "description": "Maximum number of rules",
+      "required": false,
+      "default": "10"
+    }
+  ],
+  "usage": "Keep a FilterGroup in state and pass value/onChange. Use isRuleComplete() to skip half-filled rules when querying."
+}

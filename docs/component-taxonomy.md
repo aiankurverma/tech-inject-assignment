@@ -135,20 +135,20 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `file-drop` — Drag-and-drop upload.
 - [x] `comment-box` — **B1** Composer with @mentions.
 - [x] `filter-chips` — **B1** Applied filter row.
-- [ ] `filter-builder` — Field/operator/value rule editor.
-- [ ] `sort-menu` — Multi-column sort.
-- [ ] `column-picker` — Show/hide/reorder columns.
-- [ ] `inline-edit` — Click-to-edit field.
+- [x] `filter-builder` — Field/operator/value rule editor.
+- [x] `sort-menu` — Multi-column sort.
+- [x] `column-picker` — Show/hide/reorder columns.
+- [x] `inline-edit` — Click-to-edit field.
 - [ ] `address-form` — Structured address.
-- [ ] `form-section` — Titled group with description.
-- [ ] `settings-row` — Label/description/control row.
-- [ ] `email-composer` — To/CC/subject/body.
+- [x] `form-section` — Titled group with description.
+- [x] `settings-row` — Label/description/control row.
+- [x] `email-composer` — To/CC/subject/body.
 - [ ] `rich-text-toolbar` — Formatting toolbar.
 - [ ] `signature-pad` — Draw signature.
 - [ ] `custom-field-editor` — Define field type/options.
 - [ ] `import-mapper` — CSV column → field mapping.
 - [ ] `search-with-filters` — Search + quick filters.
-- [ ] `saved-views` — Named filter presets.
+- [x] `saved-views` — Named filter presets.
 
 ### Data display (30)
 
@@ -165,8 +165,8 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `contact-card` — **B1** Person card / compact row.
 - [x] `deal-card` — **B1** Deal tile, draggable.
 - [x] `kanban-column` — **B1** Board column with DnD.
-- [ ] `description-list` — Key/value record fields.
-- [ ] `property-panel` — Editable record sidebar.
+- [x] `description-list` — Key/value record fields.
+- [x] `property-panel` — Editable record sidebar.
 - [ ] `company-card` — Account summary card.
 - [ ] `lead-score-badge` — Hot/warm/cold score.
 - [ ] `health-score` — Customer health gauge.
