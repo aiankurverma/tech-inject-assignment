@@ -1,0 +1,94 @@
+{
+  "name": "Pricing Table",
+  "slug": "pricing-table",
+  "description": "Seat-based pricing cards with monthly/annual toggle, seat calculator with min/max clamping, currency-formatted totals and annual savings, current-plan state, contact-sales tier and grouped comparison matrix.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/pricing-table.tsx",
+    "components/crm/button.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Seat-based SaaS pricing",
+      "file": "pricing-table-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "plans",
+      "type": "PricingPlan[]",
+      "description": "monthlyPerSeat (null = custom), annualPerSeat, min/maxSeats, highlights, recommended",
+      "required": true
+    },
+    {
+      "name": "comparison",
+      "type": "PricingFeatureRow[]",
+      "description": "Grouped comparison rows",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Number locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "annualDiscount",
+      "type": "number",
+      "description": "Fallback annual discount",
+      "default": "0.2",
+      "required": false
+    },
+    {
+      "name": "cycle",
+      "type": "\"monthly\" | \"annual\"",
+      "description": "Controlled billing cycle",
+      "required": false
+    },
+    {
+      "name": "defaultCycle",
+      "type": "\"monthly\" | \"annual\"",
+      "description": "Initial cycle",
+      "default": "\"annual\"",
+      "required": false
+    },
+    {
+      "name": "onCycleChange",
+      "type": "(cycle) => void",
+      "description": "Cycle change",
+      "required": false
+    },
+    {
+      "name": "defaultSeats",
+      "type": "number",
+      "description": "Initial seats",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "onSelectPlan",
+      "type": "(plan, quote: PlanQuote) => void",
+      "description": "CTA pressed with computed quote",
+      "required": false
+    },
+    {
+      "name": "currentPlanId",
+      "type": "string",
+      "description": "Marks the customer's plan",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

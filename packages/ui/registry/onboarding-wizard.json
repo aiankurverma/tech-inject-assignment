@@ -1,0 +1,70 @@
+{
+  "name": "Onboarding Wizard",
+  "slug": "onboarding-wizard",
+  "description": "Generic typed multi-step wizard: per-step validation with error summary, optional steps with Skip, stepper navigation back to completed steps, focus management and async finish with error handling.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/onboarding-wizard.tsx",
+    "components/crm/button.tsx",
+    "components/crm/stepper.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/currency-input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Company setup wizard",
+      "file": "onboarding-wizard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps",
+      "type": "WizardStep<V>[]",
+      "description": "id, title, render(ctx), validate(values), optional",
+      "required": true
+    },
+    {
+      "name": "initialValues",
+      "type": "V",
+      "description": "Initial form values",
+      "required": true
+    },
+    {
+      "name": "onComplete",
+      "type": "(values: V) => Promise<void> | void",
+      "description": "Finish handler; reject to show error",
+      "required": true
+    },
+    {
+      "name": "onStepChange",
+      "type": "(index: number, values: V) => void",
+      "description": "Persist drafts",
+      "required": false
+    },
+    {
+      "name": "initialStep",
+      "type": "number",
+      "description": "Resume at step",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "finishLabel",
+      "type": "string",
+      "description": "Last button label",
+      "default": "\"Finish setup\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

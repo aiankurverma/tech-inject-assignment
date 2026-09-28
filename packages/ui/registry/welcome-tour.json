@@ -1,0 +1,63 @@
+{
+  "name": "Welcome Tour",
+  "slug": "welcome-tour",
+  "description": "Product tour that spotlights real elements by CSS selector, auto-flips placement to stay on screen, follows scroll/resize, traps focus and supports arrow/Esc keys with a centred fallback.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/welcome-tour.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Pipeline tour",
+      "file": "welcome-tour-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps",
+      "type": "TourStep[]",
+      "description": "target selector, title, body, placement",
+      "required": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Visible",
+      "required": true
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "description": "Close/skip",
+      "required": true
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "description": "Finished last step",
+      "required": false
+    },
+    {
+      "name": "onStepChange",
+      "type": "(index: number) => void",
+      "description": "Analytics hook",
+      "required": false
+    },
+    {
+      "name": "initialStep",
+      "type": "number",
+      "description": "Start step",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "padding",
+      "type": "number",
+      "description": "Spotlight padding px",
+      "default": "6",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

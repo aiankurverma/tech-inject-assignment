@@ -262,13 +262,13 @@ Full sections built from primitives and composites.
 
 ### Auth and onboarding (12)
 
-- [x] `sign-in` · [x] `sign-up` · [x] `forgot-password` · [x] `reset-password` · [x] `verify-email` ·
-      [x] `two-factor` · [ ] `sso-picker` · [ ] `invite-accept` · [ ] `onboarding-checklist` ·
-      [ ] `onboarding-wizard` · [ ] `workspace-create` · [ ] `welcome-tour` — account flows.
+- [ ] `sign-in` · [ ] `sign-up` · [ ] `forgot-password` · [ ] `reset-password` · [ ] `verify-email` ·
+      [ ] `two-factor` · [x] `sso-picker` · [x] `invite-accept` · [x] `onboarding-checklist` ·
+      [x] `onboarding-wizard` · [x] `workspace-create` · [x] `welcome-tour` — account flows.
 
 ### Marketing and portal (15)
 
-- [ ] `hero` · [ ] `feature-grid` · [ ] `pricing-table` · [ ] `testimonials` · [ ] `logo-cloud` ·
+- [x] `hero` · [x] `feature-grid` · [x] `pricing-table` · [x] `testimonials` · [ ] `logo-cloud` ·
       [ ] `faq` · [ ] `cta-banner` · [ ] `footer` · [ ] `changelog` · [ ] `status-page` ·
       [ ] `help-center` · [ ] `customer-portal` · [ ] `booking-page` · [ ] `web-form` ·
       [ ] `newsletter-signup` — public-facing sections.

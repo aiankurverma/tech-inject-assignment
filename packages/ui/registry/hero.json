@@ -1,0 +1,95 @@
+{
+  "name": "Hero",
+  "slug": "hero",
+  "description": "Marketing hero with announcement pill, work-email trial capture (validation, personal-domain block, async/success/error), secondary CTA, assurances, rating social proof and a media slot in centred or split layout.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/hero.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/avatar-group.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "SaaS hero with trial capture",
+      "file": "hero-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "headline",
+      "type": "ReactNode",
+      "description": "Main heading",
+      "required": true
+    },
+    {
+      "name": "subheadline",
+      "type": "ReactNode",
+      "description": "Supporting copy",
+      "required": false
+    },
+    {
+      "name": "announcement",
+      "type": "{ label: string; href?: string; badge?: string }",
+      "description": "Pill above headline",
+      "required": false
+    },
+    {
+      "name": "onStartTrial",
+      "type": "(email: string) => Promise<void> | void",
+      "description": "Enables email capture",
+      "required": false
+    },
+    {
+      "name": "ctaLabel",
+      "type": "string",
+      "description": "Submit label",
+      "default": "\"Start free trial\"",
+      "required": false
+    },
+    {
+      "name": "secondaryCta",
+      "type": "{ label: string; href?: string; onClick?: () => void }",
+      "description": "Secondary action",
+      "required": false
+    },
+    {
+      "name": "assurances",
+      "type": "string[]",
+      "description": "Checkmarked reassurance list",
+      "required": false
+    },
+    {
+      "name": "socialProof",
+      "type": "{ people; rating?; reviews?; label? }",
+      "description": "Avatars and rating",
+      "required": false
+    },
+    {
+      "name": "media",
+      "type": "ReactNode",
+      "description": "Screenshot or live preview",
+      "required": false
+    },
+    {
+      "name": "align",
+      "type": "\"center\" | \"split\"",
+      "description": "Layout",
+      "default": "\"center\"",
+      "required": false
+    },
+    {
+      "name": "blockedDomains",
+      "type": "string[]",
+      "description": "Personal email domains rejected",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
