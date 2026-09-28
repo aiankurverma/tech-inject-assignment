@@ -98,7 +98,7 @@ export function AtsPipeline({
   return (
     <section
       aria-label={`${job.title} pipeline`}
-      className={cn("flex flex-col gap-3 font-crm", className)}
+      className={cn("flex w-full min-w-0 flex-col gap-3 px-1 font-crm", className)}
     >
       <header className="flex flex-wrap items-end justify-between gap-2">
         <div>
@@ -115,7 +115,7 @@ export function AtsPipeline({
             value={q}
             onValueChange={setQ}
             placeholder="Candidate or title"
-            className="w-52"
+            className="w-44"
           />
           <label className="flex items-center gap-1.5 text-xs text-crm-soft">
             <input
@@ -155,7 +155,7 @@ export function AtsPipeline({
                 if (id) move(id, s.id);
               }}
               className={cn(
-                "flex max-h-[600px] w-[260px] shrink-0 flex-col rounded-xl border bg-crm-sidebar",
+                "flex max-h-[600px] min-w-[200px] flex-1 basis-0 flex-col rounded-xl border bg-crm-sidebar",
                 over === s.id ? "border-crm-primary bg-crm-primary/5" : "border-crm-border",
               )}
             >
@@ -277,7 +277,7 @@ export function AtsPipeline({
                   );
                 })}
                 {!list.length ? (
-                  <li className="grid h-16 place-items-center rounded-crm border border-dashed border-crm-border text-xs text-crm-subtle">
+                  <li className="grid h-16 place-items-center rounded-crm border border-dashed px-2 text-center border-crm-border text-xs text-crm-subtle">
                     No candidates
                   </li>
                 ) : null}

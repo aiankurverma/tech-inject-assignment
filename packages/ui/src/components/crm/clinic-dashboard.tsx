@@ -223,22 +223,28 @@ export function ClinicDashboard({
           <CardHeader title="Arrivals by hour" description="Peak front-desk load" />
           <CardBody>
             <div
-              className="flex h-32 items-end gap-1"
+              className="flex h-40 items-stretch gap-1 pt-4"
               role="img"
               aria-label={`Arrivals by hour: ${byHour
                 .map((n, i) => `${hours[i]! % 12 || 12}${hours[i]! < 12 ? "am" : "pm"} ${n}`)
                 .join(", ")}`}
             >
               {byHour.map((n, i) => (
-                <div key={hours[i]} className="flex flex-1 flex-col items-center gap-1">
-                  <div
-                    className={cn(
-                      "w-full rounded-t-[3px]",
-                      n === maxHour ? "bg-crm-primary" : "bg-crm-primary/40",
-                    )}
-                    style={{ height: `${(n / maxHour) * 100}%`, minHeight: n ? 2 : 0 }}
-                    title={`${n} visits`}
-                  />
+                <div key={hours[i]} className="flex h-full flex-1 flex-col items-center gap-1">
+                  <div className="relative w-full flex-1">
+                    <div
+                      className={cn(
+                        "absolute inset-x-0 bottom-0 flex justify-center rounded-t-[3px]",
+                        n === maxHour ? "bg-crm-primary" : "bg-crm-primary/40",
+                      )}
+                      style={{ height: `${(n / maxHour) * 100}%`, minHeight: n ? 4 : 0 }}
+                      title={`${n} visits`}
+                    >
+                      {n ? (
+                        <span className="-mt-4 text-[10px] text-crm-soft tabular-nums">{n}</span>
+                      ) : null}
+                    </div>
+                  </div>
                   <span className="text-[10px] text-crm-muted-fg tabular-nums">
                     {hours[i]! % 12 || 12}
                   </span>

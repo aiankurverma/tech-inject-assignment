@@ -18,7 +18,7 @@ const bookings = [
 
 export default function Example() {
   return (
-    <div className="flex max-w-3xl flex-col gap-10">
+    <div className="flex w-full max-w-3xl flex-col gap-10">
       <BarChart
         label="Bookings by type, H1"
         data={bookings}

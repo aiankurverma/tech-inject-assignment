@@ -132,6 +132,16 @@ export function CalendarWeek({
     (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate()),
   );
   const hours = Array.from({ length: endHour - startHour }, (_, i) => startHour + i);
+  // Days with overlapping events get proportionally wider columns so side-by-side lanes stay readable.
+  const laneCounts = days.map((d) =>
+    Math.max(
+      1,
+      ...layoutDay(events.filter((e) => !e.allDay && sameDay(new Date(e.start), d))).map(
+        (p) => p.cols,
+      ),
+    ),
+  );
+  const gridCols = `52px ${laneCounts.map((c) => `minmax(${c * 96}px, ${c}fr)`).join(" ")}`;
   const gridHeight = hours.length * hourHeight;
   const lastDay = days[6] ?? anchor;
   const range = `${days[0]?.toLocaleDateString("en-US", { month: "short", day: "numeric" })} – ${lastDay.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`;
@@ -178,8 +188,11 @@ export function CalendarWeek({
         </div>
       </header>
       <div className="overflow-x-auto">
-        <div className="min-w-[720px]">
-          <div className="grid grid-cols-[52px_repeat(7,1fr)] border-b border-crm-border">
+        <div className="min-w-max">
+          <div
+            className="grid border-b border-crm-border"
+            style={{ gridTemplateColumns: gridCols }}
+          >
             <span className="crm-caption self-end px-1 pb-1 text-crm-subtle">all-day</span>
             {days.map((d) => {
               const today = sameDay(d, now);
@@ -221,7 +234,10 @@ export function CalendarWeek({
               );
             })}
           </div>
-          <div className="relative grid max-h-[520px] grid-cols-[52px_repeat(7,1fr)] overflow-y-auto">
+          <div
+            className="relative grid max-h-[520px] overflow-y-auto"
+            style={{ gridTemplateColumns: gridCols }}
+          >
             <div className="relative" style={{ height: gridHeight }}>
               {hours.map((h, i) => (
                 <span

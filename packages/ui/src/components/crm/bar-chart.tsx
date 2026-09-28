@@ -93,7 +93,7 @@ export function BarChart({
 
   const W = 640;
   const H = height;
-  const pad = { l: 44, r: 12, t: 12, b: 28 };
+  const pad = { l: 56, r: 12, t: 22, b: 30 };
   const iw = W - pad.l - pad.r;
   const ih = H - pad.t - pad.b;
   const band = data.length ? iw / data.length : iw;
@@ -125,7 +125,7 @@ export function BarChart({
   const state = loading ? "loading" : error ? "error" : data.length === 0 ? "empty" : "ready";
 
   return (
-    <figure className={cn("flex flex-col gap-3 font-crm text-crm-fg", className)}>
+    <figure className={cn("flex w-full min-w-0 flex-col gap-3 font-crm text-crm-fg", className)}>
       <figcaption id={titleId} className="sr-only">
         {label}
       </figcaption>
@@ -208,7 +208,7 @@ export function BarChart({
                   y={y(t)}
                   dy="0.32em"
                   textAnchor="end"
-                  className="fill-crm-subtle text-[10px]"
+                  className="fill-crm-soft text-[13px]"
                 >
                   {formatValue(t)}
                 </text>
@@ -260,7 +260,7 @@ export function BarChart({
                     x={x0 + band / 2}
                     y={H - 8}
                     textAnchor="middle"
-                    className="fill-crm-subtle text-[10px]"
+                    className="fill-crm-soft text-[13px]"
                   >
                     {d.label}
                   </text>
@@ -278,10 +278,13 @@ export function BarChart({
                   strokeDasharray="4 4"
                 />
                 <text
-                  x={W - pad.r}
-                  y={y(target.value) - 4}
-                  textAnchor="end"
-                  className="fill-crm-warning text-[10px]"
+                  x={pad.l + 6}
+                  y={y(target.value) - 6}
+                  textAnchor="start"
+                  className="fill-crm-warning text-[13px] font-medium"
+                  paintOrder="stroke"
+                  stroke="var(--color-crm-bg, #161616)"
+                  strokeWidth={4}
                 >
                   {target.label ?? "Target"} {formatValue(target.value)}
                 </text>

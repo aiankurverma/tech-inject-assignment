@@ -77,7 +77,37 @@ const nextStep: Partial<Record<AppointmentStatus, { to: AppointmentStatus; label
   "in-room": { to: "completed", label: "Complete visit" },
 };
 
-const HOUR_PX = 64;
+const HOUR_PX = 96;
+
+/** Assigns side-by-side lanes to overlapping appointments so blocks never cover each other. */
+function layoutLanes(appts: ClinicAppointment[]) {
+  const sorted = [...appts].sort(
+    (a, b) => new Date(a.start).getTime() - new Date(b.start).getTime(),
+  );
+  const out = new Map<string, { lane: number; lanes: number }>();
+  let cluster: { id: string; lane: number }[] = [];
+  let laneEnds: number[] = [];
+  let clusterEnd = -Infinity;
+  const flush = () => {
+    for (const c of cluster) out.set(c.id, { lane: c.lane, lanes: laneEnds.length });
+    cluster = [];
+    laneEnds = [];
+  };
+  for (const a of sorted) {
+    const st = new Date(a.start).getTime();
+    const en = st + a.durationMin * 60_000;
+    if (st >= clusterEnd) {
+      flush();
+      clusterEnd = en;
+    } else clusterEnd = Math.max(clusterEnd, en);
+    let lane = laneEnds.findIndex((e) => e <= st);
+    if (lane === -1) lane = laneEnds.push(en) - 1;
+    else laneEnds[lane] = en;
+    cluster.push({ id: a.id, lane });
+  }
+  flush();
+  return out;
+}
 const minutesOfDay = (d: Date) => d.getHours() * 60 + d.getMinutes();
 const fmt = (d: Date) => d.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
 
@@ -181,7 +211,7 @@ export function ClinicAppointments({
         <div className="overflow-x-auto">
           <div
             className="grid"
-            style={{ gridTemplateColumns: `52px repeat(${cols.length}, minmax(160px, 1fr))` }}
+            style={{ gridTemplateColumns: `52px repeat(${cols.length}, minmax(200px, 1fr))` }}
           >
             <div className="sticky left-0 z-10 border-b border-crm-border bg-crm-card" />
             {cols.map((p) => (
@@ -219,12 +249,14 @@ export function ClinicAppointments({
                     style={{ top: (nowMin / 60) * HOUR_PX }}
                   />
                 ) : null}
-                {appts
-                  .filter((a) => a.providerId === p.id)
-                  .map((a) => {
+                {(() => {
+                  const mine = appts.filter((a) => a.providerId === p.id);
+                  const lanes = layoutLanes(mine);
+                  return mine.map((a) => {
+                    const ln = lanes.get(a.id) ?? { lane: 0, lanes: 1 };
                     const s = new Date(a.start);
                     const top = ((minutesOfDay(s) - startHour * 60) / 60) * HOUR_PX;
-                    const h = Math.max(22, (a.durationMin / 60) * HOUR_PX - 2);
+                    const h = Math.max(44, (a.durationMin / 60) * HOUR_PX - 2);
                     const waitMin = a.checkedInAt
                       ? Math.floor((now.getTime() - new Date(a.checkedInAt).getTime()) / 60_000)
                       : 0;
@@ -245,12 +277,17 @@ export function ClinicAppointments({
                           .filter(Boolean)
                           .join(", ")}
                         className={cn(
-                          "absolute inset-x-1 overflow-hidden rounded-[6px] border px-1.5 py-1 text-left text-[11px] leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
+                          "absolute overflow-hidden rounded-[6px] border px-1.5 py-1 text-left text-[11px] leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
                           statusMeta[a.status].block,
                           conflicts.has(a.id) && "ring-1 ring-crm-danger",
                           openId === a.id && "ring-2 ring-crm-primary",
                         )}
-                        style={{ top, height: h }}
+                        style={{
+                          top,
+                          height: h,
+                          left: `calc(${(ln.lane / ln.lanes) * 100}% + 4px)`,
+                          width: `calc(${100 / ln.lanes}% - 8px)`,
+                        }}
                       >
                         <span className="flex items-center gap-1 font-medium text-crm-fg">
                           <span className="truncate">{a.patient}</span>
@@ -279,7 +316,8 @@ export function ClinicAppointments({
                         ) : null}
                       </button>
                     );
-                  })}
+                  });
+                })()}
               </div>
             ))}
           </div>

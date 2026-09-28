@@ -118,7 +118,10 @@ export function AgencyProjects({
     );
 
   return (
-    <section aria-label="Agency projects" className={cn("flex flex-col gap-3 font-crm", className)}>
+    <section
+      aria-label="Agency projects"
+      className={cn("flex w-full min-w-0 flex-col gap-3 font-crm", className)}
+    >
       <div className="flex flex-wrap items-center justify-between gap-2">
         <SegmentedControl
           label="Filter by health"
@@ -157,7 +160,10 @@ export function AgencyProjects({
       </p>
 
       {loading ? (
-        <div className="grid gap-2 md:grid-cols-2 xl:grid-cols-3" aria-busy="true">
+        <div
+          className="grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))]"
+          aria-busy="true"
+        >
           {Array.from({ length: 6 }, (_, i) => (
             <Skeleton key={i} className="h-40" />
           ))}
@@ -178,7 +184,7 @@ export function AgencyProjects({
               <h3 className="crm-eyebrow text-crm-subtle capitalize">
                 {phase} · {items.length}
               </h3>
-              <ul className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+              <ul className="grid gap-3 [grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))]">
                 {items.map(({ p, h }) => {
                   const burn = p.budget ? (p.spent / p.budget) * 100 : 0;
                   const open = expanded === p.id;
@@ -259,7 +265,7 @@ export function AgencyProjects({
                       </div>
 
                       <div className="flex items-center justify-between">
-                        <AvatarGroup people={p.team.map((name) => ({ name }))} max={4} size="sm" />
+                        <AvatarGroup people={p.team.map((name) => ({ name }))} max={4} size="md" />
                         {ms.length ? (
                           <button
                             type="button"
