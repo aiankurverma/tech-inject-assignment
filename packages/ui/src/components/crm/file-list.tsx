@@ -147,7 +147,7 @@ export function FileList({
             <button
               type="button"
               onClick={() => onBulkDownload(selFiles)}
-              className="cursor-pointer text-crm-soft hover:text-crm-fg"
+              className="cursor-pointer rounded text-crm-soft hover:text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
             >
               Download
             </button>
@@ -159,7 +159,7 @@ export function FileList({
                 onBulkRemove(selFiles);
                 setSelected(new Set());
               }}
-              className="cursor-pointer text-crm-danger hover:underline"
+              className="cursor-pointer rounded text-crm-danger hover:underline outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
             >
               Remove
             </button>

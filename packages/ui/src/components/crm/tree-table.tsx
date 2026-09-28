@@ -166,7 +166,7 @@ export function TreeTable<T extends TreeRow>({
           type="button"
           disabled={!!q}
           onClick={() => setExpanded(new Set(allParents))}
-          className="h-6 cursor-pointer rounded-full px-2 text-xs text-crm-muted-fg hover:bg-crm-muted hover:text-crm-fg disabled:opacity-50"
+          className="h-6 cursor-pointer rounded-full px-2 text-xs text-crm-muted-fg hover:bg-crm-muted hover:text-crm-fg disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
         >
           Expand all
         </button>
@@ -174,7 +174,7 @@ export function TreeTable<T extends TreeRow>({
           type="button"
           disabled={!!q}
           onClick={() => setExpanded(new Set())}
-          className="h-6 cursor-pointer rounded-full px-2 text-xs text-crm-muted-fg hover:bg-crm-muted hover:text-crm-fg disabled:opacity-50"
+          className="h-6 cursor-pointer rounded-full px-2 text-xs text-crm-muted-fg hover:bg-crm-muted hover:text-crm-fg disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
         >
           Collapse all
         </button>

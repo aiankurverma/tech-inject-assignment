@@ -193,7 +193,9 @@ export function AgendaList({
                     {live ? (
                       <span className="font-medium text-crm-success">Now</span>
                     ) : m.id === nextId && mins < 60 ? (
-                      <span className="text-crm-soft">in {mins} min</span>
+                      <span className="text-crm-soft">
+                        {mins < 1 ? "starting" : `in ${mins} min`}
+                      </span>
                     ) : null}
                   </span>
                   {m.kind === "video" ? (

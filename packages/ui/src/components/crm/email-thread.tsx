@@ -200,7 +200,7 @@ export function EmailThread({
                         aria-expanded={showQuoted.has(m.id)}
                         onClick={() => setShowQuoted((s) => toggle(s, m.id))}
                         aria-label={showQuoted.has(m.id) ? "Hide quoted text" : "Show quoted text"}
-                        className="mt-2 h-4 cursor-pointer rounded bg-crm-muted px-1.5 text-[11px] leading-none text-crm-soft hover:text-crm-fg"
+                        className="mt-2 h-4 cursor-pointer rounded bg-crm-muted px-1.5 text-[11px] leading-none text-crm-soft hover:text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                       >
                         •••
                       </button>
@@ -231,7 +231,7 @@ export function EmailThread({
                         <button
                           type="button"
                           onClick={() => onReply(m)}
-                          className="flex h-7 cursor-pointer items-center gap-1 rounded-full bg-crm-raised px-2.5 text-xs text-crm-fg shadow-crm-raised hover:bg-crm-muted [&_svg]:size-3.5"
+                          className="flex h-7 cursor-pointer items-center gap-1 rounded-full bg-crm-raised px-2.5 text-xs text-crm-fg shadow-crm-raised hover:bg-crm-muted [&_svg]:size-3.5 outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                         >
                           <CornerUpLeft aria-hidden /> Reply
                         </button>
@@ -240,7 +240,7 @@ export function EmailThread({
                         <button
                           type="button"
                           onClick={() => onForward(m)}
-                          className="flex h-7 cursor-pointer items-center gap-1 rounded-full bg-crm-raised px-2.5 text-xs text-crm-fg shadow-crm-raised hover:bg-crm-muted [&_svg]:size-3.5"
+                          className="flex h-7 cursor-pointer items-center gap-1 rounded-full bg-crm-raised px-2.5 text-xs text-crm-fg shadow-crm-raised hover:bg-crm-muted [&_svg]:size-3.5 outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                         >
                           <Forward aria-hidden /> Forward
                         </button>

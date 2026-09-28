@@ -124,12 +124,19 @@ export function Heatmap({
           className="grid min-w-[420px] gap-[3px]"
           style={{ gridTemplateColumns: `32px repeat(${hourList.length}, minmax(0,1fr))` }}
         >
-          <span role="presentation" />
-          {hourList.map((h, i) => (
-            <span key={h} role="columnheader" className="text-center text-[10px] text-crm-muted-fg">
-              {i % 2 === 0 ? fmtHour(h) : ""}
-            </span>
-          ))}
+          <div role="row" className="contents">
+            <span role="columnheader" />
+            {hourList.map((h, i) => (
+              <span
+                key={h}
+                role="columnheader"
+                aria-label={fmtHour(h)}
+                className="text-center text-[10px] text-crm-muted-fg"
+              >
+                {i % 2 === 0 ? fmtHour(h) : ""}
+              </span>
+            ))}
+          </div>
           {DAYS.map((dn, d) => (
             <div key={dn} role="row" className="contents">
               <span role="rowheader" className="self-center text-[11px] text-crm-soft">

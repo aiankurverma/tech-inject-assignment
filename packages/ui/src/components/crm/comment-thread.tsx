@@ -45,7 +45,7 @@ function Body({ text, names }: { text: string; names: string[] }) {
     <>
       {parts.map((p, i) =>
         p.startsWith("@") && names.includes(p.slice(1)) ? (
-          <span key={i} className="rounded bg-crm-primary/15 px-0.5 text-[#b7aee9]">
+          <span key={i} className="rounded bg-crm-primary/15 px-0.5 text-tag-purple-text">
             {p}
           </span>
         ) : (
@@ -137,7 +137,7 @@ export function CommentThread({
                           setEditing({ id: c.id, text: c.body });
                           setMenu(null);
                         }}
-                        className="cursor-pointer rounded-lg px-2 py-1 text-left text-xs text-crm-chip hover:bg-crm-muted"
+                        className="cursor-pointer rounded-lg px-2 py-1 text-left text-xs text-crm-chip outline-none hover:bg-crm-muted focus-visible:bg-crm-muted"
                       >
                         Edit
                       </button>
@@ -150,7 +150,7 @@ export function CommentThread({
                           onDelete(c.id);
                           setMenu(null);
                         }}
-                        className="cursor-pointer rounded-lg px-2 py-1 text-left text-xs text-crm-danger hover:bg-crm-danger/15"
+                        className="cursor-pointer rounded-lg px-2 py-1 text-left text-xs text-crm-danger outline-none hover:bg-crm-danger/15 focus-visible:bg-crm-danger/15"
                       >
                         Delete
                       </button>
@@ -177,14 +177,14 @@ export function CommentThread({
                 <button
                   type="button"
                   onClick={() => void saveEdit()}
-                  className="h-6 cursor-pointer rounded-full bg-crm-primary px-2.5 text-xs text-crm-primary-fg"
+                  className="h-6 cursor-pointer rounded-full bg-crm-primary px-2.5 text-xs text-crm-primary-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                 >
                   Save
                 </button>
                 <button
                   type="button"
                   onClick={() => setEditing(null)}
-                  className="h-6 cursor-pointer rounded-full px-2 text-xs text-crm-muted-fg hover:text-crm-fg"
+                  className="h-6 cursor-pointer rounded-full px-2 text-xs text-crm-muted-fg hover:text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                 >
                   Cancel
                 </button>
@@ -202,7 +202,7 @@ export function CommentThread({
                 <button
                   type="button"
                   onClick={() => onRetry(c.id)}
-                  className="cursor-pointer underline"
+                  className="cursor-pointer rounded underline outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                 >
                   Retry
                 </button>
@@ -215,7 +215,7 @@ export function CommentThread({
                 <button
                   type="button"
                   onClick={() => setReplyTo(replyTo === c.id ? null : c.id)}
-                  className="cursor-pointer text-crm-muted-fg hover:text-crm-fg"
+                  className="cursor-pointer rounded text-crm-muted-fg hover:text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                 >
                   Reply
                 </button>
@@ -224,7 +224,7 @@ export function CommentThread({
                 <button
                   type="button"
                   onClick={() => onResolve(c.id, !c.resolved)}
-                  className="flex cursor-pointer items-center gap-1 text-crm-muted-fg hover:text-crm-fg [&_svg]:size-3"
+                  className="flex cursor-pointer items-center gap-1 rounded text-crm-muted-fg hover:text-crm-fg [&_svg]:size-3 outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                 >
                   {c.resolved ? <RotateCcw aria-hidden /> : <Check aria-hidden />}
                   {c.resolved ? "Reopen" : "Resolve"}
@@ -250,7 +250,7 @@ export function CommentThread({
           <button
             type="button"
             onClick={() => setShowResolved((v) => !v)}
-            className="cursor-pointer text-xs text-crm-muted-fg hover:text-crm-fg"
+            className="cursor-pointer rounded text-xs text-crm-muted-fg hover:text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
           >
             {showResolved ? "Hide" : "Show"} {resolvedCount} resolved
           </button>
@@ -290,7 +290,7 @@ export function CommentThread({
                         <button
                           type="button"
                           onClick={() => setExpanded((s) => new Set(s).add(c.id))}
-                          className="flex cursor-pointer items-center gap-1 text-xs text-crm-soft hover:text-crm-fg"
+                          className="flex cursor-pointer items-center gap-1 rounded text-xs text-crm-soft hover:text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                         >
                           <CornerDownRight className="size-3" aria-hidden />
                           Show {hiddenCount} more {hiddenCount === 1 ? "reply" : "replies"}

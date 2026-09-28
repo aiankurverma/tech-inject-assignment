@@ -183,7 +183,7 @@ export function Leaderboard({
   return (
     <section className={cn("font-crm", className)} aria-label="Leaderboard">
       <div
-        role="tablist"
+        role="group"
         aria-label="Rank by"
         className="mb-2 inline-flex rounded-full bg-crm-muted p-0.5"
       >
@@ -191,8 +191,7 @@ export function Leaderboard({
           <button
             key={m.id}
             type="button"
-            role="tab"
-            aria-selected={metric === m.id}
+            aria-pressed={metric === m.id}
             onClick={() => setMetric(m.id)}
             className={cn(
               "h-6 cursor-pointer rounded-full px-2.5 text-xs outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
