@@ -201,7 +201,7 @@ export function GoalTracker({
                           setDraft("");
                           setError(null);
                         }}
-                        className="grid w-full grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2 px-4 py-3 text-left hover:bg-crm-muted/40 focus-visible:ring-2 focus-visible:ring-crm-ring focus-visible:outline-none focus-visible:ring-inset sm:grid-cols-[auto_1fr_220px_auto]"
+                        className="grid w-full grid-cols-[auto_1fr] items-center gap-x-3 gap-y-2 px-4 py-3 text-left hover:bg-crm-muted/40 focus-visible:ring-2 focus-visible:ring-crm-ring focus-visible:outline-none focus-visible:ring-inset sm:grid-cols-[16px_minmax(0,1fr)_220px_84px]"
                       >
                         <ChevronRight
                           className={cn(
@@ -246,7 +246,7 @@ export function GoalTracker({
                         </span>
                         <span
                           className={cn(
-                            "hidden rounded-full border px-2 py-0.5 text-[11px] sm:inline",
+                            "hidden justify-self-end rounded-full border px-2 py-0.5 text-[11px] whitespace-nowrap sm:inline",
                             meta.cls,
                           )}
                         >

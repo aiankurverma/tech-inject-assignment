@@ -206,6 +206,28 @@ export function HealthOverview({
             <CalendarClock className="size-3.5" aria-hidden /> Renewing ≤ {renewalWindowDays}d
           </span>
           <span className="text-2xl font-semibold tabular-nums">{soon.length}</span>
+          {soon.length ? (
+            <span className="flex flex-col gap-1 border-t border-crm-border pt-2">
+              {[...soon]
+                .sort((x, y) => (x.renewIn ?? 0) - (y.renewIn ?? 0))
+                .slice(0, 3)
+                .map((e) => (
+                  <span key={e.a.id} className="flex items-center justify-between gap-2 text-xs">
+                    <span className="flex min-w-0 items-center gap-1.5">
+                      <span
+                        className={cn(
+                          "size-1.5 shrink-0 rounded-full",
+                          bands.find((b) => b.key === e.band)?.bar,
+                        )}
+                        aria-hidden
+                      />
+                      <span className="truncate text-crm-soft">{e.a.name}</span>
+                    </span>
+                    <span className="shrink-0 text-crm-subtle tabular-nums">{e.renewIn}d</span>
+                  </span>
+                ))}
+            </span>
+          ) : null}
           <span className="text-xs text-crm-subtle">
             <span className={cn(soonRisk.length && "font-medium text-crm-danger")}>
               {soonRisk.length} unhealthy
@@ -244,6 +266,15 @@ export function HealthOverview({
           </p>
         ) : (
           <ul className="divide-y divide-crm-border">
+            <li
+              aria-hidden
+              className="hidden grid-cols-[1fr_120px_110px_120px] gap-x-3 bg-crm-muted/30 px-4 py-2 text-[11px] font-medium tracking-wide text-crm-subtle uppercase sm:grid"
+            >
+              <span>Account · drivers</span>
+              <span className="text-right">Score · 30d Δ</span>
+              <span className="text-right">ARR</span>
+              <span className="text-right">Renews · owner</span>
+            </li>
             {list.map(({ a, band: bk, delta, renewIn }) => {
               const b = bands.find((x) => x.key === bk);
               return (

@@ -39,8 +39,8 @@ function badgeText(n: number) {
 
 /**
  * Bottom tab bar for phones with an overflow "More" drawer, optional centre action,
- * badges, safe-area padding and arrow-key navigation. Hidden from md up by default
- * (override with className).
+ * badges, safe-area padding and arrow-key navigation. When `fixed`, it is hidden from md up
+ * (override with className); with `fixed={false}` it always renders (e.g. inside a device frame).
  */
 export function MobileNav({
   items,
@@ -129,8 +129,8 @@ export function MobileNav({
         aria-label="Primary"
         onKeyDown={onKeyDown}
         className={cn(
-          "z-40 flex w-full items-stretch gap-1 border-t border-crm-border bg-crm-sidebar/95 px-2 pt-1 pb-[max(0.375rem,env(safe-area-inset-bottom))] font-crm backdrop-blur md:hidden",
-          fixed && "fixed inset-x-0 bottom-0",
+          "z-40 flex w-full items-stretch gap-1 border-t border-crm-border bg-crm-sidebar/95 px-2 pt-1 pb-[max(0.375rem,env(safe-area-inset-bottom))] font-crm backdrop-blur",
+          fixed && "fixed inset-x-0 bottom-0 md:hidden",
           className,
         )}
       >

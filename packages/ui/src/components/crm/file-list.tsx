@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+  Check,
   Download,
   File,
   FileArchive,
@@ -128,12 +129,10 @@ export function FileList({
       <div className="mb-1.5 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-xs text-crm-muted-fg">
           {selectable && files.length ? (
-            <input
-              type="checkbox"
-              aria-label="Select all files"
+            <CrmCheckbox
+              label="Select all files"
               checked={allChecked}
               onChange={() => setSelected(allChecked ? new Set() : new Set(readyIds))}
-              className="size-3.5 accent-crm-primary"
             />
           ) : null}
           {sel.length ? (
@@ -196,13 +195,11 @@ export function FileList({
                 )}
               >
                 {selectable ? (
-                  <input
-                    type="checkbox"
-                    aria-label={`Select ${f.name}`}
+                  <CrmCheckbox
+                    label={`Select ${f.name}`}
                     disabled={status !== "ready"}
                     checked={selected.has(f.id)}
                     onChange={() => toggle(f.id)}
-                    className="size-3.5 accent-crm-primary"
                   />
                 ) : null}
                 <span
@@ -309,5 +306,35 @@ function ActionBtn({
     >
       {children}
     </button>
+  );
+}
+
+function CrmCheckbox({
+  label,
+  checked,
+  disabled,
+  onChange,
+}: {
+  label: string;
+  checked: boolean;
+  disabled?: boolean;
+  onChange: () => void;
+}) {
+  return (
+    <span className="relative grid size-4 shrink-0 place-items-center">
+      <input
+        type="checkbox"
+        aria-label={label}
+        checked={checked}
+        disabled={disabled}
+        onChange={onChange}
+        className="peer size-4 cursor-pointer appearance-none rounded-[4px] border border-crm-border bg-crm-input outline-none transition-colors checked:border-crm-primary checked:bg-crm-primary hover:border-crm-faint focus-visible:ring-2 focus-visible:ring-crm-ring/60 disabled:cursor-not-allowed disabled:border-crm-border/50 disabled:bg-crm-muted/40"
+      />
+      <Check
+        aria-hidden
+        strokeWidth={3}
+        className="pointer-events-none absolute size-3 text-crm-primary-fg opacity-0 peer-checked:opacity-100"
+      />
+    </span>
   );
 }

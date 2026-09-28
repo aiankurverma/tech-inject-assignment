@@ -20,8 +20,8 @@ export default function Example() {
   const [last, setLast] = React.useState("Scroll the list: the button collapses to an icon.");
   const act = (msg: string) => () => setLast(msg);
   return (
-    <div className="relative h-[420px] w-[360px] overflow-hidden rounded-xl border border-crm-border bg-crm-bg font-crm">
-      <div ref={scrollRef} className="h-full overflow-y-auto p-3 pb-24">
+    <div className="relative flex h-[420px] w-[360px] max-w-full flex-col overflow-hidden rounded-xl border border-crm-border bg-crm-bg font-crm">
+      <div ref={scrollRef} className="min-h-0 flex-1 overflow-y-auto p-3 pb-6">
         <p className="mb-2 crm-eyebrow text-crm-subtle">Open deals</p>
         <ul className="flex flex-col gap-2">
           {deals.map(([name, stage, amount]) => (
@@ -33,7 +33,9 @@ export default function Example() {
             </li>
           ))}
         </ul>
-        <p role="status" className="mt-3 text-xs text-crm-subtle">
+      </div>
+      <div className="flex h-[76px] shrink-0 items-center border-t border-crm-border bg-crm-card pr-40 pl-3">
+        <p role="status" className="text-xs text-crm-subtle">
           {last}
         </p>
       </div>
