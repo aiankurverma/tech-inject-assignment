@@ -128,8 +128,10 @@ export function SavedViews({
         onKeyDown={onKeyDown}
         className="flex min-w-0 items-center gap-1 overflow-x-auto [scrollbar-width:none]"
       >
-        {ordered.map((v) => {
+        {ordered.map((v, idx) => {
           const on = v.id === activeId;
+          // Roving tabindex: fall back to the first tab when activeId matches no view.
+          const tabbable = on || (!active && idx === 0);
           if (renaming === v.id)
             return (
               <NameInput
@@ -156,7 +158,7 @@ export function SavedViews({
                 type="button"
                 role="tab"
                 aria-selected={on}
-                tabIndex={on ? 0 : -1}
+                tabIndex={tabbable ? 0 : -1}
                 onClick={() => onSelect(v.id)}
                 onDoubleClick={() => !v.system && onRename && setRenaming(v.id)}
                 className={cn(
