@@ -193,7 +193,7 @@ export function FsTechnicians({
                 {th("utilization", "Today")}
                 {th("ftf", "First-time fix", true)}
                 {th("rating", "Rating", true)}
-                <th scope="col" className="py-1.5 font-normal text-crm-subtle">
+                <th scope="col" className="py-1.5 pl-6 font-normal text-crm-subtle">
                   Certs
                 </th>
                 <th scope="col">
@@ -246,13 +246,13 @@ export function FsTechnicians({
                       {f.toFixed(0)}%
                       <div className="text-crm-subtle">{t.callbacks30d} callbacks</div>
                     </td>
-                    <td className="py-2 text-right tabular-nums text-crm-fg">
+                    <td className="py-2 pr-2 text-right tabular-nums text-crm-fg">
                       <span className="inline-flex items-center gap-1">
                         <Star className="size-3 fill-current text-crm-warning" aria-hidden />
                         {t.rating.toFixed(1)}
                       </span>
                     </td>
-                    <td className="py-2">
+                    <td className="py-2 pl-6">
                       {bad > 0 ? (
                         <Tag size="sm" color="red">
                           {bad} expired

@@ -73,6 +73,32 @@ const GRID_END = 20 * 60;
 const PX_PER_MIN = 0.6;
 
 /** Course registration: searchable catalog with seats/waitlist and prerequisite locks, plus a weekly schedule builder with conflict and credit-load checks. */
+/** Assigns overlapping sections to side-by-side lanes within one day column. */
+function layoutDay(list: CourseSection[]) {
+  const sorted = [...list].sort((a, b) => toMin(a.start) - toMin(b.start));
+  const out: { s: CourseSection; lane: number; lanes: number }[] = [];
+  let group: { s: CourseSection; lane: number; lanes: number }[] = [];
+  let laneEnds: number[] = [];
+  let groupEnd = -1;
+  const flush = () => {
+    group.forEach((g) => (g.lanes = laneEnds.length));
+    out.push(...group);
+    group = [];
+    laneEnds = [];
+  };
+  for (const s of sorted) {
+    const start = toMin(s.start);
+    if (start >= groupEnd && group.length) flush();
+    let lane = laneEnds.findIndex((e) => e <= start);
+    if (lane < 0) lane = laneEnds.length;
+    laneEnds[lane] = toMin(s.end);
+    groupEnd = Math.max(start >= groupEnd ? 0 : groupEnd, toMin(s.end));
+    group.push({ s, lane, lanes: 1 });
+  }
+  flush();
+  return out;
+}
+
 export function EduCourses({
   sections,
   completed = [],
@@ -122,7 +148,12 @@ export function EduCourses({
     conflicts.length > 0 || credits > maxCredits || dupCodes.length > 0 || inCart.length === 0;
 
   return (
-    <div className={cn("grid gap-3 font-crm text-crm-fg xl:grid-cols-[1fr_1fr]", className)}>
+    <div
+      className={cn(
+        "grid gap-3 font-crm text-crm-fg xl:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)]",
+        className,
+      )}
+    >
       <Card className="flex min-w-0 flex-col">
         <div className="flex flex-wrap items-center gap-2 border-b border-crm-border p-3">
           <h2 className="text-sm font-medium">Catalog</h2>
@@ -142,7 +173,7 @@ export function EduCourses({
         {catalog.length === 0 ? (
           <EmptyState icon={<BookOpen />} title="No sections match" />
         ) : (
-          <ul className="flex max-h-[520px] flex-col overflow-y-auto">
+          <ul className="flex flex-col pb-1">
             {catalog.map((s) => {
               const full = s.enrolled >= s.capacity;
               const missing = missingPrereq(s);
@@ -281,27 +312,37 @@ export function EduCourses({
                 className="relative border-l border-crm-border"
                 style={{ height: (GRID_END - GRID_START) * PX_PER_MIN }}
               >
-                {inCart
-                  .filter((s) => s.days.includes(d))
-                  .map((s) => (
-                    <div
-                      key={s.id}
+                {layoutDay(inCart.filter((s) => s.days.includes(d))).map(({ s, lane, lanes }) => (
+                  <div
+                    key={s.id}
+                    className={cn(
+                      cn(
+                        "absolute overflow-hidden rounded-[4px] border py-0.5 text-[10px] leading-tight",
+                        lanes > 2 ? "px-0.5" : "px-1",
+                      ),
+                      conflictIds.has(s.id)
+                        ? "border-crm-danger bg-crm-danger/20 text-crm-danger"
+                        : "border-tag-purple-border bg-tag-purple-bg text-tag-purple-text",
+                    )}
+                    style={{
+                      top: (toMin(s.start) - GRID_START) * PX_PER_MIN,
+                      height: (toMin(s.end) - toMin(s.start)) * PX_PER_MIN,
+                      left: `calc(${(lane / lanes) * 100}% + 2px)`,
+                      width: `calc(${100 / lanes}% - 4px)`,
+                    }}
+                    title={`${s.code} ${s.title} ${fmt(s.start)}–${fmt(s.end)}`}
+                  >
+                    <span
                       className={cn(
-                        "absolute inset-x-0.5 overflow-hidden rounded-[4px] border px-1 py-0.5 text-[10px] leading-tight",
-                        conflictIds.has(s.id)
-                          ? "border-crm-danger bg-crm-danger/20 text-crm-danger"
-                          : "border-tag-purple-border bg-tag-purple-bg text-tag-purple-text",
+                        "block font-medium",
+                        lanes > 2 ? "text-[9px] break-words" : "truncate",
                       )}
-                      style={{
-                        top: (toMin(s.start) - GRID_START) * PX_PER_MIN,
-                        height: (toMin(s.end) - toMin(s.start)) * PX_PER_MIN,
-                      }}
-                      title={`${s.code} ${s.title} ${fmt(s.start)}–${fmt(s.end)}`}
                     >
-                      <span className="block font-medium">{s.code}</span>
-                      <span className="block">{fmt(s.start)}</span>
-                    </div>
-                  ))}
+                      {s.code}
+                    </span>
+                    {lanes < 3 ? <span className="block truncate">{fmt(s.start)}</span> : null}
+                  </div>
+                ))}
               </div>
             ))}
           </div>

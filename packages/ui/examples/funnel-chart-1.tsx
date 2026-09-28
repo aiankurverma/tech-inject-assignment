@@ -14,7 +14,7 @@ export default function Example() {
   const [measure, setMeasure] = React.useState<"count" | "value">("count");
   const [picked, setPicked] = React.useState<string | null>(null);
   return (
-    <div className="flex max-w-2xl flex-col gap-3 font-crm">
+    <div className="flex w-[640px] max-w-full flex-col gap-3 font-crm">
       <div className="flex gap-1 text-xs">
         {(["count", "value"] as const).map((m) => (
           <button
