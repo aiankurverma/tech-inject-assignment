@@ -1,0 +1,95 @@
+{
+  "name": "Usage Meter",
+  "slug": "usage-meter",
+  "description": "Seats or API usage against a plan limit with warn/over thresholds, overage cost, end-of-period projection, unlimited and loading states.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/usage-meter.tsx"],
+  "examples": [
+    {
+      "title": "Plan usage panel",
+      "file": "usage-meter-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Metric name",
+      "required": true
+    },
+    {
+      "name": "used",
+      "type": "number",
+      "description": "Current usage",
+      "required": true
+    },
+    {
+      "name": "limit",
+      "type": "number | null",
+      "description": "Plan limit; null = unlimited",
+      "required": true
+    },
+    {
+      "name": "unit",
+      "type": "string",
+      "description": "Unit label",
+      "required": false
+    },
+    {
+      "name": "warnAt",
+      "type": "number",
+      "description": "Fraction that turns the bar amber",
+      "default": "0.8",
+      "required": false
+    },
+    {
+      "name": "overageRate",
+      "type": "number",
+      "description": "Price per overage block",
+      "required": false
+    },
+    {
+      "name": "overageBlock",
+      "type": "number",
+      "description": "Units per overage block",
+      "default": "1",
+      "required": false
+    },
+    {
+      "name": "periodStart",
+      "type": "string",
+      "description": "ISO period start for projection",
+      "required": false
+    },
+    {
+      "name": "periodEnd",
+      "type": "string",
+      "description": "ISO reset date",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "description": "Compact number notation",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "description": "Trailing action (e.g. upgrade)",
+      "required": false
+    }
+  ],
+  "usage": "Exposes role=\"meter\" with a descriptive aria-valuetext."
+}

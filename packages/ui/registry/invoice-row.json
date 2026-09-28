@@ -1,0 +1,68 @@
+{
+  "name": "Invoice Row",
+  "slug": "invoice-row",
+  "description": "Invoice line with derived overdue state and days late, partial-payment balance, void styling, bulk selection and row actions.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/invoice-row.tsx"],
+  "examples": [
+    {
+      "title": "Receivables list with selection",
+      "file": "invoice-row-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "invoice",
+      "type": "Invoice",
+      "description": "{ id, number, customer?, issuedAt, dueAt, amount, amountPaid?, currency, status }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Clock override for overdue calculation",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "description": "Row selected",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(selected: boolean) => void",
+      "description": "Shows a checkbox when set",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(invoice) => void",
+      "description": "Makes the number a link button",
+      "required": false
+    },
+    {
+      "name": "onDownload",
+      "type": "(invoice) => void",
+      "description": "PDF download action (disabled for drafts)",
+      "required": false
+    },
+    {
+      "name": "onMore",
+      "type": "(invoice) => void",
+      "description": "Overflow action",
+      "required": false
+    },
+    {
+      "name": "showCustomer",
+      "type": "boolean",
+      "description": "Show customer under the number",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": "Render inside a role=\"table\" container. invoiceDisplayState() is exported for totals."
+}

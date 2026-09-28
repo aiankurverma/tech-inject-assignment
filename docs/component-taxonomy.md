@@ -200,16 +200,16 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 
 ### Commerce and billing (14)
 
-- [ ] `pricing-card` — Plan tier card.
-- [ ] `plan-switcher` — Monthly/yearly toggle.
-- [ ] `invoice-row` — Invoice status line.
-- [ ] `quote-line-items` — Products, qty, discount, tax.
-- [ ] `payment-method` — Card on file.
-- [ ] `usage-meter` — Seats/API usage vs limit.
-- [ ] `coupon-input` — Promo code apply.
-- [ ] `order-summary` — Totals block.
-- [ ] `subscription-status` — Active/past due/cancelled.
-- [ ] `product-picker` — Catalog search + add.
+- [x] `pricing-card` — Plan tier card.
+- [x] `plan-switcher` — Monthly/yearly toggle.
+- [x] `invoice-row` — Invoice status line.
+- [x] `quote-line-items` — Products, qty, discount, tax.
+- [x] `payment-method` — Card on file.
+- [x] `usage-meter` — Seats/API usage vs limit.
+- [x] `coupon-input` — Promo code apply.
+- [x] `order-summary` — Totals block.
+- [x] `subscription-status` — Active/past due/cancelled.
+- [x] `product-picker` — Catalog search + add.
 - [ ] `currency-switcher` — Change display currency.
 - [ ] `tax-breakdown` — Tax lines.
 - [ ] `receipt` — Printable receipt.

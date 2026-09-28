@@ -1,0 +1,82 @@
+{
+  "name": "Payment Method",
+  "slug": "payment-method",
+  "description": "Card or bank account on file with brand mark, masked number, expired and expiring-soon warnings, default flag, selectable radio mode and management menu.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/payment-method.tsx"],
+  "examples": [
+    {
+      "title": "Checkout picker with actions",
+      "file": "payment-method-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "method",
+      "type": "PaymentMethodData",
+      "description": "{ id, type, brand?, last4, expMonth?, expYear?, holder?, bankName?, isDefault? }",
+      "required": true
+    },
+    {
+      "name": "selectable",
+      "type": "boolean",
+      "description": "Radio mode for checkout",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "description": "Selected in radio mode",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(id) => void",
+      "description": "Select handler; expired cards cannot be selected",
+      "required": false
+    },
+    {
+      "name": "onSetDefault",
+      "type": "(id) => void",
+      "description": "Make default action",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(id) => void",
+      "description": "Remove action",
+      "required": false
+    },
+    {
+      "name": "onUpdate",
+      "type": "(id) => void",
+      "description": "Edit / update card action",
+      "required": false
+    },
+    {
+      "name": "protectDefault",
+      "type": "boolean",
+      "description": "Block removing the default method",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "expiringWithinDays",
+      "type": "number",
+      "description": "Warning window before expiry",
+      "default": "45",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Clock override",
+      "required": false
+    }
+  ],
+  "usage": "Never pass full card numbers; only last4."
+}

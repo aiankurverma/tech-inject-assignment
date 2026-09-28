@@ -1,0 +1,63 @@
+{
+  "name": "Plan Switcher",
+  "slug": "plan-switcher",
+  "description": "Monthly/yearly billing toggle with savings badge, computed yearly saving line and radio keyboard semantics.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/plan-switcher.tsx"],
+  "examples": [
+    {
+      "title": "Seat-based saving",
+      "file": "plan-switcher-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "\"monthly\" | \"yearly\"",
+      "description": "Controlled interval",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "\"monthly\" | \"yearly\"",
+      "description": "Uncontrolled initial interval",
+      "default": "\"monthly\"",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(v: BillingInterval) => void",
+      "description": "Called on change",
+      "required": false
+    },
+    {
+      "name": "yearlyDiscount",
+      "type": "number",
+      "description": "Badge percentage; computed from prices when omitted",
+      "required": false
+    },
+    {
+      "name": "monthlyPrice",
+      "type": "number",
+      "description": "Monthly price for the saving line",
+      "required": false
+    },
+    {
+      "name": "yearlyPrice",
+      "type": "number",
+      "description": "Full-year price for the saving line",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Lock the interval",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Arrow keys toggle; Home/End jump to monthly/yearly."
+}

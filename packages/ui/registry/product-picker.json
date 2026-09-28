@@ -1,0 +1,88 @@
+{
+  "name": "Product Picker",
+  "slug": "product-picker",
+  "description": "Catalog search and add with word search over name/SKU/category, category filter, stock-aware quantities, archived items, keyboard navigation and running total.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/product-picker.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Add products to a quote",
+      "file": "product-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "products",
+      "type": "CatalogProduct[]",
+      "description": "{ id, name, sku, price, unit?, category?, stock?, archived? }",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "Record<string, number>",
+      "description": "Controlled quantities by product id",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "Record<string, number>",
+      "description": "Uncontrolled quantities",
+      "default": "{}",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value) => void",
+      "description": "Called on quantity change",
+      "required": false
+    },
+    {
+      "name": "onConfirm",
+      "type": "(selection) => void",
+      "description": "Confirm button handler",
+      "required": false
+    },
+    {
+      "name": "confirmLabel",
+      "type": "string",
+      "description": "Confirm button text",
+      "default": "\"Add to quote\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton / spinner",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string | null",
+      "description": "Error message with optional retry",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry handler",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 code",
+      "default": "\"USD\"",
+      "required": false
+    }
+  ],
+  "usage": "Arrow keys move, Enter adds one, Alt+Backspace removes one."
+}

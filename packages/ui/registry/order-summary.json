@@ -1,0 +1,99 @@
+{
+  "name": "Order Summary",
+  "slug": "order-summary",
+  "description": "Checkout totals block with line items, stacked discounts, exclusive or inclusive tax, shipping, account credit and live total.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/order-summary.tsx"],
+  "examples": [
+    {
+      "title": "Seat-driven annual order",
+      "file": "order-summary-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "OrderSummaryItem[]",
+      "description": "{ id, name, detail?, quantity, unitPrice }",
+      "required": true
+    },
+    {
+      "name": "discounts",
+      "type": "OrderAdjustment[]",
+      "description": "Stacked percent/amount discounts before tax",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "taxRate",
+      "type": "number",
+      "description": "Tax %",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "taxLabel",
+      "type": "string",
+      "description": "Tax line label",
+      "default": "\"Tax\"",
+      "required": false
+    },
+    {
+      "name": "taxInclusive",
+      "type": "boolean",
+      "description": "Extract tax from prices (VAT/GST)",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "shipping",
+      "type": "number",
+      "description": "Shipping amount",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "credit",
+      "type": "number",
+      "description": "Credit applied after tax",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "totalSuffix",
+      "type": "string",
+      "description": "e.g. \"/ year\"",
+      "required": false
+    },
+    {
+      "name": "maxItems",
+      "type": "number",
+      "description": "Items shown before collapsing",
+      "default": "4",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton amounts",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Slot above totals (e.g. CouponInput)",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Slot under the total",
+      "required": false
+    }
+  ],
+  "usage": "computeOrderTotals() is exported for server parity checks."
+}
