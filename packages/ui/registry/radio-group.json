@@ -1,0 +1,63 @@
+{
+  "name": "Radio Group",
+  "slug": "radio-group",
+  "description": "Single-choice group with roving focus and arrow-key selection, as plain radios or selectable cards.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/radio-group.tsx"],
+  "examples": [
+    {
+      "title": "List and cards",
+      "file": "radio-group-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "options",
+      "type": "RadioOption[]",
+      "description": "{ value, label, description?, disabled? }",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name of the group",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled value",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "Initial value when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Called when selection changes",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"list\" | \"cards\"",
+      "description": "Visual style",
+      "default": "\"list\"",
+      "required": false
+    },
+    {
+      "name": "orientation",
+      "type": "\"vertical\" | \"horizontal\"",
+      "description": "Layout direction",
+      "default": "\"vertical\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

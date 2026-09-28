@@ -1,0 +1,58 @@
+{
+  "name": "Truncated Text",
+  "slug": "truncated-text",
+  "description": "Line-clamped text with a Show more/less toggle that appears only when content overflows.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/truncated-text.tsx"],
+  "examples": [
+    {
+      "title": "Notes",
+      "file": "truncated-text-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Text content",
+      "required": true
+    },
+    {
+      "name": "lines",
+      "type": "number",
+      "description": "Visible lines when collapsed",
+      "default": "3",
+      "required": false
+    },
+    {
+      "name": "expanded",
+      "type": "boolean",
+      "description": "Controlled expanded state",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(expanded: boolean) => void",
+      "description": "Called on toggle",
+      "required": false
+    },
+    {
+      "name": "moreLabel",
+      "type": "string",
+      "description": "Expand button text",
+      "default": "\"Show more\"",
+      "required": false
+    },
+    {
+      "name": "lessLabel",
+      "type": "string",
+      "description": "Collapse button text",
+      "default": "\"Show less\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

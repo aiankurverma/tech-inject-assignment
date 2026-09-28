@@ -1,0 +1,73 @@
+{
+  "name": "Time Picker",
+  "slug": "time-picker",
+  "description": "Time field accepting free entry (\"2:45pm\", \"1430\") with a suggested-slot listbox, min/max and 12h/24h display.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/time-picker.tsx"],
+  "examples": [
+    {
+      "title": "Call time",
+      "file": "time-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string | null",
+      "description": "24h \"HH:mm\" value",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string | null) => void",
+      "description": "Called on commit",
+      "required": false
+    },
+    {
+      "name": "interval",
+      "type": "number",
+      "description": "Minutes between slots",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "min",
+      "type": "string",
+      "description": "Earliest time",
+      "default": "\"00:00\"",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "string",
+      "description": "Latest time",
+      "default": "\"23:59\"",
+      "required": false
+    },
+    {
+      "name": "hourCycle",
+      "type": "12 | 24",
+      "description": "Display format",
+      "default": "12",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty text",
+      "default": "\"Select time\"",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "parseTime and toTimeString are exported. Out-of-range or unparseable text shows the error state without committing."
+}

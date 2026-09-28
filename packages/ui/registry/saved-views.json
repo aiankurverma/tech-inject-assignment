@@ -1,0 +1,84 @@
+{
+  "name": "Saved Views",
+  "slug": "saved-views",
+  "description": "Named filter presets as a keyboard-navigable view switcher with counts, pinned and shared views, unsaved-changes state, rename, duplicate and delete.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/saved-views.tsx",
+    "components/crm/button.tsx",
+    "components/crm/dropdown-menu.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deal views",
+      "file": "saved-views-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "views",
+      "type": "SavedView[]",
+      "description": "{ id, name, count?, shared?, pinned?, system? }",
+      "required": true
+    },
+    {
+      "name": "activeId",
+      "type": "string",
+      "description": "Selected view id",
+      "required": true
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string) => void",
+      "description": "Switch view",
+      "required": true
+    },
+    {
+      "name": "dirty",
+      "type": "boolean",
+      "description": "Active view has unsaved changes",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "onUpdate",
+      "type": "(id: string) => void",
+      "description": "Save changes into the active view",
+      "required": false
+    },
+    {
+      "name": "onCreate",
+      "type": "(name: string) => void",
+      "description": "Create a view from current filters",
+      "required": false
+    },
+    {
+      "name": "onRename",
+      "type": "(id: string, name: string) => void",
+      "description": "Rename (menu or double-click)",
+      "required": false
+    },
+    {
+      "name": "onDuplicate",
+      "type": "(id: string) => void",
+      "description": "Duplicate a view",
+      "required": false
+    },
+    {
+      "name": "onDelete",
+      "type": "(id: string) => void",
+      "description": "Delete a non-system view",
+      "required": false
+    },
+    {
+      "name": "onTogglePin",
+      "type": "(id: string) => void",
+      "description": "Pin to front",
+      "required": false
+    }
+  ],
+  "usage": "Place above a data table; store each view's filters/sort keyed by id and set dirty when they differ."
+}

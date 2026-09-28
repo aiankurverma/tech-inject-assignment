@@ -1,0 +1,97 @@
+{
+  "name": "Contact Card",
+  "slug": "contact-card",
+  "description": "Person summary with avatar, title, company, email/phone links, location, tags and footer; full card or compact row.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/contact-card.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Card and compact",
+      "file": "contact-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Full name",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Job title",
+      "required": false
+    },
+    {
+      "name": "company",
+      "type": "string",
+      "description": "Company name",
+      "required": false
+    },
+    {
+      "name": "avatar",
+      "type": "string",
+      "description": "Image URL",
+      "required": false
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Rendered as mailto link",
+      "required": false
+    },
+    {
+      "name": "phone",
+      "type": "string",
+      "description": "Rendered as tel link",
+      "required": false
+    },
+    {
+      "name": "location",
+      "type": "string",
+      "description": "City, country",
+      "required": false
+    },
+    {
+      "name": "tags",
+      "type": "{ label: string; color: TagColor }[]",
+      "description": "Segment tags",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Owner / last touch line",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Top-right buttons",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"card\" | \"compact\"",
+      "description": "Layout",
+      "default": "\"card\"",
+      "required": false
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "description": "Makes the card open a record",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -124,6 +124,27 @@ export async function deleteFeatureRequest(id: string): Promise<void> {
   await apiFetch<void>(`/api/admin/features/${id}`, { method: "DELETE" });
 }
 
+export interface InsightCluster {
+  canonicalId: string;
+  canonicalTerm: string;
+  status: FeatureRequestRow["status"];
+  totalCount: number;
+  lastSearchedAt: string;
+  demandScore: number;
+  suggestion: "suggest-build" | "building" | "watch";
+  members: { id: string; term: string; searchCount: number; status: FeatureRequestRow["status"] }[];
+}
+
+export interface Insights {
+  threshold: number;
+  clusters: InsightCluster[];
+}
+
+/** Similar searches grouped and ranked by demand score. */
+export async function getInsights(): Promise<Insights> {
+  return apiFetch<Insights>("/api/admin/features/insights");
+}
+
 /** Start an AI draft build for a "building" feature request (202; poll the list). */
 export async function generateDraft(id: string): Promise<{ buildStatus: "running" }> {
   return apiFetch<{ buildStatus: "running" }>(`/api/admin/features/${id}/generate`, {

@@ -1,0 +1,67 @@
+{
+  "name": "Date Picker",
+  "slug": "date-picker",
+  "description": "Input-style trigger opening a keyboard-navigable month Calendar in a popover, with min/max bounds and custom formatting.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/date-picker.tsx"],
+  "examples": [
+    {
+      "title": "Popover picker",
+      "file": "date-picker-1.tsx"
+    },
+    {
+      "title": "Inline calendar",
+      "file": "date-picker-2.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "Date | null",
+      "description": "Selected date",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(date: Date) => void",
+      "description": "Called on select",
+      "required": false
+    },
+    {
+      "name": "min",
+      "type": "Date",
+      "description": "Earliest selectable day",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "Date",
+      "description": "Latest selectable day",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty trigger text",
+      "default": "\"Pick a date\"",
+      "required": false
+    },
+    {
+      "name": "format",
+      "type": "(d: Date) => string",
+      "description": "Trigger label formatter",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable the trigger",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Calendar is exported separately for inline use. Keys: arrows, PageUp/PageDown (month), Home/End, Enter."
+}

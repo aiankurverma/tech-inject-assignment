@@ -1,0 +1,73 @@
+{
+  "name": "Rating",
+  "slug": "rating",
+  "description": "Star rating: keyboard radio group with roving focus, or read-only with fractional fills.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/rating.tsx"],
+  "examples": [
+    {
+      "title": "Interactive and read-only",
+      "file": "rating-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "Controlled value",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "number",
+      "description": "Uncontrolled initial value",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: number) => void",
+      "description": "Called on change",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Number of stars",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Display only, supports fractions",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables input",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Star size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "default": "\"Rating\"",
+      "required": false
+    }
+  ],
+  "usage": "Arrow keys change the value, Home/End jump, Delete clears."
+}

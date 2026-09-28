@@ -1,0 +1,55 @@
+{
+  "name": "Segmented Control",
+  "slug": "segmented-control",
+  "description": "Pill view switcher with a sliding thumb, icons and counts. Radio-group semantics; arrow keys move and select.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/segmented-control.tsx"],
+  "examples": [
+    {
+      "title": "Records and date range",
+      "file": "segmented-control-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "options",
+      "type": "{ value, label, icon?, count?, disabled? }[]",
+      "description": "Segments",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "string",
+      "description": "Controlled or initial value",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Called on change",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Height (default md)",
+      "required": false
+    },
+    {
+      "name": "fullWidth",
+      "type": "boolean",
+      "description": "Stretch segments to fill the width",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

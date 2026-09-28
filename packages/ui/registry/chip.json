@@ -1,0 +1,58 @@
+{
+  "name": "Chip",
+  "slug": "chip",
+  "description": "Compact pill that can be a toggle (aria-pressed) and/or removable, with icon and disabled states.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/chip.tsx"],
+  "examples": [
+    {
+      "title": "Selectable and removable",
+      "file": "chip-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "selected",
+      "type": "boolean",
+      "description": "Pressed state",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(selected: boolean) => void",
+      "description": "Makes the chip a toggle button",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "() => void",
+      "description": "Shows a remove button",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Leading icon",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Height",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables interaction",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Backspace/Delete on a selectable chip calls onRemove."
+}

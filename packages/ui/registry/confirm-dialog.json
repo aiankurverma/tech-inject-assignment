@@ -1,0 +1,77 @@
+{
+  "name": "Confirm Dialog",
+  "slug": "confirm-dialog",
+  "description": "Destructive confirmation (alertdialog): focus starts on Cancel, optional type-to-confirm, async confirm with spinner and inline error.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dialog", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/confirm-dialog.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Delete company",
+      "file": "confirm-dialog-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Question shown to the user",
+      "required": true
+    },
+    {
+      "name": "onConfirm",
+      "type": "() => void | Promise<void>",
+      "description": "Runs on confirm; rejecting shows the error",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Consequences",
+      "required": false
+    },
+    {
+      "name": "trigger",
+      "type": "ReactNode",
+      "description": "Element that opens the dialog",
+      "required": false
+    },
+    {
+      "name": "open / defaultOpen / onOpenChange",
+      "type": "boolean",
+      "description": "Open state",
+      "required": false
+    },
+    {
+      "name": "confirmLabel / cancelLabel",
+      "type": "string",
+      "description": "Button labels",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"danger\" | \"default\"",
+      "description": "Danger styling (default danger)",
+      "required": false
+    },
+    {
+      "name": "confirmText",
+      "type": "string",
+      "description": "Text the user must type to enable confirm",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "description": "Called on cancel or Esc",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

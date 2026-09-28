@@ -1,0 +1,63 @@
+{
+  "name": "Pagination",
+  "slug": "pagination",
+  "description": "Pager with prev/next, numbered pages with ellipsis gaps, compact mode and a \"1–25 of 312\" range summary.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/pagination.tsx"],
+  "examples": [
+    {
+      "title": "Full and compact",
+      "file": "pagination-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "page",
+      "type": "number",
+      "description": "Current page (1-based)",
+      "required": true
+    },
+    {
+      "name": "pageCount",
+      "type": "number",
+      "description": "Total pages",
+      "required": true
+    },
+    {
+      "name": "onPageChange",
+      "type": "(page: number) => void",
+      "description": "Called with the new page",
+      "required": true
+    },
+    {
+      "name": "siblings",
+      "type": "number",
+      "description": "Pages either side of the current one",
+      "default": "1",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"full\" | \"compact\"",
+      "description": "Numbered pages or \"Page x of y\"",
+      "default": "\"full\"",
+      "required": false
+    },
+    {
+      "name": "total",
+      "type": "number",
+      "description": "Row count for the summary",
+      "required": false
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "description": "Rows per page for the summary",
+      "required": false
+    }
+  ],
+  "usage": "Also exports pageRange(page, count, siblings) for custom pagers."
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Card",
+  "slug": "card",
+  "description": "Surface container with CardHeader (title, description, action), CardBody and CardFooter.",
+  "category": "Layout",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/card.tsx"],
+  "examples": [
+    {
+      "title": "Deal summary",
+      "file": "card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "variant",
+      "type": "\"default\" | \"raised\" | \"outline\"",
+      "description": "Surface style",
+      "default": "\"default\"",
+      "required": false
+    },
+    {
+      "name": "interactive",
+      "type": "boolean",
+      "description": "Hover and focus-visible styles for clickable cards",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Compose Card > CardHeader + CardBody + CardFooter."
+}

@@ -1,0 +1,77 @@
+{
+  "name": "Email Composer",
+  "slug": "email-composer",
+  "description": "Email composer with To/CC/BCC recipient chips and validation, subject, auto-growing body, attachments, async send and Ctrl+Enter to send.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/email-composer.tsx",
+    "components/crm/button.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Follow-up email",
+      "file": "email-composer-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onSend",
+      "type": "(draft: EmailDraft) => void | Promise<void>",
+      "description": "Send handler; reject to show an error",
+      "required": true
+    },
+    {
+      "name": "from",
+      "type": "string",
+      "description": "Sender shown in the From row",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "Partial<EmailDraft>",
+      "description": "Initial to, cc, bcc, subject, body",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(draft: EmailDraft) => void",
+      "description": "Every edit, e.g. autosave",
+      "required": false
+    },
+    {
+      "name": "onDiscard",
+      "type": "() => void",
+      "description": "Shows a discard button",
+      "required": false
+    },
+    {
+      "name": "attachments",
+      "type": "EmailAttachment[]",
+      "description": "{ id, name, size? } files",
+      "required": false
+    },
+    {
+      "name": "onAttach",
+      "type": "() => void",
+      "description": "Shows an attach button",
+      "required": false
+    },
+    {
+      "name": "onRemoveAttachment",
+      "type": "(id: string) => void",
+      "description": "Remove button on each attachment",
+      "required": false
+    },
+    {
+      "name": "toolbar",
+      "type": "ReactNode",
+      "description": "Extra footer controls",
+      "required": false
+    }
+  ],
+  "usage": "Render in a Sheet or Dialog from a contact record; send the EmailDraft to your mail API in onSend."
+}

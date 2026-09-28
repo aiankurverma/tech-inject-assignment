@@ -1,0 +1,64 @@
+{
+  "name": "Search Input",
+  "slug": "search-input",
+  "description": "Search field with icon, clear button, Esc-to-clear, loading spinner and a global Cmd/Ctrl shortcut hint.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/search-input.tsx", "components/crm/kbd.tsx"],
+  "examples": [
+    {
+      "title": "Filter with shortcut",
+      "file": "search-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled query",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Called on every change",
+      "required": false
+    },
+    {
+      "name": "onSearch",
+      "type": "(value: string) => void",
+      "description": "Called on Enter",
+      "required": false
+    },
+    {
+      "name": "shortcut",
+      "type": "string",
+      "description": "Cmd/Ctrl + key focuses the field",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show spinner",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Height",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"default\" | \"subtle\"",
+      "description": "Bordered or borderless toolbar style",
+      "default": "\"default\"",
+      "required": false
+    }
+  ],
+  "usage": "Wrap in a <form role=\"search\"> or landmark if it searches the whole page."
+}

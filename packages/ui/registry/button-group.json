@@ -1,0 +1,59 @@
+{
+  "name": "Button Group",
+  "slug": "button-group",
+  "description": "Joins adjacent buttons into one control, plus a SplitButton with a primary action and a chevron menu of related actions.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/button-group.tsx",
+    "components/crm/button.tsx",
+    "components/crm/dropdown-menu.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Pager, export and split send",
+      "file": "button-group-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the group",
+      "required": false
+    },
+    {
+      "name": "orientation",
+      "type": "\"horizontal\" | \"vertical\"",
+      "description": "Layout direction (default horizontal)",
+      "required": false
+    },
+    {
+      "name": "menu (SplitButton)",
+      "type": "ReactNode",
+      "description": "Dropdown items shown from the chevron",
+      "required": true
+    },
+    {
+      "name": "menuLabel (SplitButton)",
+      "type": "string",
+      "description": "Accessible name of the chevron (default \"More options\")",
+      "required": false
+    },
+    {
+      "name": "menuAlign (SplitButton)",
+      "type": "\"start\" | \"center\" | \"end\"",
+      "description": "Menu alignment (default end)",
+      "required": false
+    },
+    {
+      "name": "variant / size (SplitButton)",
+      "type": "ButtonProps",
+      "description": "Passed to both halves",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

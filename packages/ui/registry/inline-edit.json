@@ -1,0 +1,83 @@
+{
+  "name": "Inline Edit",
+  "slug": "inline-edit",
+  "description": "Click-to-edit field for text, number, email, URL, textarea or select values with validation, async saving state, Enter to save and Escape to cancel.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/inline-edit.tsx", "components/crm/input.tsx"],
+  "examples": [
+    {
+      "title": "Deal fields",
+      "file": "inline-edit-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Current value",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(value: string) => void | Promise<void>",
+      "description": "Save handler; reject to keep editing and show the error",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible field name",
+      "required": true
+    },
+    {
+      "name": "type",
+      "type": "\"text\" | \"number\" | \"email\" | \"url\" | \"textarea\" | \"select\"",
+      "description": "Editor type",
+      "required": false,
+      "default": "\"text\""
+    },
+    {
+      "name": "options",
+      "type": "InlineEditOption[]",
+      "description": "Choices for type=\"select\"",
+      "required": false
+    },
+    {
+      "name": "validate",
+      "type": "(value: string) => string | undefined",
+      "description": "Return an error message to block saving",
+      "required": false
+    },
+    {
+      "name": "renderValue",
+      "type": "(value: string) => ReactNode",
+      "description": "Custom display rendering",
+      "required": false
+    },
+    {
+      "name": "onBlurAction",
+      "type": "\"save\" | \"cancel\"",
+      "description": "What happens on blur",
+      "required": false,
+      "default": "\"save\""
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Height",
+      "required": false,
+      "default": "\"md\""
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only display",
+      "required": false,
+      "default": "false"
+    }
+  ],
+  "usage": "Use in record pages and table cells; keep the value in state and update it in onSave."
+}

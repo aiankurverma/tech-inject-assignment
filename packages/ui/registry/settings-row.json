@@ -1,0 +1,87 @@
+{
+  "name": "Settings Row",
+  "slug": "settings-row",
+  "description": "Settings line with icon, label, badge and description on the left and a control on the right; SettingsGroup stacks rows in a divided card.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-row.tsx",
+    "components/crm/button.tsx",
+    "components/crm/select.tsx",
+    "components/crm/switch.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Workspace settings",
+      "file": "settings-row-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "description": "Setting name",
+      "required": true
+    },
+    {
+      "name": "control",
+      "type": "ReactNode",
+      "description": "Switch, Select, Button...",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Helper text under the label",
+      "required": false
+    },
+    {
+      "name": "htmlFor",
+      "type": "string",
+      "description": "id of the control, makes the label clickable",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Leading icon tile",
+      "required": false
+    },
+    {
+      "name": "badge",
+      "type": "ReactNode",
+      "description": "Badge next to the label",
+      "required": false
+    },
+    {
+      "name": "danger",
+      "type": "boolean",
+      "description": "Red label for destructive settings",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Dim and block the control",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "layout",
+      "type": "\"inline\" | \"stack\"",
+      "description": "Control beside or under the text",
+      "required": false,
+      "default": "\"inline\""
+    },
+    {
+      "name": "heading (SettingsGroup)",
+      "type": "string",
+      "description": "Eyebrow heading above the group",
+      "required": false
+    }
+  ],
+  "usage": "Wrap rows in SettingsGroup; pass htmlFor matching the control id."
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Popover",
+  "slug": "popover",
+  "description": "Generic Radix popover in the CRM style with optional title, close button, footer actions and arrow.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/popover.tsx", "components/crm/button.tsx", "components/crm/input.tsx"],
+  "examples": [
+    {
+      "title": "Snooze follow-up",
+      "file": "popover-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading with close button",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Subtitle under the title",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Right-aligned actions",
+      "required": false
+    },
+    {
+      "name": "arrow",
+      "type": "boolean",
+      "description": "Show an arrow pointing at the trigger",
+      "required": false
+    },
+    {
+      "name": "side / align / sideOffset",
+      "type": "Radix props",
+      "description": "Placement",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

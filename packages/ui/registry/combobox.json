@@ -1,0 +1,78 @@
+{
+  "name": "Combobox",
+  "slug": "combobox",
+  "description": "Searchable single select: a trigger opens a filterable listbox with descriptions, icons, disabled options and clear.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/combobox.tsx"],
+  "examples": [
+    {
+      "title": "Deal owner",
+      "file": "combobox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "options",
+      "type": "ComboboxOption[]",
+      "description": "{ value, label, description?, icon?, keywords?, disabled? }",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string | null",
+      "description": "Selected value",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: string | null) => void",
+      "description": "Called on pick; picking the selected option clears it",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty trigger text",
+      "default": "\"Select…\"",
+      "required": false
+    },
+    {
+      "name": "searchPlaceholder",
+      "type": "string",
+      "description": "Filter box text",
+      "default": "\"Search…\"",
+      "required": false
+    },
+    {
+      "name": "emptyText",
+      "type": "string",
+      "description": "No-results text",
+      "default": "\"No results\"",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "type": "boolean",
+      "description": "Show a clear button",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "filter",
+      "type": "(option, query) => boolean",
+      "description": "Custom matcher",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Keys: arrows, Home/End, Enter picks, Esc closes. Uses aria-activedescendant so focus stays in the filter box."
+}
