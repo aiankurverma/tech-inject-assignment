@@ -117,11 +117,19 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
 
   // Remembered open groups; first visit opens only the first group.
   const [open, setOpen] = useState<Set<string> | null>(readOpen);
-  const openSet = useMemo(() => {
-    const s = new Set(open ?? (groups[0] ? [groups[0].category] : []));
-    if (activeCategory) s.add(activeCategory);
-    return s;
-  }, [open, groups, activeCategory]);
+  const openSet = useMemo(
+    () => new Set(open ?? (groups[0] ? [groups[0].category] : [])),
+    [open, groups],
+  );
+  // Open the current component's group on navigation, but let the user collapse it after.
+  useEffect(() => {
+    if (!activeCategory) return;
+    setOpen((prev) => {
+      const base = prev ?? new Set(groups[0] ? [groups[0].category] : []);
+      return base.has(activeCategory) ? prev : new Set([...base, activeCategory]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run per active group only
+  }, [activeCategory]);
   const save = (next: Set<string>) => {
     setOpen(next);
     try {
