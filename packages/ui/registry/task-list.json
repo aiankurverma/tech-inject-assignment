@@ -1,0 +1,100 @@
+{
+  "name": "Task List",
+  "slug": "task-list",
+  "description": "Grouped task list (due bucket, owner or priority) with filter tabs, overdue count, collapsible groups, quick add and loading/empty/error states.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-checkbox"],
+  "files": [
+    "components/crm/task-list.tsx",
+    "components/crm/task-item.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx"
+  ],
+  "examples": [
+    {
+      "title": "My tasks",
+      "file": "task-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tasks",
+      "type": "Task[]",
+      "description": "Controlled tasks",
+      "required": false
+    },
+    {
+      "name": "defaultTasks",
+      "type": "Task[]",
+      "description": "Initial tasks when uncontrolled",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onTasksChange",
+      "type": "(tasks: Task[]) => void",
+      "description": "Called on toggle and quick add",
+      "required": false
+    },
+    {
+      "name": "groupBy",
+      "type": "\"due\" | \"assignee\" | \"priority\" | \"none\"",
+      "description": "Grouping",
+      "default": "\"due\"",
+      "required": false
+    },
+    {
+      "name": "filter",
+      "type": "\"open\" | \"done\" | \"all\"",
+      "description": "Controlled filter tab",
+      "required": false
+    },
+    {
+      "name": "defaultFilter",
+      "type": "TaskFilter",
+      "description": "Initial filter",
+      "default": "\"open\"",
+      "required": false
+    },
+    {
+      "name": "onCreate",
+      "type": "(title: string) => Task",
+      "description": "Enables quick add",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(task: Task) => void",
+      "description": "Open a task",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message with retry",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry handler",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading",
+      "default": "\"Tasks\"",
+      "required": false
+    }
+  ],
+  "usage": "Use as the home-page agenda or the tasks tab on a record."
+}

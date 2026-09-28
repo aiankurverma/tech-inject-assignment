@@ -1,0 +1,63 @@
+{
+  "name": "Reaction Bar",
+  "slug": "reaction-bar",
+  "description": "Emoji reaction pills with counts, you-reacted highlight, reactor tooltips and a keyboard-navigable picker.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-popover"],
+  "files": ["components/crm/reaction-bar.tsx", "components/crm/popover.tsx"],
+  "examples": [
+    {
+      "title": "Reactions",
+      "file": "reaction-bar-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Viewer name; their reactions toggle",
+      "required": true
+    },
+    {
+      "name": "reactions",
+      "type": "{ emoji: string; users: string[] }[]",
+      "description": "Controlled reactions",
+      "required": false
+    },
+    {
+      "name": "defaultReactions",
+      "type": "Reaction[]",
+      "description": "Initial reactions when uncontrolled",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onReactionsChange",
+      "type": "(reactions: Reaction[]) => void",
+      "description": "Called after a toggle",
+      "required": false
+    },
+    {
+      "name": "palette",
+      "type": "string[]",
+      "description": "Emoji offered in the picker",
+      "required": false
+    },
+    {
+      "name": "maxDistinct",
+      "type": "number",
+      "description": "Cap on distinct emoji",
+      "default": "12",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only mode",
+      "required": false
+    }
+  ],
+  "usage": "Use under activity items, notes and win announcements."
+}

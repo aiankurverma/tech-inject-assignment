@@ -1,0 +1,92 @@
+{
+  "name": "Chat Bubble",
+  "slug": "chat-bubble",
+  "description": "Live-chat message with grouped runs, internal notes, reply quote, attachments, linkified text, delivery ticks with retry and typing indicator.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/chat-bubble.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Conversation",
+      "file": "chat-bubble-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "author",
+      "type": "{ name: string; src?: string; role?: string }",
+      "description": "Sender",
+      "required": true
+    },
+    {
+      "name": "at",
+      "type": "Date | string | number",
+      "description": "Sent time",
+      "required": true
+    },
+    {
+      "name": "text",
+      "type": "string",
+      "description": "Body; URLs are linkified",
+      "required": false
+    },
+    {
+      "name": "outgoing",
+      "type": "boolean",
+      "description": "Right-aligned primary bubble",
+      "required": false
+    },
+    {
+      "name": "internal",
+      "type": "boolean",
+      "description": "Team-only note styling",
+      "required": false
+    },
+    {
+      "name": "delivery",
+      "type": "\"sending\" | \"sent\" | \"delivered\" | \"read\" | \"failed\"",
+      "description": "Delivery state",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry for failed messages",
+      "required": false
+    },
+    {
+      "name": "replyTo",
+      "type": "{ author: string; text: string }",
+      "description": "Quoted message",
+      "required": false
+    },
+    {
+      "name": "attachments",
+      "type": "ChatAttachment[]",
+      "description": "Files or images",
+      "required": false
+    },
+    {
+      "name": "edited",
+      "type": "boolean",
+      "description": "Shows edited",
+      "required": false
+    },
+    {
+      "name": "groupPosition",
+      "type": "\"single\" | \"first\" | \"middle\" | \"last\"",
+      "description": "Position in a run",
+      "default": "\"single\"",
+      "required": false
+    },
+    {
+      "name": "typing",
+      "type": "boolean",
+      "description": "Render typing indicator",
+      "required": false
+    }
+  ],
+  "usage": "Use in support inboxes, live chat and deal rooms."
+}
