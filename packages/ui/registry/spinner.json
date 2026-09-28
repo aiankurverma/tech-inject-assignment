@@ -1,0 +1,40 @@
+{
+  "name": "Spinner",
+  "slug": "spinner",
+  "description": "Circular SVG loading indicator with sizes, tones and a status label.",
+  "category": "Feedback",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/spinner.tsx"],
+  "examples": [
+    {
+      "title": "Sizes and tones",
+      "file": "spinner-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "size",
+      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\"",
+      "description": "Diameter",
+      "default": "\"sm\"",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"default\" | \"primary\" | \"inherit\"",
+      "description": "Colour",
+      "default": "\"default\"",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Announced text; empty string hides it",
+      "default": "\"Loading\"",
+      "required": false
+    }
+  ],
+  "usage": "Pass label=\"\" when a parent element already announces loading."
+}

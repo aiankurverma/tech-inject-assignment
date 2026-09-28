@@ -1,0 +1,53 @@
+{
+  "name": "Status Dot",
+  "slug": "status-dot",
+  "description": "Presence dot (online, away, busy, offline) with optional pulse and visible label.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/status-dot.tsx"],
+  "examples": [
+    {
+      "title": "Statuses",
+      "file": "status-dot-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "status",
+      "type": "\"online\" | \"away\" | \"busy\" | \"offline\"",
+      "description": "Presence state",
+      "default": "\"online\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Dot size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "pulse",
+      "type": "boolean",
+      "description": "Animated halo (off under reduced motion)",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "showLabel",
+      "type": "boolean",
+      "description": "Render the status text",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Custom status text",
+      "required": false
+    }
+  ],
+  "usage": "Colour is never the only signal: the status text is always exposed."
+}

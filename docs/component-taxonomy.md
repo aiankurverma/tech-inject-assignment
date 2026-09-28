@@ -57,23 +57,23 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 ### Display (18)
 
 - [x] `avatar` — Initials fallback, badge; LogoTile.
-- [ ] `avatar-group` — Stacked avatars with +N.
+- [x] `avatar-group` — Stacked avatars with +N.
 - [x] `badge` — CountBadge, StatusBadge.
 - [x] `tag` — Coloured pill, TagList.
-- [ ] `chip` — Removable / selectable chip.
-- [ ] `divider` — Horizontal/vertical with label.
+- [x] `chip` — Removable / selectable chip.
+- [x] `divider` — Horizontal/vertical with label.
 - [ ] `heading` — Typographic scale.
 - [ ] `text` — Body/caption/eyebrow variants.
 - [ ] `icon-tile` — Tinted icon square.
-- [ ] `status-dot` — Online/away/busy dot.
+- [x] `status-dot` — Online/away/busy dot.
 - [ ] `presence-indicator` — Avatar + live status.
-- [ ] `rating` — Interactive star rating.
+- [x] `rating` — Interactive star rating.
 - [ ] `code-block` — Syntax-light code with copy.
 - [ ] `inline-code` — Monospace token.
-- [ ] `truncated-text` — Clamp with expand.
-- [ ] `relative-time` — "3h ago" with tooltip date.
+- [x] `truncated-text` — Clamp with expand.
+- [x] `relative-time` — "3h ago" with tooltip date.
 - [ ] `money` — Formatted amount with currency.
-- [ ] `trend-arrow` — Up/down delta indicator.
+- [x] `trend-arrow` — Up/down delta indicator.
 
 ### Feedback (8)
 
@@ -82,13 +82,13 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `alert` — **B1** Inline banner, four tones.
 - [x] `toast` — **B1** Provider + useToast, actions.
 - [x] `tooltip` — **B1** Hover/focus hint, no deps.
-- [ ] `spinner` — Loading indicator.
+- [x] `spinner` — Loading indicator.
 - [ ] `loading-overlay` — Blocking overlay over a region.
 - [ ] `inline-error` — Field-level error text.
 
 ### Layout (6)
 
-- [ ] `card` — Surface with header/body/footer.
+- [x] `card` — Surface with header/body/footer.
 - [ ] `stack` — Flex gap helper.
 - [ ] `scroll-area` — Styled scroll container.
 - [ ] `resizable-panels` — Split panes with drag handle.

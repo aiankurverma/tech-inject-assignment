@@ -1,0 +1,59 @@
+{
+  "name": "Trend Arrow",
+  "slug": "trend-arrow",
+  "description": "Up/down delta indicator with direction-aware colour, inverse mode and pill variant.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/trend-arrow.tsx"],
+  "examples": [
+    {
+      "title": "Deltas",
+      "file": "trend-arrow-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "number",
+      "description": "Change amount; sign sets direction",
+      "required": true
+    },
+    {
+      "name": "format",
+      "type": "\"percent\" | \"number\"",
+      "description": "Number format",
+      "default": "\"percent\"",
+      "required": false
+    },
+    {
+      "name": "inverse",
+      "type": "boolean",
+      "description": "Treat decreases as good",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"plain\" | \"pill\"",
+      "description": "Visual style",
+      "default": "\"plain\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Text size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "context",
+      "type": "string",
+      "description": "Extra screen reader context",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

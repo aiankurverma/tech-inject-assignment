@@ -1,0 +1,45 @@
+{
+  "name": "Relative Time",
+  "slug": "relative-time",
+  "description": "Semantic <time> showing \"3 hours ago\" with the absolute date as tooltip; auto-refreshes.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/relative-time.tsx"],
+  "examples": [
+    {
+      "title": "Activity feed",
+      "file": "relative-time-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "date",
+      "type": "Date | string | number",
+      "description": "The moment to describe",
+      "required": true
+    },
+    {
+      "name": "format",
+      "type": "\"long\" | \"short\"",
+      "description": "\"3 hours ago\" or \"3h ago\"",
+      "default": "\"long\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "required": false
+    },
+    {
+      "name": "updateInterval",
+      "type": "number",
+      "description": "Refresh interval in ms (0 disables)",
+      "default": "60000",
+      "required": false
+    }
+  ],
+  "usage": "Also exports formatRelative(date, now, options)."
+}
