@@ -12,7 +12,9 @@ export default function Example() {
         <Tag color={stage}>Negotiation</Tag>
       </div>
       <div className="flex flex-col gap-2">
-        <span className="text-xs text-crm-soft">Label colour</span>
+        <span className="text-xs text-crm-soft">
+          Label colour: <span className="text-crm-fg capitalize">{label}</span>
+        </span>
         <ColorSwatches value={label} onChange={setLabel} aria-label="Label colour" />
       </div>
     </div>

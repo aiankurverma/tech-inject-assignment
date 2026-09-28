@@ -2,7 +2,7 @@ import * as React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { Check, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { tagColors, type TagColor } from "@/components/crm/tag";
+import { type TagColor } from "@/components/crm/tag";
 
 export interface ColorSwatch {
   value: TagColor;
@@ -22,6 +22,20 @@ export const DEFAULT_SWATCHES: ColorSwatch[] = [
   { value: "orange", label: "Orange" },
   { value: "red", label: "Red" },
 ];
+
+/** Solid, saturated fills so swatches are easy to tell apart on dark surfaces. */
+export const swatchHex: Record<TagColor, string> = {
+  neutral: "#a1a1aa",
+  blue: "#3b82f6",
+  purple: "#8b5cf6",
+  teal: "#14b8a6",
+  green: "#22c55e",
+  moss: "#65a30d",
+  yellow: "#facc15",
+  amber: "#f59e0b",
+  orange: "#f97316",
+  red: "#ef4444",
+};
 
 export interface ColorSwatchesProps {
   value?: TagColor | null;
@@ -78,6 +92,7 @@ export function ColorSwatches({
             aria-checked={selected}
             aria-label={s.label}
             title={s.label}
+            style={{ backgroundColor: swatchHex[s.value] }}
             disabled={disabled}
             tabIndex={i === tabStop ? 0 : -1}
             onClick={() => onChange?.(s.value)}
@@ -100,11 +115,11 @@ export function ColorSwatches({
               "focus-visible:ring-2 focus-visible:ring-crm-ring/70 focus-visible:ring-offset-2 focus-visible:ring-offset-crm-popover",
               "disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:scale-100",
               size === "md" ? "size-6 [&_svg]:size-3.5" : "size-5 [&_svg]:size-3",
-              tagColors[s.value],
+              "border-transparent text-white [&_svg]:drop-shadow",
               selected && "ring-2 ring-crm-fg/70 ring-offset-2 ring-offset-crm-popover",
             )}
           >
-            {selected ? <Check aria-hidden /> : null}
+            {selected ? <Check aria-hidden strokeWidth={3} /> : null}
           </button>
         );
       })}
@@ -157,8 +172,9 @@ export function ColorPicker({
             aria-hidden
             className={cn(
               "size-3.5 shrink-0 rounded-full border",
-              current ? tagColors[current.value] : "border-dashed border-crm-input",
+              current ? "border-transparent" : "border-dashed border-crm-input",
             )}
+            style={current ? { backgroundColor: swatchHex[current.value] } : undefined}
           />
           {compact ? null : (
             <>

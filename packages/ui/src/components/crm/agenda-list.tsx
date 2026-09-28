@@ -186,7 +186,8 @@ export function AgendaList({
                     <AvatarGroup
                       people={m.attendees.map((a) => ({ name: a.name, src: a.avatar }))}
                       max={3}
-                      className="hidden sm:flex"
+                      size="md"
+                      className="hidden shrink-0 sm:flex"
                     />
                   ) : null}
                   <span className="w-16 shrink-0 text-right text-[11px]">

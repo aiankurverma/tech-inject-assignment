@@ -1,7 +1,7 @@
 import { Avatar } from "@/components/crm/avatar";
 import { cn } from "@/lib/utils";
 
-const overlap = { xs: "-ml-1", sm: "-ml-1.5", md: "-ml-2.5", lg: "-ml-4" } as const;
+const overlap = { xs: "-ml-1", sm: "-ml-1.5", md: "-ml-1.5", lg: "-ml-4" } as const;
 const overflowSize = {
   xs: "size-4 text-[8px]",
   sm: "size-5 text-[9px]",
@@ -40,7 +40,7 @@ export function AvatarGroup({ people, max = 4, size = "sm", label, className }: 
           name={p.name}
           src={p.src}
           size={size}
-          className={cn("rounded-full ring-2 ring-crm-bg", i > 0 && overlap[size])}
+          className={cn("shrink-0 rounded-full ring-2 ring-crm-bg", i > 0 && overlap[size])}
         />
       ))}
       {hidden.length ? (
