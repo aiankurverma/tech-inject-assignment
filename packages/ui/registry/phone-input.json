@@ -1,0 +1,85 @@
+{
+  "name": "Phone Input",
+  "slug": "phone-input",
+  "description": "Country code picker with searchable listbox plus masked national number; emits E.164 with validity, auto-detects country on pasted +numbers.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/phone-input.tsx"],
+  "examples": [
+    {
+      "title": "Contact numbers",
+      "file": "phone-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled E.164 value",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "Initial E.164 value",
+      "default": "\"\"",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: PhoneValue) => void",
+      "description": "Receives {e164, country, national, valid}",
+      "required": false
+    },
+    {
+      "name": "defaultCountry",
+      "type": "string",
+      "description": "ISO code",
+      "default": "\"US\"",
+      "required": false
+    },
+    {
+      "name": "countries",
+      "type": "PhoneCountry[]",
+      "description": "Country list with dial code and mask",
+      "default": "PHONE_COUNTRIES",
+      "required": false
+    },
+    {
+      "name": "preferred",
+      "type": "string[]",
+      "description": "ISO codes pinned to top",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "showValidation",
+      "type": "boolean",
+      "description": "Show too short/long hint after blur",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Force error style",
+      "required": false
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Hidden input name carrying E.164",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "formatNational() and parseE164() are exported. Masks cover common lengths; validate server-side for carrier-grade checks."
+}

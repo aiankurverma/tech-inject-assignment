@@ -1,0 +1,64 @@
+{
+  "name": "Text",
+  "slug": "text",
+  "description": "Body text primitive with variants, tones, weights, tabular numbers, multi-line clamp and search-term highlighting.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/text.tsx", "components/crm/search-input.tsx", "components/crm/kbd.tsx"],
+  "examples": [
+    {
+      "title": "Searchable notes",
+      "file": "text-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "\"p\" | \"span\" | \"div\" | \"label\" | \"strong\" | \"em\" | \"small\" | \"code\"",
+      "description": "Element",
+      "default": "\"p\"",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"body\" | \"lead\" | \"small\" | \"caption\" | \"eyebrow\" | \"mono\"",
+      "description": "Type style",
+      "default": "\"body\"",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"default\" | \"muted\" | \"subtle\" | \"success\" | \"warning\" | \"danger\" | \"primary\"",
+      "description": "Colour",
+      "required": false
+    },
+    {
+      "name": "weight",
+      "type": "\"regular\" | \"medium\" | \"semibold\"",
+      "description": "Font weight",
+      "required": false
+    },
+    {
+      "name": "numeric",
+      "type": "boolean",
+      "description": "Tabular figures",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "lines",
+      "type": "number",
+      "description": "Clamp to N lines (1 = truncate)",
+      "required": false
+    },
+    {
+      "name": "highlight",
+      "type": "string | string[]",
+      "description": "Terms to mark (string children only)",
+      "required": false
+    }
+  ],
+  "usage": "highlightText() is exported for custom renderers."
+}

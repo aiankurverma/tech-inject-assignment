@@ -1,0 +1,77 @@
+{
+  "name": "Icon Tile",
+  "slug": "icon-tile",
+  "description": "Tinted icon or monogram tile on the tag palette with deterministic auto-colour, count badge, status dot and inactive state.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/icon-tile.tsx"],
+  "examples": [
+    {
+      "title": "Integrations list",
+      "file": "icon-tile-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Icon; monogram of label when omitted",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name (omit when decorative)",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "IconTileTone | \"auto\"",
+      "description": "Colour or auto from key",
+      "default": "\"neutral\"",
+      "required": false
+    },
+    {
+      "name": "toneKey",
+      "type": "string",
+      "description": "Key for auto tone (defaults to label)",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\"",
+      "description": "Size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "shape",
+      "type": "\"square\" | \"circle\"",
+      "description": "Shape",
+      "default": "\"square\"",
+      "required": false
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "description": "Corner count badge (99+)",
+      "required": false
+    },
+    {
+      "name": "dot",
+      "type": "\"success\" | \"warning\" | \"danger\"",
+      "description": "Corner status dot",
+      "required": false
+    },
+    {
+      "name": "inactive",
+      "type": "boolean",
+      "description": "Greyed out",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "toneFor(key) gives the same colour for the same object type everywhere."
+}

@@ -1,0 +1,89 @@
+{
+  "name": "Toggle",
+  "slug": "toggle",
+  "description": "Two-state aria-pressed button with per-state icon and label, live counter and optimistic async updates that roll back on failure.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/toggle.tsx"],
+  "examples": [
+    {
+      "title": "Follow / star / mute",
+      "file": "toggle-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "pressed",
+      "type": "boolean",
+      "description": "Controlled state",
+      "required": false
+    },
+    {
+      "name": "defaultPressed",
+      "type": "boolean",
+      "description": "Initial state when uncontrolled",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "onPressedChange",
+      "type": "(pressed: boolean) => void | Promise<unknown>",
+      "description": "Called with next state; return a promise for optimistic update with rollback",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"default\" | \"outline\" | \"primary\"",
+      "description": "Visual style",
+      "default": "\"default\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Height",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Icon before the label",
+      "required": false
+    },
+    {
+      "name": "pressedIcon",
+      "type": "ReactNode",
+      "description": "Icon when pressed",
+      "required": false
+    },
+    {
+      "name": "pressedChildren",
+      "type": "ReactNode",
+      "description": "Label when pressed",
+      "required": false
+    },
+    {
+      "name": "count",
+      "type": "number",
+      "description": "Counter adjusted by one as state flips",
+      "required": false
+    },
+    {
+      "name": "onError",
+      "type": "(error: unknown) => void",
+      "description": "Called after a failed async change is rolled back",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable interaction",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Use for reversible per-record states (follow, star, pin, mute). Icon-only toggles need aria-label."
+}

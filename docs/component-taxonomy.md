@@ -7,11 +7,11 @@ Legend: `[x]` shipped · `[ ]` planned. Batch 1 items are marked **B1**.
 
 | Tier               | Target  | Shipped |
 | ------------------ | ------- | ------- |
-| Primitives         | 60      | 20      |
+| Primitives         | 60      | 30      |
 | Composites         | 100     | 36      |
 | Blocks             | 100     | 0       |
 | Industry templates | 40      | 0       |
-| **Total**          | **300** | **56**  |
+| **Total**          | **300** | **66**  |
 
 Rules for new entries: only `ALLOWED_DEPENDENCIES` (packages/core/src/constants.ts), `@/` imports,
 reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.ts`.
@@ -24,11 +24,11 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 
 - [x] `button` — Pill button, variants, sizes, loading; IconButton.
 - [x] `button-group` — Joined buttons / split button.
-- [ ] `toggle` — Pressed/unpressed single button.
+- [x] `toggle` — Pressed/unpressed single button.
 - [x] `toggle-group` — Exclusive or multi toggle row (view switcher).
-- [ ] `link` — Styled inline/external link with icon.
-- [ ] `copy-button` — Copies text, shows confirmation.
-- [ ] `fab` — Floating action button.
+- [x] `link` — Styled inline/external link with icon.
+- [x] `copy-button` — Copies text, shows confirmation.
+- [x] `fab` — Floating action button.
 - [x] `kbd` — Keyboard key hint.
 
 ### Form controls (20)
@@ -42,7 +42,7 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `slider` — Radix slider.
 - [x] `number-input` — Stepper buttons, min/max, formatting.
 - [x] `currency-input` — Locale money input.
-- [ ] `phone-input` — Country code + number.
+- [x] `phone-input` — Country code + number.
 - [x] `password-input` — Show/hide, strength meter.
 - [x] `otp-input` — One-time code boxes.
 - [x] `search-input` — Icon, clear, shortcut hint.
@@ -50,7 +50,7 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `combobox` — Searchable single select.
 - [x] `multi-select` — Searchable multi select with chips.
 - [x] `date-picker` — **B1** Popover calendar with min/max, keyboard grid.
-- [ ] `date-range-picker` — Two-month range + presets.
+- [x] `date-range-picker` — Two-month range + presets.
 - [x] `time-picker` — Time slots / free entry.
 - [x] `color-picker` — Swatches for tags and pipelines.
 
@@ -62,11 +62,11 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `tag` — Coloured pill, TagList.
 - [x] `chip` — Removable / selectable chip.
 - [x] `divider` — Horizontal/vertical with label.
-- [ ] `heading` — Typographic scale.
-- [ ] `text` — Body/caption/eyebrow variants.
-- [ ] `icon-tile` — Tinted icon square.
+- [x] `heading` — Typographic scale.
+- [x] `text` — Body/caption/eyebrow variants.
+- [x] `icon-tile` — Tinted icon square.
 - [x] `status-dot` — Online/away/busy dot.
-- [ ] `presence-indicator` — Avatar + live status.
+- [x] `presence-indicator` — Avatar + live status.
 - [x] `rating` — Interactive star rating.
 - [ ] `code-block` — Syntax-light code with copy.
 - [ ] `inline-code` — Monospace token.

@@ -1,0 +1,77 @@
+{
+  "name": "Heading",
+  "slug": "heading",
+  "description": "Heading with semantic level decoupled from visual size, eyebrow, description, meta, actions slot, truncation and copy-link section anchors.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/heading.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Page and section headings",
+      "file": "heading-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "level",
+      "type": "1 | 2 | 3 | 4 | 5 | 6",
+      "description": "Semantic level",
+      "default": "2",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"display\" | \"xl\" | \"lg\" | \"md\" | \"sm\" | \"xs\"",
+      "description": "Visual size (defaults by level)",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"default\" | \"muted\"",
+      "description": "Colour",
+      "default": "\"default\"",
+      "required": false
+    },
+    {
+      "name": "eyebrow",
+      "type": "ReactNode",
+      "description": "Label above",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Line below",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Right-aligned slot",
+      "required": false
+    },
+    {
+      "name": "meta",
+      "type": "ReactNode",
+      "description": "Count or badge after title",
+      "required": false
+    },
+    {
+      "name": "anchor",
+      "type": "boolean",
+      "description": "Add slug id and copy-link anchor",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "truncate",
+      "type": "boolean",
+      "description": "Single-line ellipsis",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Keep one h1 per page; pick level for outline and size for looks."
+}

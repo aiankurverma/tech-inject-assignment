@@ -1,0 +1,91 @@
+{
+  "name": "Date Range Picker",
+  "slug": "date-range-picker",
+  "description": "Two-month range calendar with presets, hover preview, min/max/maxDays limits, Apply/Cancel draft, clear and previous-period comparison.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/date-range-picker.tsx"],
+  "examples": [
+    {
+      "title": "Reporting period",
+      "file": "date-range-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "DateRange | null",
+      "description": "Controlled range {from, to}",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "DateRange | null",
+      "description": "Initial range",
+      "default": "null",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(range: DateRange | null) => void",
+      "description": "Called on Apply or clear",
+      "required": false
+    },
+    {
+      "name": "presets",
+      "type": "DateRangePreset[] | false",
+      "description": "Preset list",
+      "default": "DEFAULT_PRESETS",
+      "required": false
+    },
+    {
+      "name": "min",
+      "type": "Date",
+      "description": "Earliest day",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "Date",
+      "description": "Latest day",
+      "required": false
+    },
+    {
+      "name": "maxDays",
+      "type": "number",
+      "description": "Longest allowed span",
+      "required": false
+    },
+    {
+      "name": "showComparison",
+      "type": "boolean",
+      "description": "Show previous equivalent period",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "clearable",
+      "type": "boolean",
+      "description": "Show clear button",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty text",
+      "default": "\"Select dates\"",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "formatRange(), rangeDays() and previousPeriod() are exported. Shows one month under the sm breakpoint."
+}

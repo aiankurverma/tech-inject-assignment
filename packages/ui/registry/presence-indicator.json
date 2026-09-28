@@ -1,0 +1,100 @@
+{
+  "name": "Presence Indicator",
+  "slug": "presence-indicator",
+  "description": "Avatar with live presence dot, idle auto-away, last-active time, expiring custom status and teammate local time.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/presence-indicator.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/status-dot.tsx",
+    "components/crm/relative-time.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Team presence",
+      "file": "presence-indicator-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "User name",
+      "required": true
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "description": "Avatar image",
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "\"online\" | \"away\" | \"busy\" | \"offline\"",
+      "description": "Reported status",
+      "required": true
+    },
+    {
+      "name": "lastActiveAt",
+      "type": "Date | string | number",
+      "description": "Last activity",
+      "required": false
+    },
+    {
+      "name": "idleAfter",
+      "type": "number",
+      "description": "Minutes before online shows away",
+      "default": "10",
+      "required": false
+    },
+    {
+      "name": "message",
+      "type": "string",
+      "description": "Custom status",
+      "required": false
+    },
+    {
+      "name": "emoji",
+      "type": "string",
+      "description": "Status emoji",
+      "required": false
+    },
+    {
+      "name": "until",
+      "type": "Date | string | number",
+      "description": "When the status clears",
+      "required": false
+    },
+    {
+      "name": "timeZone",
+      "type": "string",
+      "description": "IANA zone for local time",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\"",
+      "description": "Size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "layout",
+      "type": "\"avatar\" | \"inline\" | \"card\"",
+      "description": "Presentation",
+      "default": "\"avatar\"",
+      "required": false
+    },
+    {
+      "name": "tick",
+      "type": "number",
+      "description": "Refresh interval ms",
+      "default": "30000",
+      "required": false
+    }
+  ],
+  "usage": "Reuses Avatar, StatusDot types and formatRelative. effectivePresence() is exported."
+}

@@ -1,0 +1,78 @@
+{
+  "name": "FAB",
+  "slug": "fab",
+  "description": "Floating action button with extended label that auto-collapses on scroll and an optional keyboard-accessible speed-dial menu.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/fab.tsx"],
+  "examples": [
+    {
+      "title": "Speed dial in a scroll panel",
+      "file": "fab-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name and extended label",
+      "required": true
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Button icon",
+      "default": "<Plus />",
+      "required": false
+    },
+    {
+      "name": "onClick",
+      "type": "() => void",
+      "description": "Click handler when no actions",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "FabAction[]",
+      "description": "Speed-dial actions {id,label,icon,shortcut?,disabled?,onSelect}",
+      "required": false
+    },
+    {
+      "name": "position",
+      "type": "\"bottom-right\" | \"bottom-left\" | \"bottom-center\"",
+      "description": "Placement",
+      "default": "\"bottom-right\"",
+      "required": false
+    },
+    {
+      "name": "strategy",
+      "type": "\"fixed\" | \"absolute\"",
+      "description": "Positioning context",
+      "default": "\"fixed\"",
+      "required": false
+    },
+    {
+      "name": "extended",
+      "type": "boolean | \"auto\"",
+      "description": "Show label; auto collapses on scroll down",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "scrollContainer",
+      "type": "RefObject<HTMLElement | null>",
+      "description": "Scroll source for auto (default window)",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Menu: arrows/Home/End move, Escape closes and returns focus. Use for the single primary create action on mobile-heavy screens."
+}
