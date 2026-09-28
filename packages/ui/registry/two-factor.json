@@ -1,0 +1,97 @@
+{
+  "name": "Two Factor",
+  "slug": "two-factor",
+  "description": "Second-factor challenge with authenticator app, SMS (auto-send and resend cooldown) and formatted backup codes, attempt lockout and trust-this-device option.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/two-factor.tsx",
+    "components/crm/alert.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/otp-input.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "App, SMS and backup code",
+      "file": "two-factor-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onVerify",
+      "type": "(code, method, { trustDevice }) => Promise<boolean> | boolean",
+      "description": "Verify; resolve false for a wrong code",
+      "required": true
+    },
+    {
+      "name": "methods",
+      "type": "(\"totp\" | \"sms\" | \"backup\")[]",
+      "description": "Enrolled methods",
+      "required": false,
+      "default": "[\"totp\",\"sms\",\"backup\"]"
+    },
+    {
+      "name": "defaultMethod",
+      "type": "TwoFactorMethod",
+      "description": "Initial method",
+      "required": false
+    },
+    {
+      "name": "phoneHint",
+      "type": "string",
+      "description": "Masked phone for SMS copy",
+      "required": false
+    },
+    {
+      "name": "onSendSms",
+      "type": "() => Promise<void>",
+      "description": "Send the SMS code",
+      "required": false
+    },
+    {
+      "name": "onSuccess / onCancel",
+      "type": "() => void",
+      "description": "Flow callbacks",
+      "required": false
+    },
+    {
+      "name": "trustDays",
+      "type": "number",
+      "description": "Trusted-device days; 0 hides the option",
+      "required": false,
+      "default": "30"
+    },
+    {
+      "name": "maxAttempts",
+      "type": "number",
+      "description": "Wrong codes before lock",
+      "required": false,
+      "default": "5"
+    },
+    {
+      "name": "smsCooldown",
+      "type": "number",
+      "description": "Seconds between SMS resends",
+      "required": false,
+      "default": "30"
+    },
+    {
+      "name": "backupCodesRemaining",
+      "type": "number",
+      "description": "Warns when 3 or fewer remain",
+      "required": false
+    },
+    {
+      "name": "recoveryHref",
+      "type": "string",
+      "description": "Account recovery link",
+      "required": false,
+      "default": "\"#\""
+    }
+  ],
+  "usage": "Backup codes are normalised to XXXX-XXXX before onVerify."
+}

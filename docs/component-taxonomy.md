@@ -254,16 +254,16 @@ Full sections built from primitives and composites.
 
 ### Settings (15)
 
-- [ ] `settings-profile` · [x] `settings-team` · [x] `settings-roles` · [x] `settings-billing` ·
-      [x] `settings-integrations` · [x] `settings-notifications` · [x] `settings-security` ·
-      [x] `settings-api-keys` · [x] `settings-webhooks` · [x] `settings-pipelines` ·
-      [x] `settings-custom-fields` · [ ] `settings-email` · [ ] `settings-branding` ·
-      [ ] `settings-data-import` · [ ] `settings-audit-log` — admin pages.
+- [ ] `settings-profile` · [ ] `settings-team` · [ ] `settings-roles` · [ ] `settings-billing` ·
+      [ ] `settings-integrations` · [ ] `settings-notifications` · [ ] `settings-security` ·
+      [ ] `settings-api-keys` · [ ] `settings-webhooks` · [ ] `settings-pipelines` ·
+      [ ] `settings-custom-fields` · [x] `settings-email` · [x] `settings-branding` ·
+      [x] `settings-data-import` · [x] `settings-audit-log` — admin pages.
 
 ### Auth and onboarding (12)
 
-- [ ] `sign-in` · [ ] `sign-up` · [ ] `forgot-password` · [ ] `reset-password` · [ ] `verify-email` ·
-      [ ] `two-factor` · [ ] `sso-picker` · [ ] `invite-accept` · [ ] `onboarding-checklist` ·
+- [x] `sign-in` · [x] `sign-up` · [x] `forgot-password` · [x] `reset-password` · [x] `verify-email` ·
+      [x] `two-factor` · [ ] `sso-picker` · [ ] `invite-accept` · [ ] `onboarding-checklist` ·
       [ ] `onboarding-wizard` · [ ] `workspace-create` · [ ] `welcome-tour` — account flows.
 
 ### Marketing and portal (15)

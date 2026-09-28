@@ -1,0 +1,67 @@
+{
+  "name": "Settings Audit Log",
+  "slug": "settings-audit-log",
+  "description": "Audit trail with search, date range, type, actor and severity filters, critical-event banner, expandable before/after diffs with IP and device, CSV export and pagination.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-audit-log.tsx",
+    "components/crm/alert.tsx",
+    "components/crm/button.tsx",
+    "components/crm/filter-select.tsx",
+    "components/crm/pagination.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Workspace audit trail",
+      "file": "settings-audit-log-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "events",
+      "type": "AuditEvent[]",
+      "description": "Events with actor, action, category, severity and changes",
+      "required": true
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "error / onRetry",
+      "type": "string / () => void",
+      "description": "Error state with retry",
+      "required": false
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "description": "Rows per page",
+      "required": false,
+      "default": "10"
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for ranges",
+      "required": false,
+      "default": "new Date()"
+    },
+    {
+      "name": "retentionDays",
+      "type": "number",
+      "description": "Shown in header",
+      "required": false,
+      "default": "90"
+    }
+  ],
+  "usage": "Export respects the current filters."
+}

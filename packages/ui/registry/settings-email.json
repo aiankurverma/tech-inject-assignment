@@ -1,0 +1,77 @@
+{
+  "name": "Settings Email",
+  "slug": "settings-email",
+  "description": "Email admin page: connected mailboxes with sync health, sending identity, signature with live merge-field preview, tracking toggles, send limits and SPF/DKIM/DMARC verification table.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-email.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/settings-row.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Mailboxes, signature and DNS",
+      "file": "settings-email-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "mailboxes",
+      "type": "ConnectedMailbox[]",
+      "description": "Connected inboxes with status",
+      "required": true
+    },
+    {
+      "name": "domain",
+      "type": "string",
+      "description": "Sending domain",
+      "required": true
+    },
+    {
+      "name": "dnsRecords",
+      "type": "DnsRecord[]",
+      "description": "SPF/DKIM/DMARC records and status",
+      "required": true
+    },
+    {
+      "name": "defaultValue",
+      "type": "EmailSettingsValue",
+      "description": "Initial settings",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(value) => Promise<void>",
+      "description": "Persist settings from the unsaved-changes bar",
+      "required": true
+    },
+    {
+      "name": "sender",
+      "type": "Record<string, string>",
+      "description": "Values for {{merge_fields}} preview",
+      "required": false,
+      "default": "{}"
+    },
+    {
+      "name": "onConnect / onDisconnect / onSetDefault / onResync",
+      "type": "callbacks",
+      "description": "Mailbox actions",
+      "required": false
+    },
+    {
+      "name": "onVerifyDomain",
+      "type": "() => Promise<DnsRecord[]>",
+      "description": "Re-check DNS",
+      "required": false
+    }
+  ],
+  "usage": "Unknown merge fields in the signature are flagged; the default mailbox can't be disconnected while others exist."
+}
