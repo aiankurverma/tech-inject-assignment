@@ -129,7 +129,7 @@ export function FunnelReport({
               </p>
             </div>
             <div className="rounded-crm bg-crm-muted/50 p-3">
-              <p className="text-xs text-crm-subtle">Median cycle</p>
+              <p className="text-xs text-crm-subtle">Cycle (sum of stage medians)</p>
               <p className="text-xl font-semibold tabular-nums">
                 {stages.reduce((a, s) => a + (s.medianDays ?? 0), 0)} days
               </p>

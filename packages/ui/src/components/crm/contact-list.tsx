@@ -139,6 +139,9 @@ export function ContactList({
   const someOnPage = pageIds.some((id) => sel.has(id));
 
   React.useEffect(() => setPage(1), [q, stage, owner]);
+  React.useEffect(() => {
+    lastClicked.current = null;
+  }, [q, stage, owner, sort, safePage]);
 
   const toggleRow = (idx: number, shift: boolean) => {
     const id = rows[idx]?.id;
