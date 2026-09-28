@@ -1,0 +1,105 @@
+{
+  "name": "Settings Billing",
+  "slug": "settings-billing",
+  "description": "Plan and billing page: plan cards, monthly/annual toggle with discount, seat stepper bounded by seats in use and plan cap, live quote with tax and prorated charge/credit, usage meters, card expiry warning, invoice history.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-billing.tsx",
+    "components/crm/button.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Plan & billing",
+      "file": "settings-billing-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "plans",
+      "type": "BillingPlan[]",
+      "description": "Available plans",
+      "required": true
+    },
+    {
+      "name": "current",
+      "type": "BillingSelection",
+      "description": "Active plan, seats and cycle",
+      "required": true
+    },
+    {
+      "name": "seatsInUse",
+      "type": "number",
+      "description": "Minimum seats allowed",
+      "required": true
+    },
+    {
+      "name": "renewsOn",
+      "type": "string",
+      "description": "ISO renewal date for proration",
+      "required": true
+    },
+    {
+      "name": "usage",
+      "type": "BillingUsage[]",
+      "description": "Usage meters",
+      "required": false
+    },
+    {
+      "name": "invoices",
+      "type": "BillingInvoice[]",
+      "description": "Invoice history",
+      "required": false
+    },
+    {
+      "name": "paymentMethod",
+      "type": "PaymentMethod | null",
+      "description": "Card on file",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "required": false,
+      "default": "\"USD\""
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Number/date locale",
+      "required": false,
+      "default": "\"en-US\""
+    },
+    {
+      "name": "taxRate",
+      "type": "number",
+      "description": "Tax on subtotal, e.g. 0.18",
+      "required": false,
+      "default": "0"
+    },
+    {
+      "name": "annualDiscount",
+      "type": "number",
+      "description": "Annual discount fraction",
+      "required": false,
+      "default": "0.2"
+    },
+    {
+      "name": "onConfirm",
+      "type": "(next: BillingSelection) => Promise<void> | void",
+      "description": "Apply change; reject to show error",
+      "required": false
+    },
+    {
+      "name": "onUpdatePaymentMethod",
+      "type": "() => void",
+      "description": "Open card update flow",
+      "required": false
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

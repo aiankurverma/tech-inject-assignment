@@ -254,10 +254,10 @@ Full sections built from primitives and composites.
 
 ### Settings (15)
 
-- [ ] `settings-profile` · [ ] `settings-team` · [ ] `settings-roles` · [ ] `settings-billing` ·
-      [ ] `settings-integrations` · [ ] `settings-notifications` · [ ] `settings-security` ·
-      [ ] `settings-api-keys` · [ ] `settings-webhooks` · [ ] `settings-pipelines` ·
-      [ ] `settings-custom-fields` · [ ] `settings-email` · [ ] `settings-branding` ·
+- [ ] `settings-profile` · [x] `settings-team` · [x] `settings-roles` · [x] `settings-billing` ·
+      [x] `settings-integrations` · [x] `settings-notifications` · [x] `settings-security` ·
+      [x] `settings-api-keys` · [x] `settings-webhooks` · [x] `settings-pipelines` ·
+      [x] `settings-custom-fields` · [ ] `settings-email` · [ ] `settings-branding` ·
       [ ] `settings-data-import` · [ ] `settings-audit-log` — admin pages.
 
 ### Auth and onboarding (12)
