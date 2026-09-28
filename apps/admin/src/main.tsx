@@ -4,6 +4,7 @@ import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { Compass, Loader2 } from "lucide-react";
 import { api } from "@ti/client";
 import { FeatureRadarAdmin } from "@ti/feature-radar/client";
+import { Capture } from "./pages/Capture";
 import { ComponentList } from "./pages/ComponentList";
 import { Editor } from "./pages/Editor";
 import { Layout } from "./components/Layout";
@@ -80,6 +81,8 @@ function App() {
         <Route path="/new" element={<Editor />} />
         <Route path="/privileges" element={<Privileges />} />
         <Route path="/customers" element={<Privileges />} />
+        <Route path="/capture" element={<Capture />} />
+        <Route path="/capture/:id" element={<Capture />} />
         <Route path="/feature-radar" element={<FeatureRadarPage />} />
         <Route path="/components-list" element={<Navigate to="/components" replace />} />
         <Route path="*" element={<NotFound />} />
