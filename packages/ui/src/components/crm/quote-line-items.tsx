@@ -150,30 +150,30 @@ export function QuoteLineItems({
   return (
     <div className={cn("flex min-w-0 flex-col gap-3 font-crm text-xs text-crm-fg", className)}>
       <div className="overflow-x-auto rounded-crm border border-crm-border bg-crm-card">
-        <table className="w-full min-w-[720px] border-collapse">
+        <table className="w-full min-w-[780px] table-fixed border-collapse">
           <caption className="sr-only">Quote line items</caption>
           <thead>
             <tr className="border-b border-crm-border text-left text-[11px] text-crm-soft">
-              <th scope="col" className={cn(cell, "w-[34%] font-medium")}>
+              <th scope="col" className={cn(cell, "font-medium")}>
                 Product
               </th>
-              <th scope="col" className={cn(cell, "w-24 font-medium")}>
+              <th scope="col" className={cn(cell, "w-28 font-medium")}>
                 Qty
               </th>
               <th scope="col" className={cn(cell, "w-32 font-medium")}>
                 Unit price
               </th>
-              <th scope="col" className={cn(cell, "w-24 font-medium")}>
+              <th scope="col" className={cn(cell, "w-20 font-medium")}>
                 Disc %
               </th>
               <th scope="col" className={cn(cell, "w-20 font-medium")}>
                 Tax %
               </th>
-              <th scope="col" className={cn(cell, "text-right font-medium")}>
+              <th scope="col" className={cn(cell, "w-28 text-right font-medium")}>
                 Amount
               </th>
               {!readOnly ? (
-                <th scope="col" className={cell}>
+                <th scope="col" className={cn(cell, "w-24")}>
                   <span className="sr-only">Actions</span>
                 </th>
               ) : null}
@@ -195,7 +195,7 @@ export function QuoteLineItems({
                 <tr key={l.id} className="border-b border-crm-border last:border-b-0">
                   <td className={cell}>
                     {readOnly ? (
-                      <span className="font-medium">{l.name}</span>
+                      <span className="block truncate font-medium">{l.name}</span>
                     ) : (
                       <input
                         ref={(el) => {
@@ -210,7 +210,7 @@ export function QuoteLineItems({
                         className="h-7 w-full rounded-md bg-transparent px-1.5 font-medium outline-none hover:bg-crm-raised focus:bg-crm-input focus:ring-1 focus:ring-crm-ring/60"
                       />
                     )}
-                    <span className="block px-1.5 text-[11px] text-crm-subtle">
+                    <span className="block truncate px-1.5 text-[11px] text-crm-subtle">
                       {[l.sku, l.term].filter(Boolean).join(" · ") || " "}
                     </span>
                   </td>
@@ -280,7 +280,7 @@ export function QuoteLineItems({
                       />
                     )}
                   </td>
-                  <td className={cn(cell, "text-right tabular-nums")}>
+                  <td className={cn(cell, "text-right whitespace-nowrap tabular-nums")}>
                     <span className="block font-medium">{money.format(t.net)}</span>
                     {t.discount > 0 ? (
                       <span className="block text-[11px] text-crm-subtle line-through">

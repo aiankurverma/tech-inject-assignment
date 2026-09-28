@@ -9,7 +9,10 @@ export default function Example() {
         <Rating value={value} onValueChange={setValue} label="Lead quality" />
         <span>{value ? `${value} / 5` : "Not rated"}</span>
       </div>
-      <Rating readOnly value={4.5} size="sm" label="Average rating" />
+      <div className="flex items-center gap-2">
+        <Rating readOnly value={4.5} label="Average rating" />
+        <span>4.5 avg · 128 reviews</span>
+      </div>
       <Rating defaultValue={2} size="lg" disabled />
     </div>
   );

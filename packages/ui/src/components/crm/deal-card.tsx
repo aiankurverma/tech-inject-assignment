@@ -61,7 +61,7 @@ export function DealCard({
         {draggable ? (
           <GripVertical
             aria-hidden
-            className="pointer-events-none absolute top-3 right-2 size-3.5 text-crm-faint opacity-0 transition-opacity group-hover:opacity-100"
+            className="pointer-events-none absolute top-3.5 left-0.5 size-3 text-crm-faint opacity-0 transition-opacity group-hover:opacity-100"
           />
         ) : null}
         <div className="min-w-0 flex-1">

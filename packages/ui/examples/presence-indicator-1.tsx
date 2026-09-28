@@ -44,16 +44,16 @@ const team = [
 
 export default function Example() {
   return (
-    <div className="flex w-[420px] flex-col gap-4 font-crm">
+    <div className="flex w-full max-w-[560px] flex-col gap-4 font-crm">
       <div className="flex items-center gap-3">
         <span className="text-xs text-crm-subtle">Viewing this deal</span>
-        <div className="flex -space-x-1">
+        <div className="flex items-center gap-1.5">
           {team.slice(0, 3).map((m) => (
-            <PresenceIndicator key={m.name} {...m} size="sm" />
+            <PresenceIndicator key={m.name} {...m} size="md" />
           ))}
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-2 min-[520px]:grid-cols-2">
         {team.map((m) => (
           <PresenceIndicator key={m.name} {...m} layout="card" />
         ))}

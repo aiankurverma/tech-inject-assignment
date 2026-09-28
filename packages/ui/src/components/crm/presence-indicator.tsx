@@ -144,11 +144,6 @@ export function PresenceIndicator({
             "after:absolute after:inset-x-[25%] after:top-1/2 after:h-px after:-translate-y-1/2 after:bg-white",
         )}
       />
-      {showMessage && emoji && layout === "avatar" ? (
-        <span aria-hidden className="absolute -top-1 -right-1.5 text-[10px] leading-none">
-          {emoji}
-        </span>
-      ) : null}
     </span>
   );
 
@@ -162,20 +157,20 @@ export function PresenceIndicator({
   return (
     <div
       className={cn(
-        "flex min-w-0 items-center gap-2.5 font-crm",
+        "flex min-w-0 items-start gap-2.5 font-crm",
         layout === "card" && "rounded-crm border border-crm-border bg-crm-card p-3",
         className,
       )}
     >
       {avatar}
-      <div aria-hidden className="flex min-w-0 flex-col gap-0.5">
+      <div aria-hidden className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="truncate text-sm text-crm-fg">{name}</span>
-        <span className="truncate text-xs text-crm-soft">
+        <span className="text-xs leading-snug break-words text-crm-soft">
           {secondary}
           {localTime && layout === "card" ? ` · ${localTime} local` : null}
         </span>
         {layout === "card" && showMessage ? (
-          <span className="truncate text-xs text-crm-muted-fg">
+          <span className="text-xs leading-snug break-words text-crm-muted-fg">
             {emoji ? `${emoji} ` : null}
             {message}
             {untilText && effective !== "busy" ? ` · ${untilText}` : null}

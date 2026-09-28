@@ -47,7 +47,7 @@ export default function Example() {
       return { ...c, [from]: c[from]!.filter((d) => d.id !== id), [to]: [...c[to]!, deal] };
     });
   return (
-    <div className="flex h-[460px] gap-3">
+    <div className="flex h-[460px] items-start gap-3 overflow-x-auto">
       <KanbanColumn
         title="Proposal"
         color="#f5a524"

@@ -57,13 +57,15 @@ export function Rating({
         {stars.map((s) => {
           const fill = Math.max(0, Math.min(1, current - (s - 1)));
           return (
-            <span key={s} className={cn("relative inline-flex", sizes[size])}>
-              <Star className="size-full text-crm-faint" />
-              <span
-                className="absolute inset-0 overflow-hidden"
-                style={{ width: `${fill * 100}%` }}
-              >
-                <Star className={cn("fill-crm-warning text-crm-warning", sizes[size])} />
+            <span key={s} className="p-px">
+              <span className={cn("relative block", sizes[size])}>
+                <Star className="absolute inset-0 size-full text-crm-faint" />
+                {fill > 0 ? (
+                  <Star
+                    className="absolute inset-0 size-full fill-crm-warning text-crm-warning"
+                    style={fill < 1 ? { clipPath: `inset(0 ${(1 - fill) * 100}% 0 0)` } : undefined}
+                  />
+                ) : null}
               </span>
             </span>
           );
