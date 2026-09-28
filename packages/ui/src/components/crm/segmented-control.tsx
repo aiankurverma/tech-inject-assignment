@@ -36,6 +36,10 @@ export function SegmentedControl({
 }: SegmentedControlProps) {
   const [inner, setInner] = React.useState(defaultValue ?? options[0]?.value ?? "");
   const current = value ?? inner;
+  // Keep one segment tabbable even when the value matches no enabled option.
+  const tabbable = options.some((o) => o.value === current && !o.disabled)
+    ? current
+    : options.find((o) => !o.disabled)?.value;
   const listRef = React.useRef<HTMLDivElement>(null);
   const itemRefs = React.useRef(new Map<string, HTMLButtonElement>());
   const [thumb, setThumb] = React.useState<{ left: number; width: number } | null>(null);
@@ -111,7 +115,7 @@ export function SegmentedControl({
             role="radio"
             aria-checked={on}
             data-state={on ? "on" : "off"}
-            tabIndex={on ? 0 : -1}
+            tabIndex={o.value === tabbable ? 0 : -1}
             disabled={o.disabled}
             onClick={() => select(o.value)}
             className={cn(

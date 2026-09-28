@@ -92,7 +92,10 @@ export function ConfirmDialog({
             }
           }}
           onPointerDownOutside={(e) => e.preventDefault()}
-          onEscapeKeyDown={() => onCancel?.()}
+          onEscapeKeyDown={(e) => {
+            if (busy) e.preventDefault();
+            else onCancel?.();
+          }}
           className={cn(
             "fixed top-1/2 left-1/2 z-50 w-[calc(100vw-2rem)] max-w-[420px] -translate-x-1/2 -translate-y-1/2",
             "rounded-xl border border-crm-border bg-crm-sidebar p-6 font-crm text-crm-fg shadow-crm-overlay outline-none data-[state=open]:animate-crm-in",
