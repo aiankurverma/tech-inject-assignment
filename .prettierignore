@@ -10,3 +10,4 @@ examples/consumer-cli/src/styles
 examples/consumer-copy/src
 examples/consumer-agent
 examples/*/dist
+docs/render-check
