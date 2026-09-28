@@ -1,0 +1,73 @@
+{
+  "name": "Meeting Notes",
+  "slug": "meeting-notes",
+  "description": "Live meeting workspace with attendance, timed agenda and overrun timer, auto-growing notes, decisions, owned action items and a copyable plain-text recap.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/meeting-notes.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Renewal review",
+      "file": "meeting-notes-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Meeting title",
+      "required": true
+    },
+    {
+      "name": "related",
+      "type": "string",
+      "description": "Linked CRM record label",
+      "required": false
+    },
+    {
+      "name": "startedAt",
+      "type": "string",
+      "description": "ISO datetime; enables elapsed timer vs. agenda total",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "MeetingNotesValue",
+      "description": "Controlled { attendees, agenda, notes, decisions, actions }",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "MeetingNotesValue",
+      "description": "Uncontrolled initial value",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value) => void",
+      "description": "Any edit",
+      "required": false
+    },
+    {
+      "name": "onFinish",
+      "type": "(value) => void",
+      "description": "Finish & log action",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Read-only mode",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,59 @@
+{
+  "name": "Settings Profile",
+  "slug": "settings-profile",
+  "description": "Personal profile settings page: validated identity fields, avatar upload with type/size checks, timezone with live UTC offset, working hours and days with weekly total, signature and a dirty-state save/discard bar.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-profile.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/settings-row.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Profile page",
+      "file": "settings-profile-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "initialValues",
+      "type": "ProfileSettings",
+      "description": "Saved values; reset target for Discard",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(values) => void | Promise<void>",
+      "description": "Save handler; thrown errors are shown inline",
+      "required": true
+    },
+    {
+      "name": "onUploadAvatar",
+      "type": "(file: File) => Promise<string>",
+      "description": "Upload handler returning the avatar URL",
+      "required": false
+    },
+    {
+      "name": "timezones",
+      "type": "string[]",
+      "description": "IANA zones offered",
+      "default": "7 common zones",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

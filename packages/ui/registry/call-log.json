@@ -1,0 +1,65 @@
+{
+  "name": "Call Log",
+  "slug": "call-log",
+  "description": "Call activity log with direction/outcome filters, talk-time and outbound connect-rate stats, expandable notes, and a validated log-a-call form that parses mm:ss durations.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/call-log.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Rep call log",
+      "file": "call-log-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "calls",
+      "type": "CallRecord[]",
+      "description": "Controlled calls { id, direction, outcome, duration, at, contact, rep, notes? }",
+      "required": false
+    },
+    {
+      "name": "defaultCalls",
+      "type": "CallRecord[]",
+      "description": "Uncontrolled initial calls",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onCallsChange",
+      "type": "(calls) => void",
+      "description": "Fires when a call is logged",
+      "required": false
+    },
+    {
+      "name": "currentRep",
+      "type": "{ name, avatar? }",
+      "description": "Rep for newly logged calls",
+      "default": "{ name: \"You\" }",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Date format locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
