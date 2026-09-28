@@ -34,17 +34,22 @@ export default function Example() {
     );
   const off = coupon ? couponDiscount(coupon, subtotal) : 0;
   return (
-    <div className="flex w-[320px] flex-col gap-3">
+    <div className="flex w-full max-w-[360px] flex-col gap-3 rounded-crm border border-crm-border bg-crm-card p-4 font-crm">
       <CouponInput
         onValidate={validate}
         applied={coupon}
         onAppliedChange={setCoupon}
         subtotal={subtotal}
       />
-      <p className="text-xs text-crm-soft">
-        Try LAUNCH20, PARTNER500 or SUMMER25. Total:{" "}
-        <span className="text-crm-fg tabular-nums">${(subtotal - off).toLocaleString()}</span>
-      </p>
+      <div className="flex items-center justify-between gap-3 text-xs">
+        <span className="text-crm-soft">Try LAUNCH20, PARTNER500 or SUMMER25</span>
+        <span className="shrink-0 whitespace-nowrap text-crm-soft">
+          Total{" "}
+          <span className="font-medium text-crm-fg tabular-nums">
+            ${(subtotal - off).toLocaleString()}
+          </span>
+        </span>
+      </div>
     </div>
   );
 }

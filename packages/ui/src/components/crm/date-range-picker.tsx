@@ -71,11 +71,10 @@ export function formatRange(r: DateRange, locale = "en-US"): string {
     day: "numeric",
     year: sameYear ? undefined : "numeric",
   });
-  const b = to.toLocaleDateString(locale, {
-    month: sameMonth ? undefined : "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  // Avoid {day, year} without month: some engines render it as "2026 (day: 30)".
+  const b = sameMonth
+    ? `${to.getDate()}, ${to.getFullYear()}`
+    : to.toLocaleDateString(locale, { month: "short", day: "numeric", year: "numeric" });
   return `${a} – ${b}`;
 }
 
@@ -443,7 +442,7 @@ export function DateRangePicker({
       </Popover.Root>
       {showComparison && committed ? (
         <span className="text-[11px] text-crm-subtle">
-          vs {formatRange(previousPeriod(committed))}
+          vs previous period: {formatRange(previousPeriod(committed))}
         </span>
       ) : null}
     </div>

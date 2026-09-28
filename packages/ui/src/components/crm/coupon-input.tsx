@@ -141,7 +141,7 @@ export function CouponInput({
       >
         <div
           className={cn(
-            "flex h-[30px] min-w-0 flex-1 items-center gap-1.5 rounded-full border bg-crm-input px-2.5 text-xs",
+            "flex h-[30px] min-w-0 flex-1 items-center gap-1.5 rounded-full border bg-crm-bg px-2.5 text-xs",
             error ? "border-crm-danger" : "border-crm-border focus-within:border-crm-ring",
             disabled && "opacity-50",
           )}

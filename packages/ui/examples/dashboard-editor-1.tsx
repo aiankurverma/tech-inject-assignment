@@ -1,6 +1,5 @@
 import * as React from "react";
 import { DashboardEditor, type DashboardWidget } from "@/components/crm/dashboard-editor";
-import { Sparkline } from "@/components/crm/sparkline";
 
 const usd = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -15,6 +14,8 @@ const leaders: [string, number][] = [
   ["Sam Rivera", 214000],
 ];
 
+const weekly = [12, 18, 15, 22, 28, 26, 34, 31, 40, 44];
+
 function Body({ w }: { w: DashboardWidget }) {
   if (w.type === "kpi")
     return (
@@ -27,11 +28,34 @@ function Body({ w }: { w: DashboardWidget }) {
     );
   if (w.type === "trend")
     return (
-      <Sparkline
-        data={[12, 18, 15, 22, 28, 26, 34, 31, 40, 44]}
-        height={80}
-        label="Weekly bookings"
-      />
+      <div className="flex h-full min-h-[160px] flex-col gap-2">
+        <div className="flex items-baseline justify-between text-xs text-crm-soft">
+          <span>Last 10 weeks · $k booked</span>
+          <span className="text-crm-success">+267% since W1</span>
+        </div>
+        <div
+          role="img"
+          aria-label="Weekly bookings bar chart"
+          className="flex min-h-0 flex-1 items-end gap-1.5 border-b border-crm-border"
+        >
+          {weekly.map((v, i) => (
+            <div key={i} className="flex h-full flex-1 flex-col justify-end gap-1">
+              <span className="text-center text-[10px] text-crm-subtle tabular-nums">{v}</span>
+              <div
+                className="w-full rounded-t bg-crm-primary/80"
+                style={{ height: `${(v / 44) * 85}%` }}
+              />
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-1.5 text-[10px] text-crm-subtle">
+          {weekly.map((_, i) => (
+            <span key={i} className="flex-1 text-center">
+              W{i + 1}
+            </span>
+          ))}
+        </div>
+      </div>
     );
   if (w.type === "leaderboard")
     return (
