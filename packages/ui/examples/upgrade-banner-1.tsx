@@ -40,6 +40,7 @@ export default function Example() {
             step={100}
             value={contacts}
             onChange={(e) => setContacts(Number(e.target.value))}
+            className="h-1.5 w-40 cursor-pointer appearance-none rounded-full bg-crm-track accent-crm-primary [&::-moz-range-thumb]:size-3.5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:border-0 [&::-moz-range-thumb]:bg-crm-primary [&::-webkit-slider-thumb]:size-3.5 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-crm-primary"
           />
         </label>
         <span className="tabular-nums">{contacts.toLocaleString()}</span>

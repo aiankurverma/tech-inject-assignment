@@ -42,7 +42,7 @@ export default function Example() {
         {...period}
       />
       <UsageMeter label="Contacts" used={18_420} limit={null} compact />
-      <UsageMeter label="File storage" used={0} limit={100} unit="GB" loading />
+      <UsageMeter label="File storage" used={38} limit={100} unit="GB" compact {...period} />
     </div>
   );
 }

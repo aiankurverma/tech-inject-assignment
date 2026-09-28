@@ -317,15 +317,17 @@ function ReturnDetail({
       className="flex flex-col gap-3 rounded-crm border border-crm-border bg-crm-raised p-3"
     >
       <div className="flex items-start justify-between gap-2">
-        <div className="flex flex-col">
+        <div className="flex min-w-0 flex-col">
           <span className="text-sm font-medium text-crm-fg">
             {r.id} · {r.customer}
           </span>
-          <span className="text-xs text-crm-subtle">
-            {r.email} · delivered {r.deliveredAt} · requested {r.requestedAt}
+          <span className="flex flex-wrap gap-x-1.5 text-xs text-crm-subtle">
+            <span className="truncate">{r.email}</span>
+            <span className="whitespace-nowrap">· delivered {r.deliveredAt}</span>
+            <span className="whitespace-nowrap">· requested {r.requestedAt}</span>
           </span>
         </div>
-        <Tag size="sm" color={statusTag[r.status].color}>
+        <Tag size="sm" color={statusTag[r.status].color} className="shrink-0">
           {statusTag[r.status].label}
         </Tag>
       </div>

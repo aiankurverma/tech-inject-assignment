@@ -13,14 +13,6 @@ function history(outages: Record<number, number>, noDataBefore = 0): DayUptime[]
 
 const services: StatusService[] = [
   {
-    id: "app",
-    group: "Core",
-    name: "Web app",
-    description: "app.kitbase.io",
-    state: "operational",
-    history: history({ 41: 12, 3: 4 }),
-  },
-  {
     id: "api",
     group: "Core",
     name: "REST & GraphQL API",
@@ -33,20 +25,6 @@ const services: StatusService[] = [
     name: "Gmail & Outlook sync",
     state: "partial",
     history: history({ 0: 180, 1: 22, 29: 300 }),
-  },
-  {
-    id: "hooks",
-    group: "Integrations",
-    name: "Webhooks",
-    state: "operational",
-    history: history({ 52: 20 }, 30),
-  },
-  {
-    id: "dial",
-    group: "Integrations",
-    name: "Power dialer",
-    state: "maintenance",
-    history: history({}),
   },
 ];
 
@@ -66,11 +44,6 @@ export default function Example() {
             serviceIds: ["sync", "api"],
             updates: [
               {
-                status: "investigating",
-                at: "2026-09-28T07:05:00Z",
-                message: "We're seeing sync delays of up to 40 minutes for Outlook users.",
-              },
-              {
                 status: "identified",
                 at: "2026-09-28T08:10:00Z",
                 message:
@@ -80,24 +53,19 @@ export default function Example() {
           },
           {
             id: "inc-1",
-            title: "Webhook deliveries retried",
+            title: "Sync jobs retried after 502s",
             impact: "minor",
-            serviceIds: ["hooks"],
+            serviceIds: ["sync"],
             updates: [
               {
                 status: "investigating",
                 at: "2026-08-07T14:02:00Z",
-                message: "Some webhook deliveries are returning 502.",
-              },
-              {
-                status: "monitoring",
-                at: "2026-08-07T14:20:00Z",
-                message: "Load balancer rolled back; retries succeeding.",
+                message: "Some sync jobs are failing with 502 from the load balancer.",
               },
               {
                 status: "resolved",
                 at: "2026-08-07T14:22:00Z",
-                message: "All queued deliveries sent. No events lost.",
+                message: "Load balancer rolled back; all queued jobs replayed. No data lost.",
               },
             ],
           },
