@@ -1,0 +1,57 @@
+{
+  "name": "Comment Box",
+  "slug": "comment-box",
+  "description": "Note/comment composer with author avatar, @mention suggestions (combobox), attach button and Cmd/Ctrl+Enter to send.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/comment-box.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "With mentions",
+      "file": "comment-box-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "author",
+      "type": "{ name: string; avatar?: string }",
+      "description": "Current user",
+      "required": true
+    },
+    {
+      "name": "onSubmit",
+      "type": "(text: string, mentions: Mentionable[]) => void | Promise<void>",
+      "description": "Called on send; clears on success",
+      "required": true
+    },
+    {
+      "name": "mentionables",
+      "type": "Mentionable[]",
+      "description": "People offered after @",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onAttach",
+      "type": "() => void",
+      "description": "Shows an attach button",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty text",
+      "required": false
+    },
+    {
+      "name": "submitLabel",
+      "type": "string",
+      "description": "Button text",
+      "default": "\"Comment\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,44 @@
+{
+  "name": "Stepper",
+  "slug": "stepper",
+  "description": "Numbered multi-step progress (horizontal or vertical) with completed, current and upcoming states; completed steps can be clickable.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/stepper.tsx"],
+  "examples": [
+    {
+      "title": "Horizontal and vertical",
+      "file": "stepper-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps",
+      "type": "{ title: string; description?: string }[]",
+      "description": "Steps in order",
+      "required": true
+    },
+    {
+      "name": "current",
+      "type": "number",
+      "description": "Active step index (0-based)",
+      "required": true
+    },
+    {
+      "name": "orientation",
+      "type": "\"horizontal\" | \"vertical\"",
+      "description": "Layout",
+      "default": "\"horizontal\"",
+      "required": false
+    },
+    {
+      "name": "onStepClick",
+      "type": "(index: number) => void",
+      "description": "Makes completed steps clickable",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

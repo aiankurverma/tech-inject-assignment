@@ -1,0 +1,64 @@
+{
+  "name": "Switch",
+  "slug": "switch",
+  "description": "On/off toggle with role=\"switch\", optional label and description, sm/md sizes, controlled or uncontrolled.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/switch.tsx"],
+  "examples": [
+    {
+      "title": "Settings list",
+      "file": "switch-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "checked",
+      "type": "boolean",
+      "description": "Controlled state",
+      "required": false
+    },
+    {
+      "name": "defaultChecked",
+      "type": "boolean",
+      "description": "Initial state when uncontrolled",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "onCheckedChange",
+      "type": "(checked: boolean) => void",
+      "description": "Called on toggle",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Track size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "description": "Visible label, also the accessible name",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Helper text under the label",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable interaction",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Use for settings that apply immediately. For choices submitted with a form prefer Checkbox."
+}

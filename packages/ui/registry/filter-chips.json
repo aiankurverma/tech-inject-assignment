@@ -1,0 +1,55 @@
+{
+  "name": "Filter Chips",
+  "slug": "filter-chips",
+  "description": "Row of applied filters (field, operator, value) with remove buttons, Backspace-to-remove, clear all and add filter.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/filter-chips.tsx"],
+  "examples": [
+    {
+      "title": "Applied filters",
+      "file": "filter-chips-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "filters",
+      "type": "ActiveFilter[]",
+      "description": "{ id, field, operator?, value }",
+      "required": true
+    },
+    {
+      "name": "onRemove",
+      "type": "(id: string) => void",
+      "description": "Remove one filter",
+      "required": true
+    },
+    {
+      "name": "onClearAll",
+      "type": "() => void",
+      "description": "Shows Clear all when 2+ filters",
+      "required": false
+    },
+    {
+      "name": "onEdit",
+      "type": "(id: string) => void",
+      "description": "Chip body click",
+      "required": false
+    },
+    {
+      "name": "onAdd",
+      "type": "() => void",
+      "description": "Shows an Add filter button",
+      "required": false
+    },
+    {
+      "name": "addSlot",
+      "type": "ReactNode",
+      "description": "Custom add control (e.g. a DropdownMenu)",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

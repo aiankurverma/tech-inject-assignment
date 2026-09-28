@@ -1,0 +1,65 @@
+{
+  "name": "Toast",
+  "slug": "toast",
+  "description": "Toast notifications via ToastProvider and useToast(): tones, actions (e.g. Undo), auto-dismiss that pauses on hover/focus.",
+  "category": "Feedback",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/toast.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Trigger toasts",
+      "file": "toast-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "position (ToastProvider)",
+      "type": "\"bottom-right\" | \"top-right\" | \"bottom-center\"",
+      "description": "Stack position",
+      "default": "\"bottom-right\"",
+      "required": false
+    },
+    {
+      "name": "limit (ToastProvider)",
+      "type": "number",
+      "description": "Max visible toasts",
+      "default": "4",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "toast() option: main line",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "toast() option: second line",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"neutral\" | \"success\" | \"warning\" | \"danger\"",
+      "description": "toast() option: icon",
+      "default": "\"neutral\"",
+      "required": false
+    },
+    {
+      "name": "duration",
+      "type": "number",
+      "description": "toast() option: ms before auto-dismiss, 0 = sticky",
+      "default": "5000",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "{ label: string; onClick: () => void }",
+      "description": "toast() option: inline action",
+      "required": false
+    }
+  ],
+  "usage": "Wrap the app once in ToastProvider, then call const { toast } = useToast()."
+}

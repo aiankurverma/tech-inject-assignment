@@ -1,0 +1,43 @@
+{
+  "name": "Pipeline Stage Bar",
+  "slug": "pipeline-stage-bar",
+  "description": "Chevron bar showing a deal's pipeline stage, with won/lost outcomes and optional click-to-move.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/pipeline-stage-bar.tsx"],
+  "examples": [
+    {
+      "title": "Interactive and closed",
+      "file": "pipeline-stage-bar-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "stages",
+      "type": "{ id: string; label: string }[]",
+      "description": "Ordered stages",
+      "required": true
+    },
+    {
+      "name": "current",
+      "type": "string",
+      "description": "Current stage id",
+      "required": true
+    },
+    {
+      "name": "outcome",
+      "type": "\"won\" | \"lost\"",
+      "description": "Colours the final state",
+      "required": false
+    },
+    {
+      "name": "onStageChange",
+      "type": "(id: string) => void",
+      "description": "Makes stages clickable",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

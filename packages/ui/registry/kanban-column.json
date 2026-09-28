@@ -1,0 +1,75 @@
+{
+  "name": "Kanban Column",
+  "slug": "kanban-column",
+  "description": "Pipeline board column with count, total, WIP limit, add button and native drag-and-drop of DealCards between columns.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/kanban-column.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/deal-card.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Two-column board",
+      "file": "kanban-column-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Stage name",
+      "required": true
+    },
+    {
+      "name": "deals",
+      "type": "Deal[]",
+      "description": "Deals in this column",
+      "required": true
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "Dot colour",
+      "default": "\"#6346ff\"",
+      "required": false
+    },
+    {
+      "name": "subtitle",
+      "type": "ReactNode",
+      "description": "Defaults to summed amount",
+      "required": false
+    },
+    {
+      "name": "onAdd",
+      "type": "() => void",
+      "description": "Shows a + button",
+      "required": false
+    },
+    {
+      "name": "onOpenDeal",
+      "type": "(deal: Deal) => void",
+      "description": "Card click",
+      "required": false
+    },
+    {
+      "name": "onDropDeal",
+      "type": "(dealId: string) => void",
+      "description": "Enables drag and drop",
+      "required": false
+    },
+    {
+      "name": "limit",
+      "type": "number",
+      "description": "Soft WIP limit",
+      "required": false
+    }
+  ],
+  "usage": "Render several columns in a horizontal flex row to build a board."
+}
