@@ -1,0 +1,70 @@
+{
+  "name": "Currency Input",
+  "slug": "currency-input",
+  "description": "Locale-aware money field with currency symbol, live digit grouping and normalisation to the currency's fraction digits.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/currency-input.tsx"],
+  "examples": [
+    {
+      "title": "USD and EUR",
+      "file": "currency-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "number | null",
+      "description": "Amount in major units",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: number | null) => void",
+      "description": "Called on blur/Enter with the parsed amount",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "BCP 47 locale for symbols and separators",
+      "required": false
+    },
+    {
+      "name": "min",
+      "type": "number",
+      "description": "Lower bound",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Upper bound",
+      "required": false
+    },
+    {
+      "name": "showCode",
+      "type": "boolean",
+      "description": "Show the currency code suffix",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Emits plain numbers; format for display with Intl.NumberFormat. Uncontrolled via defaultValue."
+}
