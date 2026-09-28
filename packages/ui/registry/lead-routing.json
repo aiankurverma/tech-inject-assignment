@@ -1,0 +1,61 @@
+{
+  "name": "Lead Routing",
+  "slug": "lead-routing",
+  "description": "Ordered first-match lead assignment rules (country, source, employee band) with capacity-aware round robin, OOO skipping, fallback owner and a live test panel.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/lead-routing.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/switch.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Territory rules",
+      "file": "lead-routing-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "reps",
+      "type": "RoutingRep[]",
+      "description": "Reps with open leads, capacity, OOO",
+      "required": true
+    },
+    {
+      "name": "fallbackRepId",
+      "type": "string",
+      "description": "Owner when nothing matches",
+      "required": true
+    },
+    {
+      "name": "countries",
+      "type": "SelectOption[]",
+      "description": "Country options",
+      "required": true
+    },
+    {
+      "name": "sources",
+      "type": "SelectOption[]",
+      "description": "Lead source options",
+      "required": true
+    },
+    {
+      "name": "rules / defaultRules",
+      "type": "RoutingRule[]",
+      "description": "Controlled or initial rules",
+      "required": false
+    },
+    {
+      "name": "onRulesChange",
+      "type": "(rules: RoutingRule[]) => void",
+      "description": "Called on edit",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

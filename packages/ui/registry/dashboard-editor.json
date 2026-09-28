@@ -1,0 +1,67 @@
+{
+  "name": "Dashboard Editor",
+  "slug": "dashboard-editor",
+  "description": "Editable 12-column dashboard: add widgets from a library, drag or Alt+arrow reorder, width / height resize, inline rename, undo, cancel and save layout.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/dashboard-editor.tsx",
+    "components/crm/button.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Sales dashboard",
+      "file": "dashboard-editor-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "library",
+      "type": "WidgetDefinition[]",
+      "description": "Addable widget types with default size",
+      "required": true
+    },
+    {
+      "name": "renderWidget",
+      "type": "(w: DashboardWidget) => ReactNode",
+      "description": "Render a widget body",
+      "required": true
+    },
+    {
+      "name": "widgets / defaultWidgets",
+      "type": "DashboardWidget[]",
+      "description": "Controlled or initial layout",
+      "required": false
+    },
+    {
+      "name": "onWidgetsChange",
+      "type": "(w: DashboardWidget[]) => void",
+      "description": "Called on edit",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(w: DashboardWidget[]) => void",
+      "description": "Save layout handler",
+      "required": false
+    },
+    {
+      "name": "defaultEditing",
+      "type": "boolean",
+      "description": "Start in edit mode",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "maxWidgets",
+      "type": "number",
+      "description": "Widget limit",
+      "default": "16",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

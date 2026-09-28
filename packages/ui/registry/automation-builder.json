@@ -1,0 +1,74 @@
+{
+  "name": "Automation Builder",
+  "slug": "automation-builder",
+  "description": "Trigger → condition / delay / action workflow editor with reordering, per-step validation, a plan step limit, live toggle gated on validity and a total run-time summary.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/automation-builder.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/switch.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Stalled deal nudge",
+      "file": "automation-builder-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "triggers",
+      "type": "SelectOption[]",
+      "description": "Available triggers",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "SelectOption[]",
+      "description": "Fields usable in conditions",
+      "required": true
+    },
+    {
+      "name": "actions",
+      "type": "(SelectOption & { targetLabel; targetOptions? })[]",
+      "description": "Actions and their target input",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "Automation",
+      "description": "Controlled or initial automation",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(a: Automation) => void",
+      "description": "Called on every edit",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(a: Automation) => void",
+      "description": "Shows Save; only fires when valid",
+      "required": false
+    },
+    {
+      "name": "maxSteps",
+      "type": "number",
+      "description": "Step limit",
+      "default": "12",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable editing",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

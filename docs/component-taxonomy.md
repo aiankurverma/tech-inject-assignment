@@ -271,13 +271,13 @@ Full sections built from primitives and composites.
 - [ ] `hero` · [ ] `feature-grid` · [ ] `pricing-table` · [ ] `testimonials` · [ ] `logo-cloud` ·
       [ ] `faq` · [ ] `cta-banner` · [ ] `footer` · [ ] `changelog` · [ ] `status-page` ·
       [ ] `help-center` · [ ] `customer-portal` · [ ] `booking-page` · [ ] `web-form` ·
-      [ ] `newsletter-signup` — public-facing sections.
+      [x] `newsletter-signup` — public-facing sections.
 
 ### Workflows (13)
 
-- [ ] `automation-builder` · [ ] `sequence-editor` · [ ] `approval-flow` · [ ] `lead-routing` ·
-      [ ] `csv-import-flow` · [ ] `merge-duplicates` · [ ] `bulk-edit` · [ ] `report-builder` ·
-      [ ] `dashboard-editor` · [ ] `email-template-editor` · [ ] `meeting-scheduler` ·
+- [x] `automation-builder` · [x] `sequence-editor` · [x] `approval-flow` · [x] `lead-routing` ·
+      [x] `csv-import-flow` · [x] `merge-duplicates` · [x] `bulk-edit` · [x] `report-builder` ·
+      [x] `dashboard-editor` · [ ] `email-template-editor` · [ ] `meeting-scheduler` ·
       [ ] `calendar-week` · [ ] `notification-center` — multi-step tools.
 
 ## 4. Industry templates (40)

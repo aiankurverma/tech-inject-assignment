@@ -1,0 +1,62 @@
+{
+  "name": "Bulk Edit",
+  "slug": "bulk-edit",
+  "description": "Bulk field update with type-aware operations (set, clear, ± %, add / remove tag), before → after preview, net currency delta, required-field guard and locked-record skipping.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/bulk-edit.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Edit deals",
+      "file": "bulk-edit-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "records",
+      "type": "BulkRecord[]",
+      "description": "Selected records (lockedReason skips one)",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "BulkField[]",
+      "description": "Editable fields: text, number, currency, select, tags",
+      "required": true
+    },
+    {
+      "name": "onApply",
+      "type": "(changes: BulkChange[]) => void | Promise<void>",
+      "description": "Receives only real changes",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for money fields",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "previewLimit",
+      "type": "number",
+      "description": "Rows in the preview",
+      "default": "6",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "description": "Shows Cancel",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
