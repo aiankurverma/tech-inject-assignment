@@ -126,7 +126,15 @@ export function PricingTable({
     return [...m.entries()];
   }, [comparison]);
 
-  const maxSaving = Math.round(annualDiscount * 100);
+  const maxSaving = React.useMemo(() => {
+    let best = 0;
+    for (const p of plans) {
+      if (!p.monthlyPerSeat) continue;
+      const annual = p.annualPerSeat ?? p.monthlyPerSeat * (1 - annualDiscount);
+      best = Math.max(best, (p.monthlyPerSeat - annual) / p.monthlyPerSeat);
+    }
+    return Math.round(best * 100);
+  }, [plans, annualDiscount]);
 
   return (
     <section className={cn("flex w-full flex-col gap-8 font-crm text-crm-fg", className)}>
