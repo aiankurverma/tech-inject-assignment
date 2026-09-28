@@ -77,5 +77,6 @@ export type ComponentRecord = {
   draft: Bundle;
   published?: Bundle;
   publishedAt?: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 };

@@ -15,6 +15,9 @@ export interface ListItem {
   access: "free" | "premium";
   version: string;
   locked: null | "sign_in_required" | "premium_required";
+  /** ISO dates; optional so older API responses still type-check. */
+  createdAt?: string | null;
+  publishedAt?: string | null;
 }
 
 interface Session {
