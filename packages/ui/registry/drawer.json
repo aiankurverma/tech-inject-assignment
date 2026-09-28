@@ -1,0 +1,58 @@
+{
+  "name": "Drawer",
+  "slug": "drawer",
+  "description": "Mobile bottom sheet with a grab handle and drag-to-dismiss, title, description, scrollable body and stacked footer actions.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-slot",
+    "@radix-ui/react-checkbox",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/drawer.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deal filters",
+      "file": "drawer-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Drawer title",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Subtitle",
+      "required": false
+    },
+    {
+      "name": "hideTitle",
+      "type": "boolean",
+      "description": "Keep the title for screen readers only",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Actions; stacked on mobile",
+      "required": false
+    },
+    {
+      "name": "dismissThreshold",
+      "type": "number",
+      "description": "Drag px that closes on release (default 120)",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

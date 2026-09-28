@@ -1,0 +1,49 @@
+{
+  "name": "Hover Card",
+  "slug": "hover-card",
+  "description": "Record preview that opens on hover or keyboard focus with open/close delays and stays open while the pointer is on the card.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/hover-card.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Owner preview",
+      "file": "hover-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "openDelay",
+      "type": "number",
+      "description": "ms before opening (default 400)",
+      "required": false
+    },
+    {
+      "name": "closeDelay",
+      "type": "number",
+      "description": "ms before closing (default 200)",
+      "required": false
+    },
+    {
+      "name": "open / onOpenChange",
+      "type": "boolean",
+      "description": "Controlled state",
+      "required": false
+    },
+    {
+      "name": "children (Trigger)",
+      "type": "ReactElement",
+      "description": "Focusable element, usually a link",
+      "required": true
+    },
+    {
+      "name": "arrow (Content)",
+      "type": "boolean",
+      "description": "Show an arrow",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

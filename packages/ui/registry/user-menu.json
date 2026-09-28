@@ -1,0 +1,59 @@
+{
+  "name": "User Menu",
+  "slug": "user-menu",
+  "description": "Avatar menu with identity header, role badge, account links and sign out. Avatar-only or full sidebar trigger, optional presence dot.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "lucide-react"],
+  "files": [
+    "components/crm/user-menu.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/dropdown-menu.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Sidebar and top bar",
+      "file": "user-menu-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "user",
+      "type": "{ name, email, avatarUrl?, role? }",
+      "description": "Signed-in user",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "DropdownMenuItem links",
+      "required": false
+    },
+    {
+      "name": "onSignOut",
+      "type": "() => void",
+      "description": "Shows a Sign out item when set",
+      "required": false
+    },
+    {
+      "name": "trigger",
+      "type": "\"avatar\" | \"full\"",
+      "description": "Trigger style (default avatar)",
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "\"online\" | \"away\" | \"busy\" | \"offline\"",
+      "description": "Presence dot",
+      "required": false
+    },
+    {
+      "name": "align / side",
+      "type": "string",
+      "description": "Menu placement",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
