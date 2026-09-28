@@ -1,7 +1,7 @@
 {
   "name": "File Drop",
   "slug": "file-drop",
-  "description": "Logo upload with preview tile, button, drag-and-drop and file type/size validation.",
+  "description": "Logo upload drop zone with drag-over state, preview tile, selected-file row (replace/remove) and file type/size validation.",
   "category": "Forms",
   "version": "1.0.0",
   "dependencies": ["lucide-react"],
@@ -44,6 +44,19 @@
       "type": "string",
       "description": "Button text",
       "default": "\"Upload logo\"",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading inside the drop zone",
+      "default": "\"Drag your company logo here\"",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "() => void",
+      "description": "Called when the selected file is cleared",
       "required": false
     }
   ],

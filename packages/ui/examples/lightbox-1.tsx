@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Paperclip } from "lucide-react";
+import { Expand, ImageOff, Paperclip } from "lucide-react";
 import { Lightbox, formatBytes, type LightboxFile } from "@/components/crm/lightbox";
 
 // Inline SVG "photos" so the example works offline.
@@ -38,7 +38,11 @@ const files: LightboxFile[] = [
     id: "f3",
     name: "whiteboard-architecture.jpg",
     kind: "image",
-    url: "https://invalid.example/whiteboard.jpg",
+    url: svg(
+      "Whiteboard — architecture",
+      ["Ingest → Queue → Rules engine", "Webhooks to ERP · 2 regions"],
+      280,
+    ),
     size: 3_120_550,
     uploadedBy: "Tom Becker",
     uploadedAt: "2026-09-21",
@@ -54,29 +58,69 @@ const files: LightboxFile[] = [
   },
 ];
 
+function Thumb({ file, className }: { file: LightboxFile; className?: string }) {
+  const [broken, setBroken] = React.useState(false);
+  if (file.kind !== "image") return <Paperclip className="size-6 text-crm-soft" aria-hidden />;
+  if (broken) return <ImageOff className="size-6 text-crm-subtle" aria-hidden />;
+  return (
+    <img
+      src={file.thumbUrl ?? file.url}
+      alt=""
+      onError={() => setBroken(true)}
+      className={className ?? "size-full object-cover"}
+    />
+  );
+}
+
 export default function Example() {
   const [open, setOpen] = React.useState(false);
   const [index, setIndex] = React.useState(0);
+  const current = files[index] ?? files[0]!;
   return (
-    <div className="w-full max-w-[520px] font-crm">
-      <p className="crm-eyebrow mb-2 text-[11px] text-crm-faint">Attachments · Acme Logistics</p>
+    <div className="flex w-full max-w-[640px] flex-col gap-3 font-crm text-crm-fg">
+      <div className="flex items-center justify-between">
+        <p className="crm-eyebrow text-crm-subtle">Attachments · Acme Logistics</p>
+        <span className="text-xs text-crm-subtle">{files.length} files</span>
+      </div>
+      <div className="overflow-hidden rounded-crm border border-crm-border bg-crm-card shadow-crm-raised">
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          aria-label={`Open ${current.name} in viewer`}
+          className="group relative grid aspect-[3/2] w-full cursor-zoom-in place-items-center bg-crm-raised outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60 focus-visible:ring-inset"
+        >
+          <Thumb file={current} className="size-full object-contain" />
+          <span className="absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full border border-crm-border bg-crm-card/90 px-2.5 py-1 text-xs text-crm-fg">
+            <Expand className="size-3.5" aria-hidden /> Open viewer
+          </span>
+        </button>
+        <div className="flex items-center justify-between gap-3 border-t border-crm-border px-3 py-2">
+          <span className="min-w-0">
+            <span className="block truncate text-sm font-medium">{current.name}</span>
+            <span className="text-[11px] text-crm-subtle">
+              {formatBytes(current.size)} · {current.uploadedBy}
+            </span>
+          </span>
+          <span className="shrink-0 text-xs text-crm-subtle tabular-nums">
+            {index + 1} / {files.length}
+          </span>
+        </div>
+      </div>
       <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         {files.map((f, i) => (
-          <li key={f.id}>
+          <li key={f.id} className="min-w-0">
             <button
               type="button"
-              onClick={() => {
+              aria-pressed={i === index}
+              onClick={() => setIndex(i)}
+              onDoubleClick={() => {
                 setIndex(i);
                 setOpen(true);
               }}
-              className="flex w-full cursor-pointer flex-col overflow-hidden rounded-xl border border-crm-border bg-crm-card text-left outline-none hover:border-crm-input focus-visible:ring-2 focus-visible:ring-crm-ring/60"
+              className="flex w-full cursor-pointer flex-col overflow-hidden rounded-crm border border-crm-border bg-crm-card text-left outline-none hover:border-crm-faint focus-visible:ring-2 focus-visible:ring-crm-ring/60 aria-[pressed=true]:border-crm-primary"
             >
-              <span className="grid h-20 place-items-center bg-crm-raised">
-                {f.kind === "image" ? (
-                  <img src={f.url} alt="" className="size-full object-cover" />
-                ) : (
-                  <Paperclip className="size-5 text-crm-soft" />
-                )}
+              <span className="grid h-24 place-items-center overflow-hidden bg-crm-raised">
+                <Thumb file={f} />
               </span>
               <span className="truncate px-2 pt-1.5 text-xs text-crm-fg">{f.name}</span>
               <span className="px-2 pb-1.5 text-[11px] text-crm-subtle">{formatBytes(f.size)}</span>
