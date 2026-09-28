@@ -115,7 +115,7 @@ export function FunnelChart({
       </figcaption>
       <ol className="flex flex-col gap-1">
         {rows.map((r, i) => {
-          const width = Math.max(6, (metric(r.stage) / top) * 100);
+          const width = Math.max(3, Math.sqrt(metric(r.stage) / top) * 100);
           const Row = onStageClick ? "button" : "div";
           return (
             <li key={r.stage.key}>
@@ -149,21 +149,19 @@ export function FunnelChart({
                   ? { type: "button" as const, onClick: () => onStageClick(r.stage) }
                   : {})}
                 className={cn(
-                  "group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-3 rounded-crm text-left outline-none",
+                  "group grid w-full grid-cols-[8.5rem_minmax(0,1fr)_auto] items-center gap-3 rounded-crm text-left outline-none",
                   onStageClick &&
                     "cursor-pointer focus-visible:ring-2 focus-visible:ring-crm-ring/60",
                 )}
                 aria-label={`${r.stage.label}: ${num.format(r.stage.count)} records, ${pct(r.overall)} of entries`}
               >
-                <span className="relative h-9 min-w-0">
+                <span className="truncate text-xs font-medium text-crm-fg">{r.stage.label}</span>
+                <span className="relative h-7 min-w-0 rounded-crm bg-crm-muted/40">
                   <span
                     className="absolute inset-y-0 left-0 rounded-crm bg-crm-primary/80 transition-[width] duration-300 group-hover:bg-crm-primary"
                     style={{ width: `${width}%`, opacity: 1 - i * 0.1 }}
                     aria-hidden
                   />
-                  <span className="relative flex h-full items-center gap-2 px-3 text-xs">
-                    <span className="truncate font-medium text-white">{r.stage.label}</span>
-                  </span>
                 </span>
                 <span className="flex w-28 flex-col items-end text-xs leading-tight">
                   <span className="font-medium tabular-nums">{num.format(r.stage.count)}</span>

@@ -64,7 +64,6 @@ export default function Example() {
           onOpen={setSelected}
         />
       ))}
-      {companies[0] ? <CompanyCard company={companies[0]} loading /> : null}
     </div>
   );
 }

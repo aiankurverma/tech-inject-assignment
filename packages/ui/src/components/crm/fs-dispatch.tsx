@@ -44,6 +44,24 @@ const prioBar: Record<DispatchJob["priority"], string> = {
   normal: "border-l-crm-primary",
 };
 
+const offShiftBg =
+  "repeating-linear-gradient(135deg, transparent 0 6px, var(--color-crm-border) 6px 7px)";
+
+/** Assigns each job a sub-row so overlapping jobs on one technician stack instead of covering each other. */
+function jobRows(lane: DispatchJob[], fallback: number) {
+  const sorted = [...lane].sort((a, b) => (a.start ?? fallback) - (b.start ?? fallback));
+  const ends: number[] = [];
+  const row = new Map<string, number>();
+  for (const j of sorted) {
+    const st = j.start ?? fallback;
+    let r = ends.findIndex((e) => e <= st);
+    if (r < 0) r = ends.length;
+    ends[r] = st + j.durationMin / 60;
+    row.set(j.id, r);
+  }
+  return { row, count: Math.max(1, ends.length) };
+}
+
 const fmtHour = (h: number) =>
   `${String(Math.floor(h)).padStart(2, "0")}:${String(Math.round((h % 1) * 60)).padStart(2, "0")}`;
 
@@ -183,9 +201,9 @@ export function FsDispatch({
         {announce}
       </p>
 
-      <div className="grid gap-3 lg:grid-cols-[220px_minmax(0,1fr)]">
+      <div className="grid gap-3">
         <div
-          className="flex flex-col gap-1.5 rounded-crm border border-dashed border-crm-border p-2"
+          className="flex flex-wrap items-start gap-1.5 rounded-crm border border-dashed border-crm-border p-2"
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
@@ -194,7 +212,7 @@ export function FsDispatch({
           aria-label="Unassigned queue"
           role="group"
         >
-          <span className="crm-caption px-1 text-crm-soft">Unassigned · {queue.length}</span>
+          <span className="crm-caption w-full px-1 text-crm-soft">Unassigned · {queue.length}</span>
           {queue.length === 0 ? (
             <p className="px-1 py-4 text-center text-xs text-crm-subtle">All jobs dispatched.</p>
           ) : (
@@ -213,7 +231,9 @@ export function FsDispatch({
               >
                 <GripVertical className="mt-0.5 size-3 shrink-0 text-crm-subtle" aria-hidden />
                 <span className="flex min-w-0 flex-col">
-                  <span className="truncate text-crm-fg">{j.title}</span>
+                  <span className="line-clamp-2 font-medium break-words text-crm-fg">
+                    {j.title}
+                  </span>
                   <span className="text-crm-subtle">
                     {j.id} · {j.skill} · {j.durationMin}m
                   </span>
@@ -224,7 +244,7 @@ export function FsDispatch({
         </div>
 
         <div className="overflow-x-auto">
-          <div className="min-w-[720px]">
+          <div className="min-w-[960px]">
             <div className="ml-[180px] flex text-[11px] text-crm-subtle" aria-hidden>
               {Array.from({ length: hours }, (_, i) => (
                 <span key={i} className="flex-1 border-l border-crm-border pl-1">
@@ -234,6 +254,7 @@ export function FsDispatch({
             </div>
             {technicians.map((t) => {
               const lane = items.filter((j) => j.technicianId === t.id);
+              const rows = jobRows(lane, t.shiftStart);
               const booked = lane.reduce((s, j) => s + j.durationMin, 0);
               const capacity = (t.shiftEnd - t.shiftStart) * 60;
               const pickedJob = items.find((j) => j.id === picked);
@@ -273,18 +294,35 @@ export function FsDispatch({
                     }}
                     onDragLeave={() => setOverLane(null)}
                     onDrop={(e) => onLaneDrop(e, t.id)}
-                    className={cn("relative h-14 flex-1", overLane === t.id && "bg-crm-primary/10")}
+                    className={cn("relative flex-1", overLane === t.id && "bg-crm-primary/10")}
+                    style={{ height: rows.count * 52 + 4 }}
                   >
-                    <span
-                      aria-hidden
-                      className="absolute inset-y-0 left-0 bg-crm-muted/60"
-                      style={{ width: `${(Math.max(0, t.shiftStart - dayStart) / hours) * 100}%` }}
-                    />
-                    <span
-                      aria-hidden
-                      className="absolute inset-y-0 right-0 bg-crm-muted/60"
-                      style={{ width: `${(Math.max(0, dayEnd - t.shiftEnd) / hours) * 100}%` }}
-                    />
+                    {Math.max(0, t.shiftStart - dayStart) > 0 ? (
+                      <span
+                        aria-hidden
+                        title="Off shift"
+                        className="absolute inset-y-0 left-0 flex items-center justify-center overflow-hidden text-[10px] text-crm-subtle"
+                        style={{
+                          width: `${(Math.max(0, t.shiftStart - dayStart) / hours) * 100}%`,
+                          backgroundImage: offShiftBg,
+                        }}
+                      >
+                        {Math.max(0, t.shiftStart - dayStart) >= 1 ? "Off shift" : null}
+                      </span>
+                    ) : null}
+                    {Math.max(0, dayEnd - t.shiftEnd) > 0 ? (
+                      <span
+                        aria-hidden
+                        title="Off shift"
+                        className="absolute inset-y-0 right-0 flex items-center justify-center overflow-hidden text-[10px] text-crm-subtle"
+                        style={{
+                          width: `${(Math.max(0, dayEnd - t.shiftEnd) / hours) * 100}%`,
+                          backgroundImage: offShiftBg,
+                        }}
+                      >
+                        {Math.max(0, dayEnd - t.shiftEnd) >= 1 ? "Off shift" : null}
+                      </span>
+                    ) : null}
                     {lane.map((j) => {
                       const s = j.start ?? t.shiftStart;
                       const bad = conflicts.has(j.id);
@@ -309,17 +347,20 @@ export function FsDispatch({
                           title={`${j.title} · ${fmtHour(s)}–${fmtHour(s + j.durationMin / 60)}${noSkill ? " · missing skill " + j.skill : ""}`}
                           aria-label={`${j.id} ${j.title}, ${fmtHour(s)} to ${fmtHour(s + j.durationMin / 60)}${bad ? ", overlaps another job" : ""}${noSkill ? ", technician lacks " + j.skill : ""}. Arrow keys move, Delete unassigns.`}
                           className={cn(
-                            "absolute top-1.5 bottom-1.5 flex cursor-grab flex-col overflow-hidden rounded-crm border border-l-4 bg-crm-raised px-1.5 text-left text-[11px] leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-primary",
+                            "absolute flex h-[46px] cursor-grab flex-col justify-center overflow-hidden rounded-crm border border-l-4 bg-crm-raised px-1.5 text-left text-[11px] leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-primary",
                             prioBar[j.priority],
                             bad ? "border-crm-danger" : "border-crm-border",
                             picked === j.id && "ring-2 ring-crm-primary",
                           )}
                           style={{
+                            top: 4 + (rows.row.get(j.id) ?? 0) * 52,
                             left: `${((s - dayStart) / hours) * 100}%`,
                             width: `${(j.durationMin / 60 / hours) * 100}%`,
                           }}
                         >
-                          <span className="truncate text-crm-fg">{j.title}</span>
+                          <span className="line-clamp-2 font-medium break-words text-crm-fg">
+                            {j.title}
+                          </span>
                           <span
                             className={cn(
                               "truncate",
