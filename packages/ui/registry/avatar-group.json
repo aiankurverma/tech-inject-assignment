@@ -1,0 +1,45 @@
+{
+  "name": "Avatar Group",
+  "slug": "avatar-group",
+  "description": "Overlapping stack of avatars with a +N overflow bubble listing hidden names.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/avatar-group.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Team",
+      "file": "avatar-group-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "people",
+      "type": "{ name: string; src?: string }[]",
+      "description": "People to show",
+      "required": true
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Avatars shown before +N",
+      "default": "4",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"xs\" | \"sm\" | \"md\" | \"lg\"",
+      "description": "Avatar diameter",
+      "default": "\"sm\"",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible group label; defaults to the names",
+      "required": false
+    }
+  ],
+  "usage": "Use for owners, deal teams and meeting attendees."
+}

@@ -1,0 +1,53 @@
+{
+  "name": "Divider",
+  "slug": "divider",
+  "description": "Horizontal or vertical rule with optional aligned label and dashed variant.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/divider.tsx"],
+  "examples": [
+    {
+      "title": "Variants",
+      "file": "divider-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "orientation",
+      "type": "\"horizontal\" | \"vertical\"",
+      "description": "Direction",
+      "default": "\"horizontal\"",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "description": "Text on a horizontal divider",
+      "required": false
+    },
+    {
+      "name": "align",
+      "type": "\"start\" | \"center\" | \"end\"",
+      "description": "Label position",
+      "default": "\"center\"",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"solid\" | \"dashed\"",
+      "description": "Line style",
+      "default": "\"solid\"",
+      "required": false
+    },
+    {
+      "name": "decorative",
+      "type": "boolean",
+      "description": "Hide from assistive tech",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
