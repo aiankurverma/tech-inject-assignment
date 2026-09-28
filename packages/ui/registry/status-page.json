@@ -1,0 +1,49 @@
+{
+  "name": "Status Page",
+  "slug": "status-page",
+  "description": "Public status page with worst-state overall banner, grouped services, 90-day uptime bars with per-day downtime readout and uptime %, active and past incident timelines with resolution time.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/status-page.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Degraded API with incidents",
+      "file": "status-page-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "services",
+      "type": "StatusService[]",
+      "description": "Services with state, group and daily downtime history",
+      "required": true
+    },
+    {
+      "name": "incidents",
+      "type": "StatusIncident[]",
+      "description": "Incidents with impact, affected services and updates",
+      "required": false
+    },
+    {
+      "name": "updatedAt",
+      "type": "string",
+      "description": "ISO time of last refresh",
+      "required": false
+    },
+    {
+      "name": "onSubscribe",
+      "type": "() => void",
+      "description": "Shows the Subscribe button",
+      "required": false
+    },
+    {
+      "name": "timeZone",
+      "type": "string",
+      "description": "IANA zone for timestamps",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,73 @@
+{
+  "name": "Booking Page",
+  "slug": "booking-page",
+  "description": "Public scheduling page: meeting types, keyboard-navigable month calendar of available days, time-zone aware slot list with minimum notice, details form with validation and confirmation.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/booking-page.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/textarea.tsx",
+    "components/crm/avatar.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Sales demo booking",
+      "file": "booking-page-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "host",
+      "type": "{ name; title?; avatar? }",
+      "description": "Person being booked",
+      "required": true
+    },
+    {
+      "name": "eventTypes",
+      "type": "BookingEventType[]",
+      "description": "Meeting types with duration and location",
+      "required": true
+    },
+    {
+      "name": "slots",
+      "type": "string[]",
+      "description": "Open slot starts as ISO UTC",
+      "required": true
+    },
+    {
+      "name": "onBook",
+      "type": "(details: BookingDetails) => Promise<void>",
+      "description": "Create the booking; reject to show an error",
+      "required": true
+    },
+    {
+      "name": "defaultTimeZone",
+      "type": "string",
+      "description": "Viewer time zone (defaults to browser)",
+      "required": false
+    },
+    {
+      "name": "timeZones",
+      "type": "string[]",
+      "description": "Selectable IANA zones",
+      "required": false
+    },
+    {
+      "name": "minNoticeMinutes",
+      "type": "number",
+      "description": "Hide slots sooner than this (default 120)",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
