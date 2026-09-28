@@ -145,7 +145,7 @@ export function Faq({
             aria-label="Search FAQ"
           />
           {categories.length > 1 ? (
-            <div role="tablist" aria-label="Categories" className="flex flex-wrap gap-1">
+            <div role="group" aria-label="Filter by category" className="flex flex-wrap gap-1">
               {["all", ...categories].map((c) => {
                 const count =
                   c === "all" ? items.length : items.filter((i) => i.category === c).length;
@@ -153,8 +153,7 @@ export function Faq({
                   <button
                     key={c}
                     type="button"
-                    role="tab"
-                    aria-selected={category === c}
+                    aria-pressed={category === c}
                     onClick={() => setCategory(c)}
                     className={cn(
                       "h-7 rounded-full px-2.5 text-xs outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
