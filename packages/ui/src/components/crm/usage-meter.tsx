@@ -81,7 +81,7 @@ export function UsageMeter({
           {label}
         </span>
         {loading ? (
-          <span className="h-3 w-20 animate-pulse rounded bg-crm-muted" aria-hidden />
+          <span className="shrink-0 animate-pulse text-xs text-crm-soft">Calculating…</span>
         ) : (
           <span className="shrink-0 text-xs tabular-nums">
             <span className={cn(tone === "over" && "text-crm-danger")}>{num.format(used)}</span>

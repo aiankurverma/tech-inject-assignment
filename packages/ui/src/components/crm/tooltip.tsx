@@ -16,14 +16,23 @@ export interface TooltipProps {
   /** A single focusable element (button, link, input). */
   children: React.ReactElement<React.HTMLAttributes<HTMLElement>>;
   className?: string;
+  /** Start with the tooltip visible (useful for onboarding hints and previews). */
+  defaultOpen?: boolean;
 }
 
 /**
  * Lightweight tooltip with no extra dependency. Shows on hover (after `delay`) and on keyboard
  * focus, hides on Escape, and links itself to the trigger with aria-describedby.
  */
-export function Tooltip({ content, side = "top", delay = 300, children, className }: TooltipProps) {
-  const [open, setOpen] = React.useState(false);
+export function Tooltip({
+  content,
+  side = "top",
+  delay = 300,
+  children,
+  className,
+  defaultOpen = false,
+}: TooltipProps) {
+  const [open, setOpen] = React.useState(defaultOpen);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const id = React.useId();
   const show = (wait: number) => {

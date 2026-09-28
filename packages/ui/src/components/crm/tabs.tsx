@@ -28,7 +28,7 @@ export const TabsTrigger = React.forwardRef<
       className={cn(
         "crm-caption -mb-px cursor-pointer border-b border-transparent py-4 font-crm text-crm-subtle outline-none select-none",
         "transition-[color,border-color] duration-150 ease-crm hover:text-crm-soft focus-visible:text-crm-fg focus-visible:underline",
-        "data-[state=active]:border-crm-fg data-[state=active]:text-crm-fg disabled:opacity-50",
+        "data-[state=active]:border-crm-fg data-[state=active]:text-crm-fg disabled:cursor-not-allowed disabled:text-crm-soft disabled:opacity-70",
         className,
       )}
       {...props}
