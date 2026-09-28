@@ -81,6 +81,7 @@ export function SettingsProfile({
   loading,
   className,
 }: SettingsProfileProps) {
+  const uid = React.useId();
   const [saved, setSaved] = React.useState(initialValues);
   const [v, setV] = React.useState(initialValues);
   const [submitted, setSubmitted] = React.useState(false);
@@ -213,17 +214,22 @@ export function SettingsProfile({
 
       <section className="grid gap-3 rounded-crm border border-crm-border bg-crm-card p-4 shadow-crm-raised sm:grid-cols-2">
         <h3 className="crm-eyebrow text-crm-subtle sm:col-span-2">Personal info</h3>
-        <FormField label="First name" htmlFor="sp-first" required error={show("firstName")}>
+        <FormField
+          label="First name"
+          htmlFor={`${uid}-sp-first`}
+          required
+          error={show("firstName")}
+        >
           <Input
-            {...fieldProps("firstName", "sp-first")}
+            {...fieldProps("firstName", `${uid}-sp-first`)}
             value={v.firstName}
             autoComplete="given-name"
             onChange={(e) => set("firstName", e.target.value)}
           />
         </FormField>
-        <FormField label="Last name" htmlFor="sp-last" required error={show("lastName")}>
+        <FormField label="Last name" htmlFor={`${uid}-sp-last`} required error={show("lastName")}>
           <Input
-            {...fieldProps("lastName", "sp-last")}
+            {...fieldProps("lastName", `${uid}-sp-last`)}
             value={v.lastName}
             autoComplete="family-name"
             onChange={(e) => set("lastName", e.target.value)}
@@ -231,7 +237,7 @@ export function SettingsProfile({
         </FormField>
         <FormField
           label="Work email"
-          htmlFor="sp-email"
+          htmlFor={`${uid}-sp-email`}
           required
           error={show("email")}
           hint={
@@ -241,25 +247,25 @@ export function SettingsProfile({
           }
         >
           <Input
-            {...fieldProps("email", "sp-email")}
+            {...fieldProps("email", `${uid}-sp-email`)}
             type="email"
             value={v.email}
             autoComplete="email"
             onChange={(e) => set("email", e.target.value)}
           />
         </FormField>
-        <FormField label="Phone" htmlFor="sp-phone" error={show("phone")}>
+        <FormField label="Phone" htmlFor={`${uid}-sp-phone`} error={show("phone")}>
           <Input
-            {...fieldProps("phone", "sp-phone")}
+            {...fieldProps("phone", `${uid}-sp-phone`)}
             type="tel"
             value={v.phone}
             autoComplete="tel"
             onChange={(e) => set("phone", e.target.value)}
           />
         </FormField>
-        <FormField label="Job title" htmlFor="sp-title" className="sm:col-span-2">
+        <FormField label="Job title" htmlFor={`${uid}-sp-title`} className="sm:col-span-2">
           <Input
-            id="sp-title"
+            id={`${uid}-sp-title`}
             value={v.title}
             autoComplete="organization-title"
             onChange={(e) => set("title", e.target.value)}
@@ -271,10 +277,10 @@ export function SettingsProfile({
         <SettingsRow
           label="Time zone"
           description="Used for meeting links, reminders and SLA clocks."
-          htmlFor="sp-tz"
+          htmlFor={`${uid}-sp-tz`}
           control={
             <select
-              id="sp-tz"
+              id={`${uid}-sp-tz`}
               value={v.timezone}
               onChange={(e) => set("timezone", e.target.value)}
               className="h-8 max-w-60 rounded-crm border border-crm-border bg-crm-bg px-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
@@ -380,9 +386,9 @@ export function SettingsProfile({
       </SettingsGroup>
 
       <section className="rounded-crm border border-crm-border bg-crm-card p-4 shadow-crm-raised">
-        <FormField label="Email signature" htmlFor="sp-sig" error={show("signature")}>
+        <FormField label="Email signature" htmlFor={`${uid}-sp-sig`} error={show("signature")}>
           <Textarea
-            id="sp-sig"
+            id={`${uid}-sp-sig`}
             value={v.signature}
             onChange={(e) => set("signature", e.target.value)}
             showCount

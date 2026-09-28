@@ -116,6 +116,7 @@ export function MeetingNotes({
   readOnly,
   className,
 }: MeetingNotesProps) {
+  const domId = React.useId();
   const [inner, setInner] = React.useState(defaultValue);
   const v = valueProp ?? inner;
   const set = (p: Partial<MeetingNotesValue>) => {
@@ -188,8 +189,8 @@ export function MeetingNotes({
       </header>
 
       <aside className="flex flex-col gap-4">
-        <section aria-labelledby="mn-att">
-          <h3 id="mn-att" className="crm-eyebrow mb-2 text-crm-subtle">
+        <section aria-labelledby={`${domId}-mn-att`}>
+          <h3 id={`${domId}-mn-att`} className="crm-eyebrow mb-2 text-crm-subtle">
             Attendees · {v.attendees.filter((a) => a.attended !== false).length}/
             {v.attendees.length}
           </h3>
@@ -231,8 +232,8 @@ export function MeetingNotes({
             ))}
           </ul>
         </section>
-        <section aria-labelledby="mn-agenda">
-          <h3 id="mn-agenda" className="crm-eyebrow mb-2 text-crm-subtle">
+        <section aria-labelledby={`${domId}-mn-agenda`}>
+          <h3 id={`${domId}-mn-agenda`} className="crm-eyebrow mb-2 text-crm-subtle">
             Agenda · {v.agenda.filter((a) => a.covered).length}/{v.agenda.length}
           </h3>
           <ol className="flex flex-col gap-1">
@@ -264,12 +265,12 @@ export function MeetingNotes({
       </aside>
 
       <div className="flex min-w-0 flex-col gap-4">
-        <section aria-labelledby="mn-notes">
-          <h3 id="mn-notes" className="crm-eyebrow mb-2 text-crm-subtle">
+        <section aria-labelledby={`${domId}-mn-notes`}>
+          <h3 id={`${domId}-mn-notes`} className="crm-eyebrow mb-2 text-crm-subtle">
             Notes
           </h3>
           <Textarea
-            aria-labelledby="mn-notes"
+            aria-labelledby={`${domId}-mn-notes`}
             value={v.notes}
             readOnly={readOnly}
             onChange={(e) => set({ notes: e.target.value })}
@@ -280,8 +281,11 @@ export function MeetingNotes({
           />
         </section>
 
-        <section aria-labelledby="mn-dec">
-          <h3 id="mn-dec" className="crm-eyebrow mb-2 flex items-center gap-1 text-crm-subtle">
+        <section aria-labelledby={`${domId}-mn-dec`}>
+          <h3
+            id={`${domId}-mn-dec`}
+            className="crm-eyebrow mb-2 flex items-center gap-1 text-crm-subtle"
+          >
             <Gavel className="size-3" aria-hidden /> Decisions
           </h3>
           <ul className="flex flex-col gap-1 text-sm">
@@ -326,8 +330,11 @@ export function MeetingNotes({
           ) : null}
         </section>
 
-        <section aria-labelledby="mn-act">
-          <h3 id="mn-act" className="crm-eyebrow mb-2 flex items-center gap-1 text-crm-subtle">
+        <section aria-labelledby={`${domId}-mn-act`}>
+          <h3
+            id={`${domId}-mn-act`}
+            className="crm-eyebrow mb-2 flex items-center gap-1 text-crm-subtle"
+          >
             <ListChecks className="size-3" aria-hidden /> Action items ·{" "}
             {v.actions.filter((a) => !a.done).length} open
           </h3>

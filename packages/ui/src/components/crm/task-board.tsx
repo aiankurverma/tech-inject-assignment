@@ -82,6 +82,7 @@ export function TaskBoard({
   loading,
   className,
 }: TaskBoardProps) {
+  const uid = React.useId();
   const [inner, setInner] = React.useState(defaultTasks);
   const tasks = tasksProp ?? inner;
   const [assignee, setAssignee] = React.useState("all");
@@ -129,7 +130,6 @@ export function TaskBoard({
     setDraft("");
     setAdding(null);
   };
-
 
   return (
     <section
@@ -272,7 +272,7 @@ export function TaskBoard({
                               move(t.id, target.id);
                             }
                           }}
-                          aria-describedby="task-board-kbd-hint"
+                          aria-describedby={`${uid}-task-board-kbd-hint`}
                           className={cn(
                             "block w-full text-left text-sm outline-none focus-visible:underline",
                             t.status === "done" && "text-crm-subtle line-through",
@@ -381,7 +381,7 @@ export function TaskBoard({
           );
         })}
       </div>
-      <p id="task-board-kbd-hint" className="sr-only">
+      <p id={`${uid}-task-board-kbd-hint`} className="sr-only">
         Press Alt plus Left or Right arrow to move the task between columns.
       </p>
     </section>

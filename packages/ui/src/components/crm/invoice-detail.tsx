@@ -100,6 +100,7 @@ export function InvoiceDetail({
   onDownload,
   className,
 }: InvoiceDetailProps) {
+  const uid = React.useId();
   const fmt = React.useMemo(
     () => new Intl.NumberFormat(locale, { style: "currency", currency: invoice.currency ?? "USD" }),
     [locale, invoice.currency],
@@ -230,7 +231,7 @@ export function InvoiceDetail({
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               aria-invalid={!!err || undefined}
-              aria-describedby="inv-pay-err"
+              aria-describedby={`${uid}-inv-pay-err`}
               autoFocus
             />
           </label>
@@ -281,7 +282,11 @@ export function InvoiceDetail({
             </Button>
           </div>
           {err ? (
-            <p id="inv-pay-err" role="alert" className="text-xs text-crm-danger sm:col-span-5">
+            <p
+              id={`${uid}-inv-pay-err`}
+              role="alert"
+              className="text-xs text-crm-danger sm:col-span-5"
+            >
               {err}
             </p>
           ) : null}
