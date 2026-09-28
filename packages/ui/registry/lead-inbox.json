@@ -1,0 +1,77 @@
+{
+  "name": "Lead Inbox",
+  "slug": "lead-inbox",
+  "description": "Speed-to-lead triage inbox: unassigned/mine/all views, live SLA countdown and breach counter, score tags, j/k/x/Enter keyboard navigation, bulk assign/contacted/disqualify and a preview pane with qualify actions.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/lead-inbox.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "lead-inbox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "leads / defaultLeads",
+      "type": "InboxLead[]",
+      "description": "Controlled or initial leads { id, name, email, phone?, company, title?, source, score, receivedAt, status, assignee?, message? }",
+      "required": false
+    },
+    {
+      "name": "onLeadsChange",
+      "type": "(leads: InboxLead[]) => void",
+      "description": "Fires after any triage action",
+      "required": false
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Rep used by Mine view and Assign to me",
+      "required": true
+    },
+    {
+      "name": "slaMinutes",
+      "type": "number",
+      "description": "First-contact target in minutes",
+      "default": "15",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "string",
+      "description": "Fixed ISO clock; ticks every 30s when omitted",
+      "required": false
+    },
+    {
+      "name": "onOpenLead",
+      "type": "(lead) => void",
+      "description": "Enter / double-click",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

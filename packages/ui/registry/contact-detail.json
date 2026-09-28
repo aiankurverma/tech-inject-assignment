@@ -1,0 +1,72 @@
+{
+  "name": "Contact Detail",
+  "slug": "contact-detail",
+  "description": "Contact record page: consent-aware email/call actions, live local time with working-hours hint, engagement counts, filterable activity feed with a Ctrl+Enter note composer, deals total and copyable properties.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "@radix-ui/react-tabs", "lucide-react"],
+  "files": [
+    "components/crm/contact-detail.tsx",
+    "components/crm/activity-timeline.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/description-list.tsx",
+    "components/crm/tabs.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "contact-detail-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "contact",
+      "type": "ContactRecord",
+      "description": "{ id, name, title?, company?, email, phone?, location?, timeZone?, owner, lifecycle, tags?, doNotEmail?, doNotCall?, linkedin?, createdAt, deals?, activities }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for deal amounts",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onLogNote",
+      "type": "(text: string) => void",
+      "description": "Called when a note is saved (also added locally)",
+      "required": false
+    },
+    {
+      "name": "onEmail",
+      "type": "(c) => void",
+      "description": "Email button handler; disabled when doNotEmail",
+      "required": false
+    },
+    {
+      "name": "onCall",
+      "type": "(c) => void",
+      "description": "Call button handler; disabled when doNotCall or no phone",
+      "required": false
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Author of notes logged here",
+      "default": "\"You\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

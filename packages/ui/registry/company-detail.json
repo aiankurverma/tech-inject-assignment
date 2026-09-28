@@ -1,0 +1,65 @@
+{
+  "name": "Company Detail",
+  "slug": "company-detail",
+  "description": "Account 360 page: computed health score (adoption, NPS, urgent tickets, renewal), KPI strip (ARR, pipeline, lifetime won, renewal countdown, open tickets), renewal-risk warning and tabs for overview, contacts, deals (open/closed), tickets and activity.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-tabs", "lucide-react"],
+  "files": [
+    "components/crm/company-detail.tsx",
+    "components/crm/activity-timeline.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/description-list.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/tabs.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "company-detail-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "company",
+      "type": "CompanyRecord",
+      "description": "{ id, name, domain, industry, employees, location?, owner, arr, renewalDate?, seats?, nps?, description?, tags?, contacts, deals, tickets, activities? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "Reference ISO date for the renewal countdown",
+      "required": false
+    },
+    {
+      "name": "defaultTab",
+      "type": "\"overview\" | \"contacts\" | \"deals\" | \"tickets\" | \"activity\"",
+      "description": "Initial tab",
+      "default": "\"overview\"",
+      "required": false
+    },
+    {
+      "name": "onOpenDeal / onOpenContact / onOpenTicket",
+      "type": "(item) => void",
+      "description": "Row click handlers",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
