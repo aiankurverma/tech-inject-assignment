@@ -22,7 +22,7 @@ export interface SignaturePadProps {
   /** Legal name of the signer, shown under the line and used to pre-fill type mode. */
   signerName?: string;
   onChange?: (value: SignatureValue | null) => void;
-  /** Ink colour; defaults to the CRM foreground. */
+  /** Ink colour; defaults to the computed CRM foreground token (theme-aware). */
   color?: string;
   height?: number;
   disabled?: boolean;
@@ -51,7 +51,7 @@ const TYPE_FONTS = [
 export function SignaturePad({
   signerName,
   onChange,
-  color = "#f9fbff",
+  color,
   height = 180,
   disabled,
   required,
@@ -82,8 +82,9 @@ export function SignaturePad({
       ctx.scale(dpr, dpr);
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-      ctx.strokeStyle = color;
-      ctx.fillStyle = color;
+      const ink = color ?? getComputedStyle(c).color;
+      ctx.strokeStyle = ink;
+      ctx.fillStyle = ink;
       if (mode === "type") {
         const f = TYPE_FONTS.find((x) => x.id === font) ?? TYPE_FONTS[0];
         const w = c.width / dpr;
@@ -318,7 +319,7 @@ export function SignaturePad({
           onPointerUp={onUp}
           onPointerCancel={onUp}
           className={cn(
-            "block touch-none",
+            "block touch-none text-crm-fg",
             mode === "draw" && !disabled ? "cursor-crosshair" : "cursor-default",
           )}
         />
