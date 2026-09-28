@@ -143,6 +143,7 @@ export function TaxBreakdown({
   className,
 }: TaxBreakdownProps) {
   const [open, setOpen] = React.useState<Record<string, boolean>>({});
+  const uid = React.useId();
   const calc = React.useMemo(
     () =>
       computeTaxes(
@@ -205,7 +206,7 @@ export function TaxBreakdown({
           ) : (
             calc.byRate.map((r) => {
               const isOpen = !!open[r.rate.id];
-              const panelId = `tax-${r.rate.id}`;
+              const panelId = `${uid}-tax-${r.rate.id}`;
               return (
                 <div key={r.rate.id} className="px-4 py-2.5">
                   <div className="flex items-center justify-between gap-3">

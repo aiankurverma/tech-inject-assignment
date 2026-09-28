@@ -59,7 +59,7 @@ export function ShellSplit({
   const clamp = React.useCallback(
     (px: number) => {
       const rootW = rootRef.current?.clientWidth ?? Infinity;
-      return Math.round(Math.min(Math.max(px, minSize), Math.min(maxSize, rootW - 240)));
+      return Math.round(Math.max(minSize, Math.min(px, maxSize, rootW - 240)));
     },
     [minSize, maxSize],
   );
