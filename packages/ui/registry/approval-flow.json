@@ -1,0 +1,59 @@
+{
+  "name": "Approval Flow",
+  "slug": "approval-flow",
+  "description": "Discount / deal-desk approval chain derived from threshold rules, with net price, per-step SLA countdowns, reasons, comments and approve / reject for the current approver.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/approval-flow.tsx",
+    "components/crm/button.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Discount approval",
+      "file": "approval-flow-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "request",
+      "type": "ApprovalRequest",
+      "description": "Deal, amount, discount %, requester, submittedAt",
+      "required": true
+    },
+    {
+      "name": "rules",
+      "type": "ApprovalRule[]",
+      "description": "Approver rules with discount / amount thresholds and SLA hours",
+      "required": true
+    },
+    {
+      "name": "records",
+      "type": "ApprovalRecord[]",
+      "description": "Decisions made so far",
+      "required": true
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Viewer; acts only when they own the current step",
+      "required": true
+    },
+    {
+      "name": "onDecision",
+      "type": "(ruleId, decision, comment) => void",
+      "description": "Approve / reject handler (reject needs a comment)",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override the clock",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

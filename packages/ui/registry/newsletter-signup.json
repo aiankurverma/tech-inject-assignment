@@ -1,0 +1,69 @@
+{
+  "name": "Newsletter Signup",
+  "slug": "newsletter-signup",
+  "description": "Email capture with typo suggestions (gmial.com → gmail.com), work-email and disposable-domain checks, topic preferences, explicit GDPR consent and async success / error states.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/newsletter-signup.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Work email with topics",
+      "file": "newsletter-signup-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onSubscribe",
+      "type": "(s: { email; topics; consent; consentedAt }) => Promise<void> | void",
+      "description": "Submit handler; throw an Error to show its message",
+      "required": true
+    },
+    {
+      "name": "topics",
+      "type": "{ id; label; cadence?; defaultSelected? }[]",
+      "description": "Optional topic checkboxes (at least one required)",
+      "required": false
+    },
+    {
+      "name": "requireWorkEmail",
+      "type": "boolean",
+      "description": "Reject free mailbox domains",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "blockedDomains",
+      "type": "string[]",
+      "description": "Disposable domains to reject",
+      "required": false
+    },
+    {
+      "name": "doubleOptIn",
+      "type": "boolean",
+      "description": "Success copy asks the user to confirm",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "layout",
+      "type": "\"stacked\" | \"inline\"",
+      "description": "Button below or beside the field",
+      "default": "\"stacked\"",
+      "required": false
+    },
+    {
+      "name": "subscriberCount",
+      "type": "number",
+      "description": "Social proof count",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
