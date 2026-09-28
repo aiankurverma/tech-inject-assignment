@@ -290,7 +290,7 @@ Opinionated page sets (shell + records + dashboard) per vertical, 4 per industry
 - [ ] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
 - [ ] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.
 - [ ] SaaS B2B: `saas-accounts`, `saas-renewals`, `saas-health`, `saas-dashboard`.
-- [ ] E-commerce: `shop-customers`, `shop-orders`, [x] `shop-returns`, [x] `shop-dashboard`.
-- [x] Field service: [x] `fs-jobs`, [x] `fs-dispatch`, [x] `fs-technicians`, [x] `fs-dashboard`.
-- [x] Nonprofit: [x] `np-donors`, [x] `np-campaigns`, [x] `np-volunteers`, [x] `np-dashboard`.
-- [ ] Hospitality: `hotel-reservations`, `hotel-guests`, `hotel-housekeeping`, `hotel-dashboard`.
+- [ ] E-commerce: `shop-customers`, `shop-orders`, `shop-returns`, `shop-dashboard`.
+- [ ] Field service: `fs-jobs`, `fs-dispatch`, `fs-technicians`, `fs-dashboard`.
+- [ ] Nonprofit: `np-donors`, `np-campaigns`, `np-volunteers`, `np-dashboard`.
+- [x] Hospitality: `hotel-reservations`, `hotel-guests`, `hotel-housekeeping`, `hotel-dashboard`.
