@@ -1,0 +1,79 @@
+{
+  "name": "Admin Shell",
+  "slug": "shell-admin",
+  "description": "Admin console layout with role-gated navigation (locked items), environment badge, impersonation banner, alert dots, breadcrumb header and a collapsible rail.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/shell-admin.tsx", "components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "shell-admin-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "sections",
+      "type": "AdminNavSection[]",
+      "description": "{ label, items: { id, label, icon?, requires?, count?, alert? }[] }",
+      "required": true
+    },
+    {
+      "name": "role",
+      "type": "\"viewer\" | \"admin\" | \"owner\"",
+      "description": "Current user's role; items requiring more are locked",
+      "required": true
+    },
+    {
+      "name": "active",
+      "type": "string",
+      "description": "Controlled active item id",
+      "required": false
+    },
+    {
+      "name": "defaultActive",
+      "type": "string",
+      "description": "Initial active item",
+      "required": false
+    },
+    {
+      "name": "onNavigate",
+      "type": "(id: string) => void",
+      "description": "Called when an allowed item is selected",
+      "required": false
+    },
+    {
+      "name": "environment",
+      "type": "\"production\" | \"staging\" | \"development\"",
+      "description": "Environment badge",
+      "default": "\"production\"",
+      "required": false
+    },
+    {
+      "name": "impersonating",
+      "type": "{ name, onExit }",
+      "description": "Shows an audited impersonation banner",
+      "required": false
+    },
+    {
+      "name": "orgName",
+      "type": "string",
+      "description": "Organization name in the rail",
+      "required": true
+    },
+    {
+      "name": "topRight",
+      "type": "ReactNode",
+      "description": "Header actions",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Page content",
+      "required": true
+    }
+  ]
+}

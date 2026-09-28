@@ -1,0 +1,56 @@
+{
+  "name": "Sales Dashboard",
+  "slug": "sales-dashboard",
+  "description": "Sales team dashboard computed from raw deals: closed-won, win rate, deal size and cycle vs prior period, weighted pipeline by stage and a quota leaderboard, filterable by rep and month/quarter/year.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/sales-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "sales-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "deals",
+      "type": "SalesDeal[]",
+      "description": "{ id, name, owner, amount, stage, status, createdAt, closeDate }",
+      "required": true
+    },
+    {
+      "name": "reps",
+      "type": "SalesRep[]",
+      "description": "{ name, quota }",
+      "required": true
+    },
+    {
+      "name": "stages",
+      "type": "{ id, label, probability }[]",
+      "description": "Open stages with win probability 0-1",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for periods",
+      "required": false
+    }
+  ]
+}

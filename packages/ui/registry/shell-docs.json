@@ -1,0 +1,53 @@
+{
+  "name": "Docs Shell",
+  "slug": "shell-docs",
+  "description": "Documentation layout with searchable grouped nav (matches titles and headings), scroll-spy 'On this page' rail, prev/next pagination and a mobile nav drawer.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/shell-docs.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "shell-docs-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "groups",
+      "type": "DocsGroup[]",
+      "description": "{ label, pages: { id, title, headings?, content, updatedAt? }[] }",
+      "required": true
+    },
+    {
+      "name": "pageId",
+      "type": "string",
+      "description": "Controlled page id",
+      "required": false
+    },
+    {
+      "name": "defaultPageId",
+      "type": "string",
+      "description": "Initial page",
+      "required": false
+    },
+    {
+      "name": "onPageChange",
+      "type": "(id: string) => void",
+      "description": "Page change",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Header title",
+      "default": "\"Docs\"",
+      "required": false
+    }
+  ]
+}
