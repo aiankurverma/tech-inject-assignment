@@ -168,7 +168,7 @@ export function ImportMapper({
               const samples = rows
                 .map((r) => r[i])
                 .filter(Boolean)
-                .slice(0, 3);
+                .slice(0, 2);
               return (
                 <tr
                   key={`${h}-${i}`}

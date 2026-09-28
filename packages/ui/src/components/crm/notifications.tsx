@@ -94,7 +94,8 @@ export function NotificationsPopover({
         <Popover.Content
           align="end"
           sideOffset={8}
-          className="z-50 w-[min(400px,calc(100vw-2rem))] rounded-xl border border-crm-border bg-crm-sidebar font-crm text-crm-fg shadow-crm-overlay outline-none data-[state=open]:animate-crm-in"
+          collisionPadding={16}
+          className="z-50 flex max-h-[var(--radix-popover-content-available-height)] w-[min(400px,calc(100vw-2rem))] flex-col rounded-xl border border-crm-border bg-crm-sidebar font-crm text-crm-fg shadow-crm-overlay outline-none data-[state=open]:animate-crm-in"
         >
           <div className="flex items-center justify-between px-4 pt-4">
             <h2 className="flex items-center gap-2 text-base font-semibold">
@@ -112,7 +113,7 @@ export function NotificationsPopover({
             {tab("all", "All")}
             {tab("unread", "Unread")}
           </div>
-          <div className="max-h-[420px] overflow-y-auto p-2">
+          <div className="max-h-[420px] min-h-0 flex-1 overflow-y-auto p-2">
             {shown.length ? (
               shown.map((n) => <NotificationItem key={n.id} n={n} />)
             ) : (

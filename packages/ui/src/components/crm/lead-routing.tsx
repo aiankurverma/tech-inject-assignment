@@ -160,7 +160,7 @@ export function LeadRouting({
   };
   const [test, setTest] = React.useState<RoutingLead>({
     country: countries[0]?.value ?? "",
-    employees: 250,
+    employees: 1200,
     source: sources[0]?.value ?? "",
   });
   const result = routeLead(test, list, reps, fallbackRepId);
@@ -173,7 +173,7 @@ export function LeadRouting({
   return (
     <div
       className={cn(
-        "grid gap-4 rounded-crm border border-crm-border bg-crm-card p-4 font-crm lg:grid-cols-[1fr_300px]",
+        "grid gap-3 rounded-crm border border-crm-border bg-crm-card p-3 font-crm lg:grid-cols-[1fr_300px]",
         className,
       )}
     >
@@ -204,7 +204,7 @@ export function LeadRouting({
             No rules. Every lead goes to {repName(fallbackRepId)}.
           </p>
         ) : null}
-        <ol className="flex flex-col gap-2">
+        <ol className="flex flex-col gap-1.5">
           {list.map((r, i) => {
             const hit = result.ruleId === r.id;
             const noAssignee = r.assignees.length === 0;
@@ -212,7 +212,7 @@ export function LeadRouting({
               <li
                 key={r.id}
                 className={cn(
-                  "flex flex-col gap-2.5 rounded-crm border bg-crm-raised p-3 transition-colors",
+                  "flex flex-col gap-2 rounded-crm border bg-crm-raised p-2.5 transition-colors",
                   hit ? "border-crm-primary" : "border-crm-border",
                   !r.enabled && "opacity-60",
                 )}

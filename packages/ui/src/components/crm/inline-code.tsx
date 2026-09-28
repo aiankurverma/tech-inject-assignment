@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 const tones = {
   default: "bg-crm-muted text-crm-fg border-crm-border",
-  primary: "bg-crm-primary/12 text-crm-primary border-crm-primary/25",
+  primary: "bg-tag-purple-bg text-tag-purple-text border-tag-purple-border",
   success: "bg-crm-success/12 text-crm-success border-crm-success/25",
   danger: "bg-crm-danger/12 text-crm-danger border-crm-danger/25",
 } as const;
