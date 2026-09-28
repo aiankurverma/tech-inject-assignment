@@ -1,0 +1,74 @@
+{
+  "name": "Email Inbox",
+  "slug": "email-inbox",
+  "description": "Three-pane CRM email client: folders with unread counts, search, star, bulk mark-read/archive, j/k/e/s keyboard triage, linked-record tags, responsive reading pane and inline reply via EmailComposer.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/email-inbox.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/email-composer.tsx",
+    "components/crm/button.tsx",
+    "components/crm/textarea.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Sales inbox",
+      "file": "email-inbox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "threads",
+      "type": "EmailThread[]",
+      "description": "Controlled threads { id, subject, folder, unread?, starred?, hasAttachment?, linkedRecord?, messages }",
+      "required": false
+    },
+    {
+      "name": "defaultThreads",
+      "type": "EmailThread[]",
+      "description": "Uncontrolled initial threads",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onThreadsChange",
+      "type": "(threads) => void",
+      "description": "Read/star/archive/reply changes",
+      "required": false
+    },
+    {
+      "name": "me",
+      "type": "{ name, email }",
+      "description": "Mailbox owner, used as reply sender",
+      "required": true
+    },
+    {
+      "name": "onReply",
+      "type": "(threadId, draft) => void | Promise<void>",
+      "description": "Send reply",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Date format locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton list",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

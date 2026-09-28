@@ -1,0 +1,81 @@
+{
+  "name": "Task Inbox",
+  "slug": "task-inbox",
+  "description": "Personal task inbox grouped into Overdue/Today/Tomorrow/This week/Later buckets with complete + undo, snooze, bulk actions, Mine/Team/Completed views and j/k/x/e keyboard triage.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "lucide-react"],
+  "files": [
+    "components/crm/task-inbox.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "My tasks",
+      "file": "task-inbox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tasks",
+      "type": "InboxTask[]",
+      "description": "Controlled tasks { id, title, kind, due?, done?, owner, related? }",
+      "required": false
+    },
+    {
+      "name": "defaultTasks",
+      "type": "InboxTask[]",
+      "description": "Uncontrolled initial tasks",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onTasksChange",
+      "type": "(tasks: InboxTask[]) => void",
+      "description": "Fires on complete/snooze",
+      "required": false
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Signed-in user id for the Mine view",
+      "required": true
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "ISO reference date for bucketing",
+      "default": "today",
+      "required": false
+    },
+    {
+      "name": "onOpenTask",
+      "type": "(task) => void",
+      "description": "Open handler (click or Enter)",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message with optional retry",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry handler for the error state",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

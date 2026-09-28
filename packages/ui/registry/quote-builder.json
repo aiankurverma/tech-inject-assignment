@@ -1,0 +1,96 @@
+{
+  "name": "Quote Builder",
+  "slug": "quote-builder",
+  "description": "Editable quote line items with product picker, per-line discount and tax, reordering, validation, discount approval threshold and cent-accurate live totals.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/quote-builder.tsx",
+    "components/crm/button.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Enterprise quote",
+      "file": "quote-builder-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "lines",
+      "type": "QuoteLine[]",
+      "description": "Controlled lines { id, name, sku?, quantity, unitPrice, discount, taxRate }",
+      "required": false
+    },
+    {
+      "name": "defaultLines",
+      "type": "QuoteLine[]",
+      "description": "Uncontrolled initial lines",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onLinesChange",
+      "type": "(lines) => void",
+      "description": "Line edits",
+      "required": false
+    },
+    {
+      "name": "products",
+      "type": "QuoteProductOption[]",
+      "description": "Products in the add-line picker",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "maxDiscount",
+      "type": "number",
+      "description": "Discount % above which approval is required",
+      "default": "20",
+      "required": false
+    },
+    {
+      "name": "defaultTaxRate",
+      "type": "number",
+      "description": "Tax % for custom lines",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "validUntil",
+      "type": "string",
+      "description": "ISO quote expiry date",
+      "required": false
+    },
+    {
+      "name": "onSubmit",
+      "type": "(lines, totals) => void",
+      "description": "Save / request approval (only when valid)",
+      "required": false
+    },
+    {
+      "name": "submitting",
+      "type": "boolean",
+      "description": "Loading state on submit",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable editing",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

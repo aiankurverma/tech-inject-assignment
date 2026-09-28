@@ -247,14 +247,14 @@ Full sections built from primitives and composites.
 
 - [ ] `contact-list` · [ ] `contact-detail` · [ ] `company-list` · [ ] `company-detail` ·
       [ ] `deal-list` · [ ] `deal-detail` · [ ] `deal-board` · [ ] `lead-inbox` ·
-      [ ] `lead-detail` · [ ] `ticket-list` · [ ] `ticket-detail` · [ ] `task-board` ·
-      [ ] `task-inbox` · [ ] `product-catalog` · [ ] `quote-builder` · [ ] `invoice-detail` ·
-      [ ] `meeting-notes` · [ ] `call-log` · [ ] `email-inbox` · [ ] `record-360` — list/detail/board
+      [ ] `lead-detail` · [ ] `ticket-list` · [ ] `ticket-detail` · [x] `task-board` ·
+      [x] `task-inbox` · [x] `product-catalog` · [x] `quote-builder` · [x] `invoice-detail` ·
+      [x] `meeting-notes` · [x] `call-log` · [x] `email-inbox` · [x] `record-360` — list/detail/board
       pages for CRM objects.
 
 ### Settings (15)
 
-- [ ] `settings-profile` · [ ] `settings-team` · [ ] `settings-roles` · [ ] `settings-billing` ·
+- [x] `settings-profile` · [ ] `settings-team` · [ ] `settings-roles` · [ ] `settings-billing` ·
       [ ] `settings-integrations` · [ ] `settings-notifications` · [ ] `settings-security` ·
       [ ] `settings-api-keys` · [ ] `settings-webhooks` · [ ] `settings-pipelines` ·
       [ ] `settings-custom-fields` · [ ] `settings-email` · [ ] `settings-branding` ·

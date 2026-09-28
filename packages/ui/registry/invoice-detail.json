@@ -1,0 +1,61 @@
+{
+  "name": "Invoice Detail",
+  "slug": "invoice-detail",
+  "description": "Invoice document view that derives status (open/partial/paid/overdue), balance and days past due, lists payments with a paid progress bar, and records validated partial payments.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/invoice-detail.tsx",
+    "components/crm/button.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Partially paid invoice",
+      "file": "invoice-detail-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "invoice",
+      "type": "Invoice",
+      "description": "{ number, issueDate, dueDate, currency?, status?, billTo, from, items, payments?, notes? }",
+      "required": true
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "ISO reference date for overdue logic",
+      "default": "today",
+      "required": false
+    },
+    {
+      "name": "onRecordPayment",
+      "type": "(payment) => void | Promise<void>",
+      "description": "Receives { amount, method, date, reference? }; rejects show inline errors",
+      "required": false
+    },
+    {
+      "name": "onSend",
+      "type": "() => void",
+      "description": "Send / send reminder",
+      "required": false
+    },
+    {
+      "name": "onDownload",
+      "type": "() => void",
+      "description": "Download PDF",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

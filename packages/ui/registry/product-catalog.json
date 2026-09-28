@@ -1,0 +1,84 @@
+{
+  "name": "Product Catalog",
+  "slug": "product-catalog",
+  "description": "Searchable product and price catalog with category tabs, sorting, grid/list views, stock states (low/out), billing intervals, archived toggle and a quantity cart that feeds a quote.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/product-catalog.tsx",
+    "components/crm/button.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Catalog with cart",
+      "file": "product-catalog-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "products",
+      "type": "CatalogProduct[]",
+      "description": "{ id, sku, name, category, price, interval?, stock?, lowStockAt?, archived?, description? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Number format locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "selection",
+      "type": "CatalogSelection[]",
+      "description": "Controlled cart { productId, quantity }[]",
+      "required": false
+    },
+    {
+      "name": "defaultSelection",
+      "type": "CatalogSelection[]",
+      "description": "Uncontrolled initial cart",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onSelectionChange",
+      "type": "(selection) => void",
+      "description": "Cart change",
+      "required": false
+    },
+    {
+      "name": "onAddToQuote",
+      "type": "(selection) => void",
+      "description": "Primary cart action",
+      "required": false
+    },
+    {
+      "name": "addLabel",
+      "type": "string",
+      "description": "Primary action label",
+      "default": "\"Add to quote\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton grid",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
