@@ -1,0 +1,66 @@
+{
+  "name": "Help Center",
+  "slug": "help-center",
+  "description": "Knowledge base with weighted relevance search, category browse with counts, popular articles, article reader with read time, breadcrumbs, helpful votes, related articles and contact-support fallback.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/help-center.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Knowledge base",
+      "file": "help-center-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "categories",
+      "type": "HelpCategory[]",
+      "description": "Categories with icon and description",
+      "required": true
+    },
+    {
+      "name": "articles",
+      "type": "HelpArticle[]",
+      "description": "Articles with excerpt, body, updatedAt, views and tags",
+      "required": true
+    },
+    {
+      "name": "articleId",
+      "type": "string | null",
+      "description": "Controlled open article",
+      "required": false
+    },
+    {
+      "name": "onArticleChange",
+      "type": "(id: string | null) => void",
+      "description": "Called when navigating articles",
+      "required": false
+    },
+    {
+      "name": "onVote",
+      "type": "(articleId: string, helpful: boolean) => void",
+      "description": "Article feedback",
+      "required": false
+    },
+    {
+      "name": "onContactSupport",
+      "type": "() => void",
+      "description": "Shows contact-support prompts",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

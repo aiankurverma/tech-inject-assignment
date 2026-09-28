@@ -268,9 +268,9 @@ Full sections built from primitives and composites.
 
 ### Marketing and portal (15)
 
-- [x] `hero` · [x] `feature-grid` · [x] `pricing-table` · [x] `testimonials` · [ ] `logo-cloud` ·
-      [ ] `faq` · [ ] `cta-banner` · [ ] `footer` · [ ] `changelog` · [ ] `status-page` ·
-      [ ] `help-center` · [ ] `customer-portal` · [ ] `booking-page` · [ ] `web-form` ·
+- [ ] `hero` · [ ] `feature-grid` · [ ] `pricing-table` · [ ] `testimonials` · [x] `logo-cloud` ·
+      [x] `faq` · [x] `cta-banner` · [x] `footer` · [x] `changelog` · [x] `status-page` ·
+      [x] `help-center` · [x] `customer-portal` · [x] `booking-page` · [x] `web-form` ·
       [ ] `newsletter-signup` — public-facing sections.
 
 ### Workflows (13)

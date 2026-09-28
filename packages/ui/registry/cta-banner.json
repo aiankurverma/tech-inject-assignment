@@ -1,0 +1,89 @@
+{
+  "name": "CTA Banner",
+  "slug": "cta-banner",
+  "description": "Conversion banner with optional work-email capture, async loading/success/error states, live offer countdown that disables the CTA on expiry, and dismiss.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/cta-banner.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Email capture + countdown",
+      "file": "cta-banner-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Headline",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "Supporting copy",
+      "required": false
+    },
+    {
+      "name": "eyebrow",
+      "type": "string",
+      "description": "Small label above the title",
+      "required": false
+    },
+    {
+      "name": "actionLabel",
+      "type": "string",
+      "description": "Primary button / submit label",
+      "required": false
+    },
+    {
+      "name": "onAction",
+      "type": "() => void",
+      "description": "Primary click (button mode)",
+      "required": false
+    },
+    {
+      "name": "secondaryLabel",
+      "type": "string",
+      "description": "Secondary button label",
+      "required": false
+    },
+    {
+      "name": "onSubmitEmail",
+      "type": "(email: string) => Promise<void>",
+      "description": "Turns the banner into an email form; reject to show an error",
+      "required": false
+    },
+    {
+      "name": "requireWorkEmail",
+      "type": "boolean",
+      "description": "Reject free-mail domains",
+      "required": false
+    },
+    {
+      "name": "expiresAt",
+      "type": "Date | string",
+      "description": "Offer deadline with live countdown",
+      "required": false
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "description": "Shows a close button",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"primary\" | \"neutral\"",
+      "description": "Visual emphasis",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

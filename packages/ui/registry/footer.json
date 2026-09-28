@@ -1,0 +1,85 @@
+{
+  "name": "Footer",
+  "slug": "footer",
+  "description": "Marketing site footer with link columns that collapse into accordions on mobile, newsletter signup with async states, live system-status pill, locale picker, socials and legal row.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/footer.tsx", "components/crm/button.tsx", "components/crm/input.tsx"],
+  "examples": [
+    {
+      "title": "Full site footer",
+      "file": "footer-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "brand",
+      "type": "ReactNode",
+      "description": "Logo or wordmark",
+      "required": true
+    },
+    {
+      "name": "columns",
+      "type": "FooterColumn[]",
+      "description": "Link columns (title + links with external/badge)",
+      "required": true
+    },
+    {
+      "name": "tagline",
+      "type": "string",
+      "description": "Short line under the brand",
+      "required": false
+    },
+    {
+      "name": "socials",
+      "type": "FooterSocial[]",
+      "description": "Icon links",
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "{ state: SystemStatus; href: string }",
+      "description": "Status pill linking to your status page",
+      "required": false
+    },
+    {
+      "name": "locales",
+      "type": "{ value: string; label: string }[]",
+      "description": "Language/region options",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Selected locale",
+      "required": false
+    },
+    {
+      "name": "onLocaleChange",
+      "type": "(value: string) => void",
+      "description": "Locale change handler",
+      "required": false
+    },
+    {
+      "name": "onSubscribe",
+      "type": "(email: string) => Promise<void>",
+      "description": "Enables the newsletter form",
+      "required": false
+    },
+    {
+      "name": "legal",
+      "type": "FooterLink[]",
+      "description": "Links in the bottom row",
+      "required": false
+    },
+    {
+      "name": "company",
+      "type": "string",
+      "description": "Name after the copyright year",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
