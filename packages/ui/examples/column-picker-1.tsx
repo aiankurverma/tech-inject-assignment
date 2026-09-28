@@ -14,6 +14,11 @@ const initial: PickerColumn[] = [
 export default function Example() {
   const [columns, setColumns] = React.useState(initial);
   return (
-    <ColumnPicker columns={columns} onChange={setColumns} onReset={() => setColumns(initial)} />
+    <ColumnPicker
+      columns={columns}
+      onChange={setColumns}
+      onReset={() => setColumns(initial)}
+      defaultOpen
+    />
   );
 }

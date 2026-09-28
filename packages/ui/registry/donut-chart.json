@@ -1,0 +1,76 @@
+{
+  "name": "Donut Chart",
+  "slug": "donut-chart",
+  "description": "Share breakdown ring with centre total, Other roll-up, selectable segments and a keyboard-accessible legend with values and percentages.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/donut-chart.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "donut-chart-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "DonutSegment[]",
+      "description": "Segments",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible chart name",
+      "required": true
+    },
+    {
+      "name": "maxSegments",
+      "type": "number",
+      "description": "Extra segments roll up into Other",
+      "default": "6",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(v: number) => string",
+      "description": "Value formatter",
+      "required": false
+    },
+    {
+      "name": "centerLabel",
+      "type": "string",
+      "description": "Label under the total",
+      "default": "\"Total\"",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "string | null",
+      "description": "Controlled selected key",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(key: string | null) => void",
+      "description": "Selection handler",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "number",
+      "description": "Diameter in px",
+      "default": "180",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Loading state",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

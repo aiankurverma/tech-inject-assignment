@@ -1,0 +1,57 @@
+{
+  "name": "Lead Score Badge",
+  "slug": "lead-score-badge",
+  "description": "Hot/warm/cold lead score pill with trend delta and a click-open scoring factor breakdown.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/lead-score-badge.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "lead-score-badge-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "score",
+      "type": "number",
+      "description": "0-100 score",
+      "required": true
+    },
+    {
+      "name": "delta",
+      "type": "number",
+      "description": "Change since last period",
+      "required": false
+    },
+    {
+      "name": "thresholds",
+      "type": "{ warm: number; hot: number }",
+      "description": "Band lower bounds",
+      "default": "{ warm: 40, hot: 70 }",
+      "required": false
+    },
+    {
+      "name": "factors",
+      "type": "LeadScoreFactor[]",
+      "description": "Scoring breakdown shown on click",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Pill size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "description": "Hide the temperature word",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

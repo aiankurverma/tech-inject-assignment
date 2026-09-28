@@ -1,0 +1,101 @@
+{
+  "name": "Contact List",
+  "slug": "contact-list",
+  "description": "Contacts record list: search across name/email/company/tags, lifecycle tabs with live counts, owner filter, sortable columns, shift-click range selection, bulk action bar, pagination and loading/empty/error states.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "lucide-react"],
+  "files": [
+    "components/crm/contact-list.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/pagination.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "All contacts",
+      "file": "contact-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "contacts",
+      "type": "ContactRow[]",
+      "description": "{ id, name, email, title?, company?, avatar?, stage, owner?, score?, lastActivity?, tags? }",
+      "required": true
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "description": "Rows per page",
+      "default": "10",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "string[]",
+      "description": "Controlled selected ids",
+      "required": false
+    },
+    {
+      "name": "defaultSelected",
+      "type": "string[]",
+      "description": "Uncontrolled selection",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(ids) => void",
+      "description": "Selection callback",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(id) => void",
+      "description": "Name click",
+      "required": false
+    },
+    {
+      "name": "onBulkAction",
+      "type": "(action, ids) => void",
+      "description": "email | assign | export | delete",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message with optional retry",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry handler",
+      "required": false
+    },
+    {
+      "name": "asOf",
+      "type": "string",
+      "description": "Reference time for 'last activity'",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ]
+}

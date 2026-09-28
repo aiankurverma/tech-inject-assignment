@@ -1,0 +1,91 @@
+{
+  "name": "Assignee Picker",
+  "slug": "assignee-picker",
+  "description": "Owner selector with search, Assign to me, team groups, workload meter against capacity, OOO flags and single or multi select.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-popover"],
+  "files": [
+    "components/crm/assignee-picker.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/popover.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deal owner",
+      "file": "assignee-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "people",
+      "type": "Assignee[]",
+      "description": "Candidates (id, name, email, team, openItems, outOfOffice, disabled)",
+      "required": true
+    },
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "description": "Select several people; value becomes string[]",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "value",
+      "type": "string | null | string[]",
+      "description": "Controlled selection",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string | null | string[]",
+      "description": "Initial selection when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value) => void",
+      "description": "Called with the new id(s)",
+      "required": false
+    },
+    {
+      "name": "allowUnassigned",
+      "type": "boolean",
+      "description": "Single mode: offer Unassigned",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Multi mode: maximum assignees",
+      "required": false
+    },
+    {
+      "name": "capacity",
+      "type": "number",
+      "description": "Open items considered full",
+      "default": "20",
+      "required": false
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Listed first as me",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a loading row",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable the trigger",
+      "required": false
+    }
+  ],
+  "usage": "Use for deal, ticket and task ownership with round-robin awareness."
+}

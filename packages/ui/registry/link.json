@@ -1,0 +1,64 @@
+{
+  "name": "Link",
+  "slug": "link",
+  "description": "Inline link that detects external, mailto and tel hrefs: new-tab + rel for external with screen-reader notice, kind icons, pretty URL fallback, truncation and disabled state.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/link.tsx"],
+  "examples": [
+    {
+      "title": "Account details",
+      "file": "link-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "href",
+      "type": "string",
+      "description": "Destination",
+      "required": true
+    },
+    {
+      "name": "variant",
+      "type": "\"default\" | \"muted\" | \"inherit\"",
+      "description": "Colour",
+      "default": "\"default\"",
+      "required": false
+    },
+    {
+      "name": "underline",
+      "type": "\"always\" | \"hover\" | \"none\"",
+      "description": "Underline behaviour",
+      "default": "\"hover\"",
+      "required": false
+    },
+    {
+      "name": "showIcon",
+      "type": "boolean",
+      "description": "Show kind icon (defaults on for non-internal)",
+      "required": false
+    },
+    {
+      "name": "external",
+      "type": "boolean",
+      "description": "Force external behaviour",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Render as non-interactive text",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "maxWidth",
+      "type": "string",
+      "description": "Truncate within this CSS width",
+      "required": false
+    }
+  ],
+  "usage": "Children default to a readable URL. linkKind() and prettyUrl() are exported helpers."
+}

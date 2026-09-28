@@ -1,0 +1,66 @@
+{
+  "name": "Onboarding Checklist",
+  "slug": "onboarding-checklist",
+  "description": "Getting-started checklist with grouped steps, dependencies that lock later steps, required vs skippable items, time-left estimate, accordion details and a progress ring.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/onboarding-checklist.tsx",
+    "components/crm/button.tsx",
+    "components/crm/progress.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Getting started",
+      "file": "onboarding-checklist-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "ChecklistItem[]",
+      "description": "Steps with minutes, dependsOn, required, group",
+      "required": true
+    },
+    {
+      "name": "status",
+      "type": "Record<string, ChecklistItemStatus>",
+      "description": "Controlled status map (todo/done/skipped)",
+      "required": false
+    },
+    {
+      "name": "defaultStatus",
+      "type": "Record<string, ChecklistItemStatus>",
+      "description": "Uncontrolled initial status",
+      "required": false
+    },
+    {
+      "name": "onStatusChange",
+      "type": "(status) => void",
+      "description": "Status change callback",
+      "required": false
+    },
+    {
+      "name": "onAction",
+      "type": "(id: string) => void",
+      "description": "Step call-to-action pressed",
+      "required": false
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "description": "Shows a dismiss button",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading",
+      "default": "\"Get started\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

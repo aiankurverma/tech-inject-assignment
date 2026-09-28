@@ -1,0 +1,63 @@
+{
+  "name": "Shop Dashboard",
+  "slug": "shop-dashboard",
+  "description": "Store performance dashboard computing net revenue, orders, AOV and refund rate vs the previous period, with channel mix, daily sparkline and sortable top products.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/shop-dashboard.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Last 30 days",
+      "file": "shop-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "orders",
+      "type": "ShopOrder[]",
+      "description": "{ id, date, channel, customerId, lines: { product, qty, revenue }[], refunded }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference 'today' for ranges",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale for formatting",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "defaultRange",
+      "type": "7 | 30 | 90",
+      "description": "Initial range in days",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "Click a channel row to filter every panel to that channel."
+}

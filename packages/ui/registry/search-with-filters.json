@@ -1,0 +1,97 @@
+{
+  "name": "Search With Filters",
+  "slug": "search-with-filters",
+  "description": "Debounced accent-insensitive search with grouped quick filter pills showing live counts, result count, clear-all, empty state and a Highlight helper.",
+  "category": "Forms & input",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/search-with-filters.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "search-with-filters-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "T[]",
+      "description": "Items to search",
+      "required": true
+    },
+    {
+      "name": "getSearchText",
+      "type": "(item: T) => string",
+      "description": "Searchable text per item (memoise it)",
+      "required": true
+    },
+    {
+      "name": "quickFilters",
+      "type": "QuickFilter<T>[]",
+      "description": "Pills; same group OR-ed, groups AND-ed",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "(results: T[], query: string) => ReactNode",
+      "description": "Renders results",
+      "required": false
+    },
+    {
+      "name": "query",
+      "type": "string",
+      "description": "Controlled query",
+      "required": false
+    },
+    {
+      "name": "onQueryChange",
+      "type": "(q: string) => void",
+      "description": "Query change handler",
+      "required": false
+    },
+    {
+      "name": "activeFilters",
+      "type": "string[]",
+      "description": "Controlled active filter ids",
+      "required": false
+    },
+    {
+      "name": "onActiveFiltersChange",
+      "type": "(ids: string[]) => void",
+      "description": "Filter change handler",
+      "required": false
+    },
+    {
+      "name": "onResultsChange",
+      "type": "(results: T[]) => void",
+      "description": "Receives filtered results",
+      "required": false
+    },
+    {
+      "name": "debounceMs",
+      "type": "number",
+      "description": "Search debounce",
+      "default": "150",
+      "required": false
+    },
+    {
+      "name": "shortcut",
+      "type": "string",
+      "description": "Cmd/Ctrl key to focus search",
+      "required": false
+    },
+    {
+      "name": "noun",
+      "type": "{ one: string; many: string }",
+      "description": "Result noun",
+      "default": "{ one: \"result\", many: \"results\" }",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

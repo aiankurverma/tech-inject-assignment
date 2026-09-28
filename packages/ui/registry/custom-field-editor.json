@@ -1,0 +1,63 @@
+{
+  "name": "Custom Field Editor",
+  "slug": "custom-field-editor",
+  "description": "Admin editor for defining a custom field: label with auto API key, type, reorderable choice options, numeric range/precision, currency, required flag, validation and live preview.",
+  "category": "Forms & input",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/custom-field-editor.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/switch.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "custom-field-editor-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onSave",
+      "type": "(field: CustomFieldDefinition) => void | Promise<void>",
+      "description": "Called with the validated definition; thrown errors are shown inline",
+      "required": true
+    },
+    {
+      "name": "initial",
+      "type": "Partial<CustomFieldDefinition>",
+      "description": "Existing definition to edit",
+      "required": false
+    },
+    {
+      "name": "existingKeys",
+      "type": "string[]",
+      "description": "Keys already used on the object, for uniqueness",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "locked",
+      "type": "boolean",
+      "description": "Field has data: key and type become read-only",
+      "required": false
+    },
+    {
+      "name": "objectName",
+      "type": "string",
+      "description": "Object the field belongs to",
+      "default": "\"Deal\"",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "description": "Shows a Cancel button",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

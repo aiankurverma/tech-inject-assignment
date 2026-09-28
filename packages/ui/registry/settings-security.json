@@ -1,0 +1,77 @@
+{
+  "name": "Settings Security",
+  "slug": "settings-security",
+  "description": "Workspace security page: computed security score, 2FA enforcement with adoption impact, SSO-only, password policy, idle timeout, IPv4/CIDR allowlist with validation and self-lockout warning, active sessions with revoke.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-security.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/settings-row.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Security",
+      "file": "settings-security-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "SecurityPolicy",
+      "description": "Controlled policy",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "SecurityPolicy",
+      "description": "Uncontrolled initial policy",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(p: SecurityPolicy) => void",
+      "description": "Fires on every change",
+      "required": false
+    },
+    {
+      "name": "sessions",
+      "type": "ActiveSession[]",
+      "description": "Signed-in devices",
+      "required": false
+    },
+    {
+      "name": "onRevokeSession",
+      "type": "(id | \"all-others\") => void",
+      "description": "Sign out sessions",
+      "required": false
+    },
+    {
+      "name": "twoFactorAdoption",
+      "type": "number",
+      "description": "Share of members with 2FA (0..1)",
+      "required": false,
+      "default": "1"
+    },
+    {
+      "name": "currentIp",
+      "type": "string",
+      "description": "Admin IP for lockout check",
+      "required": false
+    },
+    {
+      "name": "ssoConfigured",
+      "type": "boolean",
+      "description": "Enables SSO-only toggle",
+      "required": false,
+      "default": "false"
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

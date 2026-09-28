@@ -1,0 +1,74 @@
+{
+  "name": "Activity Dashboard",
+  "slug": "activity-dashboard",
+  "description": "Rep activity dashboard: call / email / meeting KPIs with prior-period deltas and sparklines, a stacked daily volume chart with toggleable series and tooltips, and a sortable leaderboard scored against weekly targets.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/activity-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Team activity, last 14 days",
+      "file": "activity-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "records",
+      "type": "ActivityRecord[]",
+      "description": "{ date: 'yyyy-mm-dd', repId, type: 'call' | 'email' | 'meeting', count }",
+      "required": true
+    },
+    {
+      "name": "reps",
+      "type": "ActivityRep[]",
+      "description": "{ id, name, avatar?, weeklyTarget?: { call?, email?, meeting? } }",
+      "required": true
+    },
+    {
+      "name": "asOf",
+      "type": "string",
+      "description": "End date of the range; defaults to the latest record",
+      "required": false
+    },
+    {
+      "name": "range",
+      "type": "7 | 14 | 30",
+      "description": "Controlled range in days",
+      "required": false
+    },
+    {
+      "name": "defaultRange",
+      "type": "7 | 14 | 30",
+      "description": "Uncontrolled initial range",
+      "default": "14",
+      "required": false
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range) => void",
+      "description": "Range change callback",
+      "required": false
+    },
+    {
+      "name": "onRepSelect",
+      "type": "(repId) => void",
+      "description": "Leaderboard row click",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Target attainment caps each activity type at 100% so surplus emails cannot hide missed calls."
+}

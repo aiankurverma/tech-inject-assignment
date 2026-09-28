@@ -1,0 +1,60 @@
+{
+  "name": "Edu Courses",
+  "slug": "edu-courses",
+  "description": "Course registration with a searchable catalog (seats, waitlist, prerequisite locks) and a weekly schedule builder that blocks time conflicts, duplicates and credit overloads.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/edu-courses.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Course registration",
+      "file": "edu-courses-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "sections",
+      "type": "CourseSection[]",
+      "description": "{ id, code, title, credits, instructor, days, start, end, room?, capacity, enrolled, waitlist?, prerequisites? }",
+      "required": true
+    },
+    {
+      "name": "completed",
+      "type": "string[]",
+      "description": "Completed course codes for prerequisite checks",
+      "required": false
+    },
+    {
+      "name": "cart / defaultCart / onCartChange",
+      "type": "string[]",
+      "description": "Selected section ids",
+      "required": false
+    },
+    {
+      "name": "minCredits / maxCredits",
+      "type": "number",
+      "description": "Full-time and max load",
+      "default": "12 / 18",
+      "required": false
+    },
+    {
+      "name": "onRegister",
+      "type": "(sections) => void",
+      "description": "Register when no blockers",
+      "required": false
+    }
+  ],
+  "usage": "scheduleConflicts() is exported."
+}

@@ -1,0 +1,57 @@
+{
+  "name": "Field Service Technicians",
+  "slug": "fs-technicians",
+  "description": "Technician roster with AND skill filters, sortable utilization, first-time-fix and rating, presence, and certification expiry alerts in expandable rows.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/fs-technicians.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/status-dot.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Roster",
+      "file": "fs-technicians-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "technicians",
+      "type": "FieldTechnician[]",
+      "description": "{ id, name, region, status, skills, certifications, bookedMin, capacityMin, jobsCompleted30d, firstTimeFixes30d, rating, callbacks30d }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for certificate expiry",
+      "required": false
+    },
+    {
+      "name": "expiryWarnDays",
+      "type": "number",
+      "description": "Warn this many days before expiry",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(tech) => void",
+      "description": "Row clicked",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ]
+}

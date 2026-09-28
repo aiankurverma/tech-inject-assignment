@@ -1,0 +1,64 @@
+{
+  "name": "Anchor Nav",
+  "slug": "anchor-nav",
+  "description": "Scroll-spy table of contents for long record pages: active section tracking, smooth scroll with reduced-motion support, focus handoff, counts, error markers, subsections and reading progress.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/anchor-nav.tsx"],
+  "examples": [
+    {
+      "title": "Record page sections",
+      "file": "anchor-nav-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "sections",
+      "type": "AnchorNavSection[]",
+      "description": "{ id, label, level?, count?, invalid? }",
+      "required": true
+    },
+    {
+      "name": "scrollContainer",
+      "type": "RefObject<HTMLElement>",
+      "description": "Scrollable ancestor; defaults to window",
+      "required": false
+    },
+    {
+      "name": "offset",
+      "type": "number",
+      "description": "Sticky header height in px",
+      "default": "72",
+      "required": false
+    },
+    {
+      "name": "activeId",
+      "type": "string",
+      "description": "Controlled active section",
+      "required": false
+    },
+    {
+      "name": "onActiveChange",
+      "type": "(id) => void",
+      "description": "Fires when the spied section changes",
+      "required": false
+    },
+    {
+      "name": "updateHash",
+      "type": "boolean",
+      "description": "Replace location.hash on click",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "showProgress",
+      "type": "boolean",
+      "description": "Show reading progress",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": "Place in a sticky side column next to long forms or record pages; each section needs a matching element id."
+}

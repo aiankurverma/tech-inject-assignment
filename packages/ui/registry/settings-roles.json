@@ -1,0 +1,49 @@
+{
+  "name": "Settings Roles",
+  "slug": "settings-roles",
+  "description": "Roles and permissions editor: role list with member counts, resource x action matrix with implied view grants, column toggles, read-only built-in roles, duplicate/create/delete, dirty tracking with save and discard.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-roles.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Roles & permissions",
+      "file": "settings-roles-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "resources",
+      "type": "PermissionResource[]",
+      "description": "Objects and their applicable actions",
+      "required": true
+    },
+    {
+      "name": "roles",
+      "type": "Role[]",
+      "description": "Initial roles (alias of defaultRoles)",
+      "required": false
+    },
+    {
+      "name": "defaultRoles",
+      "type": "Role[]",
+      "description": "Initial roles",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(roles: Role[]) => Promise<void> | void",
+      "description": "Persist; reject to show error",
+      "required": false
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

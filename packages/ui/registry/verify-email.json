@@ -1,0 +1,82 @@
+{
+  "name": "Verify Email",
+  "slug": "verify-email",
+  "description": "Emailed-code verification: auto-submit on the last digit, attempts left, burned and expired code states, resend cooldown and change-email link.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/verify-email.tsx",
+    "components/crm/alert.tsx",
+    "components/crm/button.tsx",
+    "components/crm/otp-input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Six-digit email code",
+      "file": "verify-email-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "email",
+      "type": "string",
+      "description": "Address the code was sent to",
+      "required": true
+    },
+    {
+      "name": "onVerify",
+      "type": "(code) => Promise<\"ok\" | \"invalid\" | \"expired\" | void>",
+      "description": "Check the code",
+      "required": true
+    },
+    {
+      "name": "onResend",
+      "type": "() => Promise<string | void>",
+      "description": "Send a new code",
+      "required": true
+    },
+    {
+      "name": "onChangeEmail",
+      "type": "() => void",
+      "description": "Shows the change-email link",
+      "required": false
+    },
+    {
+      "name": "onVerified",
+      "type": "() => void",
+      "description": "Called after success",
+      "required": false
+    },
+    {
+      "name": "codeLength",
+      "type": "number",
+      "description": "Digits",
+      "required": false,
+      "default": "6"
+    },
+    {
+      "name": "resendCooldown",
+      "type": "number",
+      "description": "Seconds between resends",
+      "required": false,
+      "default": "45"
+    },
+    {
+      "name": "initialCooldown",
+      "type": "number",
+      "description": "Cooldown when first shown",
+      "required": false,
+      "default": "45"
+    },
+    {
+      "name": "maxAttempts",
+      "type": "number",
+      "description": "Wrong codes before the code is burned",
+      "required": false,
+      "default": "5"
+    }
+  ],
+  "usage": "Try 482913 (ok) or 000000 (expired) in the example."
+}

@@ -1,0 +1,68 @@
+{
+  "name": "Hotel Guests",
+  "slug": "hotel-guests",
+  "description": "Guest directory with loyalty tiers, VIP and in-house filters, lifetime value, allergy alerts, preferences and stay history in a master-detail layout.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/hotel-guests.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "hotel-guests-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "guests",
+      "type": "HotelGuest[]",
+      "description": "Guest profiles with stays",
+      "required": true
+    },
+    {
+      "name": "selectedId",
+      "type": "string",
+      "description": "Controlled selected guest id",
+      "required": false
+    },
+    {
+      "name": "defaultSelectedId",
+      "type": "string",
+      "description": "Initial selected guest id",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(id: string) => void",
+      "description": "Called when the selection changes",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton list",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

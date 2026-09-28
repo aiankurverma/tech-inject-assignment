@@ -1,0 +1,68 @@
+{
+  "name": "Record 360",
+  "slug": "record-360",
+  "description": "360° account page composing ActivityTimeline, DealCard, DescriptionList and Tabs: KPIs (ARR, weighted pipeline, health, renewal, tickets), filterable activity, deals by status, buying committee roles and support tickets.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "@radix-ui/react-tabs", "lucide-react"],
+  "files": [
+    "components/crm/record-360.tsx",
+    "components/crm/activity-timeline.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/deal-card.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/description-list.tsx",
+    "components/crm/tabs.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Customer account",
+      "file": "record-360-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "Record360Data",
+      "description": "{ company, health?, arr?, renewalDate?, contacts, deals, activities, tickets }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "defaultTab",
+      "type": "\"overview\" | \"activity\" | \"deals\" | \"contacts\" | \"support\"",
+      "description": "Initial tab",
+      "default": "\"overview\"",
+      "required": false
+    },
+    {
+      "name": "onOpenDeal",
+      "type": "(deal) => void",
+      "description": "Deal card click",
+      "required": false
+    },
+    {
+      "name": "onLogActivity",
+      "type": "() => void",
+      "description": "Header action",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

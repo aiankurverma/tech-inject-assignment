@@ -1,0 +1,65 @@
+{
+  "name": "Clinic Dashboard",
+  "slug": "clinic-dashboard",
+  "description": "Clinic operations dashboard with completed visits, no-show rate, wait-to-room and collections KPIs vs. prior period, provider utilisation, arrivals by hour and a clinical task inbox.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/clinic-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/card.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Clinic dashboard",
+      "file": "clinic-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "visits",
+      "type": "ClinicVisit[]",
+      "description": "{ id, providerId, start, durationMin, status, waitMin?, chargesCents?, collectedCents? }",
+      "required": true
+    },
+    {
+      "name": "providers",
+      "type": "ClinicDashboardProvider[]",
+      "description": "{ id, name, specialty?, capacityMinPerDay }",
+      "required": true
+    },
+    {
+      "name": "tasks",
+      "type": "ClinicTask[]",
+      "description": "{ id, label, kind: lab | refill | callback | prior-auth, due }",
+      "required": false
+    },
+    {
+      "name": "range / defaultRange / onRangeChange",
+      "type": "\"today\" | \"7d\" | \"30d\"",
+      "description": "Comparison window",
+      "default": "\"7d\"",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time",
+      "required": false
+    }
+  ]
+}

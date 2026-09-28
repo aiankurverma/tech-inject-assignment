@@ -1,0 +1,71 @@
+{
+  "name": "Copy Button",
+  "slug": "copy-button",
+  "description": "Clipboard button with async value getter, insecure-context fallback, copied/error states with live announcement, plus a CopyField for API keys with mask/reveal.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/copy-button.tsx"],
+  "examples": [
+    {
+      "title": "IDs, keys and share links",
+      "file": "copy-button-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string | (() => string | Promise<string>)",
+      "description": "Text or getter to copy",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "ReactNode",
+      "description": "Visible label; omit for icon-only",
+      "required": false
+    },
+    {
+      "name": "copiedLabel",
+      "type": "string",
+      "description": "Confirmation text",
+      "default": "\"Copied\"",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"ghost\" | \"secondary\"",
+      "description": "Style",
+      "default": "\"ghost\"",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "resetAfter",
+      "type": "number",
+      "description": "Ms before returning to idle",
+      "default": "1800",
+      "required": false
+    },
+    {
+      "name": "onCopied",
+      "type": "(text: string) => void",
+      "description": "Success callback",
+      "required": false
+    },
+    {
+      "name": "onError",
+      "type": "() => void",
+      "description": "Failure callback",
+      "required": false
+    }
+  ],
+  "usage": "useCopy() hook and copyText() are exported. CopyField props: value, label, secret, visibleChars."
+}

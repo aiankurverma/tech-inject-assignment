@@ -1,0 +1,52 @@
+{
+  "name": "Real Estate Listings",
+  "slug": "re-listings",
+  "description": "Listings workspace with KPIs (active volume, avg DOM, sale-to-list), search, status/bed/max-price filters, sorting incl. price per sqft, and grid or table view with price-cut and stale badges.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/re-listings.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Portland brokerage listings",
+      "file": "re-listings-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "listings",
+      "type": "Listing[]",
+      "description": "{ address, city, price, originalPrice?, beds, baths, sqft, status, listedAt, soldAt?, soldPrice?, type, agent, photo?, showings? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for formatting",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(listing) => void",
+      "description": "Card / row activation",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override today for DOM",
+      "required": false
+    }
+  ],
+  "usage": "daysOnMarket() is exported."
+}

@@ -1,0 +1,71 @@
+{
+  "name": "Signature Pad",
+  "slug": "signature-pad",
+  "description": "E-signature field with draw mode (pointer, pen pressure, touch, velocity-based width, smoothing, HiDPI canvas) and accessible type mode, undo, clear, required/error/disabled states; emits a PNG data URL with timestamp.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/signature-pad.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Quote acceptance",
+      "file": "signature-pad-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "signerName",
+      "type": "string",
+      "description": "Signer legal name; pre-fills type mode",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: SignatureValue | null) => void",
+      "description": "Fires with { mode, dataUrl, name, signedAt } or null when empty",
+      "required": false
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "Ink colour",
+      "default": "\"#f9fbff\"",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Pad height in px",
+      "default": "180",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "required",
+      "type": "boolean",
+      "description": "Mark as required",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message",
+      "required": false
+    },
+    {
+      "name": "statement",
+      "type": "ReactNode",
+      "description": "Consent text under the pad",
+      "required": false
+    }
+  ],
+  "usage": "Store the dataUrl with signedAt and the document hash server-side. Keep type mode available for accessibility."
+}

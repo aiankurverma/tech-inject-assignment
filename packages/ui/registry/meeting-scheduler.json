@@ -1,0 +1,96 @@
+{
+  "name": "Meeting Scheduler",
+  "slug": "meeting-scheduler",
+  "description": "Guest booking flow: duration picker, date strip with availability dots, slots computed from working hours minus busy blocks with buffers and minimum notice, validated details form and confirmation.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/meeting-scheduler.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/input.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Product walkthrough booking",
+      "file": "meeting-scheduler-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "host",
+      "type": "{ name, title? }",
+      "description": "Person being booked",
+      "required": true
+    },
+    {
+      "name": "meetingTitle",
+      "type": "string",
+      "description": "Meeting name",
+      "required": true
+    },
+    {
+      "name": "onBook",
+      "type": "(booking) => void | Promise<void>",
+      "description": "Called on confirm; reject to show an error",
+      "required": true
+    },
+    {
+      "name": "durations",
+      "type": "number[]",
+      "description": "Selectable lengths in minutes",
+      "default": "[15, 30, 60]",
+      "required": false
+    },
+    {
+      "name": "workingHours",
+      "type": "WorkingHours",
+      "description": "{ days, start, end } bookable window",
+      "default": "Mon-Fri 09:00-17:00",
+      "required": false
+    },
+    {
+      "name": "busy",
+      "type": "BusyBlock[]",
+      "description": "Existing events to exclude",
+      "required": false
+    },
+    {
+      "name": "bufferMinutes",
+      "type": "number",
+      "description": "Gap kept around busy blocks",
+      "default": "10",
+      "required": false
+    },
+    {
+      "name": "minNoticeHours",
+      "type": "number",
+      "description": "Earliest bookable offset from now",
+      "default": "4",
+      "required": false
+    },
+    {
+      "name": "horizonDays",
+      "type": "number",
+      "description": "Days ahead that can be booked",
+      "default": "21",
+      "required": false
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "description": "Slot grid step in minutes",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time",
+      "required": false
+    }
+  ],
+  "usage": "computeSlots() is exported to reuse the availability logic on the server."
+}

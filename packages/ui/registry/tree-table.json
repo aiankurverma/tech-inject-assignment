@@ -1,0 +1,70 @@
+{
+  "name": "Tree Table",
+  "slug": "tree-table",
+  "description": "Hierarchical treegrid with expand/collapse, parent roll-up sums, ancestor-preserving search and full keyboard navigation.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/tree-table.tsx"],
+  "examples": [
+    {
+      "title": "Account hierarchy",
+      "file": "tree-table-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "rows",
+      "type": "TreeRow[]",
+      "description": "Rows with id and optional children",
+      "required": true
+    },
+    {
+      "name": "columns",
+      "type": "TreeColumn[]",
+      "description": "{ key, header, cell?, aggregate?: \"sum\", format?, align?, width? }",
+      "required": true
+    },
+    {
+      "name": "expanded",
+      "type": "string[]",
+      "description": "Controlled expanded ids",
+      "required": false
+    },
+    {
+      "name": "defaultExpanded",
+      "type": "string[]",
+      "description": "Initially expanded ids",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(ids) => void",
+      "description": "Expansion changed",
+      "required": false
+    },
+    {
+      "name": "filter",
+      "type": "string",
+      "description": "Search text; matching rows and their ancestors stay visible",
+      "default": "\"\"",
+      "required": false
+    },
+    {
+      "name": "filterKey",
+      "type": "string",
+      "description": "Field searched",
+      "default": "\"name\"",
+      "required": false
+    },
+    {
+      "name": "onRowClick",
+      "type": "(row) => void",
+      "description": "Row clicked or Enter",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,54 @@
+{
+  "name": "Merge Duplicates",
+  "slug": "merge-duplicates",
+  "description": "Side-by-side duplicate resolver: pick the master record and the winning value per field (newest non-empty by default), conflict filter, related-record totals and a confirm step.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dialog", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/merge-duplicates.tsx",
+    "components/crm/button.tsx",
+    "components/crm/confirm-dialog.tsx",
+    "components/crm/input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Merge two contacts",
+      "file": "merge-duplicates-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "records",
+      "type": "MergeRecord[]",
+      "description": "Two or more duplicate records",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "MergeField[]",
+      "description": "Fields to compare, with optional formatter",
+      "required": true
+    },
+    {
+      "name": "onMerge",
+      "type": "(r: MergeResult) => void | Promise<void>",
+      "description": "Receives master id, merged ids, values and value sources",
+      "required": true
+    },
+    {
+      "name": "recordLabel",
+      "type": "(r: MergeRecord) => string",
+      "description": "Column header label",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "description": "Shows Cancel",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

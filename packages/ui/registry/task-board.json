@@ -1,0 +1,76 @@
+{
+  "name": "Task Board",
+  "slug": "task-board",
+  "description": "Kanban task board with native drag & drop, Alt+Arrow keyboard moves, WIP limits, overdue dates, priority sort, assignee/priority filters and inline task creation.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/task-board.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Team tasks",
+      "file": "task-board-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tasks",
+      "type": "BoardTask[]",
+      "description": "Controlled tasks { id, title, status, priority, due?, assignee?, related? }",
+      "required": false
+    },
+    {
+      "name": "defaultTasks",
+      "type": "BoardTask[]",
+      "description": "Uncontrolled initial tasks",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onTasksChange",
+      "type": "(tasks: BoardTask[]) => void",
+      "description": "Fires after moves and inline adds",
+      "required": false
+    },
+    {
+      "name": "columns",
+      "type": "TaskBoardColumn[]",
+      "description": "Columns { id, title, wipLimit? }",
+      "default": "To do / In progress (WIP 4) / Blocked / Done",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "ISO date used for overdue/due labels",
+      "default": "today",
+      "required": false
+    },
+    {
+      "name": "onCreateTask",
+      "type": "(title, status) => BoardTask | void",
+      "description": "Customize created tasks",
+      "required": false
+    },
+    {
+      "name": "onOpenTask",
+      "type": "(task: BoardTask) => void",
+      "description": "Title click handler",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton cards",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

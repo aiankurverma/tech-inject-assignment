@@ -1,0 +1,77 @@
+{
+  "name": "Import Mapper",
+  "slug": "import-mapper",
+  "description": "CSV column to CRM field mapping with alias-aware auto-match, sample previews, type checks on sample data, duplicate and required-field validation.",
+  "category": "Forms & input",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/import-mapper.tsx",
+    "components/crm/button.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "import-mapper-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "headers",
+      "type": "string[]",
+      "description": "CSV header row",
+      "required": true
+    },
+    {
+      "name": "rows",
+      "type": "string[][]",
+      "description": "Sample data rows",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "ImportTargetField[]",
+      "description": "Target fields with type, required and aliases",
+      "required": true
+    },
+    {
+      "name": "mapping",
+      "type": "ImportMapping",
+      "description": "Controlled column index to field key map",
+      "required": false
+    },
+    {
+      "name": "onMappingChange",
+      "type": "(m: ImportMapping) => void",
+      "description": "Mapping change handler",
+      "required": false
+    },
+    {
+      "name": "onConfirm",
+      "type": "(m: ImportMapping) => void",
+      "description": "Continue, enabled when valid",
+      "required": false
+    },
+    {
+      "name": "onBack",
+      "type": "() => void",
+      "description": "Back button handler",
+      "required": false
+    },
+    {
+      "name": "fileName",
+      "type": "string",
+      "description": "Shown in the header",
+      "required": false
+    },
+    {
+      "name": "totalRows",
+      "type": "number",
+      "description": "Total rows in the file",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

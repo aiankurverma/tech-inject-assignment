@@ -1,0 +1,57 @@
+{
+  "name": "Testimonials",
+  "slug": "testimonials",
+  "description": "Customer testimonials as masonry grid or accessible carousel with industry filter, aggregate rating, outcome metrics, review source, and autoplay that pauses on hover, focus and reduced motion.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/testimonials.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/rating.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Carousel and grid",
+      "file": "testimonials-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "Testimonial[]",
+      "description": "quote, author, rating, industry, metric, source",
+      "required": true
+    },
+    {
+      "name": "variant",
+      "type": "\"grid\" | \"carousel\"",
+      "description": "Layout",
+      "default": "\"grid\"",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Heading",
+      "required": false
+    },
+    {
+      "name": "filterable",
+      "type": "boolean",
+      "description": "Industry filter",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "autoplayMs",
+      "type": "number",
+      "description": "Carousel autoplay interval, 0 disables",
+      "default": "7000",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

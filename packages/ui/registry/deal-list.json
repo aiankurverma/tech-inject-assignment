@@ -1,0 +1,85 @@
+{
+  "name": "Deal List",
+  "slug": "deal-list",
+  "description": "Deal table with open/won/lost segments and counts, search, sortable amount/probability/weighted/close date, overdue flags, multi-select with bulk-action bar, and a footer that totals the filtered or selected deals.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/deal-list.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/data-table.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "deal-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "deals",
+      "type": "DealRow[]",
+      "description": "{ id, name, company, amount, currency?, stage, probability, closeDate, owner, status }",
+      "required": true
+    },
+    {
+      "name": "stageColors",
+      "type": "Record<string, TagColor>",
+      "description": "Stage label to tag colour",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Default ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "ISO date used for overdue detection",
+      "required": false
+    },
+    {
+      "name": "selected / defaultSelected / onSelectedChange",
+      "type": "string[]",
+      "description": "Controlled or uncontrolled selection",
+      "required": false
+    },
+    {
+      "name": "bulkActions",
+      "type": "(ids: string[]) => ReactNode",
+      "description": "Actions shown when rows are selected",
+      "required": false
+    },
+    {
+      "name": "onOpenDeal",
+      "type": "(deal: DealRow) => void",
+      "description": "Deal name click",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

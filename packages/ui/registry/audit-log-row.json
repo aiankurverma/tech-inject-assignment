@@ -1,0 +1,48 @@
+{
+  "name": "Audit Log Row",
+  "slug": "audit-log-row",
+  "description": "Field-level audit entry with actor type, source/IP, before-after diff, currency deltas, list add/remove, masked sensitive values and revert.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/audit-log-row.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/relative-time.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Audit log",
+      "file": "audit-log-row-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "entry",
+      "type": "AuditEntry",
+      "description": "id, at, actor, action, changes, source, ip",
+      "required": true
+    },
+    {
+      "name": "onRevert",
+      "type": "(entry, change) => void",
+      "description": "Adds a revert button to update changes",
+      "required": false
+    },
+    {
+      "name": "collapseAfter",
+      "type": "number",
+      "description": "Changes shown before Show more",
+      "default": "3",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale for money and dates",
+      "required": false
+    }
+  ],
+  "usage": "Use for compliance trails on records and admin audit pages."
+}

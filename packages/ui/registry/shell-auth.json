@@ -1,0 +1,71 @@
+{
+  "name": "Auth Shell",
+  "slug": "shell-auth",
+  "description": "Sign-in/sign-up layout with brand header, form column, footer and legal links, plus a marketing panel with rotating (pausable, reduced-motion aware) testimonials and proof stats.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/shell-auth.tsx",
+    "components/crm/alert.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/divider.tsx",
+    "components/crm/input.tsx",
+    "components/crm/password-input.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Sign in with SSO detection",
+      "file": "shell-auth-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "brand",
+      "type": "{ name; logo }",
+      "description": "Brand header",
+      "required": true
+    },
+    {
+      "name": "title / subtitle",
+      "type": "string / ReactNode",
+      "description": "Form heading",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The form",
+      "required": true
+    },
+    {
+      "name": "footer / topRight",
+      "type": "ReactNode",
+      "description": "Under the form / header right",
+      "required": false
+    },
+    {
+      "name": "panel",
+      "type": "{ headline; testimonials?; stats?; rotateMs? }",
+      "description": "Marketing panel; omit for a centered card",
+      "required": false
+    },
+    {
+      "name": "panelSide",
+      "type": "\"left\" | \"right\"",
+      "description": "Panel position",
+      "required": false,
+      "default": "\"right\""
+    },
+    {
+      "name": "legalLinks",
+      "type": "{ label; href }[]",
+      "description": "Bottom links",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

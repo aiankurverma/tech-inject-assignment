@@ -31,9 +31,9 @@ export function AccountListItem({
       type={onClick ? "button" : undefined}
       onClick={onClick}
       className={cn(
-        "flex w-full items-center gap-3 rounded-crm py-2 text-left font-crm",
+        "flex w-full items-center gap-3 rounded-crm px-2 py-2 text-left font-crm",
         onClick &&
-          "cursor-pointer px-2 -mx-2 hover:bg-crm-card focus-visible:ring-2 focus-visible:ring-crm-ring/60 focus-visible:outline-none",
+          "cursor-pointer hover:bg-crm-card focus-visible:ring-2 focus-visible:ring-crm-ring/60 focus-visible:outline-none",
         className,
       )}
     >

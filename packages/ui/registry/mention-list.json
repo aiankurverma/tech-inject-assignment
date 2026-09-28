@@ -1,0 +1,81 @@
+{
+  "name": "Mention List",
+  "slug": "mention-list",
+  "description": "@mention suggestion listbox ranking people and teams by prefix, handle and fuzzy match with recent boost, presence, match highlight and blocked users.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/mention-list.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Mention in a note",
+      "file": "mention-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "MentionItem[]",
+      "description": "{ id, name, handle?, avatar?, subtitle?, kind?, members?, presence?, disabledReason? }",
+      "required": true
+    },
+    {
+      "name": "query",
+      "type": "string",
+      "description": "Text after @",
+      "required": true
+    },
+    {
+      "name": "onSelect",
+      "type": "(item) => void",
+      "description": "Suggestion chosen",
+      "required": true
+    },
+    {
+      "name": "onClose",
+      "type": "() => void",
+      "description": "Escape pressed",
+      "required": false
+    },
+    {
+      "name": "recentIds",
+      "type": "string[]",
+      "description": "Recently mentioned, ranked first",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "limit",
+      "type": "number",
+      "description": "Max suggestions",
+      "default": "8",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show searching state",
+      "required": false
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "description": "Listbox id for aria-controls",
+      "required": false
+    },
+    {
+      "name": "onActiveChange",
+      "type": "(optionId?) => void",
+      "description": "For aria-activedescendant on the input",
+      "required": false
+    },
+    {
+      "name": "ref",
+      "type": "MentionListHandle",
+      "description": "handleKeyDown(e) to drive from the input",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

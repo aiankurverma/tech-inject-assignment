@@ -1,0 +1,64 @@
+{
+  "name": "Coupon Input",
+  "slug": "coupon-input",
+  "description": "Promo code field with normalisation, sync or async validation, race-safe loading and errors, and an applied chip showing the saving.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/coupon-input.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Async code validation",
+      "file": "coupon-input-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onValidate",
+      "type": "(code) => Result | Promise<Result>",
+      "description": "Returns { ok: true, coupon } or { ok: false, error }",
+      "required": true
+    },
+    {
+      "name": "applied",
+      "type": "AppliedCoupon | null",
+      "description": "Controlled applied coupon",
+      "required": false
+    },
+    {
+      "name": "defaultApplied",
+      "type": "AppliedCoupon | null",
+      "description": "Uncontrolled initial coupon",
+      "default": "null",
+      "required": false
+    },
+    {
+      "name": "onAppliedChange",
+      "type": "(coupon | null) => void",
+      "description": "Called on apply/remove",
+      "required": false
+    },
+    {
+      "name": "subtotal",
+      "type": "number",
+      "description": "Used to preview the saving",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable input",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "couponDiscount() and normalizeCouponCode() are exported."
+}

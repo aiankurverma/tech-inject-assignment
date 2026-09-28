@@ -1,0 +1,63 @@
+{
+  "name": "Lead Detail",
+  "slug": "lead-detail",
+  "description": "Lead record page: fit + intent score breakdown with A–D grade (scoreLead exported), BANT qualification checklist, validated convert-to-deal form (name, amount, future close date, create company) and disqualify with reason.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/lead-detail.tsx",
+    "components/crm/activity-timeline.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "lead-detail-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "lead",
+      "type": "LeadRecord",
+      "description": "{ id, name, email, phone?, company, title?, source, owner?, status, signals, qualification?, activities? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Currency label for the amount field",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onConvert",
+      "type": "(lead, deal: ConvertPayload) => void",
+      "description": "Validated conversion payload",
+      "required": false
+    },
+    {
+      "name": "onDisqualify",
+      "type": "(lead, reason: string) => void",
+      "description": "Disqualification with reason",
+      "required": false
+    },
+    {
+      "name": "onQualificationChange",
+      "type": "(q) => void",
+      "description": "BANT answers as they are typed",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

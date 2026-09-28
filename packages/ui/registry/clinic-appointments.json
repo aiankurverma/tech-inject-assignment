@@ -1,0 +1,58 @@
+{
+  "name": "Clinic Appointments",
+  "slug": "clinic-appointments",
+  "description": "Front-desk day view with provider columns on a time grid, now-line, check-in, room and complete workflow, live wait timers, late arrivals and double-booking detection.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/clinic-appointments.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Day schedule",
+      "file": "clinic-appointments-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "providers",
+      "type": "ClinicProvider[]",
+      "description": "{ id, name, specialty? }",
+      "required": true
+    },
+    {
+      "name": "appointments / defaultAppointments / onAppointmentsChange",
+      "type": "ClinicAppointment[]",
+      "description": "{ id, providerId, patient, reason, start, durationMin, status, checkedInAt?, newPatient? }",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for now-line and timers",
+      "required": false
+    },
+    {
+      "name": "startHour / endHour",
+      "type": "number",
+      "description": "Visible hours (24h)",
+      "default": "8 / 18",
+      "required": false
+    },
+    {
+      "name": "waitAlertMin",
+      "type": "number",
+      "description": "Minutes waiting before flagged",
+      "default": "20",
+      "required": false
+    }
+  ],
+  "usage": "findDoubleBookings() is exported."
+}

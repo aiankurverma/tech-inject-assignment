@@ -1,0 +1,67 @@
+{
+  "name": "Logo Cloud",
+  "slug": "logo-cloud",
+  "description": "Customer logo wall with industry filter, hover proof-point metrics, case-study links, +N overflow toggle and a reduced-motion-safe marquee.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/logo-cloud.tsx"],
+  "examples": [
+    {
+      "title": "Industry filter + marquee",
+      "file": "logo-cloud-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "logos",
+      "type": "CloudLogo[]",
+      "description": "Logos with name, optional mark, href, industry and metric",
+      "required": true
+    },
+    {
+      "name": "variant",
+      "type": "\"grid\" | \"marquee\"",
+      "description": "Wrapping grid or scrolling marquee",
+      "required": false
+    },
+    {
+      "name": "filterable",
+      "type": "boolean",
+      "description": "Show the industry filter row",
+      "required": false
+    },
+    {
+      "name": "industry",
+      "type": "string",
+      "description": "Controlled industry filter (\"all\" = none)",
+      "required": false
+    },
+    {
+      "name": "onIndustryChange",
+      "type": "(industry: string) => void",
+      "description": "Called when the filter changes",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Grid logos shown before the +N toggle (default 12)",
+      "required": false
+    },
+    {
+      "name": "columns",
+      "type": "3 | 4 | 5 | 6",
+      "description": "Grid columns on sm+ screens",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton tiles",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

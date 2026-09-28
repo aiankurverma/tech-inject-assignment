@@ -1,0 +1,71 @@
+{
+  "name": "Nonprofit Donors",
+  "slug": "np-donors",
+  "description": "Donor list with computed segments (major, recurring, LYBUNT, lapsed, new, active), at-risk totals, sortable giving columns and a gift-history detail pane with receipt status.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/np-donors.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Donor segments",
+      "file": "np-donors-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "donors",
+      "type": "Donor[]",
+      "description": "{ id, name, email, gifts: { date, amount, fund, recurring? }[], receiptSent? }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for segmentation",
+      "required": false
+    },
+    {
+      "name": "majorThreshold",
+      "type": "number",
+      "description": "Lifetime giving for Major segment",
+      "default": "10000",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(donor) => void",
+      "description": "Donor row chosen",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "donorProfile(donor, now, threshold) is exported for reuse in exports and emails."
+}

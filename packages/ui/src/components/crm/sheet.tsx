@@ -36,7 +36,7 @@ export const SheetContent = React.forwardRef<
 ) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px]" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50" />
       <DialogPrimitive.Content
         ref={ref}
         aria-describedby={undefined}

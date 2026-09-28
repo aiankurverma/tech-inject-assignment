@@ -1,0 +1,62 @@
+{
+  "name": "Nonprofit Campaigns",
+  "slug": "np-campaigns",
+  "description": "Fundraising campaign board with goal progress, straight-line pace projection, needed-per-day, matching-gift unlock, cost per dollar raised and channel mix.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/np-campaigns.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Campaign pacing",
+      "file": "np-campaigns-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "campaigns",
+      "type": "Campaign[]",
+      "description": "{ id, name, fund, goal, start, end, raisedBy, donors, expenses, matchCap? }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for phase and pace",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(campaign) => void",
+      "description": "Campaign chosen",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "campaignPace(campaign, now) is exported."
+}

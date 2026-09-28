@@ -1,7 +1,7 @@
 import { Avatar } from "@/components/crm/avatar";
 import { cn } from "@/lib/utils";
 
-const overlap = { xs: "-ml-1", sm: "-ml-1.5", md: "-ml-2.5", lg: "-ml-4" } as const;
+const overlap = { xs: "-ml-1", sm: "-ml-1.5", md: "-ml-1.5", lg: "-ml-4" } as const;
 const overflowSize = {
   xs: "size-4 text-[8px]",
   sm: "size-5 text-[9px]",
@@ -40,7 +40,7 @@ export function AvatarGroup({ people, max = 4, size = "sm", label, className }: 
           name={p.name}
           src={p.src}
           size={size}
-          className={cn("rounded-full ring-2 ring-crm-bg", i > 0 && overlap[size])}
+          className={cn("shrink-0 rounded-full ring-2 ring-crm-bg", i > 0 && overlap[size])}
         />
       ))}
       {hidden.length ? (
@@ -48,7 +48,7 @@ export function AvatarGroup({ people, max = 4, size = "sm", label, className }: 
           title={hidden.map((p) => p.name).join(", ")}
           aria-label={`${hidden.length} more: ${hidden.map((p) => p.name).join(", ")}`}
           className={cn(
-            "grid shrink-0 place-items-center rounded-full bg-crm-raised font-crm font-medium text-crm-soft ring-2 ring-crm-bg",
+            "grid shrink-0 place-items-center relative rounded-full border border-crm-border bg-crm-primary/20 font-crm font-semibold text-crm-fg ring-2 ring-crm-bg",
             overflowSize[size],
             shown.length > 0 && overlap[size],
           )}

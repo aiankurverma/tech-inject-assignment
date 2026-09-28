@@ -1,0 +1,59 @@
+{
+  "name": "Company Card",
+  "slug": "company-card",
+  "description": "Account summary card with logo, domain, lifecycle, ARR, open pipeline, renewal countdown, health meter, owner and tags; selectable and keyboard-openable.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/company-card.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "company-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "company",
+      "type": "CompanyCardData",
+      "description": "Account data",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "(id: string) => void",
+      "description": "Makes the card clickable (Enter/Space)",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "description": "Selected ring",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for the renewal countdown",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "description": "Header slot, e.g. a menu",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

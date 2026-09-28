@@ -1,0 +1,72 @@
+{
+  "name": "FAQ",
+  "slug": "faq",
+  "description": "Searchable, categorised FAQ accordion with match highlighting, expand/collapse all, arrow-key navigation, helpful votes and an empty-search action.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/faq.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Categorised with feedback",
+      "file": "faq-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "FaqItem[]",
+      "description": "Questions with answer text and optional category",
+      "required": true
+    },
+    {
+      "name": "searchable",
+      "type": "boolean",
+      "description": "Show search and category tabs (default true)",
+      "required": false
+    },
+    {
+      "name": "single",
+      "type": "boolean",
+      "description": "Only one answer open at a time",
+      "required": false
+    },
+    {
+      "name": "openIds",
+      "type": "string[]",
+      "description": "Controlled open item ids",
+      "required": false
+    },
+    {
+      "name": "defaultOpenIds",
+      "type": "string[]",
+      "description": "Initially open ids (uncontrolled)",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(ids: string[]) => void",
+      "description": "Called when open items change",
+      "required": false
+    },
+    {
+      "name": "onFeedback",
+      "type": "(id: string, helpful: boolean) => void",
+      "description": "Enables \"Was this helpful?\" votes",
+      "required": false
+    },
+    {
+      "name": "emptyAction",
+      "type": "ReactNode",
+      "description": "Shown when a search has no results",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

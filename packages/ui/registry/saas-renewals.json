@@ -1,0 +1,95 @@
+{
+  "name": "SaaS Renewals",
+  "slug": "saas-renewals",
+  "description": "Renewal desk that buckets contracts by urgency (overdue, 30/60/90/180 days), with editable forecast category and price uplift, auto-renew notice-window countdowns, bucket subtotals and live weighted forecast, GRR and NRR.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/saas-renewals.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Quarter renewal desk",
+      "file": "saas-renewals-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "renewals",
+      "type": "SaasRenewal[]",
+      "description": "{ id, account, owner, renewalDate, currentArr, upliftPct, forecast, noticeDays?, autoRenew?, note? }",
+      "required": true
+    },
+    {
+      "name": "onForecastChange",
+      "type": "(id: string, forecast: RenewalForecast) => void",
+      "description": "Forecast category edited",
+      "required": false
+    },
+    {
+      "name": "onUpliftChange",
+      "type": "(id: string, upliftPct: number) => void",
+      "description": "Uplift edited (clamped ±50%)",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "Date",
+      "description": "Reference date",
+      "default": "new Date()",
+      "required": false
+    },
+    {
+      "name": "horizon",
+      "type": "30 | 60 | 90 | 180",
+      "description": "Controlled look-ahead window in days",
+      "required": false
+    },
+    {
+      "name": "defaultHorizon",
+      "type": "30 | 60 | 90 | 180",
+      "description": "Initial window",
+      "default": "90",
+      "required": false
+    },
+    {
+      "name": "onHorizonChange",
+      "type": "(horizon: 30 | 60 | 90 | 180) => void",
+      "description": "Horizon change callback (required to drive a controlled horizon)",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error state message",
+      "required": false
+    }
+  ],
+  "usage": "Forecast weights: commit 100%, likely 80%, at risk 40%, churning 0%. weightedRenewalArr(renewal) is exported."
+}

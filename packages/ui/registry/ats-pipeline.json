@@ -1,0 +1,68 @@
+{
+  "name": "ATS Pipeline",
+  "slug": "ats-pipeline",
+  "description": "Recruiting pipeline for one job: stage columns with drag-and-drop and keyboard stage select, SLA overdue flags, stage conversion rates, ratings, sources and rejection with reasons.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/ats-pipeline.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/avatar.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Senior engineer pipeline",
+      "file": "ats-pipeline-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "job",
+      "type": "{ title, department, openings }",
+      "description": "Job header",
+      "required": true
+    },
+    {
+      "name": "stages",
+      "type": "AtsStage[]",
+      "description": "{ id, title, slaDays? } in order; last is hired",
+      "required": true
+    },
+    {
+      "name": "candidates",
+      "type": "AtsCandidateCard[]",
+      "description": "{ name, currentTitle, stageId, enteredStageAt, source, rating?, rejected? }",
+      "required": true
+    },
+    {
+      "name": "onCandidatesChange",
+      "type": "(candidates) => void",
+      "description": "Receives the next list after move or reject",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "(candidate) => void",
+      "description": "Candidate click",
+      "required": false
+    },
+    {
+      "name": "rejectReasons",
+      "type": "string[]",
+      "description": "Reasons offered on reject",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time",
+      "required": false
+    }
+  ],
+  "usage": "Moves are announced to screen readers."
+}

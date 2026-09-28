@@ -47,13 +47,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
       )}
       {...props}
     >
-      {loading ? (
-        <span
-          className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent"
-          aria-hidden
-        />
-      ) : null}
-      {children}
+      {asChild ? (
+        children
+      ) : (
+        <>
+          {loading ? (
+            <span
+              className="size-3 animate-spin rounded-full border-2 border-current border-t-transparent"
+              aria-hidden
+            />
+          ) : null}
+          {children}
+        </>
+      )}
     </Comp>
   );
 });

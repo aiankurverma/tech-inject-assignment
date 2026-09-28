@@ -1,0 +1,42 @@
+{
+  "name": "Revenue Dashboard",
+  "slug": "revenue-dashboard",
+  "description": "SaaS recurring-revenue dashboard: rolls monthly new/expansion/contraction/churn into MRR, ARR, NRR, GRR and quick ratio, with a diverging movements chart and a per-month MRR bridge.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/revenue-dashboard.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "revenue-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "startingMrr",
+      "type": "number",
+      "description": "MRR at the start of the first month",
+      "required": true
+    },
+    {
+      "name": "movements",
+      "type": "MrrMovement[]",
+      "description": "{ month: 'YYYY-MM', newMrr, expansion, contraction, churn, customers? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    }
+  ]
+}

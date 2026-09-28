@@ -1,0 +1,76 @@
+{
+  "name": "Settings Team",
+  "slug": "settings-team",
+  "description": "Team members admin page with paid-seat meter, bulk email invite parsing (valid/duplicate/invalid), seat-limit guard, role changes with last-owner protection, pending invites resend/revoke, search and role filter.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-team.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Team members",
+      "file": "settings-team-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "members",
+      "type": "TeamMember[]",
+      "description": "Controlled member list",
+      "required": false
+    },
+    {
+      "name": "defaultMembers",
+      "type": "TeamMember[]",
+      "description": "Uncontrolled initial members",
+      "required": false
+    },
+    {
+      "name": "onMembersChange",
+      "type": "(m: TeamMember[]) => void",
+      "description": "Fires after invite, role change or removal",
+      "required": false
+    },
+    {
+      "name": "seatLimit",
+      "type": "number",
+      "description": "Paid seats; viewers are free",
+      "required": false,
+      "default": "10"
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Signed-in user; cannot edit or remove self",
+      "required": false
+    },
+    {
+      "name": "onInvite",
+      "type": "(emails, role) => Promise<void> | void",
+      "description": "Send invites; reject to show error",
+      "required": false
+    },
+    {
+      "name": "onResendInvite",
+      "type": "(m: TeamMember) => void",
+      "description": "Resend a pending invite",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton rows",
+      "required": false,
+      "default": "false"
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

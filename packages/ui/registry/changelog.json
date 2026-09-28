@@ -1,0 +1,55 @@
+{
+  "name": "Changelog",
+  "slug": "changelog",
+  "description": "Product release notes grouped by month with change-type filters and counts, search across versions, unread-since-last-visit markers, plan tags and paging.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/changelog.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Releases with unread markers",
+      "file": "changelog-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "entries",
+      "type": "ChangelogEntry[]",
+      "description": "Releases with version, ISO date, title, changes and plans",
+      "required": true
+    },
+    {
+      "name": "lastSeen",
+      "type": "string",
+      "description": "ISO date of last visit; newer releases are marked New",
+      "required": false
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "description": "Releases per page before Load older (default 5)",
+      "required": false
+    },
+    {
+      "name": "onMarkAllRead",
+      "type": "() => void",
+      "description": "Shows the Mark all as read button",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Date formatting locale",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,73 @@
+{
+  "name": "Reminder Chip",
+  "slug": "reminder-chip",
+  "description": "Follow-up reminder pill that turns amber when due and red when overdue, with weekend-aware snooze presets, custom time, done and clear.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-popover"],
+  "files": ["components/crm/reminder-chip.tsx", "components/crm/popover.tsx"],
+  "examples": [
+    {
+      "title": "Follow-ups",
+      "file": "reminder-chip-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "at",
+      "type": "Date | string | number | null",
+      "description": "Reminder time; null means none",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(at: Date | null) => void",
+      "description": "New time or cleared",
+      "required": false
+    },
+    {
+      "name": "onDone",
+      "type": "() => void",
+      "description": "Adds a Mark done action",
+      "required": false
+    },
+    {
+      "name": "done",
+      "type": "boolean",
+      "description": "Completed state",
+      "required": false
+    },
+    {
+      "name": "subject",
+      "type": "string",
+      "description": "What it is about, for accessible labels",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "SnoozeOption[]",
+      "description": "Snooze presets ({ label, at(now) })",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Clock override",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable the chip",
+      "required": false
+    }
+  ],
+  "usage": "Use on inbox rows, deals and contacts to snooze follow-ups."
+}

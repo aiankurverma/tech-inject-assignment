@@ -1,0 +1,85 @@
+{
+  "name": "Company List",
+  "slug": "company-list",
+  "description": "Account directory table: search, tier/industry/at-risk filters, sortable ARR/employees/health/last activity, ARR trend sparklines, health meters, going-cold flags, page selection and pagination with filtered ARR and at-risk totals.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "lucide-react"],
+  "files": [
+    "components/crm/company-list.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/data-table.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "company-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "companies",
+      "type": "CompanyRow[]",
+      "description": "{ id, name, domain, industry, tier, employees, arr, health, owner, lastActivity, arrTrend?, country? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "description": "Rows per page",
+      "default": "10",
+      "required": false
+    },
+    {
+      "name": "staleAfterDays",
+      "type": "number",
+      "description": "Days without activity before flagging",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "Reference ISO date for staleness",
+      "required": false
+    },
+    {
+      "name": "selected / onSelectedChange",
+      "type": "string[] / (ids) => void",
+      "description": "Controlled selection (uncontrolled when omitted)",
+      "required": false
+    },
+    {
+      "name": "onOpenCompany",
+      "type": "(c: CompanyRow) => void",
+      "description": "Row name click",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

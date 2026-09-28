@@ -1,0 +1,39 @@
+{
+  "name": "Visually Hidden",
+  "slug": "visually-hidden",
+  "description": "Screen-reader-only content plus a focus-revealed SkipLink and an AnnouncerProvider/useAnnounce live-region hook for status changes.",
+  "category": "Layout",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/visually-hidden.tsx"],
+  "examples": [
+    {
+      "title": "Accessible deal list",
+      "file": "visually-hidden-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "as",
+      "type": "\"span\" | \"div\" | \"h2\" | \"h3\" | \"label\" | \"p\"",
+      "description": "Element",
+      "default": "\"span\"",
+      "required": false
+    },
+    {
+      "name": "focusable",
+      "type": "boolean",
+      "description": "Reveal while focused",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Hidden content",
+      "required": true
+    }
+  ],
+  "usage": ""
+}

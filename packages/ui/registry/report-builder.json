@@ -1,0 +1,72 @@
+{
+  "name": "Report Builder",
+  "slug": "report-builder",
+  "description": "Ad-hoc grouped report: dimension (with month / quarter / year date buckets), count / sum / avg / min / max, top-N, sort, bar table with totals, loading / empty / error states and CSV export.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/report-builder.tsx",
+    "components/crm/button.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Closed won revenue",
+      "file": "report-builder-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "rows",
+      "type": "ReportRow[]",
+      "description": "Flat source records",
+      "required": true
+    },
+    {
+      "name": "dimensions",
+      "type": "{ key; label; date? }[]",
+      "description": "Group-by options",
+      "required": true
+    },
+    {
+      "name": "measures",
+      "type": "{ key; label; currency? }[]",
+      "description": "Numeric fields",
+      "required": true
+    },
+    {
+      "name": "config / defaultConfig",
+      "type": "ReportConfig",
+      "description": "Controlled or initial configuration",
+      "required": false
+    },
+    {
+      "name": "onConfigChange",
+      "type": "(c: ReportConfig) => void",
+      "description": "Called on change",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

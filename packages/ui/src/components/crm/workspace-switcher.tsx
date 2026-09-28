@@ -31,6 +31,13 @@ export interface WorkspaceSwitcherProps {
   /** Hide the name and chevron, showing only the logo (collapsed sidebar). */
   compact?: boolean;
   className?: string;
+  /** Open the menu on mount (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Radix modal behaviour; set false to keep the page interactive while open. */
+  modal?: boolean;
 }
 
 const palette = [
@@ -71,6 +78,10 @@ export function WorkspaceSwitcher({
   children,
   compact,
   className,
+  defaultOpen,
+  open,
+  onOpenChange,
+  modal,
 }: WorkspaceSwitcherProps) {
   const [inner, setInner] = React.useState(defaultValue ?? workspaces[0]?.id);
   const currentId = value ?? inner;
@@ -82,7 +93,7 @@ export function WorkspaceSwitcher({
   };
 
   return (
-    <DropdownMenu>
+    <DropdownMenu defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange} modal={modal}>
       <DropdownMenuTrigger
         aria-label={`Switch workspace, current: ${current?.name ?? "none"}`}
         className={cn(

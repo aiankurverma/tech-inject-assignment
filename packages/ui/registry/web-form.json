@@ -1,0 +1,79 @@
+{
+  "name": "Web Form",
+  "slug": "web-form",
+  "description": "Schema-driven lead/intake form: multi-step with progress, conditional fields, validation (required, email/work email, phone, URL, number range, pattern), honeypot, hidden UTM fields and async submit.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot", "@radix-ui/react-checkbox"],
+  "files": [
+    "components/crm/web-form.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Multi-step demo request",
+      "file": "web-form-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps",
+      "type": "WebFormStep[]",
+      "description": "Steps with fields (type, validation, showIf, half)",
+      "required": true
+    },
+    {
+      "name": "onSubmit",
+      "type": "(values: WebFormValues) => Promise<void>",
+      "description": "Receives visible, trimmed values plus hidden fields",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Form heading",
+      "required": false
+    },
+    {
+      "name": "submitLabel",
+      "type": "string",
+      "description": "Final submit label",
+      "required": false
+    },
+    {
+      "name": "initialValues",
+      "type": "WebFormValues",
+      "description": "Prefilled values",
+      "required": false
+    },
+    {
+      "name": "hiddenFields",
+      "type": "Record<string, string>",
+      "description": "Context appended on submit (UTM, page)",
+      "required": false
+    },
+    {
+      "name": "successTitle",
+      "type": "string",
+      "description": "Success heading",
+      "required": false
+    },
+    {
+      "name": "successMessage",
+      "type": "string",
+      "description": "Success copy",
+      "required": false
+    },
+    {
+      "name": "consent",
+      "type": "ReactNode",
+      "description": "Legal text above submit",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

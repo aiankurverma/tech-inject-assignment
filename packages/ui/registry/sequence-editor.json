@@ -1,0 +1,63 @@
+{
+  "name": "Sequence Editor",
+  "slug": "sequence-editor",
+  "description": "Multi-channel outreach cadence (email, call, LinkedIn, task) with business-day schedule preview, merge-token insertion and unknown-token / empty-step checks.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/sequence-editor.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Outbound cadence",
+      "file": "sequence-editor-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps / defaultSteps",
+      "type": "SequenceStep[]",
+      "description": "Controlled or initial steps",
+      "required": false
+    },
+    {
+      "name": "onStepsChange",
+      "type": "(steps: SequenceStep[]) => void",
+      "description": "Called on edit",
+      "required": false
+    },
+    {
+      "name": "startDate",
+      "type": "Date",
+      "description": "Enrollment date for the schedule",
+      "default": "today",
+      "required": false
+    },
+    {
+      "name": "businessDaysOnly",
+      "type": "boolean",
+      "description": "Skip weekends (controlled)",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "tokens",
+      "type": "string[]",
+      "description": "Allowed merge tokens without braces",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable editing",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

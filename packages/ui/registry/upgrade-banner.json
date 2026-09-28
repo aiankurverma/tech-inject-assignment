@@ -1,0 +1,76 @@
+{
+  "name": "Upgrade Banner",
+  "slug": "upgrade-banner",
+  "description": "Contextual upsell that reacts to usage limits and trial end: severity-coloured meters, unlocked features, async upgrade with error, snooze menu and non-dismissable over-limit state.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/upgrade-banner.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Usage and trial",
+      "file": "upgrade-banner-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "plan / targetPlan",
+      "type": "string",
+      "description": "Current and upsold plan",
+      "required": true
+    },
+    {
+      "name": "targetPrice",
+      "type": "string",
+      "description": "Price text next to the CTA",
+      "required": false
+    },
+    {
+      "name": "usage",
+      "type": "UpgradeUsage[]",
+      "description": "label, used, limit; worst meter drives severity",
+      "required": false
+    },
+    {
+      "name": "trialDaysLeft / trialWarnDays",
+      "type": "number",
+      "description": "Trial countdown",
+      "required": false,
+      "default": "— / 7"
+    },
+    {
+      "name": "warnAt",
+      "type": "number",
+      "description": "Usage ratio that counts as approaching",
+      "required": false,
+      "default": "0.8"
+    },
+    {
+      "name": "features",
+      "type": "string[]",
+      "description": "Unlocked features",
+      "required": false
+    },
+    {
+      "name": "onUpgrade",
+      "type": "() => void | Promise<void>",
+      "description": "Shows loading and catches errors",
+      "required": false
+    },
+    {
+      "name": "onDismiss",
+      "type": "(snoozeDays: number) => void",
+      "description": "Enables Later/close",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"banner\" | \"card\"",
+      "description": "Layout",
+      "required": false,
+      "default": "\"banner\""
+    }
+  ],
+  "usage": ""
+}

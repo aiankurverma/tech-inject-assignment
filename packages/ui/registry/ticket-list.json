@@ -1,0 +1,79 @@
+{
+  "name": "Ticket List",
+  "slug": "ticket-list",
+  "description": "Support queue table: all/unassigned/mine/at-risk queues, live first-response and resolution SLA countdowns from a per-priority policy (paused while pending), urgency sort, search, and bulk assign/escalate/pending/solve.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/ticket-list.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/data-table.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "ticket-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tickets",
+      "type": "TicketRow[]",
+      "description": "{ id, number, subject, requester, company?, priority, status, assignee?, channel, createdAt, firstRespondedAt?, updatedAt, replies }",
+      "required": true
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Agent for Mine queue and Assign to me",
+      "required": true
+    },
+    {
+      "name": "policy",
+      "type": "SlaPolicy",
+      "description": "Hours per priority { firstResponse, resolution }",
+      "default": "defaultSlaPolicy",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "string",
+      "description": "Fixed ISO clock; ticks every 30s when omitted",
+      "required": false
+    },
+    {
+      "name": "onOpenTicket",
+      "type": "(t: TicketRow) => void",
+      "description": "Subject click",
+      "required": false
+    },
+    {
+      "name": "onBulkUpdate",
+      "type": "(ids, patch) => void",
+      "description": "Bulk assignee/status/priority change",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

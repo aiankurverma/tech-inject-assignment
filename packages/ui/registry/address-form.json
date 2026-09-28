@@ -1,0 +1,83 @@
+{
+  "name": "Address Form",
+  "slug": "address-form",
+  "description": "Country-aware structured address: labels, region lists and postal-code patterns switch per country, blur/submit validation, postal normalisation, autofill tokens, copy-from another address and a formatted label preview. Exports validateAddress and formatAddress.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/address-form.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Billing address",
+      "file": "address-form-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "Address",
+      "description": "Controlled address { country, line1, line2, city, region, postalCode }",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "Partial<Address>",
+      "description": "Initial address",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(address, errors) => void",
+      "description": "Fires on every change with current errors",
+      "required": false
+    },
+    {
+      "name": "countries",
+      "type": "string[]",
+      "description": "Allowed ISO codes",
+      "default": "all supported",
+      "required": false
+    },
+    {
+      "name": "showAllErrors",
+      "type": "boolean",
+      "description": "Show every error (after submit)",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "copyFrom",
+      "type": "{ label, address }",
+      "description": "Adds a 'Same as' shortcut",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable all fields",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "idPrefix",
+      "type": "string",
+      "description": "Prefix for field ids",
+      "default": "\"addr\"",
+      "required": false
+    },
+    {
+      "name": "showPreview",
+      "type": "boolean",
+      "description": "Show formatted label",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": "Use validateAddress() on submit and on the server. Set a unique idPrefix when rendering billing and shipping on one page."
+}

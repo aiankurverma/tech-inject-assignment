@@ -1,0 +1,97 @@
+{
+  "name": "Pricing Card",
+  "slug": "pricing-card",
+  "description": "Plan tier card with monthly/yearly pricing, per-seat billed totals, included and excluded features, current-plan, featured and custom-price states.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/pricing-card.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Three tiers with seats",
+      "file": "pricing-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "name",
+      "type": "string",
+      "description": "Plan name",
+      "required": true
+    },
+    {
+      "name": "monthlyPrice",
+      "type": "number | null",
+      "description": "Per-seat monthly price; null shows Custom / Contact sales",
+      "required": true
+    },
+    {
+      "name": "yearlyMonthlyPrice",
+      "type": "number | null",
+      "description": "Discounted per-month price when billed yearly",
+      "required": false
+    },
+    {
+      "name": "interval",
+      "type": "\"monthly\" | \"yearly\"",
+      "description": "Billing interval",
+      "default": "\"monthly\"",
+      "required": false
+    },
+    {
+      "name": "seats",
+      "type": "number",
+      "description": "Seats used for the billed total",
+      "required": false
+    },
+    {
+      "name": "features",
+      "type": "PricingFeature[]",
+      "description": "{ label, included?, hint? } list",
+      "required": true
+    },
+    {
+      "name": "featured",
+      "type": "boolean",
+      "description": "Highlight as recommended",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "current",
+      "type": "boolean",
+      "description": "Customer is on this plan; disables CTA",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "() => void",
+      "description": "CTA handler",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "CTA spinner",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "maxFeatures",
+      "type": "number",
+      "description": "Features shown before \"Show all\"",
+      "default": "6",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 code",
+      "default": "\"USD\"",
+      "required": false
+    }
+  ],
+  "usage": "Pair with PlanSwitcher to drive the interval prop across a row of tiers."
+}

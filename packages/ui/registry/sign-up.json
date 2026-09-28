@@ -1,0 +1,78 @@
+{
+  "name": "Sign Up",
+  "slug": "sign-up",
+  "description": "Account creation with work-email enforcement, join-existing-workspace by email domain, live password rules, confirm match and terms consent.",
+  "category": "Auth and onboarding",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/sign-up.tsx",
+    "components/crm/alert.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx",
+    "components/crm/password-input.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Trial sign-up with domain matching",
+      "file": "sign-up-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "onSubmit",
+      "type": "(values: SignUpValues) => Promise<string | void>",
+      "description": "Create the account; return a string to show a form error",
+      "required": true
+    },
+    {
+      "name": "existingWorkspaces",
+      "type": "{ domain; name; members }[]",
+      "description": "Workspaces matched by email domain",
+      "required": false,
+      "default": "[]"
+    },
+    {
+      "name": "onJoinWorkspace",
+      "type": "(workspace, email) => void",
+      "description": "Request-to-join action on the match banner",
+      "required": false
+    },
+    {
+      "name": "requireWorkEmail",
+      "type": "boolean",
+      "description": "Reject gmail.com, outlook.com and other free mail",
+      "required": false,
+      "default": "true"
+    },
+    {
+      "name": "passwordRules",
+      "type": "PasswordRule[]",
+      "description": "Checklist rules",
+      "required": false,
+      "default": "DEFAULT_PASSWORD_RULES"
+    },
+    {
+      "name": "onSignIn",
+      "type": "() => void",
+      "description": "Shows the Sign in link",
+      "required": false
+    },
+    {
+      "name": "termsHref / privacyHref",
+      "type": "string",
+      "description": "Consent links",
+      "required": false,
+      "default": "\"#\""
+    }
+  ],
+  "usage": "Pass existingWorkspaces so teammates join the right workspace instead of creating duplicates."
+}

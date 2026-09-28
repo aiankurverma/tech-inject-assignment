@@ -1,0 +1,51 @@
+{
+  "name": "Settings Branding",
+  "slug": "settings-branding",
+  "description": "Workspace branding: logo upload, accent colour with WCAG contrast check and one-click fix, corner style, custom portal domain, email footer and a live quote preview.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-branding.tsx",
+    "components/crm/button.tsx",
+    "components/crm/file-drop.tsx",
+    "components/crm/input.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Brand kit with live preview",
+      "file": "settings-branding-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "defaultValue",
+      "type": "BrandingValue",
+      "description": "Initial branding",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(value) => Promise<void>",
+      "description": "Persist branding",
+      "required": true
+    },
+    {
+      "name": "onUploadLogo",
+      "type": "(file) => Promise<string>",
+      "description": "Upload and return hosted URL",
+      "required": false,
+      "default": "object URL"
+    },
+    {
+      "name": "presets",
+      "type": "string[]",
+      "description": "Quick-pick colours",
+      "required": false
+    }
+  ],
+  "usage": "contrastRatio and fixContrast are exported for reuse."
+}

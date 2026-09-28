@@ -1,0 +1,62 @@
+{
+  "name": "Executive Summary",
+  "slug": "executive-summary",
+  "description": "Board-level metrics report: grouped KPIs with RAG status vs target (invertible), selectable comparison period, trend sparklines, highlights/risks/asks commentary and print support.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/executive-summary.tsx",
+    "components/crm/button.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "executive-summary-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Report title",
+      "required": true
+    },
+    {
+      "name": "periods",
+      "type": "string[]",
+      "description": "Period labels, oldest first",
+      "required": true
+    },
+    {
+      "name": "metrics",
+      "type": "ExecMetric[]",
+      "description": "{ id, label, group, series, target?, format, invert?, owner? }",
+      "required": true
+    },
+    {
+      "name": "notes",
+      "type": "ExecNote[]",
+      "description": "{ kind: 'highlight' | 'risk' | 'ask', text }",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "tolerance",
+      "type": "number",
+      "description": "Allowed miss before red",
+      "default": "0.1",
+      "required": false
+    }
+  ]
+}

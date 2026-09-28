@@ -1,0 +1,82 @@
+{
+  "name": "Calendar Week",
+  "slug": "calendar-week",
+  "description": "Week calendar with hour grid, all-day row, side-by-side layout for overlapping events, live now line, week navigation and click-to-create on empty slots.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/calendar-week.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Sales rep week",
+      "file": "calendar-week-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "events",
+      "type": "CalendarEvent[]",
+      "description": "{ id, title, start, end, allDay?, location?, tone? }",
+      "required": true
+    },
+    {
+      "name": "week / defaultWeek",
+      "type": "Date",
+      "description": "Any date inside the visible week",
+      "required": false
+    },
+    {
+      "name": "onWeekChange",
+      "type": "(weekStart) => void",
+      "description": "Navigation callback",
+      "required": false
+    },
+    {
+      "name": "weekStartsOn",
+      "type": "0 | 1",
+      "description": "Sunday or Monday",
+      "default": "1",
+      "required": false
+    },
+    {
+      "name": "startHour / endHour",
+      "type": "number",
+      "description": "Visible hour range",
+      "default": "7 / 20",
+      "required": false
+    },
+    {
+      "name": "hourHeight",
+      "type": "number",
+      "description": "Pixel height per hour",
+      "default": "48",
+      "required": false
+    },
+    {
+      "name": "onSlotClick",
+      "type": "(start: Date) => void",
+      "description": "Empty slot click snapped to 30 min",
+      "required": false
+    },
+    {
+      "name": "onEventClick",
+      "type": "(event) => void",
+      "description": "Event click",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a loading overlay",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time",
+      "required": false
+    }
+  ],
+  "usage": "layoutDay() and startOfWeek() are exported."
+}

@@ -188,8 +188,10 @@ export function SavedViews({
                       type="button"
                       aria-label={`${v.name} options`}
                       className={cn(
-                        "mr-1 inline-flex size-6 cursor-pointer items-center justify-center rounded-md text-crm-subtle outline-none hover:bg-crm-track hover:text-crm-fg focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-crm-ring/60 data-[state=open]:opacity-100 [&_svg]:size-3.5",
-                        on ? "opacity-100" : "opacity-0 group-hover:opacity-100",
+                        "inline-flex h-6 shrink-0 cursor-pointer overflow-hidden items-center justify-center rounded-md text-crm-subtle outline-none hover:bg-crm-track hover:text-crm-fg focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-crm-ring/60 data-[state=open]:opacity-100 [&_svg]:size-3.5",
+                        on
+                          ? "mr-1 w-6 opacity-100"
+                          : "w-0 opacity-0 group-focus-within:mr-1 group-focus-within:w-6 group-focus-within:opacity-100 group-hover:mr-1 group-hover:w-6 group-hover:opacity-100 data-[state=open]:mr-1 data-[state=open]:w-6",
                       )}
                     >
                       <MoreHorizontal />

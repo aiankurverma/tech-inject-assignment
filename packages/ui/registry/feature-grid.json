@@ -1,0 +1,61 @@
+{
+  "name": "Feature Grid",
+  "slug": "feature-grid",
+  "description": "Filterable feature grid with category tabs and counts, search across titles and highlights, plan and New/Beta/Soon badges, linked cards and an empty state.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/feature-grid.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Platform features",
+      "file": "feature-grid-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "features",
+      "type": "Feature[]",
+      "description": "id, title, description, icon, category, plan, status, highlights, href",
+      "required": true
+    },
+    {
+      "name": "eyebrow",
+      "type": "string",
+      "description": "Small label above title",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Section heading",
+      "required": false
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Section intro",
+      "required": false
+    },
+    {
+      "name": "filterable",
+      "type": "boolean",
+      "description": "Category tabs + search (default when 7+ features)",
+      "required": false
+    },
+    {
+      "name": "columns",
+      "type": "2 | 3 | 4",
+      "description": "Grid columns",
+      "default": "3",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

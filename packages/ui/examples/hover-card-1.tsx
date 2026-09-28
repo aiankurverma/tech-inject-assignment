@@ -1,12 +1,14 @@
+import * as React from "react";
 import { Building2, Mail, MapPin } from "lucide-react";
 import { Avatar } from "@/components/crm/avatar";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/crm/hover-card";
 
 export default function Example() {
+  const [open, setOpen] = React.useState(true);
   return (
-    <p className="h-[240px] w-[420px] font-crm text-sm text-crm-soft">
+    <p className="h-[320px] w-[420px] pt-2 font-crm text-sm text-crm-soft">
       Deal owned by{" "}
-      <HoverCard>
+      <HoverCard open={open} onOpenChange={setOpen}>
         <HoverCardTrigger>
           <a href="#maya" className="font-medium text-crm-fg underline-offset-4 hover:underline">
             Maya Chen

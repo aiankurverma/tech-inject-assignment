@@ -1,0 +1,70 @@
+{
+  "name": "Shop Orders",
+  "slug": "shop-orders",
+  "description": "E-commerce order management list with status views and counts (to fulfil, unpaid, risk review, completed), fulfilment SLA countdowns, fraud-risk flags, expandable line items with subtotal / discount / tax / shipping math, per-order currency, search by order, customer or SKU, and bulk mark-fulfilled for paid orders.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/shop-orders.tsx",
+    "components/crm/button.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [{ "title": "Fulfilment queue", "file": "shop-orders-1.tsx" }],
+  "props": [
+    {
+      "name": "orders",
+      "type": "ShopOrder[]",
+      "description": "{ id, number, customer, placedAt, channel, payment, fulfillment, lines[], discount?, shipping?, taxRate?, risk?, currency? }",
+      "required": true
+    },
+    {
+      "name": "fulfilSlaHours",
+      "type": "number",
+      "description": "Hours before an unfulfilled paid order is late",
+      "default": "48",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for SLA timers",
+      "default": "new Date()",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Default ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton rows", "required": false },
+    { "name": "error", "type": "string", "description": "Error state message", "required": false },
+    {
+      "name": "onFulfill",
+      "type": "(ids: string[]) => void",
+      "description": "Bulk fulfil handler; enables selection of paid, unshipped orders",
+      "required": false
+    },
+    {
+      "name": "onOpenOrder",
+      "type": "(order: ShopOrder) => void",
+      "description": "Open order detail",
+      "required": false
+    }
+  ],
+  "usage": "orderTotals(order) is exported and rounds each component to cents."
+}

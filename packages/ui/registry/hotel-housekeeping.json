@@ -1,0 +1,47 @@
+{
+  "name": "Hotel Housekeeping",
+  "slug": "hotel-housekeeping",
+  "description": "Room status board by floor: advance dirty → cleaning → clean → inspected, assign attendants, prioritise arrivals and balance workload credits.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/hotel-housekeeping.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "hotel-housekeeping-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "rooms",
+      "type": "HousekeepingRoom[]",
+      "description": "Rooms with clean status, occupancy and attendant",
+      "required": true
+    },
+    {
+      "name": "onRoomsChange",
+      "type": "(rooms: HousekeepingRoom[]) => void",
+      "description": "Makes the board controlled",
+      "required": false
+    },
+    {
+      "name": "attendants",
+      "type": "string[]",
+      "description": "Attendant names for assignment",
+      "required": true
+    },
+    {
+      "name": "credits",
+      "type": "Record<string, number>",
+      "description": "Cleaning credits per room type (departures x1.5)",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

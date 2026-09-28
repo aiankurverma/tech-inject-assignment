@@ -1,0 +1,76 @@
+{
+  "name": "Calendar Month",
+  "slug": "calendar-month",
+  "description": "Month event grid with multi-day spans, +N more overflow, Today and month navigation, and roving keyboard focus (arrows, PageUp/PageDown).",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/calendar-month.tsx", "components/crm/tag.tsx"],
+  "examples": [
+    {
+      "title": "Sales calendar",
+      "file": "calendar-month-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "events",
+      "type": "CalendarEvent[]",
+      "description": "{ id, title, start, end?, allDay?, color? }",
+      "required": true
+    },
+    {
+      "name": "month",
+      "type": "Date",
+      "description": "Controlled visible month",
+      "required": false
+    },
+    {
+      "name": "defaultMonth",
+      "type": "Date",
+      "description": "Initial month when uncontrolled",
+      "default": "today",
+      "required": false
+    },
+    {
+      "name": "onMonthChange",
+      "type": "(month: Date) => void",
+      "description": "Month navigated",
+      "required": false
+    },
+    {
+      "name": "selectedDate",
+      "type": "Date | null",
+      "description": "Highlighted day",
+      "required": false
+    },
+    {
+      "name": "onSelectDate",
+      "type": "(date: Date) => void",
+      "description": "Day clicked or Enter",
+      "required": false
+    },
+    {
+      "name": "onEventClick",
+      "type": "(event) => void",
+      "description": "Event chip clicked",
+      "required": false
+    },
+    {
+      "name": "weekStartsOn",
+      "type": "0 | 1",
+      "description": "0 Sunday, 1 Monday",
+      "default": "1",
+      "required": false
+    },
+    {
+      "name": "maxPerDay",
+      "type": "number",
+      "description": "Events per day before +N more",
+      "default": "3",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

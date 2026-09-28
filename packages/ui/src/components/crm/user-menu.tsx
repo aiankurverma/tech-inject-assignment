@@ -30,6 +30,13 @@ export interface UserMenuProps {
   align?: "start" | "center" | "end";
   side?: "top" | "right" | "bottom" | "left";
   className?: string;
+  /** Open the menu on mount (uncontrolled). */
+  defaultOpen?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /** Radix modal behaviour; set false to keep the page interactive while open. */
+  modal?: boolean;
 }
 
 const statusColor = {
@@ -49,9 +56,13 @@ export function UserMenu({
   align = "end",
   side = "bottom",
   className,
+  defaultOpen,
+  open,
+  onOpenChange,
+  modal,
 }: UserMenuProps) {
   const avatar = (
-    <span className="relative inline-flex">
+    <span className="relative inline-flex shrink-0 align-middle">
       <Avatar name={user.name} src={user.avatarUrl} size="md" />
       {status ? (
         <span
@@ -66,14 +77,14 @@ export function UserMenu({
   );
 
   return (
-    <DropdownMenu>
+    <DropdownMenu defaultOpen={defaultOpen} open={open} onOpenChange={onOpenChange} modal={modal}>
       <DropdownMenuTrigger asChild>
         {trigger === "avatar" ? (
           <button
             type="button"
             aria-label={`Account menu for ${user.name}${status ? ` (${status})` : ""}`}
             className={cn(
-              "inline-flex cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
+              "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full align-middle outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
               className,
             )}
           >

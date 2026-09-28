@@ -1,0 +1,96 @@
+{
+  "name": "Customer Portal",
+  "slug": "customer-portal",
+  "description": "Self-serve account portal: plan usage meters with limit warnings, invoices with overdue days, filters, bulk select and computed pay total, and support tickets with live SLA countdown.",
+  "category": "Marketing and portal",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot", "@radix-ui/react-checkbox"],
+  "files": [
+    "components/crm/customer-portal.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Account with overdue invoices",
+      "file": "customer-portal-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "account",
+      "type": "{ name; plan; renewsAt; seats }",
+      "description": "Account summary",
+      "required": true
+    },
+    {
+      "name": "invoices",
+      "type": "PortalInvoice[]",
+      "description": "Invoices; amounts in minor units",
+      "required": true
+    },
+    {
+      "name": "tickets",
+      "type": "PortalTicket[]",
+      "description": "Support tickets with optional SLA deadline",
+      "required": true
+    },
+    {
+      "name": "usage",
+      "type": "PortalUsage[]",
+      "description": "Usage meters",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency (default USD)",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for overdue/SLA maths",
+      "required": false
+    },
+    {
+      "name": "onPay",
+      "type": "(invoiceIds: string[], totalMinor: number) => void",
+      "description": "Pay selected invoices",
+      "required": false
+    },
+    {
+      "name": "onDownload",
+      "type": "(invoiceId: string) => void",
+      "description": "Download PDF",
+      "required": false
+    },
+    {
+      "name": "onNewTicket",
+      "type": "() => void",
+      "description": "New request button",
+      "required": false
+    },
+    {
+      "name": "onOpenTicket",
+      "type": "(ticketId: string) => void",
+      "description": "Open a ticket",
+      "required": false
+    },
+    {
+      "name": "defaultTab",
+      "type": "\"overview\" | \"invoices\" | \"tickets\"",
+      "description": "Initial tab",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,77 @@
+{
+  "name": "Quote Line Items",
+  "slug": "quote-line-items",
+  "description": "Editable quote table with quantity, unit price, per-line discount with approval threshold, per-line tax, reordering and totals with tax grouped by rate.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/quote-line-items.tsx",
+    "components/crm/button.tsx",
+    "components/crm/number-input.tsx",
+    "components/crm/currency-input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "SaaS quote with mixed tax",
+      "file": "quote-line-items-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "QuoteLineItem[]",
+      "description": "Controlled lines { id, name, sku?, term?, quantity, unitPrice, discount, taxRate }",
+      "required": false
+    },
+    {
+      "name": "defaultItems",
+      "type": "QuoteLineItem[]",
+      "description": "Uncontrolled initial lines",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onItemsChange",
+      "type": "(items) => void",
+      "description": "Called on every edit",
+      "required": false
+    },
+    {
+      "name": "maxDiscount",
+      "type": "number",
+      "description": "Line discount % above which approval is flagged",
+      "default": "20",
+      "required": false
+    },
+    {
+      "name": "defaultTaxRate",
+      "type": "number",
+      "description": "Tax % for new lines",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "onAddLine",
+      "type": "() => QuoteLineItem | null",
+      "description": "Custom line factory (e.g. open ProductPicker)",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Render as a static quote",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 code",
+      "default": "\"USD\"",
+      "required": false
+    }
+  ],
+  "usage": "lineTotals() and quoteTotals() are exported for PDFs and CRM sync."
+}

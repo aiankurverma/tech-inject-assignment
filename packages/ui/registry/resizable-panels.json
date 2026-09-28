@@ -1,0 +1,57 @@
+{
+  "name": "Resizable Panels",
+  "slug": "resizable-panels",
+  "description": "Split panes with pointer and keyboard separators (WAI-ARIA window splitter), min/max constraints, collapse/restore and per-viewer persisted layout.",
+  "category": "Layout",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/resizable-panels.tsx"],
+  "examples": [
+    {
+      "title": "Support inbox three-pane layout",
+      "file": "resizable-panels-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "panels",
+      "type": "{ id; defaultSize; minSize?; maxSize?; collapsible?; collapsedSize?; label?; content }[]",
+      "description": "Panel definitions, sizes in percent",
+      "required": true
+    },
+    {
+      "name": "direction",
+      "type": "\"horizontal\" | \"vertical\"",
+      "description": "Split axis",
+      "default": "\"horizontal\"",
+      "required": false
+    },
+    {
+      "name": "sizes",
+      "type": "number[]",
+      "description": "Controlled sizes",
+      "required": false
+    },
+    {
+      "name": "onSizesChange",
+      "type": "(sizes: number[]) => void",
+      "description": "Called on every resize",
+      "required": false
+    },
+    {
+      "name": "storageKey",
+      "type": "string",
+      "description": "Persist layout in localStorage",
+      "required": false
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "description": "Keyboard step in percent (Shift ×5)",
+      "default": "2",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,65 @@
+{
+  "name": "CSV Import Flow",
+  "slug": "csv-import-flow",
+  "description": "Four-step CSV import: quoted-CSV parser, alias-based column auto-mapping, required / type validation, dedupe against existing records, then import with progress and retry.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/csv-import-flow.tsx",
+    "components/crm/button.tsx",
+    "components/crm/file-drop.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/select.tsx",
+    "components/crm/stepper.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Contact import",
+      "file": "csv-import-flow-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "ImportField[]",
+      "description": "Target fields with required, type and header aliases",
+      "required": true
+    },
+    {
+      "name": "onImport",
+      "type": "(rows, onProgress) => Promise<{ imported; skipped }>",
+      "description": "Import valid rows",
+      "required": true
+    },
+    {
+      "name": "dedupeKey",
+      "type": "string",
+      "description": "Field used to detect duplicates",
+      "required": false
+    },
+    {
+      "name": "existingKeys",
+      "type": "string[]",
+      "description": "Existing dedupe values in the CRM",
+      "required": false
+    },
+    {
+      "name": "maxRows",
+      "type": "number",
+      "description": "Row limit",
+      "default": "5000",
+      "required": false
+    },
+    {
+      "name": "onDone",
+      "type": "() => void",
+      "description": "Shows a View records button at the end",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,79 @@
+{
+  "name": "Deal Board",
+  "slug": "deal-board",
+  "description": "Pipeline kanban built on KanbanColumn: search and owner filter, per-stage totals with weighted forecast, pipeline/weighted/count summary, drag & drop between stages, keyboard-accessible move-to-stage for the selected deal, loading/empty/error states.",
+  "category": "Records",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/deal-board.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/deal-card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kanban-column.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "deal-board-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "stages",
+      "type": "BoardStage[]",
+      "description": "{ id, label, probability, color?, limit? }",
+      "required": true
+    },
+    {
+      "name": "deals / defaultDeals",
+      "type": "BoardDeal[]",
+      "description": "Controlled or initial deals (Deal & { stageId })",
+      "required": false
+    },
+    {
+      "name": "onDealMove",
+      "type": "(dealId, toStageId, next) => void",
+      "description": "After a drag or keyboard move",
+      "required": false
+    },
+    {
+      "name": "onOpenDeal",
+      "type": "(deal: BoardDeal) => void",
+      "description": "Card click (also selects it)",
+      "required": false
+    },
+    {
+      "name": "onAddDeal",
+      "type": "(stageId: string) => void",
+      "description": "Column + button",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for totals",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

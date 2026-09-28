@@ -1,0 +1,103 @@
+{
+  "name": "Agency Timesheets",
+  "slug": "agency-timesheets",
+  "description": "Weekly timesheet grid with flexible hour parsing (1:30, 1.5, 90m) rounded to quarter hours, keyboard cell navigation, per-day and per-row totals, billable split and value, daily overtime warnings, week navigation and submit/approval locking.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/agency-timesheets.tsx",
+    "components/crm/button.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [{ "title": "Week entry with submit", "file": "agency-timesheets-1.tsx" }],
+  "props": [
+    {
+      "name": "projects",
+      "type": "TimesheetProject[]",
+      "description": "{ id, name, client, billable, rate }",
+      "required": true
+    },
+    {
+      "name": "rows",
+      "type": "TimesheetRow[]",
+      "description": "Controlled rows { id, projectId, task, billable, hours[7] }",
+      "required": false
+    },
+    {
+      "name": "defaultRows",
+      "type": "TimesheetRow[]",
+      "description": "Initial rows when uncontrolled",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onRowsChange",
+      "type": "(rows: TimesheetRow[]) => void",
+      "description": "Called on any edit",
+      "required": false
+    },
+    {
+      "name": "week",
+      "type": "Date",
+      "description": "Controlled week (any day; snaps to Monday)",
+      "required": false
+    },
+    {
+      "name": "defaultWeek",
+      "type": "Date",
+      "description": "Initial week when uncontrolled",
+      "default": "new Date()",
+      "required": false
+    },
+    {
+      "name": "onWeekChange",
+      "type": "(monday: Date) => void",
+      "description": "Week navigation callback",
+      "required": false
+    },
+    {
+      "name": "status",
+      "type": "\"draft\" | \"submitted\" | \"approved\"",
+      "description": "Non-draft locks editing",
+      "default": "\"draft\"",
+      "required": false
+    },
+    {
+      "name": "onSubmit",
+      "type": "(rows: TimesheetRow[], monday: Date) => void",
+      "description": "Submit handler; disabled while any cell is invalid",
+      "required": false
+    },
+    {
+      "name": "capacity",
+      "type": "number",
+      "description": "Weekly contracted hours",
+      "default": "40",
+      "required": false
+    },
+    {
+      "name": "dailyLimit",
+      "type": "number",
+      "description": "Daily hours before an overtime warning",
+      "default": "10",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Currency for billable value",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    }
+  ],
+  "usage": "parseHours(text) and mondayOf(date) are exported helpers."
+}

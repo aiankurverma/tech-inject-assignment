@@ -1,0 +1,69 @@
+{
+  "name": "Presence Avatars",
+  "slug": "presence-avatars",
+  "description": "Live who-is-viewing stack with idle detection, collaborator colour rings and a popover of what each person is doing.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-popover"],
+  "files": [
+    "components/crm/presence-avatars.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/popover.tsx",
+    "components/crm/status-dot.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Viewing now",
+      "file": "presence-avatars-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "viewers",
+      "type": "PresenceViewer[]",
+      "description": "People on the record (id, name, status, activity, lastActiveAt, color)",
+      "required": true
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Excluded from the stack",
+      "required": false
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Avatars before +N",
+      "default": "4",
+      "required": false
+    },
+    {
+      "name": "idleAfterMs",
+      "type": "number",
+      "description": "Heartbeat age after which a viewer shows as away",
+      "default": "300000",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Clock override",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Avatar size",
+      "default": "\"sm\"",
+      "required": false
+    },
+    {
+      "name": "onViewerClick",
+      "type": "(viewer) => void",
+      "description": "Makes list rows clickable (e.g. jump to cursor)",
+      "required": false
+    }
+  ],
+  "usage": "Put in record headers so reps see who else is editing."
+}
