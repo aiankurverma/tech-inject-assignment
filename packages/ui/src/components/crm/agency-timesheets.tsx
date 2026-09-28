@@ -110,6 +110,7 @@ export function AgencyTimesheets({
   const [drafts, setDrafts] = React.useState<Record<string, string>>({});
   const [newProject, setNewProject] = React.useState(projects[0]?.id ?? "");
   const locked = status !== "draft";
+  const gridRef = React.useRef<HTMLTableElement>(null);
 
   const money = new Intl.NumberFormat(locale, {
     style: "currency",
@@ -175,7 +176,7 @@ export function AgencyTimesheets({
 
   const onCellKey = (e: React.KeyboardEvent<HTMLInputElement>, r: number, d: number) => {
     const move = (rr: number, dd: number) => {
-      const el = document.querySelector<HTMLInputElement>(`[data-ts-cell="${rr}-${dd}"]`);
+      const el = gridRef.current?.querySelector<HTMLInputElement>(`[data-ts-cell="${rr}-${dd}"]`);
       if (el) {
         e.preventDefault();
         el.focus();
@@ -244,7 +245,7 @@ export function AgencyTimesheets({
       </header>
 
       <div className="w-full overflow-x-auto">
-        <table className="w-full min-w-max border-collapse text-sm text-crm-fg">
+        <table ref={gridRef} className="w-full min-w-max border-collapse text-sm text-crm-fg">
           <thead>
             <tr className="border-b border-crm-border">
               <th

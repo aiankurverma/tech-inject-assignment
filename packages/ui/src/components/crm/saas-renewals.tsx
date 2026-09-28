@@ -33,6 +33,7 @@ export interface SaasRenewalsProps {
   /** Days ahead to include (overdue items are always shown). */
   horizon?: 30 | 60 | 90 | 180;
   defaultHorizon?: 30 | 60 | 90 | 180;
+  onHorizonChange?: (horizon: 30 | 60 | 90 | 180) => void;
   currency?: string;
   locale?: string;
   loading?: boolean;
@@ -65,6 +66,7 @@ export function SaasRenewals({
   today = new Date(),
   horizon,
   defaultHorizon = 90,
+  onHorizonChange,
   currency = "USD",
   locale = "en-US",
   loading,
@@ -129,6 +131,7 @@ export function SaasRenewals({
           onValueChange={(v) => {
             const n = Number(v) as 30 | 60 | 90 | 180;
             if (horizon === undefined) setInnerH(n);
+            onHorizonChange?.(n);
           }}
           options={[30, 60, 90, 180].map((n) => ({ value: String(n), label: `${n}d` }))}
         />

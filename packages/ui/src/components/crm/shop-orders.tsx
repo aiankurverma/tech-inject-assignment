@@ -184,7 +184,7 @@ export function ShopOrders({
         />
       </div>
 
-      {onFulfill && selectable.length ? (
+      {onFulfill && selectable.length && !loading && !error ? (
         <div className="flex items-center gap-2 border-b border-crm-border bg-crm-raised px-3 py-2 text-xs text-crm-soft">
           <input
             type="checkbox"

@@ -13,7 +13,12 @@
     "components/crm/segmented-control.tsx",
     "components/crm/tag.tsx"
   ],
-  "examples": [{ "title": "Quarter renewal desk", "file": "saas-renewals-1.tsx" }],
+  "examples": [
+    {
+      "title": "Quarter renewal desk",
+      "file": "saas-renewals-1.tsx"
+    }
+  ],
   "props": [
     {
       "name": "renewals",
@@ -54,6 +59,12 @@
       "required": false
     },
     {
+      "name": "onHorizonChange",
+      "type": "(horizon: 30 | 60 | 90 | 180) => void",
+      "description": "Horizon change callback (required to drive a controlled horizon)",
+      "required": false
+    },
+    {
       "name": "currency",
       "type": "string",
       "description": "ISO currency code",
@@ -67,8 +78,18 @@
       "default": "\"en-US\"",
       "required": false
     },
-    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
-    { "name": "error", "type": "string", "description": "Error state message", "required": false }
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error state message",
+      "required": false
+    }
   ],
   "usage": "Forecast weights: commit 100%, likely 80%, at risk 40%, churning 0%. weightedRenewalArr(renewal) is exported."
 }
