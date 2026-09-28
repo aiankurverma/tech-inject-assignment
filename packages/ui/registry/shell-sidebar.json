@@ -1,0 +1,97 @@
+{
+  "name": "Sidebar Shell",
+  "slug": "shell-sidebar",
+  "description": "Application shell with a collapsible (Ctrl/Cmd+B) sidebar, workspace switcher, sectioned nav with counts, top bar breadcrumbs, search, notifications and user menu, and a mobile navigation sheet.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/shell-sidebar.tsx",
+    "components/crm/account-list-item.tsx",
+    "components/crm/app-sidebar.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/breadcrumbs.tsx",
+    "components/crm/button.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/dropdown-menu.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/notifications.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/segmented-meter.tsx",
+    "components/crm/sheet.tsx",
+    "components/crm/stat-card.tsx",
+    "components/crm/user-menu.tsx",
+    "components/crm/workspace-switcher.tsx"
+  ],
+  "examples": [
+    {
+      "title": "CRM workspace",
+      "file": "shell-sidebar-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "sections",
+      "type": "ShellNavSection[]",
+      "description": "Nav groups with items (icon or dotColor, count)",
+      "required": true
+    },
+    {
+      "name": "activeId / defaultActiveId / onNavigate",
+      "type": "string",
+      "description": "Current page",
+      "required": false
+    },
+    {
+      "name": "workspaces / workspaceId / onWorkspaceChange",
+      "type": "Workspace[]",
+      "description": "Workspace switcher",
+      "required": true
+    },
+    {
+      "name": "user / onSignOut / userMenu",
+      "type": "UserMenuUser",
+      "description": "User menu",
+      "required": true
+    },
+    {
+      "name": "breadcrumbs",
+      "type": "BreadcrumbItem[]",
+      "description": "Top bar trail",
+      "required": false
+    },
+    {
+      "name": "notifications / onMarkAllRead",
+      "type": "Notification[]",
+      "description": "Bell popover",
+      "required": false
+    },
+    {
+      "name": "onSearch",
+      "type": "(q: string) => void",
+      "description": "Shows the Cmd+K search field",
+      "required": false
+    },
+    {
+      "name": "actions / sidebarFooter",
+      "type": "ReactNode",
+      "description": "Top bar actions, sidebar footer",
+      "required": false
+    },
+    {
+      "name": "collapsed / defaultCollapsed / onCollapsedChange",
+      "type": "boolean",
+      "description": "Icon-only rail",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

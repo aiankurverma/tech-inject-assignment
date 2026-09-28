@@ -1,0 +1,67 @@
+{
+  "name": "Receipt",
+  "slug": "receipt",
+  "description": "Printable receipt with merchant and customer blocks, line discounts, tax, tip, split payments and refunds, computed balance/change due, settlement status and print/email/copy actions; exports computeReceipt.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/receipt.tsx", "components/crm/badge.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Split payment",
+      "file": "receipt-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "receiptNumber / issuedAt",
+      "type": "string / Date",
+      "description": "Identifier and timestamp",
+      "required": true
+    },
+    {
+      "name": "merchant",
+      "type": "ReceiptMerchant",
+      "description": "Name, address lines, tax id, logo",
+      "required": true
+    },
+    {
+      "name": "customer",
+      "type": "{ name; email?; address? }",
+      "description": "Billed-to block",
+      "required": false
+    },
+    {
+      "name": "items",
+      "type": "ReceiptItem[]",
+      "description": "Name, sku, quantity, unitPrice, discount",
+      "required": true
+    },
+    {
+      "name": "payments",
+      "type": "ReceiptPayment[]",
+      "description": "Tenders and refunds (refund: true)",
+      "required": true
+    },
+    {
+      "name": "taxRate / taxLabel / shipping / tip",
+      "type": "number / string",
+      "description": "Extra charges",
+      "required": false
+    },
+    {
+      "name": "currency / locale",
+      "type": "string",
+      "description": "Money formatting",
+      "required": false
+    },
+    {
+      "name": "onEmail / onPrint",
+      "type": "() => void",
+      "description": "Actions; print defaults to window.print()",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,70 @@
+{
+  "name": "Tax Breakdown",
+  "slug": "tax-breakdown",
+  "description": "Tax lines grouped by rate and jurisdiction with compound, tax-inclusive, exempt and reverse-charge handling, expandable per-line detail and effective rate; exports computeTaxes.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/tax-breakdown.tsx"],
+  "examples": [
+    {
+      "title": "Regions and modes",
+      "file": "tax-breakdown-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "lines",
+      "type": "TaxableLine[]",
+      "description": "Net line amounts, optional taxIds and exempt flag",
+      "required": true
+    },
+    {
+      "name": "rates",
+      "type": "TaxRate[]",
+      "description": "Label, percent, jurisdiction, compound",
+      "required": true
+    },
+    {
+      "name": "inclusive",
+      "type": "boolean",
+      "description": "Amounts include tax; net is backed out",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "exemptReason",
+      "type": "string",
+      "description": "Zeroes tax and shows the legal note",
+      "required": false
+    },
+    {
+      "name": "currency / locale",
+      "type": "string",
+      "description": "Money formatting",
+      "required": false,
+      "default": "\"USD\" / \"en-US\""
+    },
+    {
+      "name": "expandable",
+      "type": "boolean",
+      "description": "Per-line detail under each tax row",
+      "required": false,
+      "default": "true"
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Skeleton or error state",
+      "required": false
+    },
+    {
+      "name": "onComputed",
+      "type": "(c: TaxComputation) => void",
+      "description": "Receives totals whenever they change",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,90 @@
+{
+  "name": "Top Nav Shell",
+  "slug": "shell-topnav",
+  "description": "Top-navigation application shell whose tabs overflow into a measured More menu (active tab stays visible), with workspace switcher, search, notifications, user menu, optional sub-header and a mobile sheet.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/shell-topnav.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/button.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/deal-card.tsx",
+    "components/crm/dropdown-menu.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/notifications.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/sheet.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/user-menu.tsx",
+    "components/crm/workspace-switcher.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deals workspace",
+      "file": "shell-topnav-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "TopNavItem[]",
+      "description": "Tabs with icon and count",
+      "required": true
+    },
+    {
+      "name": "activeId / defaultActiveId / onNavigate",
+      "type": "string",
+      "description": "Current tab",
+      "required": false
+    },
+    {
+      "name": "workspaces / workspaceId / onWorkspaceChange",
+      "type": "Workspace[]",
+      "description": "Workspace switcher",
+      "required": true
+    },
+    {
+      "name": "user / onSignOut / userMenu",
+      "type": "UserMenuUser",
+      "description": "User menu",
+      "required": true
+    },
+    {
+      "name": "notifications / onMarkAllRead",
+      "type": "Notification[]",
+      "description": "Bell popover",
+      "required": false
+    },
+    {
+      "name": "onSearch / actions",
+      "type": "fn / ReactNode",
+      "description": "Right side of the bar",
+      "required": false
+    },
+    {
+      "name": "subheader",
+      "type": "ReactNode",
+      "description": "Second bar for page title and filters",
+      "required": false
+    },
+    {
+      "name": "contained",
+      "type": "boolean",
+      "description": "Center content at 1280px",
+      "required": false,
+      "default": "true"
+    }
+  ],
+  "usage": ""
+}

@@ -200,20 +200,20 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 
 ### Commerce and billing (14)
 
-- [x] `pricing-card` — Plan tier card.
-- [x] `plan-switcher` — Monthly/yearly toggle.
-- [x] `invoice-row` — Invoice status line.
-- [x] `quote-line-items` — Products, qty, discount, tax.
-- [x] `payment-method` — Card on file.
-- [x] `usage-meter` — Seats/API usage vs limit.
-- [x] `coupon-input` — Promo code apply.
-- [x] `order-summary` — Totals block.
-- [x] `subscription-status` — Active/past due/cancelled.
-- [x] `product-picker` — Catalog search + add.
-- [ ] `currency-switcher` — Change display currency.
-- [ ] `tax-breakdown` — Tax lines.
-- [ ] `receipt` — Printable receipt.
-- [ ] `upgrade-banner` — Upsell prompt.
+- [ ] `pricing-card` — Plan tier card.
+- [ ] `plan-switcher` — Monthly/yearly toggle.
+- [ ] `invoice-row` — Invoice status line.
+- [ ] `quote-line-items` — Products, qty, discount, tax.
+- [ ] `payment-method` — Card on file.
+- [ ] `usage-meter` — Seats/API usage vs limit.
+- [ ] `coupon-input` — Promo code apply.
+- [ ] `order-summary` — Totals block.
+- [ ] `subscription-status` — Active/past due/cancelled.
+- [ ] `product-picker` — Catalog search + add.
+- [x] `currency-switcher` — Change display currency.
+- [x] `tax-breakdown` — Tax lines.
+- [x] `receipt` — Printable receipt.
+- [x] `upgrade-banner` — Upsell prompt.
 
 ## 3. Blocks (100)
 
@@ -221,8 +221,8 @@ Full sections built from primitives and composites.
 
 ### App shells (10)
 
-- [ ] `shell-sidebar` · [ ] `shell-topnav` · [ ] `shell-split` · [ ] `shell-settings` ·
-      [ ] `shell-mobile` · [ ] `shell-auth` · [ ] `shell-onboarding` · [ ] `shell-admin` ·
+- [x] `shell-sidebar` · [x] `shell-topnav` · [x] `shell-split` · [x] `shell-settings` ·
+      [x] `shell-mobile` · [x] `shell-auth` · [ ] `shell-onboarding` · [ ] `shell-admin` ·
       [ ] `shell-inbox` · [ ] `shell-docs` — application layouts.
 
 ### Dashboards (15)

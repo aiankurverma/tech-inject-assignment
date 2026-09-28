@@ -1,0 +1,70 @@
+{
+  "name": "Mobile Shell",
+  "slug": "shell-mobile",
+  "description": "Phone-first shell with large-title app bar, bottom tab bar with badges and arrow-key navigation, bars that hide on scroll, floating action button, offline strip and safe-area padding.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/shell-mobile.tsx",
+    "components/crm/account-list-item.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/segmented-meter.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Field sales app",
+      "file": "shell-mobile-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tabs",
+      "type": "MobileTab[]",
+      "description": "id, label, icon, badge",
+      "required": true
+    },
+    {
+      "name": "activeTab / defaultActiveTab / onTabChange",
+      "type": "string",
+      "description": "Current tab",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Large title and collapsed bar title",
+      "required": true
+    },
+    {
+      "name": "onBack / actions / toolbar",
+      "type": "fn / ReactNode",
+      "description": "App bar content",
+      "required": false
+    },
+    {
+      "name": "fab",
+      "type": "{ label; icon; onClick }",
+      "description": "Floating action button",
+      "required": false
+    },
+    {
+      "name": "offline",
+      "type": "boolean",
+      "description": "Offline strip",
+      "required": false
+    },
+    {
+      "name": "hideOnScroll",
+      "type": "boolean",
+      "description": "Auto-hide tab bar",
+      "required": false,
+      "default": "true"
+    }
+  ],
+  "usage": ""
+}
