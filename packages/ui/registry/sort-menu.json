@@ -1,0 +1,66 @@
+{
+  "name": "Sort Menu",
+  "slug": "sort-menu",
+  "description": "Multi-column sort popover: choose fields, toggle ascending/descending, reorder priority and remove levels.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-popover",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/sort-menu.tsx",
+    "components/crm/button.tsx",
+    "components/crm/select.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Sort deals",
+      "file": "sort-menu-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "SortField[]",
+      "description": "{ value, label } sortable fields",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "SortRule[]",
+      "description": "Ordered { field, direction } rules; first is primary",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(rules: SortRule[]) => void",
+      "description": "Called on every change",
+      "required": true
+    },
+    {
+      "name": "max",
+      "type": "number",
+      "description": "Maximum sort levels",
+      "required": false,
+      "default": "5"
+    },
+    {
+      "name": "trigger",
+      "type": "ReactNode",
+      "description": "Custom trigger; defaults to a Sort button with a summary",
+      "required": false
+    },
+    {
+      "name": "align",
+      "type": "\"start\" | \"center\" | \"end\"",
+      "description": "Popover alignment",
+      "required": false,
+      "default": "\"start\""
+    }
+  ],
+  "usage": "Place in a table toolbar with value/onChange state; apply rules in order when sorting rows."
+}

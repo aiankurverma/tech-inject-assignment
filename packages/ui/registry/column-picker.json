@@ -1,0 +1,59 @@
+{
+  "name": "Column Picker",
+  "slug": "column-picker",
+  "description": "Popover to show, hide and reorder table columns with search, locked columns, show/hide all and Alt+Arrow keyboard reordering.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-popover",
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/column-picker.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Table columns",
+      "file": "column-picker-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "columns",
+      "type": "PickerColumn[]",
+      "description": "{ id, label, visible, locked? } in display order",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(columns: PickerColumn[]) => void",
+      "description": "New order and visibility",
+      "required": true
+    },
+    {
+      "name": "onReset",
+      "type": "() => void",
+      "description": "Shows a Reset button",
+      "required": false
+    },
+    {
+      "name": "trigger",
+      "type": "ReactNode",
+      "description": "Custom trigger; defaults to a Columns button with a count",
+      "required": false
+    },
+    {
+      "name": "align",
+      "type": "\"start\" | \"center\" | \"end\"",
+      "description": "Popover alignment",
+      "required": false,
+      "default": "\"end\""
+    }
+  ],
+  "usage": "Render visible columns of your table in the order of columns.filter(c => c.visible)."
+}

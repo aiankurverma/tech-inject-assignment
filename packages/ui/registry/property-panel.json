@@ -1,0 +1,48 @@
+{
+  "name": "Property Panel",
+  "slug": "property-panel",
+  "description": "Editable record sidebar with collapsible sections of label/value fields, each edited in place with validation and async saves.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/property-panel.tsx",
+    "components/crm/inline-edit.tsx",
+    "components/crm/input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Deal sidebar",
+      "file": "property-panel-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "sections",
+      "type": "PropertySection[]",
+      "description": "{ id, title, defaultOpen?, fields: PropertyField[] }",
+      "required": true
+    },
+    {
+      "name": "onFieldChange",
+      "type": "(key: string, value: string) => void | Promise<void>",
+      "description": "Save handler; omit for read-only",
+      "required": false
+    },
+    {
+      "name": "header",
+      "type": "ReactNode",
+      "description": "Content above the sections",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "required": false,
+      "default": "\"Record properties\""
+    }
+  ],
+  "usage": "Place beside a record's activity feed; fields support type, options, readOnly, validate and render."
+}

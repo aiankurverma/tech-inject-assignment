@@ -1,0 +1,54 @@
+{
+  "name": "Form Section",
+  "slug": "form-section",
+  "description": "Titled group of form fields with description, header actions and footer, in card, plain or two-column split layouts.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot"],
+  "files": [
+    "components/crm/form-section.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Company details",
+      "file": "form-section-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Section heading",
+      "required": true
+    },
+    {
+      "name": "description",
+      "type": "ReactNode",
+      "description": "Helper text under the title",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Right-aligned header actions",
+      "required": false
+    },
+    {
+      "name": "footer",
+      "type": "ReactNode",
+      "description": "Footer row, e.g. Cancel / Save",
+      "required": false
+    },
+    {
+      "name": "variant",
+      "type": "\"card\" | \"plain\" | \"split\"",
+      "description": "Chrome and layout",
+      "required": false,
+      "default": "\"card\""
+    }
+  ],
+  "usage": "Put FormField + Input children inside; stack several sections in a settings or record form."
+}
