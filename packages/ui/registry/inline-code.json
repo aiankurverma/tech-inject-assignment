@@ -1,0 +1,51 @@
+{
+  "name": "Inline Code",
+  "slug": "inline-code",
+  "description": "Monospace token for IDs, keys and commands with click-to-copy, middle truncation of long identifiers and tones.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/inline-code.tsx"],
+  "examples": [
+    {
+      "title": "IDs, fields and commands",
+      "file": "inline-code-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "children",
+      "type": "string",
+      "description": "The token text",
+      "required": true
+    },
+    {
+      "name": "tone",
+      "type": "\"default\" | \"primary\" | \"success\" | \"danger\"",
+      "description": "Colour",
+      "default": "\"default\"",
+      "required": false
+    },
+    {
+      "name": "copyable",
+      "type": "boolean",
+      "description": "Click / Enter copies the full value",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "maxChars",
+      "type": "number",
+      "description": "Middle-truncate to this length; full value in title and copy",
+      "required": false
+    },
+    {
+      "name": "onCopy",
+      "type": "(value: string) => void",
+      "description": "Called after copying",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

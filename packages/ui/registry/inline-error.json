@@ -1,0 +1,48 @@
+{
+  "name": "Inline Error",
+  "slug": "inline-error",
+  "description": "Field-level validation text with live announcement, multi-rule lists, warning tone and fix-it action, plus a useFieldError hook that wires aria-invalid/aria-describedby and touched state.",
+  "category": "Feedback",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/inline-error.tsx",
+    "components/crm/input.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Invite form validation",
+      "file": "inline-error-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "message",
+      "type": "string | string[] | null",
+      "description": "Message(s); empty renders nothing",
+      "required": false
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "description": "Id referenced by the field's aria-describedby",
+      "required": false
+    },
+    {
+      "name": "tone",
+      "type": "\"error\" | \"warning\"",
+      "description": "Severity",
+      "default": "\"error\"",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "{ label: string; onClick: () => void }",
+      "description": "One-click fix",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,65 @@
+{
+  "name": "Scroll Area",
+  "slug": "scroll-area",
+  "description": "Themed scroll container with edge fade shadows, stick-to-bottom feed mode with a New activity pill, end-reached callback for infinite loading and an imperative scroll handle.",
+  "category": "Layout",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/scroll-area.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Support conversation",
+      "file": "scroll-area-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "maxHeight",
+      "type": "number | string",
+      "description": "CSS max-height",
+      "required": false
+    },
+    {
+      "name": "orientation",
+      "type": "\"vertical\" | \"horizontal\" | \"both\"",
+      "description": "Scroll axis",
+      "default": "\"vertical\"",
+      "required": false
+    },
+    {
+      "name": "stickToBottom",
+      "type": "boolean",
+      "description": "Keep pinned to newest content unless user scrolled up",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "contentKey",
+      "type": "unknown",
+      "description": "Change to signal new content for stickToBottom",
+      "required": false
+    },
+    {
+      "name": "onReachEnd",
+      "type": "() => void",
+      "description": "Called once when nearing the end",
+      "required": false
+    },
+    {
+      "name": "endThreshold",
+      "type": "number",
+      "description": "px from end that counts as reached",
+      "default": "48",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible region name",
+      "default": "\"Scrollable content\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

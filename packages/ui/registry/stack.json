@@ -1,0 +1,66 @@
+{
+  "name": "Stack",
+  "slug": "stack",
+  "description": "Flex layout helper with a fixed gap scale, per-breakpoint direction, auto-orienting dividers, list semantics and HStack/VStack shortcuts.",
+  "category": "Layout",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/stack.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Account header",
+      "file": "stack-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "direction",
+      "type": "\"row\" | \"column\" | { base?, sm?, md?, lg? }",
+      "description": "Direction, optionally responsive",
+      "default": "\"column\"",
+      "required": false
+    },
+    {
+      "name": "gap",
+      "type": "0 | 1 | 2 | 3 | 4 | 6 | 8",
+      "description": "Gap step",
+      "default": "2",
+      "required": false
+    },
+    {
+      "name": "align",
+      "type": "\"start\" | \"center\" | \"end\" | \"stretch\" | \"baseline\"",
+      "description": "Cross-axis alignment",
+      "required": false
+    },
+    {
+      "name": "justify",
+      "type": "\"start\" | \"center\" | \"end\" | \"between\"",
+      "description": "Main-axis alignment",
+      "required": false
+    },
+    {
+      "name": "wrap",
+      "type": "boolean",
+      "description": "Allow wrapping",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "divider",
+      "type": "boolean",
+      "description": "Hairline between children",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "as",
+      "type": "\"div\" | \"section\" | \"nav\" | \"ul\" | \"ol\" | \"header\" | \"footer\" | \"form\"",
+      "description": "Element; lists wrap children in li",
+      "default": "\"div\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
