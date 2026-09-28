@@ -200,6 +200,9 @@ export function ClinicDashboard({
         <Card>
           <CardHeader title="Provider utilisation" description="Booked minutes vs. capacity" />
           <CardBody className="flex flex-col gap-3">
+            {utilisation.length === 0 ? (
+              <p className="text-xs text-crm-muted-fg">No providers on the roster.</p>
+            ) : null}
             {utilisation.map(({ p, booked, pct }) => (
               <div key={p.id} className="flex items-center gap-2">
                 <Avatar name={p.name} size="sm" />
@@ -222,7 +225,9 @@ export function ClinicDashboard({
             <div
               className="flex h-32 items-end gap-1"
               role="img"
-              aria-label={`Arrivals by hour, peak ${maxHour}`}
+              aria-label={`Arrivals by hour: ${byHour
+                .map((n, i) => `${hours[i]! % 12 || 12}${hours[i]! < 12 ? "am" : "pm"} ${n}`)
+                .join(", ")}`}
             >
               {byHour.map((n, i) => (
                 <div key={hours[i]} className="flex flex-1 flex-col items-center gap-1">
@@ -276,6 +281,9 @@ export function ClinicDashboard({
                     </li>
                   );
                 })}
+                {dueTasks.length > 6 ? (
+                  <li className="text-crm-muted-fg">+{dueTasks.length - 6} more</li>
+                ) : null}
               </ul>
             )}
           </CardBody>

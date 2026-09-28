@@ -3,6 +3,7 @@ import { CalendarCheck, GraduationCap, Repeat, Wallet } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar } from "@/components/crm/avatar";
 import { Card, CardBody, CardHeader } from "@/components/crm/card";
+import { EmptyState } from "@/components/crm/feedback";
 import { KpiGrid } from "@/components/crm/kpi-grid";
 import { Progress } from "@/components/crm/progress";
 import { SegmentedControl } from "@/components/crm/segmented-control";
@@ -81,7 +82,15 @@ export function EduDashboard({
     maximumFractionDigits: 0,
   });
 
-  if (!t || !cur) return null;
+  if (!t || !cur)
+    return (
+      <EmptyState
+        className={className}
+        icon={<GraduationCap />}
+        title="No term data yet"
+        description="Enrollment and fee figures appear once the first term is loaded."
+      />
+    );
 
   const aging = t.aging;
   const agingTotal = aging ? aging.current + aging.d30 + aging.d60 + aging.d90 : 0;

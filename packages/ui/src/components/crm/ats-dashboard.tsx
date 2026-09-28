@@ -236,8 +236,14 @@ export function AtsDashboard({
                     key={r.id}
                     tabIndex={0}
                     onClick={() => onOpenRequisition?.(r)}
-                    onKeyDown={(e) => e.key === "Enter" && onOpenRequisition?.(r)}
-                    className="cursor-pointer border-t border-crm-border outline-none hover:bg-crm-muted/40 focus-visible:bg-crm-muted/60"
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        onOpenRequisition?.(r);
+                      }
+                    }}
+                    aria-label={`Open requisition ${r.title}`}
+                    className="cursor-pointer border-t border-crm-border outline-none hover:bg-crm-muted/40 focus-visible:bg-crm-muted/60 focus-visible:ring-2 focus-visible:ring-crm-ring/60 focus-visible:ring-inset"
                   >
                     <td className="px-4 py-2">
                       <div className="font-medium">{r.title}</div>

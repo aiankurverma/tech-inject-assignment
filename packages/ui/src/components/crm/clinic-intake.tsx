@@ -365,7 +365,7 @@ export function ClinicIntake({
                         <button
                           type="button"
                           aria-label={`Remove ${a}`}
-                          className="rounded-full p-0.5 hover:bg-crm-danger/20"
+                          className="rounded-full p-0.5 outline-none hover:bg-crm-danger/20 focus-visible:ring-2 focus-visible:ring-crm-ring/60"
                           onClick={() =>
                             set(
                               "allergies",
@@ -373,7 +373,7 @@ export function ClinicIntake({
                             )
                           }
                         >
-                          <X className="size-3" />
+                          <X className="size-3" aria-hidden />
                         </button>
                       </li>
                     ))}

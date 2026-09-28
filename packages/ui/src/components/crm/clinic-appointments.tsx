@@ -204,7 +204,7 @@ export function ClinicAppointments({
             {cols.map((p) => (
               <div
                 key={p.id}
-                role="list"
+                role="group"
                 aria-label={`${p.name} schedule`}
                 className="relative border-l border-crm-border"
                 style={{
@@ -234,10 +234,16 @@ export function ClinicAppointments({
                     return (
                       <button
                         key={a.id}
-                        role="listitem"
                         type="button"
                         onClick={() => setOpenId(a.id)}
-                        aria-label={`${fmt(s)} ${a.patient}, ${a.reason}, ${statusMeta[a.status].label}`}
+                        aria-label={[
+                          `${fmt(s)} ${a.patient}, ${a.reason}, ${statusMeta[a.status].label}`,
+                          conflicts.has(a.id) ? "double-booked" : "",
+                          late ? "late arrival" : "",
+                          a.status === "checked-in" ? `waiting ${waitMin} minutes` : "",
+                        ]
+                          .filter(Boolean)
+                          .join(", ")}
                         className={cn(
                           "absolute inset-x-1 overflow-hidden rounded-[6px] border px-1.5 py-1 text-left text-[11px] leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60",
                           statusMeta[a.status].block,

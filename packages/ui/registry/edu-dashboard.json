@@ -10,6 +10,7 @@
     "components/crm/edu-dashboard.tsx",
     "components/crm/avatar.tsx",
     "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
     "components/crm/kpi-grid.tsx",
     "components/crm/sparkline.tsx",
     "components/crm/progress.tsx",
