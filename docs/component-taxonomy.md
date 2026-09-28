@@ -277,15 +277,15 @@ Full sections built from primitives and composites.
 
 - [ ] `automation-builder` · [ ] `sequence-editor` · [ ] `approval-flow` · [ ] `lead-routing` ·
       [ ] `csv-import-flow` · [ ] `merge-duplicates` · [ ] `bulk-edit` · [ ] `report-builder` ·
-      [ ] `dashboard-editor` · [ ] `email-template-editor` · [ ] `meeting-scheduler` ·
-      [ ] `calendar-week` · [ ] `notification-center` — multi-step tools.
+      [ ] `dashboard-editor` · [x] `email-template-editor` · [x] `meeting-scheduler` ·
+      [x] `calendar-week` · [x] `notification-center` — multi-step tools.
 
 ## 4. Industry templates (40)
 
 Opinionated page sets (shell + records + dashboard) per vertical, 4 per industry.
 
-- [ ] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
-- [ ] Recruiting: `ats-pipeline`, `ats-candidate`, `ats-interviews`, `ats-dashboard`.
+- [x] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
+- [ ] Recruiting: [x] `ats-pipeline`, [x] `ats-candidate`, `ats-interviews`, `ats-dashboard`.
 - [ ] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
 - [ ] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
 - [ ] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.

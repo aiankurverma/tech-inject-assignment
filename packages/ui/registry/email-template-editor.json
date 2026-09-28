@@ -1,0 +1,57 @@
+{
+  "name": "Email Template Editor",
+  "slug": "email-template-editor",
+  "description": "Block-based email template editor with merge-field insertion at the cursor, unknown-token and link validation, subject length warning, block reordering and a live desktop/mobile inbox preview.",
+  "category": "Workflows",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/email-template-editor.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/textarea.tsx",
+    "components/crm/input.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Renewal reminder template",
+      "file": "email-template-editor-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "mergeFields",
+      "type": "MergeField[]",
+      "description": "{ key, label, sample, fallback? } tokens usable as {{key}}",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "EmailTemplate",
+      "description": "{ name, subject, preheader, blocks } controlled or initial template",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(template) => void",
+      "description": "Fires on every edit",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(template) => void | Promise<void>",
+      "description": "Shows the Save button; disabled while validation issues exist",
+      "required": false
+    },
+    {
+      "name": "subjectLimit",
+      "type": "number",
+      "description": "Rendered subject length that triggers a truncation warning",
+      "default": "60",
+      "required": false
+    }
+  ],
+  "usage": "findUnknownTokens() and renderMerge() are exported for server-side checks."
+}
