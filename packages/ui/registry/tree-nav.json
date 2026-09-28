@@ -1,0 +1,82 @@
+{
+  "name": "Tree Nav",
+  "slug": "tree-nav",
+  "description": "Accessible nested folder/object tree with full WAI-ARIA keyboard support, type-ahead, lazy-loaded children with loading and retry states, filter with ancestor retention and match highlighting, counts and disabled nodes.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/tree-nav.tsx"],
+  "examples": [
+    {
+      "title": "Pipelines with lazy children",
+      "file": "tree-nav-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "nodes",
+      "type": "TreeNode[]",
+      "description": "{ id, label, icon?, count?, children?, hasChildren?, disabled? }",
+      "required": true
+    },
+    {
+      "name": "selectedId",
+      "type": "string",
+      "description": "Controlled selection",
+      "required": false
+    },
+    {
+      "name": "defaultSelectedId",
+      "type": "string",
+      "description": "Initial selection",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(node) => void",
+      "description": "Fires on Enter/click",
+      "required": false
+    },
+    {
+      "name": "expanded",
+      "type": "string[]",
+      "description": "Controlled expanded ids",
+      "required": false
+    },
+    {
+      "name": "defaultExpanded",
+      "type": "string[]",
+      "description": "Initial expanded ids",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(ids) => void",
+      "description": "Fires on expand/collapse",
+      "required": false
+    },
+    {
+      "name": "loadChildren",
+      "type": "(node) => Promise<TreeNode[]>",
+      "description": "Loader for hasChildren nodes",
+      "required": false
+    },
+    {
+      "name": "searchable",
+      "type": "boolean",
+      "description": "Show filter input",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "default": "\"Folders\"",
+      "required": false
+    }
+  ],
+  "usage": "Use for folder, territory or object hierarchies. Mark unloaded branches with hasChildren and pass loadChildren."
+}

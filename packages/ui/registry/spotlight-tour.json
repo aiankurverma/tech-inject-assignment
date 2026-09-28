@@ -1,0 +1,75 @@
+{
+  "name": "Spotlight Tour",
+  "slug": "spotlight-tour",
+  "description": "Onboarding coachmarks that dim the page with a cut-out around each target, auto-scroll, track resize/scroll, place the card where it fits, and support keyboard paging, skip analytics and targetless steps.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": ["components/crm/spotlight-tour.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Contacts onboarding",
+      "file": "spotlight-tour-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps",
+      "type": "SpotlightStep[]",
+      "description": "{ id, target?, title, body, placement?, padding? }",
+      "required": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Tour visible",
+      "required": true
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open) => void",
+      "description": "Open state change",
+      "required": true
+    },
+    {
+      "name": "step",
+      "type": "number",
+      "description": "Controlled step index",
+      "required": false
+    },
+    {
+      "name": "defaultStep",
+      "type": "number",
+      "description": "Initial step",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "onStepChange",
+      "type": "(i, step) => void",
+      "description": "Fires on step change",
+      "required": false
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void",
+      "description": "Finished last step",
+      "required": false
+    },
+    {
+      "name": "onSkip",
+      "type": "(i) => void",
+      "description": "Skipped at step i",
+      "required": false
+    },
+    {
+      "name": "interactive",
+      "type": "boolean",
+      "description": "Allow clicks on the highlighted element",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": "Give targets stable ids or data attributes. Persist completion yourself (e.g. user settings) so the tour runs once."
+}

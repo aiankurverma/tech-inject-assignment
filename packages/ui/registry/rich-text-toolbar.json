@@ -1,0 +1,70 @@
+{
+  "name": "Rich Text Toolbar",
+  "slug": "rich-text-toolbar",
+  "description": "Markdown formatting toolbar for a textarea: toggles inline and line formats, reflects active formats at the caret, undo/redo history, Cmd/Ctrl shortcuts, list continuation on Enter, character limit and the WAI-ARIA toolbar keyboard pattern. Exports the pure applyMarkdownFormat transform.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/rich-text-toolbar.tsx"],
+  "examples": [
+    {
+      "title": "Call notes",
+      "file": "rich-text-toolbar-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "targetRef",
+      "type": "RefObject<HTMLTextAreaElement>",
+      "description": "Textarea to format",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Markdown value",
+      "required": true
+    },
+    {
+      "name": "onChange",
+      "type": "(value) => void",
+      "description": "Value setter",
+      "required": true
+    },
+    {
+      "name": "exclude",
+      "type": "RichTextFormat[]",
+      "description": "Hide tools",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "historyLimit",
+      "type": "number",
+      "description": "Undo depth",
+      "default": "100",
+      "required": false
+    },
+    {
+      "name": "maxLength",
+      "type": "number",
+      "description": "Shows a counter; red when exceeded",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable tools and shortcuts",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "trailing",
+      "type": "ReactNode",
+      "description": "Extra controls at the right",
+      "required": false
+    }
+  ],
+  "usage": "Place directly above a controlled textarea and pass its ref. Render the markdown with your own renderer for previews."
+}
