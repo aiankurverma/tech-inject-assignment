@@ -1,0 +1,58 @@
+{
+  "name": "Funnel Chart",
+  "slug": "funnel-chart",
+  "description": "Stage conversion funnel with step and overall conversion, drop-offs, benchmark leak warnings and biggest-leak highlight.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/funnel-chart.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "funnel-chart-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "stages",
+      "type": "FunnelStage[]",
+      "description": "Ordered stages with count, value and benchmark",
+      "required": true
+    },
+    {
+      "name": "measure",
+      "type": "\"count\" | \"value\"",
+      "description": "What sizes the bars",
+      "default": "\"count\"",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for values",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onStageClick",
+      "type": "(stage: FunnelStage) => void",
+      "description": "Makes stages clickable",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Caption",
+      "default": "\"Conversion funnel\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
