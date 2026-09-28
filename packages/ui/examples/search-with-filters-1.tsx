@@ -100,16 +100,22 @@ export default function Example() {
         <ul className="divide-y divide-crm-border rounded-crm border border-crm-border font-crm text-xs">
           {results.map((t) => (
             <li key={t.id} className="flex items-center gap-3 px-3 py-2.5">
-              <span className="w-14 text-crm-subtle tabular-nums">
+              <span className="w-14 shrink-0 text-crm-subtle tabular-nums">
                 <Highlight text={t.id} query={q} />
               </span>
               <span className="min-w-0 flex-1 truncate text-crm-fg">
                 <Highlight text={t.subject} query={q} />
               </span>
-              <span className="hidden w-40 truncate text-crm-soft sm:block">
+              <span className="hidden w-40 shrink-0 truncate text-crm-soft sm:block">
                 <Highlight text={t.customer} query={q} />
               </span>
-              {t.slaBreached ? <span className="text-crm-danger">SLA</span> : null}
+              <span className="w-24 shrink-0 text-right">
+                {t.slaBreached ? (
+                  <span className="rounded-full border border-crm-danger/40 bg-crm-danger/10 px-1.5 py-0.5 text-[10px] font-medium text-crm-danger">
+                    SLA breached
+                  </span>
+                ) : null}
+              </span>
             </li>
           ))}
         </ul>

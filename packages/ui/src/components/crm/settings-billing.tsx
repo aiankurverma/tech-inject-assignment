@@ -275,16 +275,16 @@ export function SettingsBilling({
           </div>
 
           {usage.length ? (
-            <div className="grid gap-3 rounded-xl border border-crm-border bg-crm-card p-4 shadow-crm-raised sm:grid-cols-2">
+            <div className="grid gap-3 rounded-xl border border-crm-border bg-crm-card p-4 shadow-crm-raised">
               {usage.map((u) => {
                 const pct = Math.min(100, Math.round((u.used / Math.max(1, u.limit)) * 100));
                 return (
-                  <div key={u.label}>
-                    <div className="flex justify-between text-xs">
-                      <span className="text-crm-soft">{u.label}</span>
+                  <div key={u.label} className="min-w-0">
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5 text-xs">
+                      <span className="min-w-0 text-crm-soft">{u.label}</span>
                       <span
                         className={cn(
-                          "tabular-nums",
+                          "whitespace-nowrap tabular-nums",
                           pct >= 90 ? "text-crm-danger" : "text-crm-fg",
                         )}
                       >

@@ -29,20 +29,25 @@ export default function Example() {
   const [existing] = React.useState(new Set(["aisha.khan@harborview.health"]));
   return (
     <div className="flex flex-col gap-3">
-      <button
-        type="button"
-        className="self-start text-xs text-crm-primary underline"
-        onClick={() => {
-          const url = URL.createObjectURL(new Blob([SAMPLE], { type: "text/csv" }));
-          const a = document.createElement("a");
-          a.href = url;
-          a.download = "hubspot-export.csv";
-          a.click();
-          URL.revokeObjectURL(url);
-        }}
-      >
-        Download a sample CSV to try
-      </button>
+      <div className="flex flex-wrap items-center justify-between gap-2 rounded-crm border border-crm-border bg-crm-card px-4 py-2.5">
+        <span className="text-xs text-crm-soft">
+          No file handy? Try the importer with a messy HubSpot-style export.
+        </span>
+        <button
+          type="button"
+          className="rounded-crm border border-crm-border bg-crm-raised px-2.5 py-1 text-xs font-medium text-crm-fg no-underline outline-none transition-colors hover:bg-crm-muted focus-visible:ring-2 focus-visible:ring-crm-ring/60"
+          onClick={() => {
+            const url = URL.createObjectURL(new Blob([SAMPLE], { type: "text/csv" }));
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "hubspot-export.csv";
+            a.click();
+            URL.revokeObjectURL(url);
+          }}
+        >
+          Download sample CSV
+        </button>
+      </div>
       <SettingsDataImport
         objectName="contacts"
         fields={FIELDS}

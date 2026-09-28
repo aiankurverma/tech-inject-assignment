@@ -140,11 +140,11 @@ export function OtpInput({
                 }
               }}
               className={cn(
-                "size-10 rounded-crm border border-crm-input/60 bg-crm-raised text-center font-crm text-base font-medium text-crm-fg tabular-nums caret-crm-primary",
-                "outline-none transition-[border-color,box-shadow] duration-150 ease-crm hover:border-crm-input",
+                "size-10 rounded-crm border border-crm-input bg-crm-raised text-center font-crm text-base font-medium text-crm-fg tabular-nums caret-crm-primary",
+                "outline-none transition-[border-color,box-shadow] duration-150 ease-crm hover:border-crm-soft",
                 "focus-visible:border-crm-ring focus-visible:ring-2 focus-visible:ring-crm-ring/40",
                 "aria-[invalid=true]:border-crm-danger disabled:cursor-not-allowed disabled:opacity-50",
-                ch && "border-crm-input",
+                ch && "border-crm-soft",
               )}
             />
           </React.Fragment>

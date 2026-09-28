@@ -5,8 +5,8 @@
   "category": "Forms",
   "version": "1.0.0",
   "access": "free",
-  "dependencies": [],
-  "files": ["components/crm/otp-input.tsx"],
+  "dependencies": ["@radix-ui/react-slot"],
+  "files": ["components/crm/otp-input.tsx", "components/crm/button.tsx"],
   "examples": [
     {
       "title": "Grouped 6-digit code",
