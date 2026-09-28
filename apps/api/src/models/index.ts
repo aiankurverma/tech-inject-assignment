@@ -65,10 +65,37 @@ const componentSchema = new Schema(
   { timestamps: true, minimize: false },
 );
 
+/**
+ * Capture Engine run: a public URL analysed into design tokens + a component inventory.
+ * `themeCss` is the saved Theme draft (crm-theme.css variables) once generated.
+ */
+const captureSchema = new Schema(
+  {
+    url: { type: String, required: true },
+    finalUrl: { type: String },
+    title: { type: String },
+    status: {
+      type: String,
+      enum: ["queued", "running", "done", "failed"],
+      default: "queued",
+      required: true,
+      index: true,
+    },
+    tokens: { type: Schema.Types.Mixed },
+    inventory: { type: Schema.Types.Mixed },
+    screenshot: { type: String },
+    themeCss: { type: String },
+    error: { type: String },
+    finishedAt: { type: Date },
+  },
+  { timestamps: true, minimize: false },
+);
+
 export const Customer = mongoose.model("Customer", customerSchema);
 export const ApiToken = mongoose.model("ApiToken", apiTokenSchema);
 export const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
 export const ComponentModel = mongoose.model("Component", componentSchema);
+export const CaptureModel = mongoose.model("Capture", captureSchema);
 
 export type CustomerDoc = InferSchemaType<typeof customerSchema> & { _id: mongoose.Types.ObjectId };
 export type ComponentRecord = {

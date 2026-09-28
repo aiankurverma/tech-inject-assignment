@@ -14,6 +14,8 @@ import { log } from "./utils/logger";
 import { makeAuth, sameOriginWrites } from "./middleware/auth";
 import { errorHandler, HttpError } from "./utils/http";
 import { adminRoutes, customerRoutes, publicRoutes } from "./routes";
+import { captureRoutes } from "./routes/captures";
+import { processCaptureJob, type CaptureJob } from "./services/capture";
 import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
 import { featureRadarRoutes, type BuildJob } from "@ti/feature-radar/server";
 
@@ -74,6 +76,8 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   const bundleJobs = createQueue<BundleJob>("bundle-save", (job) => processBundleJob(job, cache), {
     redis,
   });
+  // Capture Engine: one headless Chrome at a time.
+  const captureJobs = createQueue<CaptureJob>("capture", processCaptureJob, { redis });
   const deps = {
     cache,
     customerLoginLimit: loginLimit("customer-login"),
@@ -110,6 +114,10 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   });
   app.use("/api", publicRoutes(auth, theme, env, deps));
   app.use("/api", customerRoutes(auth, deps));
+  app.use(
+    "/api/admin/captures",
+    captureRoutes(auth, { captureJobs, captureLimit: burstLimit("capture", 5, 0.02) }),
+  );
   app.use("/api/admin", adminRoutes(auth, theme, env, deps));
   // Plugin: search-driven feature requests (plugins/feature-radar). Own models and routes.
   // AI_PROVIDER=gemini uses GEMINI_API_KEY; anything else uses ANTHROPIC_API_KEY.
@@ -207,7 +215,7 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   app.use(errorHandler);
   /** Graceful shutdown: let running jobs finish. The shared Redis connection is closed by the caller. */
   const shutdown = async () => {
-    await Promise.all([bundleJobs.close(), buildJobs.close()]);
+    await Promise.all([bundleJobs.close(), buildJobs.close(), captureJobs.close()]);
   };
   return Object.assign(app, { shutdown });
 }

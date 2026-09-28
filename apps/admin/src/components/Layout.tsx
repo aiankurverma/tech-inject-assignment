@@ -7,6 +7,7 @@ import {
   LogOut,
   Menu,
   Radar,
+  ScanSearch,
   ShieldCheck,
   X,
 } from "lucide-react";
@@ -27,6 +28,7 @@ const NAV: NavItem[] = [
   { to: "/", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/components", label: "Components", icon: Boxes, match: ["/new"] },
   { to: "/privileges", label: "Privileges", icon: ShieldCheck, match: ["/customers"] },
+  { to: "/capture", label: "Capture", icon: ScanSearch },
   { to: "/feature-radar", label: "Feature radar", icon: Radar },
 ];
 

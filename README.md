@@ -70,6 +70,35 @@ Then start the main CSS with the three printed lines (Geist font import, `@impor
 
 **Premium:** the admin grants Premium (no payments, no self-upgrade). The customer creates a token on the **Account** page and sets `KITBASE_TOKEN` in the shell; the token is stored only as a sha256 hash. Signed-out requests get 401, free accounts 403. Revocation blocks the next request; code already installed stays in the consumer's project.
 
+## Capture Engine
+
+Admin page **Capture** (`/admin/capture`): paste a public URL, get its design tokens and a
+component inventory, then generate a Kitbase theme from them.
+
+- **Flow:** `POST /api/admin/captures` `{ url, permission: true }` queues a job on `@ti/queue`
+  (BullMQ with Redis, in-process without). The worker opens the page in headless Chrome over the
+  DevTools pipe (no new dependencies, no open debug port), reads computed styles, takes a
+  1280x800 screenshot and stores the result on a `Capture` document. The page polls
+  `GET /api/admin/captures/:id`; `GET /api/admin/captures` lists the last 50.
+- **Tokens** (`apps/api/src/services/capture/tokens.ts`, unit-tested): colours are parsed
+  (rgb, hex, oklab/oklch, lab/lch, color(srgb)), clustered in CIE Lab (delta E) and given roles
+  (bg, surface, text, muted text, border, accent) from where they are painted and WCAG contrast;
+  font families, type scale + ratio, radius scale, spacing scale + grid unit, and shadows.
+- **Inventory:** counts of visible buttons, inputs, tables, cards, navs and badges with example
+  selectors.
+- **Theme:** `POST /api/admin/captures/:id/theme` returns (and saves as the capture's theme
+  draft) an `@theme` block using the `crm-theme.css` variable names; import it after
+  `crm-theme.css` to restyle every component.
+- **Safety:** admin-only, zod-validated, rate-limited, max 3 captures in flight. SSRF guard:
+  http/https only, no credentials, ports 80/443/8080/8443, private/loopback/link-local/metadata/
+  CGNAT/ULA addresses blocked, and every DNS answer checked - on submit, at job start and for
+  every request the page makes (redirects and sub-resources included). Limits: 45 s, 15 MB,
+  400 requests. Needs Chrome on the server (`CHROME_PATH` or a standard install path).
+
+**Legal and ethics:** only analyse sites you own or have permission to analyse; the form requires
+that confirmation. Captured tokens are a starting point for your own theme - do not use them to
+copy another company's brand, logos or content.
+
 ## Admin
 
 - **Components:** upload, validate, preview the draft, publish/unpublish, switch free/premium (applies to the live snapshot at once), delete.
