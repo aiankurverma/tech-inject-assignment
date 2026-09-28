@@ -1,0 +1,68 @@
+{
+  "name": "Field Service Dispatch",
+  "slug": "fs-dispatch",
+  "description": "Drag-and-drop dispatch board with technician lanes on an hourly timeline, shift shading, snap-to-slot, overlap and skill-mismatch detection, keyboard placement and undo.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/fs-dispatch.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Today's board",
+      "file": "fs-dispatch-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "technicians",
+      "type": "DispatchTech[]",
+      "description": "{ id, name, skills, shiftStart, shiftEnd }",
+      "required": true
+    },
+    {
+      "name": "jobs",
+      "type": "DispatchJob[]",
+      "description": "{ id, title, customer, skill, durationMin, priority, technicianId?, start? }",
+      "required": true
+    },
+    {
+      "name": "dayStart",
+      "type": "number",
+      "description": "First hour on the board",
+      "default": "7",
+      "required": false
+    },
+    {
+      "name": "dayEnd",
+      "type": "number",
+      "description": "Last hour (exclusive)",
+      "default": "19",
+      "required": false
+    },
+    {
+      "name": "snapMin",
+      "type": "15 | 30 | 60",
+      "description": "Drop snap granularity",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(jobs) => void",
+      "description": "Called with the full job list after every move",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "Keyboard: select a queued job, press Place on a lane; on a placed job use ←/→ to shift and Delete to unassign."
+}

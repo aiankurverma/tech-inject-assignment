@@ -1,0 +1,76 @@
+{
+  "name": "Field Service Jobs",
+  "slug": "fs-jobs",
+  "description": "Work-order queue with live SLA countdowns per priority, at-risk and unassigned views, bulk technician assignment and status progression.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot", "@radix-ui/react-checkbox"],
+  "files": [
+    "components/crm/fs-jobs.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Work order queue",
+      "file": "fs-jobs-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "jobs",
+      "type": "FieldJob[]",
+      "description": "{ id, title, customer, address, type, priority, status, createdAt, technicianId?, estimateMin }",
+      "required": true
+    },
+    {
+      "name": "technicians",
+      "type": "{ id, name }[]",
+      "description": "Assignable technicians",
+      "required": true
+    },
+    {
+      "name": "slaHours",
+      "type": "Partial<Record<JobPriority, number>>",
+      "description": "Override SLA targets",
+      "default": "{ emergency: 4, high: 24, normal: 72, low: 168 }",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Freeze the clock; otherwise ticks every minute",
+      "required": false
+    },
+    {
+      "name": "onAssign",
+      "type": "(jobIds, technicianId) => void",
+      "description": "Bulk assign callback",
+      "required": false
+    },
+    {
+      "name": "onStatusChange",
+      "type": "(jobId, status) => void",
+      "description": "Status advanced",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "slaRemaining(job, nowMs, sla) is exported."
+}
