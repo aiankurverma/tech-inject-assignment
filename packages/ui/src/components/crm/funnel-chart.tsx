@@ -54,7 +54,7 @@ export function FunnelChart({
   );
   const num = new Intl.NumberFormat("en-US");
   const metric = (s: FunnelStage) => (measure === "value" ? (s.value ?? 0) : s.count);
-  const top = stages[0] ? Math.max(1, metric(stages[0])) : 1;
+  const top = Math.max(1, ...stages.map(metric));
   const first = stages[0]?.count ?? 0;
 
   const rows = stages.map((s, i) => {
