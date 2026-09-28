@@ -68,11 +68,11 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `status-dot` — Online/away/busy dot.
 - [ ] `presence-indicator` — Avatar + live status.
 - [x] `rating` — Interactive star rating.
-- [ ] `code-block` — Syntax-light code with copy.
-- [ ] `inline-code` — Monospace token.
+- [x] `code-block` — Syntax-light code with copy.
+- [x] `inline-code` — Monospace token.
 - [x] `truncated-text` — Clamp with expand.
 - [x] `relative-time` — "3h ago" with tooltip date.
-- [ ] `money` — Formatted amount with currency.
+- [x] `money` — Formatted amount with currency.
 - [x] `trend-arrow` — Up/down delta indicator.
 
 ### Feedback (8)
@@ -83,17 +83,17 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `toast` — **B1** Provider + useToast, actions.
 - [x] `tooltip` — **B1** Hover/focus hint, no deps.
 - [x] `spinner` — Loading indicator.
-- [ ] `loading-overlay` — Blocking overlay over a region.
-- [ ] `inline-error` — Field-level error text.
+- [x] `loading-overlay` — Blocking overlay over a region.
+- [x] `inline-error` — Field-level error text.
 
 ### Layout (6)
 
 - [x] `card` — Surface with header/body/footer.
-- [ ] `stack` — Flex gap helper.
-- [ ] `scroll-area` — Styled scroll container.
-- [ ] `resizable-panels` — Split panes with drag handle.
-- [ ] `aspect-ratio` — Fixed ratio media box.
-- [ ] `visually-hidden` — SR-only wrapper.
+- [x] `stack` — Flex gap helper.
+- [x] `scroll-area` — Styled scroll container.
+- [x] `resizable-panels` — Split panes with drag handle.
+- [x] `aspect-ratio` — Fixed ratio media box.
+- [x] `visually-hidden` — SR-only wrapper.
 
 ## 2. Composites (100)
 

@@ -1,0 +1,105 @@
+{
+  "name": "Money",
+  "slug": "money",
+  "description": "Currency-correct amount display: minor-unit input, compact notation with exact title, accounting signs, sign colouring, compare-at discount, FX conversion line, plus formatMoney and float-safe sumMoney helpers.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/money.tsx"],
+  "examples": [
+    {
+      "title": "Quote totals in several currencies",
+      "file": "money-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "amount",
+      "type": "number | null",
+      "description": "Amount in major units (or minor with minorUnits); null shows placeholder",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "BCP 47 locale",
+      "required": false
+    },
+    {
+      "name": "minorUnits",
+      "type": "boolean",
+      "description": "Treat amount as cents/paise using the currency exponent",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "description": "Compact notation ($1.2M) with exact value in title",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "sign",
+      "type": "\"auto\" | \"always\" | \"never\" | \"accounting\"",
+      "description": "Sign display",
+      "default": "\"auto\"",
+      "required": false
+    },
+    {
+      "name": "fractionDigits",
+      "type": "number",
+      "description": "Override the currency's fraction digits",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\" | \"lg\" | \"xl\"",
+      "description": "Type size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "toneBySign",
+      "type": "boolean",
+      "description": "Green positive / red negative",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "showCode",
+      "type": "boolean",
+      "description": "Append the ISO code",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "compareAt",
+      "type": "number",
+      "description": "Previous price shown struck through with % saved",
+      "required": false
+    },
+    {
+      "name": "converted",
+      "type": "{ amount: number; currency: string; rateLabel?: string }",
+      "description": "Secondary converted amount",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "ReactNode",
+      "description": "Rendered for null amounts",
+      "default": "\"—\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,75 @@
+{
+  "name": "Loading Overlay",
+  "slug": "loading-overlay",
+  "description": "Blocks a region while work runs: delayed show and minimum duration to avoid flicker, inert + aria-busy content, focus rescue, determinate progress and cancel.",
+  "category": "Feedback",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/loading-overlay.tsx",
+    "components/crm/spinner.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Forecast recalculation",
+      "file": "loading-overlay-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Whether work is in flight",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "The region to block",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Status text",
+      "default": "\"Loading\"",
+      "required": false
+    },
+    {
+      "name": "progress",
+      "type": "number",
+      "description": "0-100 determinate progress",
+      "required": false
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "description": "ms before showing",
+      "default": "150",
+      "required": false
+    },
+    {
+      "name": "minDuration",
+      "type": "number",
+      "description": "Minimum visible ms once shown",
+      "default": "400",
+      "required": false
+    },
+    {
+      "name": "blur",
+      "type": "boolean",
+      "description": "Blur the content",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "() => void",
+      "description": "Shows a Cancel control",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

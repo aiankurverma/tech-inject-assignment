@@ -1,0 +1,63 @@
+{
+  "name": "Aspect Ratio",
+  "slug": "aspect-ratio",
+  "description": "Fixed-ratio media box that reserves space, with image mode skeleton, error fallback, fit and corner badge.",
+  "category": "Layout",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/aspect-ratio.tsx", "components/crm/segmented-control.tsx"],
+  "examples": [
+    {
+      "title": "Content library thumbnails",
+      "file": "aspect-ratio-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "ratio",
+      "type": "number | string",
+      "description": "Width/height, e.g. 16/9 or \"4:3\"",
+      "default": "16/9",
+      "required": false
+    },
+    {
+      "name": "src",
+      "type": "string",
+      "description": "Image mode source",
+      "required": false
+    },
+    {
+      "name": "alt",
+      "type": "string",
+      "description": "Image alt text",
+      "required": false
+    },
+    {
+      "name": "fit",
+      "type": "\"cover\" | \"contain\"",
+      "description": "Object fit",
+      "default": "\"cover\"",
+      "required": false
+    },
+    {
+      "name": "fallback",
+      "type": "ReactNode",
+      "description": "Shown when the image fails",
+      "required": false
+    },
+    {
+      "name": "badge",
+      "type": "ReactNode",
+      "description": "Corner overlay, e.g. duration",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Arbitrary content when no src",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

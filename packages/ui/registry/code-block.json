@@ -1,0 +1,82 @@
+{
+  "name": "Code Block",
+  "slug": "code-block",
+  "description": "Read-only code panel with light syntax highlighting, line numbers, highlighted ranges, language tabs, soft-wrap toggle, collapse, secret redaction and clipboard copy with fallback.",
+  "category": "Display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/code-block.tsx"],
+  "examples": [
+    {
+      "title": "API snippets and webhook payload",
+      "file": "code-block-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "code",
+      "type": "string",
+      "description": "Source to render (ignored when tabs is set)",
+      "required": false
+    },
+    {
+      "name": "language",
+      "type": "\"ts\" | \"js\" | \"json\" | \"bash\" | \"sql\" | \"http\" | \"text\"",
+      "description": "Tokenizer to use",
+      "default": "\"text\"",
+      "required": false
+    },
+    {
+      "name": "tabs",
+      "type": "{ label: string; code: string; language?: CodeLanguage }[]",
+      "description": "Variants of the same snippet, arrow-key navigable",
+      "required": false
+    },
+    {
+      "name": "filename",
+      "type": "string",
+      "description": "Header label when there are no tabs",
+      "required": false
+    },
+    {
+      "name": "showLineNumbers",
+      "type": "boolean",
+      "description": "Show the gutter",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "highlightLines",
+      "type": "(number | string)[]",
+      "description": "Lines or ranges to highlight, e.g. [2, \"5-7\"]",
+      "required": false
+    },
+    {
+      "name": "maxLines",
+      "type": "number",
+      "description": "Collapse beyond this many lines with a Show all toggle",
+      "required": false
+    },
+    {
+      "name": "defaultWrap",
+      "type": "boolean",
+      "description": "Start with soft wrapping",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "redact",
+      "type": "RegExp",
+      "description": "Mask matches in the view; copy keeps the real text",
+      "required": false
+    },
+    {
+      "name": "onCopy",
+      "type": "(code: string) => void",
+      "description": "Called after a successful copy",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
