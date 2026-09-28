@@ -68,6 +68,9 @@ export function DealBoard({
   const [owner, setOwner] = React.useState("all");
   const [activeId, setActiveId] = React.useState<string | null>(null);
   const [announce, setAnnounce] = React.useState("");
+  const uid = React.useId();
+  const dealWeight = (d: BoardDeal) =>
+    (d.amount * (d.probability ?? stageProb[d.stageId] ?? 0)) / 100;
 
   const owners = React.useMemo(
     () => Array.from(new Set(all.map((d) => d.owner?.name).filter(Boolean) as string[])).sort(),
@@ -88,10 +91,7 @@ export function DealBoard({
     [stages],
   );
   const total = visible.reduce((s, d) => s + d.amount, 0);
-  const weighted = visible.reduce(
-    (s, d) => s + (d.amount * (d.probability ?? stageProb[d.stageId] ?? 0)) / 100,
-    0,
-  );
+  const weighted = visible.reduce((s, d) => s + dealWeight(d), 0);
 
   const move = (dealId: string, toStageId: string) => {
     const deal = all.find((d) => d.id === dealId);
@@ -130,11 +130,11 @@ export function DealBoard({
           className="w-full sm:w-64"
           aria-label="Search deals"
         />
-        <label className="sr-only" htmlFor="deal-board-owner">
+        <label className="sr-only" htmlFor={`${uid}-owner`}>
           Owner
         </label>
         <select
-          id="deal-board-owner"
+          id={`${uid}-owner`}
           value={owner}
           onChange={(e) => setOwner(e.target.value)}
           className="h-7 rounded-crm border border-crm-border bg-crm-raised px-2 text-xs text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
@@ -170,11 +170,11 @@ export function DealBoard({
         >
           <span className="font-medium text-crm-fg">{active.title}</span>
           <span>· {active.company}</span>
-          <label htmlFor="deal-board-move" className="ml-auto">
+          <label htmlFor={`${uid}-move`} className="ml-auto">
             Move to
           </label>
           <select
-            id="deal-board-move"
+            id={`${uid}-move`}
             value={active.stageId}
             onChange={(e) => move(active.id, e.target.value)}
             className="h-7 rounded-crm border border-crm-border bg-crm-card px-2 text-xs text-crm-fg outline-none focus-visible:ring-2 focus-visible:ring-crm-ring/60"
@@ -213,7 +213,7 @@ export function DealBoard({
           {stages.map((s) => {
             const col = visible.filter((d) => d.stageId === s.id);
             const colTotal = col.reduce((t, d) => t + d.amount, 0);
-            const colWeighted = (colTotal * s.probability) / 100;
+            const colWeighted = col.reduce((t, d) => t + dealWeight(d), 0);
             return (
               <KanbanColumn
                 key={s.id}
