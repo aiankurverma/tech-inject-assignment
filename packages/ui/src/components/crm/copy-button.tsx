@@ -143,7 +143,8 @@ export function CopyField({ value, label, secret, visibleChars = 4, className }:
   const shown =
     secret && !revealed
       ? "•".repeat(Math.max(8, Math.min(24, value.length - visibleChars))) +
-        value.slice(-visibleChars)
+        // Never leak most of a short secret: only show a tail when at least half stays masked.
+        (visibleChars > 0 && value.length >= visibleChars * 2 ? value.slice(-visibleChars) : "")
       : value;
   return (
     <div className={cn("flex flex-col gap-1.5 font-crm", className)}>

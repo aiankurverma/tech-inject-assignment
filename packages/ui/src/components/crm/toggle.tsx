@@ -81,8 +81,11 @@ export const Toggle = React.forwardRef<HTMLButtonElement, ToggleProps>(function 
   const on = optimistic ?? base;
   const initial = React.useRef(base);
 
+  // Controlled: the parent owns `count` for the committed state, so only offset the optimistic flip.
+  // Uncontrolled: `count` is static, so offset relative to the initial state.
+  const reference = pressed !== undefined ? base : initial.current;
   const shownCount =
-    count === undefined ? undefined : count + (on === initial.current ? 0 : on ? 1 : -1);
+    count === undefined ? undefined : Math.max(0, count + (on === reference ? 0 : on ? 1 : -1));
 
   const handle = async (e: React.MouseEvent<HTMLButtonElement>) => {
     onClick?.(e);

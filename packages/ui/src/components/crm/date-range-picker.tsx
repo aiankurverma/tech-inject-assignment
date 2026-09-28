@@ -159,7 +159,7 @@ export function DateRangePicker({
     if (min && d < startOfDay(min)) return true;
     if (max && d > startOfDay(max)) return true;
     if (maxDays && draft && !draft.to) {
-      const span = Math.abs(d.getTime() - draft.from.getTime()) / DAY + 1;
+      const span = Math.round(Math.abs(d.getTime() - draft.from.getTime()) / DAY) + 1;
       if (span > maxDays) return true;
     }
     return false;
@@ -342,7 +342,7 @@ export function DateRangePicker({
               onClick={() => commit(null)}
               className="absolute top-1/2 right-1.5 grid size-6 -translate-y-1/2 cursor-pointer place-items-center rounded-full text-crm-subtle outline-none hover:bg-crm-muted hover:text-crm-fg focus-visible:ring-2 focus-visible:ring-crm-ring/60"
             >
-              <X className="size-3" />
+              <X aria-hidden className="size-3" />
             </button>
           ) : null}
         </div>

@@ -84,6 +84,8 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(functi
   const plain = textOf(children);
   const hid = id ?? (anchor ? slugify(plain) : undefined);
   const [copied, setCopied] = React.useState(false);
+  const resetTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  React.useEffect(() => () => clearTimeout(resetTimer.current), []);
 
   const copyLink = async (e: React.MouseEvent) => {
     if (!hid || typeof window === "undefined") return;
@@ -93,7 +95,8 @@ export const Heading = React.forwardRef<HTMLHeadingElement, HeadingProps>(functi
     try {
       await navigator.clipboard?.writeText(url);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      clearTimeout(resetTimer.current);
+      resetTimer.current = setTimeout(() => setCopied(false), 1500);
     } catch {
       /* clipboard blocked: the hash is still updated */
     }
