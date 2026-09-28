@@ -145,9 +145,9 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `email-composer` — To/CC/subject/body.
 - [ ] `rich-text-toolbar` — Formatting toolbar.
 - [ ] `signature-pad` — Draw signature.
-- [ ] `custom-field-editor` — Define field type/options.
-- [ ] `import-mapper` — CSV column → field mapping.
-- [ ] `search-with-filters` — Search + quick filters.
+- [x] `custom-field-editor` — Define field type/options.
+- [x] `import-mapper` — CSV column → field mapping.
+- [x] `search-with-filters` — Search + quick filters.
 - [x] `saved-views` — Named filter presets.
 
 ### Data display (30)
@@ -167,13 +167,13 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `kanban-column` — **B1** Board column with DnD.
 - [x] `description-list` — Key/value record fields.
 - [x] `property-panel` — Editable record sidebar.
-- [ ] `company-card` — Account summary card.
-- [ ] `lead-score-badge` — Hot/warm/cold score.
-- [ ] `health-score` — Customer health gauge.
-- [ ] `funnel-chart` — Stage conversion funnel.
-- [ ] `bar-chart` — SVG bars.
-- [ ] `line-chart` — SVG line/area.
-- [ ] `donut-chart` — Share breakdown.
+- [x] `company-card` — Account summary card.
+- [x] `lead-score-badge` — Hot/warm/cold score.
+- [x] `health-score` — Customer health gauge.
+- [x] `funnel-chart` — Stage conversion funnel.
+- [x] `bar-chart` — SVG bars.
+- [x] `line-chart` — SVG line/area.
+- [x] `donut-chart` — Share breakdown.
 - [ ] `heatmap` — Activity by day/hour.
 - [ ] `leaderboard` — Ranked reps.
 - [ ] `quota-gauge` — Attainment gauge.

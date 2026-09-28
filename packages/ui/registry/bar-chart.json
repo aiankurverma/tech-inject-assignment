@@ -1,0 +1,82 @@
+{
+  "name": "Bar Chart",
+  "slug": "bar-chart",
+  "description": "SVG bar chart with grouped or stacked series, clean ticks, target line, legend toggles, tooltips, keyboard navigation and loading/empty/error states.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/bar-chart.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "bar-chart-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "BarDatum[]",
+      "description": "Categories with a value per series",
+      "required": true
+    },
+    {
+      "name": "series",
+      "type": "BarSeries[]",
+      "description": "Series keys, labels and colours",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible chart name",
+      "required": true
+    },
+    {
+      "name": "mode",
+      "type": "\"grouped\" | \"stacked\"",
+      "description": "Bar layout",
+      "default": "\"grouped\"",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(v: number) => string",
+      "description": "Axis and tooltip formatter",
+      "default": "compact number",
+      "required": false
+    },
+    {
+      "name": "target",
+      "type": "{ value: number; label?: string }",
+      "description": "Dashed target line",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Chart height",
+      "default": "240",
+      "required": false
+    },
+    {
+      "name": "onBarClick",
+      "type": "(datum, seriesKey) => void",
+      "description": "Bar click / Enter handler",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,82 @@
+{
+  "name": "Line Chart",
+  "slug": "line-chart",
+  "description": "Multi-series SVG line/area chart with gaps for missing data, crosshair tooltip, dashed comparison series, period change in legend and arrow-key scrubbing.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/line-chart.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "line-chart-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "LinePoint[]",
+      "description": "Points with a value (or null) per series",
+      "required": true
+    },
+    {
+      "name": "series",
+      "type": "LineSeries[]",
+      "description": "Series keys, labels, colours, dashed",
+      "required": true
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible chart name",
+      "required": true
+    },
+    {
+      "name": "area",
+      "type": "boolean",
+      "description": "Gradient fill under lines",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "curved",
+      "type": "boolean",
+      "description": "Smooth curves",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(v: number) => string",
+      "description": "Axis and tooltip formatter",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Chart height",
+      "default": "220",
+      "required": false
+    },
+    {
+      "name": "labelEvery",
+      "type": "number",
+      "description": "Show every nth x label",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Loading state",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

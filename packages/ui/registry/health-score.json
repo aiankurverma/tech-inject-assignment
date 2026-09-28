@@ -1,0 +1,58 @@
+{
+  "name": "Health Score",
+  "slug": "health-score",
+  "description": "Customer health semicircle gauge with bands, 30-day trend and weighted signal breakdown flagging the weakest signal.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/health-score.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "health-score-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "score",
+      "type": "number",
+      "description": "Overall 0-100; computed from signals when omitted",
+      "required": false
+    },
+    {
+      "name": "signals",
+      "type": "HealthSignal[]",
+      "description": "Weighted sub-scores",
+      "required": false
+    },
+    {
+      "name": "previousScore",
+      "type": "number",
+      "description": "Score 30 days ago",
+      "required": false
+    },
+    {
+      "name": "bands",
+      "type": "{ attention: number; healthy: number }",
+      "description": "Band lower bounds",
+      "default": "{ attention: 40, healthy: 70 }",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Gauge size",
+      "default": "\"md\"",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name",
+      "default": "\"Customer health\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
