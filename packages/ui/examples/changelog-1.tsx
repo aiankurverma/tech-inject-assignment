@@ -84,7 +84,7 @@ export default function Example() {
       <Changelog
         entries={entries}
         lastSeen={lastSeen}
-        pageSize={4}
+        pageSize={2}
         onMarkAllRead={() => setLastSeen(new Date().toISOString())}
       />
     </div>

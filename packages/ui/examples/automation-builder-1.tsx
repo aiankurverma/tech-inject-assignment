@@ -16,14 +16,13 @@ export default function Example() {
       { id: "s1", kind: "condition", field: "amount", operator: "gt", value: "50000" },
       { id: "s2", kind: "action", action: "task", target: "Call champion to confirm timeline" },
       { id: "s3", kind: "delay", amount: 3, unit: "days" },
-      { id: "s4", kind: "condition", field: "stage", operator: "is", value: "Proposal" },
       { id: "s5", kind: "action", action: "notify", target: "priya" },
     ],
   });
   const [saving, setSaving] = React.useState(false);
   return (
     <AutomationBuilder
-      className="max-w-2xl"
+      className="my-6 max-w-2xl"
       value={value}
       onChange={setValue}
       saving={saving}

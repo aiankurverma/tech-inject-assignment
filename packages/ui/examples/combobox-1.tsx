@@ -26,6 +26,7 @@ export default function Example() {
         placeholder="Assign an owner"
         searchPlaceholder="Search people…"
         clearable
+        defaultOpen
         aria-label="Deal owner"
       />
     </div>

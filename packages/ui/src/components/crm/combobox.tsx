@@ -28,6 +28,8 @@ export interface ComboboxProps {
   filter?: (option: ComboboxOption, query: string) => boolean;
   disabled?: boolean;
   invalid?: boolean;
+  /** Start with the option list open (uncontrolled). */
+  defaultOpen?: boolean;
   id?: string;
   "aria-label"?: string;
   className?: string;
@@ -48,11 +50,12 @@ export function Combobox({
   filter = defaultComboboxFilter,
   disabled,
   invalid,
+  defaultOpen = false,
   id,
   "aria-label": ariaLabel,
   className,
 }: ComboboxProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(defaultOpen);
   const [query, setQuery] = React.useState("");
   const [active, setActive] = React.useState(0);
   const listRef = React.useRef<HTMLUListElement>(null);
@@ -135,13 +138,13 @@ export function Combobox({
               "outline-none transition-[border-color,box-shadow] duration-150 ease-crm hover:border-crm-input",
               "focus-visible:border-crm-ring focus-visible:ring-2 focus-visible:ring-crm-ring/40",
               "aria-[invalid=true]:border-crm-danger disabled:cursor-not-allowed disabled:opacity-50",
-              clearable && selected && "pr-14",
             )}
           >
             {selected?.icon ? <span className="shrink-0">{selected.icon}</span> : null}
             <span className={cn("flex-1 truncate", selected ? "text-crm-fg" : "text-crm-subtle")}>
               {selected?.label ?? placeholder}
             </span>
+            {clearable && selected ? <span aria-hidden className="w-5 shrink-0" /> : null}
             <ChevronsUpDown aria-hidden className="size-3.5 shrink-0 text-crm-subtle" />
           </button>
         </Popover.Trigger>
@@ -150,7 +153,7 @@ export function Combobox({
             type="button"
             aria-label="Clear selection"
             onClick={() => onChange?.(null)}
-            className="absolute top-1/2 right-8 grid size-5 -translate-y-1/2 cursor-pointer place-items-center rounded-full text-crm-subtle outline-none hover:bg-crm-muted hover:text-crm-fg focus-visible:ring-2 focus-visible:ring-crm-ring/60 [&_svg]:size-3"
+            className="absolute top-1/2 right-[34px] grid size-5 -translate-y-1/2 cursor-pointer place-items-center rounded-full text-crm-subtle outline-none hover:bg-crm-muted hover:text-crm-fg focus-visible:ring-2 focus-visible:ring-crm-ring/60 [&_svg]:size-3"
           >
             <X />
           </button>

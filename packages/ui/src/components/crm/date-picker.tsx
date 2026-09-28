@@ -158,6 +158,8 @@ export interface DatePickerProps extends CalendarProps {
   /** Accessible name for the trigger when there is no visible label. */
   "aria-label"?: string;
   disabled?: boolean;
+  /** Start with the calendar open (uncontrolled). */
+  defaultOpen?: boolean;
 }
 
 const defaultFormat = (d: Date) =>
@@ -172,10 +174,11 @@ export function DatePicker({
   min,
   max,
   disabled,
+  defaultOpen = false,
   className,
   "aria-label": ariaLabel,
 }: DatePickerProps) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(defaultOpen);
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger asChild>

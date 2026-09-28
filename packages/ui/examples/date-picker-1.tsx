@@ -11,6 +11,7 @@ export default function Example() {
         onChange={setDate}
         aria-label="Expected close date"
         min={new Date()}
+        defaultOpen
       />
     </div>
   );
