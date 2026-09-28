@@ -41,8 +41,8 @@ export interface AuditLogRowProps {
 }
 
 export function formatAuditValue(v: AuditValue, c: AuditChange, locale?: string): string {
-  if (v === null || v === "" || (Array.isArray(v) && v.length === 0)) return "Empty";
   if (c.sensitive) return "••••••";
+  if (v === null || v === "" || (Array.isArray(v) && v.length === 0)) return "Empty";
   if (Array.isArray(v)) return v.join(", ");
   switch (c.type) {
     case "currency":

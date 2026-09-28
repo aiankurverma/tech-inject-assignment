@@ -201,8 +201,8 @@ export function ChatBubble({
               {children}
               {attachments.length ? (
                 <ul className={cn("flex flex-col gap-1.5", (text || children) && "mt-2")}>
-                  {attachments.map((a) => (
-                    <li key={a.name}>
+                  {attachments.map((a, i) => (
+                    <li key={`${a.name}-${i}`}>
                       {a.thumbnail ? (
                         <a
                           href={a.href ?? a.thumbnail}
@@ -254,7 +254,7 @@ export function ChatBubble({
                   delivery === "failed" && "text-crm-danger",
                 )}
               >
-                <DeliveryIcon className="size-3" aria-label={meta.label} />
+                <DeliveryIcon className="size-3" role="img" aria-label={meta.label} />
                 {delivery === "failed" ? (
                   <>
                     Not sent

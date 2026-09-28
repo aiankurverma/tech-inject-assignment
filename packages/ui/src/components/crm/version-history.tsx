@@ -81,7 +81,7 @@ export function VersionHistory({
     const [a, b] = compare.map((id) => sorted.find((v) => v.id === id));
     if (a && b) [left, right] = a.number < b.number ? [a, b] : [b, a];
   } else {
-    right = sorted.find((v) => v.id === selected);
+    right = sorted.find((v) => v.id === selected) ?? sorted[0];
     left = right ? sorted.find((v) => v.number < right!.number) : undefined;
   }
   const diffs = right ? diffSnapshots(left?.snapshot ?? {}, right.snapshot) : [];
@@ -139,7 +139,7 @@ export function VersionHistory({
               const day = dayKey(d, locale);
               const header = day !== lastDay ? day : null;
               lastDay = day;
-              const active = compare.length < 2 && selected === v.id;
+              const active = compare.length < 2 && right?.id === v.id;
               const inCompare = compare.includes(v.id);
               return (
                 <React.Fragment key={v.id}>

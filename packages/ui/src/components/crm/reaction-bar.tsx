@@ -156,7 +156,7 @@ export function ReactionBar({
         </PopoverTrigger>
         <PopoverContent align="start" className="w-auto p-2">
           <div
-            role="grid"
+            role="group"
             aria-label="Pick a reaction"
             onKeyDown={onGridKeyDown}
             className="grid grid-cols-6 gap-1"
@@ -167,8 +167,7 @@ export function ReactionBar({
                 <button
                   key={emoji}
                   type="button"
-                  role="gridcell"
-                  aria-selected={!!mine}
+                  aria-pressed={!!mine}
                   aria-label={`React with ${emoji}`}
                   onClick={() => {
                     commit(emoji);

@@ -2,7 +2,7 @@ import * as React from "react";
 import { Check, Globe, Link2, Lock, X } from "lucide-react";
 import { Avatar } from "@/components/crm/avatar";
 import { Button } from "@/components/crm/button";
-import { Dialog, DialogContent, DialogSection } from "@/components/crm/dialog";
+import { Dialog, DialogClose, DialogContent, DialogSection } from "@/components/crm/dialog";
 import { cn } from "@/lib/utils";
 
 export type ShareRole = "owner" | "editor" | "commenter" | "viewer";
@@ -221,7 +221,9 @@ export function ShareDialog({
                 {copied ? "Copied" : "Copy link"}
               </Button>
             ) : null}
-            <Button onClick={() => onOpenChange?.(false)}>Done</Button>
+            <DialogClose asChild>
+              <Button>Done</Button>
+            </DialogClose>
           </>
         }
       >
