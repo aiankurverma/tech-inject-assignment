@@ -1,0 +1,74 @@
+{
+  "name": "Settings API Keys",
+  "slug": "settings-api-keys",
+  "description": "API key manager: scoped key creation with expiry, one-time secret reveal with copy, active/expiring/expired/revoked states, last-used, confirm-to-revoke and a key cap.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/settings-api-keys.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "API keys",
+      "file": "settings-api-keys-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "scopes",
+      "type": "ApiScope[]",
+      "description": "Selectable scopes",
+      "required": true
+    },
+    {
+      "name": "onCreate",
+      "type": "(input: NewApiKeyInput) => Promise<{ key: ApiKey; secret: string }>",
+      "description": "Create on server; secret shown once",
+      "required": true
+    },
+    {
+      "name": "keys",
+      "type": "ApiKey[]",
+      "description": "Controlled keys",
+      "required": false
+    },
+    {
+      "name": "defaultKeys",
+      "type": "ApiKey[]",
+      "description": "Uncontrolled initial keys",
+      "required": false
+    },
+    {
+      "name": "onKeysChange",
+      "type": "(keys: ApiKey[]) => void",
+      "description": "Fires after create/revoke",
+      "required": false
+    },
+    {
+      "name": "onRevoke",
+      "type": "(key: ApiKey) => Promise<void> | void",
+      "description": "Revoke on server",
+      "required": false
+    },
+    {
+      "name": "maxKeys",
+      "type": "number",
+      "description": "Active key cap",
+      "required": false,
+      "default": "10"
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

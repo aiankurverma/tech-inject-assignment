@@ -1,0 +1,60 @@
+{
+  "name": "Settings Integrations",
+  "slug": "settings-integrations",
+  "description": "Integrations marketplace: category tabs with counts, search, connect/disconnect/sync with per-card pending state, error and retry, locked (upgrade) and beta apps, last-sync time.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-integrations.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Integrations",
+      "file": "settings-integrations-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "integrations",
+      "type": "Integration[]",
+      "description": "Controlled list",
+      "required": false
+    },
+    {
+      "name": "defaultIntegrations",
+      "type": "Integration[]",
+      "description": "Uncontrolled initial list",
+      "required": false
+    },
+    {
+      "name": "onIntegrationsChange",
+      "type": "(next: Integration[]) => void",
+      "description": "Fires on every status change",
+      "required": false
+    },
+    {
+      "name": "onConnect",
+      "type": "(i) => Promise<{ account?: string } | void>",
+      "description": "Connect; reject shows error on the card",
+      "required": false
+    },
+    {
+      "name": "onDisconnect",
+      "type": "(i) => Promise<void> | void",
+      "description": "Disconnect",
+      "required": false
+    },
+    {
+      "name": "onSync",
+      "type": "(i) => Promise<void> | void",
+      "description": "Manual sync / retry",
+      "required": false
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

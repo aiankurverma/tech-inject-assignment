@@ -1,0 +1,63 @@
+{
+  "name": "Settings Pipelines",
+  "slug": "settings-pipelines",
+  "description": "Pipeline and stage editor: pipeline switcher, drag-and-drop plus keyboard reordering, win probability and rotting days per stage, validation warnings, delete with deal reassignment, weighted forecast totals.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-pipelines.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Pipelines",
+      "file": "settings-pipelines-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "pipelines",
+      "type": "Pipeline[]",
+      "description": "Controlled pipelines",
+      "required": false
+    },
+    {
+      "name": "defaultPipelines",
+      "type": "Pipeline[]",
+      "description": "Uncontrolled initial pipelines",
+      "required": false
+    },
+    {
+      "name": "onPipelinesChange",
+      "type": "(p: Pipeline[]) => void",
+      "description": "Fires on every edit",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "required": false,
+      "default": "\"USD\""
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Number locale",
+      "required": false,
+      "default": "\"en-US\""
+    },
+    {
+      "name": "onSave",
+      "type": "(p: Pipeline[]) => Promise<void> | void",
+      "description": "Persist changes",
+      "required": false
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

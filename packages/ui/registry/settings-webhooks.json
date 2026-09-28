@@ -1,0 +1,62 @@
+{
+  "name": "Settings Webhooks",
+  "slug": "settings-webhooks",
+  "description": "Webhook endpoints manager: HTTPS and private-host URL validation, grouped event subscriptions with tri-state groups, masked signing secret, enable toggle, success rate, delivery log with failed filter, retry and test ping.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-checkbox", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-webhooks.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Webhooks",
+      "file": "settings-webhooks-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "eventCatalog",
+      "type": "Record<string, string[]>",
+      "description": "Events grouped by object",
+      "required": true
+    },
+    {
+      "name": "endpoints",
+      "type": "WebhookEndpoint[]",
+      "description": "Controlled endpoints",
+      "required": false
+    },
+    {
+      "name": "defaultEndpoints",
+      "type": "WebhookEndpoint[]",
+      "description": "Uncontrolled initial endpoints",
+      "required": false
+    },
+    {
+      "name": "onEndpointsChange",
+      "type": "(e: WebhookEndpoint[]) => void",
+      "description": "Fires on every change",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "(ep, delivery) => Promise<WebhookDelivery>",
+      "description": "Redeliver a failed event",
+      "required": false
+    },
+    {
+      "name": "onTest",
+      "type": "(ep) => Promise<WebhookDelivery>",
+      "description": "Send a test ping",
+      "required": false
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

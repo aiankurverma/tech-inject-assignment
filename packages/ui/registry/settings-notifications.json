@@ -1,0 +1,68 @@
+{
+  "name": "Settings Notifications",
+  "slug": "settings-notifications",
+  "description": "Notification preferences: grouped event x channel matrix with column toggles and required channels, email digest, quiet hours across midnight with validation, pause all, dirty save and reset.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/settings-notifications.tsx",
+    "components/crm/button.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/select.tsx",
+    "components/crm/settings-row.tsx",
+    "components/crm/switch.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Notifications",
+      "file": "settings-notifications-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "events",
+      "type": "NotificationEvent[]",
+      "description": "Events grouped by `group`",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "NotificationPrefs",
+      "description": "Controlled preferences",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "NotificationPrefs",
+      "description": "Uncontrolled initial preferences",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(p: NotificationPrefs) => void",
+      "description": "Fires on every change",
+      "required": false
+    },
+    {
+      "name": "channels",
+      "type": "NotificationChannel[]",
+      "description": "Enabled channels",
+      "required": false,
+      "default": "all four"
+    },
+    {
+      "name": "onSave",
+      "type": "(p: NotificationPrefs) => Promise<void> | void",
+      "description": "Persist preferences",
+      "required": false
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}

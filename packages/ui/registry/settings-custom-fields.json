@@ -1,0 +1,63 @@
+{
+  "name": "Settings Custom Fields",
+  "slug": "settings-custom-fields",
+  "description": "Custom field manager per CRM object: nine field types, auto snake_case API names with reserved and duplicate checks, select options, required toggle, reorder, archive/restore and fill-rate bars.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-custom-fields.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Custom fields",
+      "file": "settings-custom-fields-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "objects",
+      "type": "Record<string, string>",
+      "description": "Object key to label",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "Record<string, CustomField[]>",
+      "description": "Controlled fields per object",
+      "required": false
+    },
+    {
+      "name": "defaultFields",
+      "type": "Record<string, CustomField[]>",
+      "description": "Uncontrolled initial fields",
+      "required": false
+    },
+    {
+      "name": "onFieldsChange",
+      "type": "(f) => void",
+      "description": "Fires on every change",
+      "required": false
+    },
+    {
+      "name": "reservedApiNames",
+      "type": "string[]",
+      "description": "Built-in keys that cannot be reused",
+      "required": false
+    },
+    {
+      "name": "maxFieldsPerObject",
+      "type": "number",
+      "description": "Active field cap",
+      "required": false,
+      "default": "50"
+    }
+  ],
+  "usage": "Drop into a settings route. Use default* props for uncontrolled state or pass value/onChange style props to control it."
+}
