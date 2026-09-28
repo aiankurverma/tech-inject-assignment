@@ -257,13 +257,13 @@ Full sections built from primitives and composites.
 - [ ] `settings-profile` · [ ] `settings-team` · [ ] `settings-roles` · [ ] `settings-billing` ·
       [ ] `settings-integrations` · [ ] `settings-notifications` · [ ] `settings-security` ·
       [ ] `settings-api-keys` · [ ] `settings-webhooks` · [ ] `settings-pipelines` ·
-      [ ] `settings-custom-fields` · [ ] `settings-email` · [ ] `settings-branding` ·
-      [ ] `settings-data-import` · [ ] `settings-audit-log` — admin pages.
+      [ ] `settings-custom-fields` · [x] `settings-email` · [x] `settings-branding` ·
+      [x] `settings-data-import` · [x] `settings-audit-log` — admin pages.
 
 ### Auth and onboarding (12)
 
-- [ ] `sign-in` · [ ] `sign-up` · [ ] `forgot-password` · [ ] `reset-password` · [ ] `verify-email` ·
-      [ ] `two-factor` · [ ] `sso-picker` · [ ] `invite-accept` · [ ] `onboarding-checklist` ·
+- [x] `sign-in` · [x] `sign-up` · [x] `forgot-password` · [x] `reset-password` · [x] `verify-email` ·
+      [x] `two-factor` · [ ] `sso-picker` · [ ] `invite-accept` · [ ] `onboarding-checklist` ·
       [ ] `onboarding-wizard` · [ ] `workspace-create` · [ ] `welcome-tour` — account flows.
 
 ### Marketing and portal (15)

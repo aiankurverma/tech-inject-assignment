@@ -1,0 +1,68 @@
+{
+  "name": "Settings Data Import",
+  "slug": "settings-data-import",
+  "description": "CSV import wizard: parse (quotes, ; or tab), auto-map columns by name and aliases, typed row validation, in-file duplicate detection, dedupe strategy, error-row export and import progress.",
+  "category": "Settings",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/settings-data-import.tsx",
+    "components/crm/alert.tsx",
+    "components/crm/button.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/radio-group.tsx",
+    "components/crm/select.tsx",
+    "components/crm/stepper.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Import contacts from CSV",
+      "file": "settings-data-import-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "ImportField[]",
+      "description": "Target fields with type, required and aliases",
+      "required": true
+    },
+    {
+      "name": "onImport",
+      "type": "(rows, { dedupe }, onProgress) => Promise<ImportResult>",
+      "description": "Import valid rows",
+      "required": true
+    },
+    {
+      "name": "objectName",
+      "type": "string",
+      "description": "Object label",
+      "required": false,
+      "default": "\"contacts\""
+    },
+    {
+      "name": "matchKey",
+      "type": "string",
+      "description": "Field used for duplicates",
+      "required": false,
+      "default": "\"email\""
+    },
+    {
+      "name": "maxRows",
+      "type": "number",
+      "description": "Row limit per file",
+      "required": false,
+      "default": "10000"
+    },
+    {
+      "name": "showTemplate",
+      "type": "boolean",
+      "description": "Template CSV download",
+      "required": false,
+      "default": "true"
+    }
+  ],
+  "usage": "parseCsv is exported; rows with errors are skipped and downloadable."
+}
