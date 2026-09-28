@@ -227,106 +227,108 @@ export function WinLossReport({
         ]}
       />
 
-      <div className="rounded-crm border border-crm-border bg-crm-card p-4 shadow-crm-raised">
-        <h3 className="mb-3 text-sm font-medium">Win rate by {bucket}</h3>
-        {trend.length === 0 ? (
-          <p className="text-xs text-crm-subtle">No closed deals in scope.</p>
-        ) : (
-          <div className="flex h-36 items-end gap-2">
-            {trend.map(([k, v]) => {
-              const r = v.won + v.lost ? v.won / (v.won + v.lost) : 0;
-              const active = filter?.kind === "period" && filter.value === k;
-              return (
-                <button
-                  key={k}
-                  type="button"
-                  aria-pressed={active}
-                  aria-label={`${k}: ${Math.round(r * 100)}% win rate`}
-                  onClick={() => toggle("period", k)}
-                  className="group flex h-full flex-1 flex-col items-center justify-end gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-crm-ring focus-visible:outline-none"
-                >
-                  <span className="text-[11px] text-crm-soft tabular-nums">
-                    {Math.round(r * 100)}%
-                  </span>
-                  <span className="flex w-full max-w-12 flex-1 flex-col-reverse overflow-hidden rounded-sm bg-crm-muted">
+      <div className="grid gap-3 md:grid-cols-2">
+        <div className="rounded-crm border border-crm-border bg-crm-card p-4 shadow-crm-raised min-w-0">
+          <h3 className="mb-3 text-sm font-medium">Win rate by {bucket}</h3>
+          {trend.length === 0 ? (
+            <p className="text-xs text-crm-subtle">No closed deals in scope.</p>
+          ) : (
+            <div className="flex h-32 items-end gap-1.5">
+              {trend.map(([k, v]) => {
+                const r = v.won + v.lost ? v.won / (v.won + v.lost) : 0;
+                const active = filter?.kind === "period" && filter.value === k;
+                return (
+                  <button
+                    key={k}
+                    type="button"
+                    aria-pressed={active}
+                    aria-label={`${k}: ${Math.round(r * 100)}% win rate`}
+                    onClick={() => toggle("period", k)}
+                    className="group flex h-full flex-1 flex-col items-center justify-end gap-1 rounded-sm focus-visible:ring-2 focus-visible:ring-crm-ring focus-visible:outline-none"
+                  >
+                    <span className="text-[11px] text-crm-soft tabular-nums">
+                      {Math.round(r * 100)}%
+                    </span>
+                    <span className="flex w-full max-w-12 flex-1 flex-col-reverse overflow-hidden rounded-sm bg-crm-muted">
+                      <span
+                        className={cn(
+                          "w-full bg-crm-success",
+                          active ? "opacity-100" : "opacity-80 group-hover:opacity-100",
+                        )}
+                        style={{ height: `${r * 100}%` }}
+                      />
+                    </span>
                     <span
                       className={cn(
-                        "w-full bg-crm-success",
-                        active ? "opacity-100" : "opacity-80 group-hover:opacity-100",
+                        "text-[11px] whitespace-nowrap",
+                        active ? "font-medium text-crm-fg" : "text-crm-subtle",
                       )}
-                      style={{ height: `${r * 100}%` }}
-                    />
-                  </span>
-                  <span
+                    >
+                      {k}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
+        <div className="min-w-0 overflow-x-auto rounded-crm border border-crm-border bg-crm-card pb-1 shadow-crm-raised">
+          <table className="w-full min-w-[320px] text-sm">
+            <caption className="px-4 pt-3 text-left text-sm font-medium">
+              Competitor head-to-head
+            </caption>
+            <thead>
+              <tr className="border-b border-crm-border">
+                {["Competitor", "Won", "Lost", "Win rate"].map((h, i) => (
+                  <th
+                    key={h}
+                    scope="col"
                     className={cn(
-                      "text-[11px] whitespace-nowrap",
-                      active ? "font-medium text-crm-fg" : "text-crm-subtle",
+                      "crm-caption h-9 px-4 font-normal text-crm-subtle",
+                      i ? "text-right" : "text-left",
                     )}
                   >
-                    {k}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        )}
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {competitors.map(([name, v]) => {
+                const r = v.won / (v.won + v.lost);
+                return (
+                  <tr key={name} className="border-b border-crm-border last:border-0">
+                    <td className="h-9 px-4">
+                      <button
+                        type="button"
+                        onClick={() => toggle("competitor", name)}
+                        className="rounded-sm hover:underline focus-visible:ring-2 focus-visible:ring-crm-ring focus-visible:outline-none"
+                      >
+                        {name}
+                      </button>
+                    </td>
+                    <td className="px-4 text-right tabular-nums">{v.won}</td>
+                    <td className="px-4 text-right tabular-nums">{v.lost}</td>
+                    <td
+                      className={cn(
+                        "px-4 text-right font-medium tabular-nums",
+                        r < 0.4 ? "text-crm-danger" : r >= 0.6 ? "text-crm-success" : "",
+                      )}
+                    >
+                      {Math.round(r * 100)}%
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="grid gap-3 md:grid-cols-2">
         {renderReasons("Why we win", reasons(won), "bg-crm-success")}
         {renderReasons("Why we lose", reasons(lost), "bg-crm-danger")}
-      </div>
-
-      <div className="overflow-x-auto rounded-crm border border-crm-border bg-crm-card shadow-crm-raised">
-        <table className="w-full min-w-[480px] text-sm">
-          <caption className="px-4 pt-3 text-left text-sm font-medium">
-            Competitor head-to-head
-          </caption>
-          <thead>
-            <tr className="border-b border-crm-border">
-              {["Competitor", "Won", "Lost", "Win rate"].map((h, i) => (
-                <th
-                  key={h}
-                  scope="col"
-                  className={cn(
-                    "crm-caption h-9 px-4 font-normal text-crm-subtle",
-                    i ? "text-right" : "text-left",
-                  )}
-                >
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {competitors.map(([name, v]) => {
-              const r = v.won / (v.won + v.lost);
-              return (
-                <tr key={name} className="border-b border-crm-border last:border-0">
-                  <td className="h-10 px-4">
-                    <button
-                      type="button"
-                      onClick={() => toggle("competitor", name)}
-                      className="rounded-sm hover:underline focus-visible:ring-2 focus-visible:ring-crm-ring focus-visible:outline-none"
-                    >
-                      {name}
-                    </button>
-                  </td>
-                  <td className="px-4 text-right tabular-nums">{v.won}</td>
-                  <td className="px-4 text-right tabular-nums">{v.lost}</td>
-                  <td
-                    className={cn(
-                      "px-4 text-right font-medium tabular-nums",
-                      r < 0.4 ? "text-crm-danger" : r >= 0.6 ? "text-crm-success" : "",
-                    )}
-                  >
-                    {Math.round(r * 100)}%
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
       </div>
 
       {filter ? (

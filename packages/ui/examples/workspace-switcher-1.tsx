@@ -12,15 +12,19 @@ const workspaces = [
 export default function Example() {
   const [id, setId] = React.useState("acme");
   return (
-    <div className="w-[240px] rounded-xl border border-crm-border bg-crm-sidebar p-2 font-crm">
-      <WorkspaceSwitcher
-        workspaces={workspaces}
-        value={id}
-        onValueChange={setId}
-        onCreate={() => {}}
-      >
-        <DropdownMenuItem icon={<Settings />}>Workspace settings</DropdownMenuItem>
-      </WorkspaceSwitcher>
+    <div className="h-[340px] w-[260px] font-crm text-crm-fg">
+      <div className="rounded-xl border border-crm-border bg-crm-sidebar p-2">
+        <WorkspaceSwitcher
+          workspaces={workspaces}
+          value={id}
+          onValueChange={setId}
+          onCreate={() => {}}
+          defaultOpen
+          modal={false}
+        >
+          <DropdownMenuItem icon={<Settings />}>Workspace settings</DropdownMenuItem>
+        </WorkspaceSwitcher>
+      </div>
     </div>
   );
 }
