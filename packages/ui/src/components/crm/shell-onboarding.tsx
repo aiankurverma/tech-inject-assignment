@@ -134,7 +134,7 @@ export function ShellOnboarding({
           className="hidden md:flex"
           orientation="vertical"
           current={done ? steps.length : index}
-          onStepClick={done ? undefined : go}
+          onStepClick={done ? undefined : (i: number) => (i <= index ? go(i) : undefined)}
           steps={steps.map((s) => ({
             title: s.title,
             description: skipped.has(s.id) ? "Skipped" : s.optional ? "Optional" : s.description,

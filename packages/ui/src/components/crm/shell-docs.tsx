@@ -138,7 +138,7 @@ export function ShellDocs({
           aria-label={navOpen ? "Close navigation" : "Open navigation"}
           aria-expanded={navOpen}
           onClick={() => setNavOpen((o) => !o)}
-          className="grid size-7 place-items-center rounded-md text-crm-soft hover:bg-crm-muted lg:hidden"
+          className="grid size-7 place-items-center rounded-md text-crm-soft hover:bg-crm-muted lg:hidden focus-visible:ring-2 focus-visible:ring-crm-primary focus-visible:outline-none"
         >
           {navOpen ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
@@ -171,7 +171,7 @@ export function ShellDocs({
                   <button
                     type="button"
                     onClick={() => go(prev.id)}
-                    className="flex flex-col items-start gap-0.5 rounded-crm border border-crm-border p-3 text-left hover:bg-crm-muted/50"
+                    className="flex flex-col items-start gap-0.5 rounded-crm border border-crm-border p-3 text-left hover:bg-crm-muted/50 focus-visible:ring-2 focus-visible:ring-crm-primary focus-visible:outline-none"
                   >
                     <span className="flex items-center gap-1 text-xs text-crm-soft">
                       <ChevronLeft className="size-3" /> Previous
@@ -185,7 +185,7 @@ export function ShellDocs({
                   <button
                     type="button"
                     onClick={() => go(next.id)}
-                    className="flex flex-col items-end gap-0.5 rounded-crm border border-crm-border p-3 text-right hover:bg-crm-muted/50"
+                    className="flex flex-col items-end gap-0.5 rounded-crm border border-crm-border p-3 text-right hover:bg-crm-muted/50 focus-visible:ring-2 focus-visible:ring-crm-primary focus-visible:outline-none"
                   >
                     <span className="flex items-center gap-1 text-xs text-crm-soft">
                       Next <ChevronRight className="size-3" />
@@ -210,7 +210,7 @@ export function ShellDocs({
                     onClick={() => jump(h.id)}
                     aria-current={activeHeading === h.id ? "location" : undefined}
                     className={cn(
-                      "-ml-px border-l py-0.5 text-left text-xs",
+                      "-ml-px border-l py-0.5 text-left text-xs focus-visible:ring-2 focus-visible:ring-crm-primary focus-visible:outline-none",
                       h.level === 3 ? "pl-6" : "pl-3",
                       activeHeading === h.id
                         ? "border-crm-primary text-crm-fg"

@@ -97,7 +97,8 @@ export function ShellInbox({
   const selected = threads.find((t) => t.id === sel);
 
   const onKey = (e: React.KeyboardEvent) => {
-    if (e.target instanceof HTMLInputElement) return;
+    // Only drive thread navigation from the list itself so filters/search keep their own keys.
+    if (!(e.target instanceof HTMLElement) || !listRef.current?.contains(e.target)) return;
     const i = visible.findIndex((t) => t.id === sel);
     if (e.key === "j" || e.key === "ArrowDown") {
       e.preventDefault();
@@ -167,7 +168,10 @@ export function ShellInbox({
           <select
             aria-label="Folder"
             value={folder}
-            onChange={(e) => setFolder(e.target.value)}
+            onChange={(e) => {
+              setFolder(e.target.value);
+              open(undefined);
+            }}
             className="h-8 rounded-md border border-crm-border bg-crm-card px-2 text-sm md:hidden"
           >
             {folders.map((f) => (

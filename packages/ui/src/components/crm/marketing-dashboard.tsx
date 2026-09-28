@@ -128,7 +128,7 @@ export function MarketingDashboard({
           <button
             type="button"
             onClick={() => setChannel(null)}
-            className="text-xs text-crm-soft underline-offset-2 hover:text-crm-fg hover:underline"
+            className="text-xs text-crm-soft underline-offset-2 hover:text-crm-fg hover:underline focus-visible:ring-2 focus-visible:ring-crm-primary focus-visible:outline-none"
           >
             Clear filter: {channel}
           </button>

@@ -210,6 +210,12 @@ export function ExecutiveSummary({
         );
       })}
 
+      {statuses.every((x) => only !== "all" && x.s !== only) ? (
+        <p className="py-6 text-center text-sm text-crm-soft">
+          No metrics are {ragLabel[only === "all" ? "none" : only].toLowerCase()} this period.
+        </p>
+      ) : null}
+
       {notes.length ? (
         <section
           aria-label="Commentary"
