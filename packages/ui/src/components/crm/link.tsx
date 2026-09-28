@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 const variants = {
   default:
-    "text-crm-primary hover:text-crm-fg decoration-crm-primary/40 hover:decoration-crm-fg/60",
+    "text-tag-purple-text hover:text-crm-fg decoration-tag-purple-text/40 hover:decoration-crm-fg/60",
   muted: "text-crm-soft hover:text-crm-fg decoration-crm-soft/30",
   inherit: "text-inherit decoration-current/40",
 } as const;
@@ -87,7 +87,7 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
   const content = children ?? prettyUrl(href);
 
   const cls = cn(
-    "inline-flex max-w-full items-baseline gap-0.5 font-crm underline-offset-[3px] outline-none transition-colors duration-150 ease-crm",
+    "inline-flex max-w-full items-baseline gap-1 font-crm underline-offset-[3px] outline-none transition-colors duration-150 ease-crm",
     "rounded-[3px] focus-visible:ring-2 focus-visible:ring-crm-ring/60",
     underline === "always" && "underline",
     underline === "hover" && "no-underline hover:underline focus-visible:underline",
@@ -112,7 +112,10 @@ export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link
     return (
       <span
         aria-disabled="true"
-        className={cn(cls, "cursor-not-allowed opacity-50 hover:no-underline")}
+        className={cn(
+          cls,
+          "cursor-not-allowed text-crm-subtle decoration-crm-subtle/40 hover:text-crm-subtle hover:no-underline",
+        )}
         style={style}
       >
         {inner}

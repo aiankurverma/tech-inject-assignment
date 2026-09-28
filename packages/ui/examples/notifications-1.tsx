@@ -41,15 +41,17 @@ const initial: Notification[] = [
 export default function Example() {
   const [items, setItems] = useState(initial);
   return (
-    <NotificationsPopover
-      defaultOpen
-      items={items}
-      onMarkAllRead={() => setItems((i) => i.map((n) => ({ ...n, unread: false })))}
-      trigger={
-        <IconButton label="Notifications" dot={items.some((n) => n.unread)}>
-          <Bell />
-        </IconButton>
-      }
-    />
+    <div className="flex h-[600px] w-[420px] max-w-full items-start justify-end">
+      <NotificationsPopover
+        defaultOpen
+        items={items}
+        onMarkAllRead={() => setItems((i) => i.map((n) => ({ ...n, unread: false })))}
+        trigger={
+          <IconButton label="Notifications" dot={items.some((n) => n.unread)}>
+            <Bell />
+          </IconButton>
+        }
+      />
+    </div>
   );
 }

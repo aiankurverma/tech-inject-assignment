@@ -237,7 +237,7 @@ export const MentionList = React.forwardRef<MentionListHandle, MentionListProps>
             id={listId}
             role="listbox"
             aria-label="Mention suggestions"
-            className="max-h-72 overflow-y-auto"
+            className="max-h-[26rem] overflow-y-auto"
           >
             {people.length && teams.length ? (
               <li

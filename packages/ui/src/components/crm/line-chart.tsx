@@ -245,7 +245,7 @@ export function LineChart({
                   y={y(t)}
                   dy="0.32em"
                   textAnchor="end"
-                  className="fill-crm-subtle text-[10px]"
+                  className="fill-crm-soft text-[12px]"
                 >
                   {formatValue(t)}
                 </text>
@@ -258,7 +258,7 @@ export function LineChart({
                   x={x(i)}
                   y={H - 6}
                   textAnchor="middle"
-                  className="fill-crm-subtle text-[10px]"
+                  className="fill-crm-soft text-[12px]"
                 >
                   {d.label}
                 </text>
@@ -267,7 +267,7 @@ export function LineChart({
             {visible.map((s) =>
               segments(s).map((seg, si) => (
                 <g key={`${s.key}-${si}`}>
-                  {area && seg.length > 1 ? (
+                  {area && !s.dashed && seg.length > 1 ? (
                     <path
                       d={`${pathFor(seg, curved)}L${seg[seg.length - 1]?.[0]},${y(Math.max(lo, 0))}L${seg[0]?.[0]},${y(Math.max(lo, 0))}Z`}
                       fill={`url(#${uid}-${s.key})`}

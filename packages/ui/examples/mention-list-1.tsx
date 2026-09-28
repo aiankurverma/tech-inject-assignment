@@ -46,33 +46,35 @@ export default function Example() {
   };
 
   return (
-    <div className="relative max-w-sm">
-      <input
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        onKeyDown={(e) => {
-          if (query !== null) ref.current?.handleKeyDown(e);
-        }}
-        role="combobox"
-        aria-expanded={query !== null}
-        aria-controls="deal-mentions"
-        aria-activedescendant={query !== null ? activeId : undefined}
-        aria-label="Note"
-        className="h-9 w-full rounded-crm border border-crm-input/60 bg-crm-raised px-3 text-sm text-crm-fg outline-none focus:border-crm-ring"
-      />
-      {query !== null ? (
-        <MentionList
-          ref={ref}
-          id="deal-mentions"
-          items={people}
-          query={query}
-          recentIds={["u5", "t1"]}
-          onSelect={insert}
-          onClose={() => setText((t) => `${t} `)}
-          onActiveChange={setActiveId}
-          className="absolute top-full left-0 z-10 mt-1"
+    <div className="h-[500px] w-96 max-w-full">
+      <div className="relative">
+        <input
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          onKeyDown={(e) => {
+            if (query !== null) ref.current?.handleKeyDown(e);
+          }}
+          role="combobox"
+          aria-expanded={query !== null}
+          aria-controls="deal-mentions"
+          aria-activedescendant={query !== null ? activeId : undefined}
+          aria-label="Note"
+          className="h-9 w-full rounded-crm border border-crm-input/60 bg-crm-raised px-3 text-sm text-crm-fg outline-none focus:border-crm-ring"
         />
-      ) : null}
+        {query !== null ? (
+          <MentionList
+            ref={ref}
+            id="deal-mentions"
+            items={people}
+            query={query}
+            recentIds={["u5", "t1"]}
+            onSelect={insert}
+            onClose={() => setText((t) => `${t} `)}
+            onActiveChange={setActiveId}
+            className="absolute top-full left-0 z-10 mt-1"
+          />
+        ) : null}
+      </div>
     </div>
   );
 }
