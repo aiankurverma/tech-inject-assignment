@@ -75,7 +75,9 @@ export function MergeDuplicates({
     () => [...records].sort((a, b) => a.createdAt.localeCompare(b.createdAt))[0]?.id ?? "",
     [records],
   );
-  const [masterId, setMasterId] = React.useState(oldest);
+  const [masterPick, setMasterId] = React.useState(oldest);
+  // Fall back to the oldest record if the chosen master is no longer in the set.
+  const masterId = records.some((r) => r.id === masterPick) ? masterPick : oldest;
   const [picks, setPicks] = React.useState(() => defaultMergePicks(records, fields));
   const [onlyConflicts, setOnlyConflicts] = React.useState(false);
 
