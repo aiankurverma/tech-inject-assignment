@@ -1,0 +1,72 @@
+{
+  "name": "Inbox Shell",
+  "slug": "shell-inbox",
+  "description": "Three-pane inbox: folders with live unread counts, searchable All/Unread/Starred thread list with j/k keyboard navigation, loading and empty states, and a reading pane that collapses to one pane on mobile.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/shell-inbox.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "shell-inbox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "folders",
+      "type": "InboxFolder[]",
+      "description": "{ id, label, icon? }",
+      "required": true
+    },
+    {
+      "name": "threads",
+      "type": "InboxThread[]",
+      "description": "{ id, folder, from, subject, preview, at, unread?, starred?, labels? }",
+      "required": true
+    },
+    {
+      "name": "renderThread",
+      "type": "(thread) => ReactNode",
+      "description": "Reading pane renderer",
+      "required": true
+    },
+    {
+      "name": "selectedId",
+      "type": "string | null",
+      "description": "Controlled selection",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(id: string | null) => void",
+      "description": "Selection change",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(thread) => void",
+      "description": "Opened thread, e.g. to mark as read",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for relative timestamps",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows skeleton rows",
+      "required": false
+    }
+  ]
+}

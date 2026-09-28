@@ -1,0 +1,73 @@
+{
+  "name": "Rep Dashboard",
+  "slug": "rep-dashboard",
+  "description": "A sales rep's home: quota ring with weighted forecast, gap and pipeline coverage, deals closing soon or at risk (stale / past close date), and a due-date-aware task list.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/rep-dashboard.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "rep-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "repName",
+      "type": "string",
+      "description": "Rep name",
+      "required": true
+    },
+    {
+      "name": "quota",
+      "type": "number",
+      "description": "Period quota",
+      "required": true
+    },
+    {
+      "name": "deals",
+      "type": "RepDeal[]",
+      "description": "{ id, name, account, amount, stage, probability, closeDate, status, lastActivity }",
+      "required": true
+    },
+    {
+      "name": "tasks",
+      "type": "RepTask[]",
+      "description": "{ id, title, due, done?, dealId? }",
+      "required": true
+    },
+    {
+      "name": "onTaskToggle",
+      "type": "(id, done) => void",
+      "description": "Task completion change",
+      "required": false
+    },
+    {
+      "name": "staleAfterDays",
+      "type": "number",
+      "description": "Days without activity before a deal is flagged",
+      "default": "14",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date",
+      "required": false
+    }
+  ]
+}

@@ -221,18 +221,18 @@ Full sections built from primitives and composites.
 
 ### App shells (10)
 
-- [x] `shell-sidebar` · [x] `shell-topnav` · [x] `shell-split` · [x] `shell-settings` ·
-      [x] `shell-mobile` · [x] `shell-auth` · [ ] `shell-onboarding` · [ ] `shell-admin` ·
-      [ ] `shell-inbox` · [ ] `shell-docs` — application layouts.
+- [ ] `shell-sidebar` · [ ] `shell-topnav` · [ ] `shell-split` · [ ] `shell-settings` ·
+      [ ] `shell-mobile` · [ ] `shell-auth` · [x] `shell-onboarding` · [x] `shell-admin` ·
+      [x] `shell-inbox` · [x] `shell-docs` — application layouts.
 
 ### Dashboards (15)
 
-- [ ] `sales-dashboard` — KPIs, pipeline, leaderboard.
-- [ ] `revenue-dashboard` — MRR/ARR, churn, expansion.
-- [ ] `marketing-dashboard` — Leads by source, campaigns.
-- [ ] `support-dashboard` — Tickets, SLA, CSAT.
-- [ ] `rep-dashboard` — My deals, tasks, quota.
-- [ ] `executive-summary` — Board-level metrics.
+- [x] `sales-dashboard` — KPIs, pipeline, leaderboard.
+- [x] `revenue-dashboard` — MRR/ARR, churn, expansion.
+- [x] `marketing-dashboard` — Leads by source, campaigns.
+- [x] `support-dashboard` — Tickets, SLA, CSAT.
+- [x] `rep-dashboard` — My deals, tasks, quota.
+- [x] `executive-summary` — Board-level metrics.
 - [ ] `forecast-view` — Commit/best case/pipeline.
 - [ ] `activity-dashboard` — Calls/emails/meetings.
 - [ ] `cohort-retention` — Retention grid.

@@ -1,0 +1,49 @@
+{
+  "name": "Support Dashboard",
+  "slug": "support-dashboard",
+  "description": "Support ops dashboard with live first-response SLA countdowns per priority, breach tracking, median first reply, CSAT distribution and a prioritized queue.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/support-dashboard.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "support-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tickets",
+      "type": "SupportTicket[]",
+      "description": "{ id, subject, customer, priority, status, assignee?, createdAt, firstResponseAt?, solvedAt?, csat? }",
+      "required": true
+    },
+    {
+      "name": "sla",
+      "type": "Record<TicketPriority, number>",
+      "description": "First-response targets in minutes",
+      "default": "{ urgent: 30, high: 120, normal: 480, low: 1440 }",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Fixed time; otherwise updates every 30s",
+      "required": false
+    },
+    {
+      "name": "onTicketClick",
+      "type": "(id: string) => void",
+      "description": "Queue row click",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "name": "Marketing Dashboard",
+  "slug": "marketing-dashboard",
+  "description": "Marketing funnel dashboard: spend, leads, lead-to-SQL and blended CAC/ROAS, leads-by-source breakdown that filters everything, and a sortable campaign ROI table.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/marketing-dashboard.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "marketing-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "campaigns",
+      "type": "MarketingCampaign[]",
+      "description": "{ id, name, channel, status, spend, leads, sqls, customers, revenue }",
+      "required": true
+    },
+    {
+      "name": "channelColors",
+      "type": "Record<string, TagColor>",
+      "description": "Tag color per channel",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    }
+  ]
+}

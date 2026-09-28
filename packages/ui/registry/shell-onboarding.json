@@ -1,0 +1,73 @@
+{
+  "name": "Onboarding Shell",
+  "slug": "shell-onboarding",
+  "description": "Full-page setup flow with a vertical step rail, per-step validation that blocks Continue, optional skippable steps, time-remaining estimate, async finish with loading and a completion state.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/shell-onboarding.tsx",
+    "components/crm/button.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/stepper.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "shell-onboarding-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "steps",
+      "type": "OnboardingStep[]",
+      "description": "{ id, title, description?, optional?, content, validate?() => string | null, minutes? }",
+      "required": true
+    },
+    {
+      "name": "current",
+      "type": "number",
+      "description": "Controlled active step index",
+      "required": false
+    },
+    {
+      "name": "defaultCurrent",
+      "type": "number",
+      "description": "Initial step when uncontrolled",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "onStepChange",
+      "type": "(index: number) => void",
+      "description": "Called when the step changes",
+      "required": false
+    },
+    {
+      "name": "onComplete",
+      "type": "() => void | Promise<void>",
+      "description": "Runs after the last step validates; rejections show an error",
+      "required": false
+    },
+    {
+      "name": "onExit",
+      "type": "() => void",
+      "description": "Shows a close button to leave setup",
+      "required": false
+    },
+    {
+      "name": "brand",
+      "type": "ReactNode",
+      "description": "Logo / product name",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Eyebrow above progress",
+      "default": "\"Set up your workspace\"",
+      "required": false
+    }
+  ]
+}
