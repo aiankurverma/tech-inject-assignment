@@ -149,6 +149,14 @@ export function CodeBlock({
   const lang = active?.language ?? language;
   const lines = source.split("\n");
   const marks = React.useMemo(() => parseHighlights(highlightLines), [highlightLines]);
+  // Always mask every match, even if the caller forgot the `g` flag.
+  const redactAll = React.useMemo(
+    () =>
+      redact
+        ? new RegExp(redact.source, redact.flags.includes("g") ? redact.flags : redact.flags + "g")
+        : null,
+    [redact],
+  );
   const overflow = !!maxLines && lines.length > maxLines;
   const collapsed = overflow && !expanded;
   const visible = collapsed ? lines.slice(0, maxLines) : lines;
@@ -272,9 +280,9 @@ export function CodeBlock({
               {visible.map((line, i) => {
                 const n = i + 1;
                 const hl = marks.has(n);
-                const shown = redact
+                const shown = redactAll
                   ? line.replace(
-                      redact,
+                      redactAll,
                       (s) => s.slice(0, 4) + "•".repeat(Math.max(4, s.length - 4)),
                     )
                   : line;

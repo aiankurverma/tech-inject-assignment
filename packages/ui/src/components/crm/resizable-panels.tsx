@@ -73,6 +73,7 @@ export function ResizablePanels({
   const restore = React.useRef<Record<string, number>>({});
   const [dragging, setDragging] = React.useState<number | null>(null);
   const horizontal = direction === "horizontal";
+  const uid = React.useId();
 
   const commit = React.useCallback(
     (next: number[]) => {
@@ -199,7 +200,7 @@ export function ResizablePanels({
         return (
           <React.Fragment key={p.id}>
             <div
-              id={`panel-${p.id}`}
+              id={`${uid}-panel-${p.id}`}
               data-collapsed={collapsed || undefined}
               style={{ flexBasis: `${sizes[i] ?? 0}%` }}
               className={cn(
@@ -214,7 +215,7 @@ export function ResizablePanels({
                 role="separator"
                 tabIndex={0}
                 aria-orientation={horizontal ? "vertical" : "horizontal"}
-                aria-controls={`panel-${p.id}`}
+                aria-controls={`${uid}-panel-${p.id}`}
                 aria-label={p.label ?? `Resize ${p.id}`}
                 aria-valuenow={Math.round(sizes[i] ?? 0)}
                 aria-valuemin={Math.round(bounds(i).min)}

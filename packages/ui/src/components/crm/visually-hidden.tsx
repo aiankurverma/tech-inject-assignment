@@ -79,16 +79,26 @@ const AnnouncerContext = React.createContext<
  */
 export function AnnouncerProvider({ children }: { children: React.ReactNode }) {
   const [msgs, setMsgs] = React.useState<Record<Politeness, string>>({ polite: "", assertive: "" });
-  const timer = React.useRef<number | undefined>(undefined);
+  const timers = React.useRef<Partial<Record<Politeness, number>>>({});
 
   const announce = React.useCallback((message: string, politeness: Politeness = "polite") => {
     // Clear first so repeating the same message is announced again.
     setMsgs((m) => ({ ...m, [politeness]: "" }));
-    window.clearTimeout(timer.current);
-    timer.current = window.setTimeout(() => setMsgs((m) => ({ ...m, [politeness]: message })), 60);
+    window.clearTimeout(timers.current[politeness]);
+    timers.current[politeness] = window.setTimeout(
+      () => setMsgs((m) => ({ ...m, [politeness]: message })),
+      60,
+    );
   }, []);
 
-  React.useEffect(() => () => window.clearTimeout(timer.current), []);
+  React.useEffect(
+    () => () => {
+      const t = timers.current;
+      window.clearTimeout(t.polite);
+      window.clearTimeout(t.assertive);
+    },
+    [],
+  );
 
   return (
     <AnnouncerContext.Provider value={announce}>
