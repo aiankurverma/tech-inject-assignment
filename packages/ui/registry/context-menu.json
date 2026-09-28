@@ -1,0 +1,51 @@
+{
+  "name": "Context Menu",
+  "slug": "context-menu",
+  "description": "Right-click menu for rows, cards and canvases that opens at the pointer, on touch long-press or via Shift+F10/Menu key; per-target item lists, submenus, checkbox items, labels, shortcuts and destructive items on top of the CRM dropdown menu.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "lucide-react"],
+  "files": ["components/crm/context-menu.tsx", "components/crm/dropdown-menu.tsx"],
+  "examples": [
+    {
+      "title": "Deal rows",
+      "file": "context-menu-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "ContextMenuEntry[] | (target: HTMLElement) => ContextMenuEntry[]",
+      "description": "Menu entries, or a builder from the clicked element",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Region that responds to right-click",
+      "required": true
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Use the native browser menu",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "longPressMs",
+      "type": "number",
+      "description": "Touch long-press delay",
+      "default": "500",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open) => void",
+      "description": "Open state callback",
+      "required": false
+    }
+  ],
+  "usage": "Wrap a list or table once and resolve the row from target.closest('[data-id]') in the items builder. Mirror actions in a visible row menu for discoverability."
+}

@@ -1,0 +1,69 @@
+{
+  "name": "Mobile Nav",
+  "slug": "mobile-nav",
+  "description": "Phone bottom tab bar with badges/dots, optional centre floating action, overflow More drawer, safe-area padding and arrow-key navigation.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+  "files": ["components/crm/mobile-nav.tsx"],
+  "examples": [
+    {
+      "title": "Bottom tab bar with More drawer",
+      "file": "mobile-nav-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "MobileNavItem[]",
+      "description": "{ id, label, icon, badge?, dot?, disabled? }",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled active id",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "Initial active id",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(id) => void",
+      "description": "Fires on navigation",
+      "required": false
+    },
+    {
+      "name": "maxTabs",
+      "type": "number",
+      "description": "Tabs in the bar incl. More",
+      "default": "5",
+      "required": false
+    },
+    {
+      "name": "primaryAction",
+      "type": "{ label, icon?, onClick }",
+      "description": "Centre FAB",
+      "required": false
+    },
+    {
+      "name": "drawerFooter",
+      "type": "ReactNode",
+      "description": "Footer inside More drawer",
+      "required": false
+    },
+    {
+      "name": "fixed",
+      "type": "boolean",
+      "description": "Pin to viewport bottom",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": "Render once at the app root for small screens; it hides itself from md up. Keep maxTabs at 5 or fewer."
+}

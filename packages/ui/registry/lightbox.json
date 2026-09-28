@@ -1,0 +1,70 @@
+{
+  "name": "Lightbox",
+  "slug": "lightbox",
+  "description": "Full-screen attachment viewer: image zoom (buttons, keys, ctrl+wheel, double-click), pan, rotate, PDF embed, download card for other files, thumbnail strip, arrow-key paging, preloading and load-error state.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dialog", "lucide-react"],
+  "files": ["components/crm/lightbox.tsx"],
+  "examples": [
+    {
+      "title": "Record attachments",
+      "file": "lightbox-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "files",
+      "type": "LightboxFile[]",
+      "description": "{ id, name, url, kind, thumbUrl?, size?, uploadedBy?, uploadedAt? }",
+      "required": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Open state",
+      "required": true
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open) => void",
+      "description": "Open state change",
+      "required": true
+    },
+    {
+      "name": "index",
+      "type": "number",
+      "description": "Controlled file index",
+      "required": false
+    },
+    {
+      "name": "defaultIndex",
+      "type": "number",
+      "description": "Initial index",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "onIndexChange",
+      "type": "(i) => void",
+      "description": "Fires on paging",
+      "required": false
+    },
+    {
+      "name": "loop",
+      "type": "boolean",
+      "description": "Wrap around",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "allowDownload",
+      "type": "boolean",
+      "description": "Show download actions",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": "Open from an attachment grid with the clicked index. Use kind 'other' for spreadsheets and archives."
+}

@@ -105,14 +105,14 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `breadcrumbs` — **B1** Trail with collapsing ellipsis.
 - [x] `pagination` — **B1** Numbered/compact pager + summary.
 - [x] `stepper` — **B1** Horizontal/vertical steps.
-- [ ] `top-nav` — Horizontal app bar.
-- [ ] `mobile-nav` — Bottom tab bar / drawer.
+- [x] `top-nav` — Horizontal app bar.
+- [x] `mobile-nav` — Bottom tab bar / drawer.
 - [x] `workspace-switcher` — Org/team dropdown.
 - [x] `user-menu` — Avatar menu with account links.
 - [x] `vertical-tabs` — Settings-style side tabs.
-- [ ] `anchor-nav` — Scroll-spy section links.
+- [x] `anchor-nav` — Scroll-spy section links.
 - [x] `segmented-control` — Pill view switcher.
-- [ ] `tree-nav` — Nested folders/objects.
+- [x] `tree-nav` — Nested folders/objects.
 
 ### Overlays (12)
 
@@ -122,12 +122,12 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `notifications` — Notification popover.
 - [x] `dropdown-menu` — **B1** Items, checkbox items, shortcuts.
 - [x] `popover` — Generic styled popover.
-- [ ] `context-menu` — Right-click menu.
+- [x] `context-menu` — Right-click menu.
 - [x] `confirm-dialog` — Destructive confirmation.
 - [x] `hover-card` — Record preview on hover.
 - [x] `drawer` — Bottom sheet for mobile.
-- [ ] `lightbox` — Image/file viewer.
-- [ ] `spotlight-tour` — Onboarding coachmarks.
+- [x] `lightbox` — Image/file viewer.
+- [x] `spotlight-tour` — Onboarding coachmarks.
 
 ### Forms (18)
 
@@ -139,12 +139,12 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `sort-menu` — Multi-column sort.
 - [x] `column-picker` — Show/hide/reorder columns.
 - [x] `inline-edit` — Click-to-edit field.
-- [ ] `address-form` — Structured address.
+- [x] `address-form` — Structured address.
 - [x] `form-section` — Titled group with description.
 - [x] `settings-row` — Label/description/control row.
 - [x] `email-composer` — To/CC/subject/body.
-- [ ] `rich-text-toolbar` — Formatting toolbar.
-- [ ] `signature-pad` — Draw signature.
+- [x] `rich-text-toolbar` — Formatting toolbar.
+- [x] `signature-pad` — Draw signature.
 - [ ] `custom-field-editor` — Define field type/options.
 - [ ] `import-mapper` — CSV column → field mapping.
 - [ ] `search-with-filters` — Search + quick filters.

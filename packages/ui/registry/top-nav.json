@@ -1,0 +1,73 @@
+{
+  "name": "Top Nav",
+  "slug": "top-nav",
+  "description": "Horizontal app bar with brand, measured overflow into a More menu (active item always visible), count badges, roving arrow-key focus, search/actions slots and a mobile disclosure panel.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/top-nav.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/dropdown-menu.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "CRM app bar",
+      "file": "top-nav-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "TopNavItem[]",
+      "description": "{ id, label, icon?, count?, disabled?, href? }",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled active id",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "Initial active id (uncontrolled)",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(id, item) => void",
+      "description": "Fires on navigation",
+      "required": false
+    },
+    {
+      "name": "brand",
+      "type": "ReactNode",
+      "description": "Logo/product block",
+      "required": false
+    },
+    {
+      "name": "search",
+      "type": "ReactNode",
+      "description": "Search slot (hidden below lg, shown in mobile panel)",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Right-side actions",
+      "required": false
+    },
+    {
+      "name": "sticky",
+      "type": "boolean",
+      "description": "Stick to top",
+      "default": "true",
+      "required": false
+    }
+  ],
+  "usage": "Use as the single primary nav on top-bar layouts. Pass the current route id as value; overflowing items collapse into More automatically."
+}
