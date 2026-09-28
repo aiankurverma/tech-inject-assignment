@@ -4,6 +4,8 @@ import { z } from "zod";
 import { FeatureRequest } from "./model";
 import type { IFeatureRequest } from "./model";
 import { normalizeTerm, publicInterest } from "./normalize";
+import { clusterTerms } from "./cluster";
+import { demandScore, SUGGEST_BUILD_THRESHOLD } from "./demand";
 import { buildBundle, type AiProvider, type ProviderConfig } from "./builder";
 
 // ---------------------------------------------------------------------------
@@ -82,6 +84,51 @@ function toRow(d: {
     buildStatus: d.buildStatus ?? "idle",
     buildError: d.buildError ?? null,
     draftSlug: d.draftSlug ?? null,
+  };
+}
+
+type Row = ReturnType<typeof toRow>;
+
+/** Insight cluster: summed real counts, canonical = most-searched member. */
+export function buildInsights(rows: Row[], now: Date = new Date()) {
+  const byTerm = new Map(rows.map((r) => [r.term, r]));
+  const clusters = clusterTerms(rows.map((r) => r.term)).map((terms) => {
+    const members = terms
+      .map((t) => byTerm.get(t))
+      .filter((r): r is Row => r != null)
+      .sort((a, b) => b.searchCount - a.searchCount || a.term.localeCompare(b.term));
+    const canonical = members[0];
+    if (!canonical) return null;
+    const totalCount = members.reduce((n, r) => n + r.searchCount, 0);
+    const last = Math.max(...members.map((r) => Date.parse(r.lastSearchedAt)));
+    const score = demandScore({ searchCount: totalCount, lastSearchedAt: new Date(last) }, now);
+    const anyBuilding = members.some((r) => r.status === "building");
+    const suggestion: "suggest-build" | "building" | "watch" = anyBuilding
+      ? "building"
+      : canonical.status === "new" && score >= SUGGEST_BUILD_THRESHOLD
+        ? "suggest-build"
+        : "watch";
+    return {
+      canonicalId: canonical.id,
+      canonicalTerm: canonical.term,
+      status: canonical.status,
+      totalCount,
+      lastSearchedAt: new Date(last).toISOString(),
+      demandScore: score,
+      suggestion,
+      members: members.map((r) => ({
+        id: r.id,
+        term: r.term,
+        searchCount: r.searchCount,
+        status: r.status,
+      })),
+    };
+  });
+  return {
+    threshold: SUGGEST_BUILD_THRESHOLD,
+    clusters: clusters
+      .filter((c) => c != null)
+      .sort((a, b) => b.demandScore - a.demandScore || b.totalCount - a.totalCount),
   };
 }
 
@@ -247,6 +294,12 @@ export function featureRadarRoutes(opts: FeatureRadarOptions): {
   adminRouter.get("/", async (_req, res) => {
     const docs = await FeatureRequest.find().sort({ searchCount: -1 }).lean<IFeatureRequest[]>();
     res.json(docs.map(toRow));
+  });
+
+  // GET /insights: similar terms clustered and ranked by demand (real counts only)
+  adminRouter.get("/insights", async (_req, res) => {
+    const docs = await FeatureRequest.find().sort({ searchCount: -1 }).lean<IFeatureRequest[]>();
+    res.json(buildInsights(docs.map(toRow)));
   });
 
   // PATCH /:id — update status (and optionally eta when building)
