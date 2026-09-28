@@ -79,8 +79,8 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(function 
   if (!label) return control;
   return (
     <div className={cn("flex items-start gap-2.5 font-crm", className)}>
-      {control}
-      <div className="flex flex-col gap-1">
+      <span className="flex h-5 w-9 shrink-0 items-center">{control}</span>
+      <div className="flex min-w-0 flex-col gap-1">
         <span
           id={labelId}
           onClick={toggle}

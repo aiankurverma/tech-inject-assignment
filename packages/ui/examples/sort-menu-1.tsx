@@ -7,16 +7,19 @@ export default function Example() {
     { field: "close", direction: "asc" },
   ]);
   return (
-    <SortMenu
-      value={rules}
-      onChange={setRules}
-      fields={[
-        { value: "name", label: "Deal name" },
-        { value: "amount", label: "Amount" },
-        { value: "close", label: "Close date" },
-        { value: "owner", label: "Owner" },
-        { value: "updated", label: "Last activity" },
-      ]}
-    />
+    <div className="flex h-[320px] w-[460px] items-start">
+      <SortMenu
+        defaultOpen
+        value={rules}
+        onChange={setRules}
+        fields={[
+          { value: "name", label: "Deal name" },
+          { value: "amount", label: "Amount" },
+          { value: "close", label: "Close date" },
+          { value: "owner", label: "Owner" },
+          { value: "updated", label: "Last activity" },
+        ]}
+      />
+    </div>
   );
 }

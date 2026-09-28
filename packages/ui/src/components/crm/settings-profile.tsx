@@ -400,7 +400,12 @@ export function SettingsProfile({
         </FormField>
       </section>
 
-      <div className="sticky bottom-0 flex items-center gap-3 rounded-crm border border-crm-border bg-crm-raised p-3 shadow-crm-raised">
+      <div
+        className={cn(
+          "flex items-center gap-3 rounded-crm border border-crm-border bg-crm-raised p-3 shadow-crm-raised",
+          dirty && "sticky bottom-0 z-10",
+        )}
+      >
         <p
           aria-live="polite"
           className={cn(

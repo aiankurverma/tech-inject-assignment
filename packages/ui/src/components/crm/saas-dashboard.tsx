@@ -256,7 +256,7 @@ export function SaasDashboard({
               </select>
             }
           />
-          <CardBody className="max-h-72 overflow-y-auto">
+          <CardBody className="max-h-[26rem] overflow-y-auto pb-6 [mask-image:linear-gradient(to_bottom,black_calc(100%-28px),transparent)] [scrollbar-color:var(--crm-border,#333)_transparent] [scrollbar-width:thin]">
             {ledger.length === 0 ? (
               <p role="status" className="py-6 text-center text-xs text-crm-soft">
                 No {type === "all" ? "" : typeMeta[type].label.toLowerCase()} movements this period.
