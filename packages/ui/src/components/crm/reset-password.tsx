@@ -226,7 +226,13 @@ export function ResetPassword({
           label="Confirm new password"
           htmlFor={`${id}-confirm`}
           required
-          error={mismatch || (submitted && !confirm) ? "Passwords don't match." : undefined}
+          error={
+            mismatch
+              ? "Passwords don't match."
+              : submitted && !confirm
+                ? "Confirm your new password."
+                : undefined
+          }
         >
           <PasswordInput
             id={`${id}-confirm`}

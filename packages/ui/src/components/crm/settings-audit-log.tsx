@@ -75,7 +75,7 @@ const dtf = new Intl.DateTimeFormat(undefined, {
   minute: "2-digit",
 });
 
-const csvCell = (s: string) => (/[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
+const csvCell = (s: string) => (/[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
 
 /** Security/audit trail: search, category/actor/severity/date filters, expandable before/after diffs, CSV export, pagination. */
 export function SettingsAuditLog({

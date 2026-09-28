@@ -97,6 +97,16 @@ export function TwoFactor({
     }
   }, [onSendSms, smsCooldown]);
 
+  // Open straight on SMS: send the first code once on mount.
+  const autoSent = React.useRef(false);
+  React.useEffect(() => {
+    if (method === "sms" && !autoSent.current) {
+      autoSent.current = true;
+      void sendSms();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const switchTo = (m: TwoFactorMethod) => {
     setMethod(m);
     setCode("");

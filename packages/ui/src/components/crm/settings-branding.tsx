@@ -102,6 +102,8 @@ export function SettingsBranding({
       const url = onUploadLogo ? await onUploadLogo(file) : URL.createObjectURL(file);
       patch({ logoUrl: url });
       setStatus("Logo updated.");
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "Logo upload failed.");
     } finally {
       setUploading(false);
     }
@@ -116,6 +118,8 @@ export function SettingsBranding({
       setSaved(clean);
       setV(clean);
       setStatus("Branding saved.");
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "Could not save branding.");
     } finally {
       setSaving(false);
     }

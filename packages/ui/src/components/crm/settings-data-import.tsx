@@ -82,7 +82,7 @@ export function parseCsv(text: string): string[][] {
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
 const toCsv = (rows: string[][]) =>
   rows
-    .map((r) => r.map((c) => (/[",\n]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c)).join(","))
+    .map((r) => r.map((c) => (/[",\r\n]/.test(c) ? `"${c.replace(/"/g, '""')}"` : c)).join(","))
     .join("\n");
 
 function validate(value: string, field: ImportField): string | null {

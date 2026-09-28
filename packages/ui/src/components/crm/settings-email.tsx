@@ -114,6 +114,7 @@ export function SettingsEmail({
   const [saving, setSaving] = React.useState(false);
   const [copied, setCopied] = React.useState<string | null>(null);
   const [status, setStatus] = React.useState("");
+  const [saveError, setSaveError] = React.useState<string | null>(null);
 
   React.useEffect(() => setRecords(dnsRecords), [dnsRecords]);
 
@@ -155,6 +156,8 @@ export function SettingsEmail({
       setRecords(fresh);
       const ok = fresh.filter((r) => r.status === "verified").length;
       setStatus(`DNS checked: ${ok} of ${fresh.length} records verified.`);
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "DNS check failed. Try again in a minute.");
     } finally {
       setChecking(false);
     }
@@ -167,6 +170,9 @@ export function SettingsEmail({
       await onSave(v);
       setSaved(v);
       setStatus("Email settings saved.");
+      setSaveError(null);
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "Could not save email settings.");
     } finally {
       setSaving(false);
     }
@@ -531,7 +537,13 @@ export function SettingsEmail({
         )}
         aria-hidden={!dirty}
       >
-        <span className="text-xs text-crm-soft">You have unsaved changes</span>
+        <span className="text-xs text-crm-soft" role={saveError ? "alert" : undefined}>
+          {saveError ? (
+            <span className="text-crm-danger">{saveError}</span>
+          ) : (
+            "You have unsaved changes"
+          )}
+        </span>
         <span className="flex gap-2">
           <Button variant="ghost" tabIndex={dirty ? 0 : -1} onClick={() => setV(saved)}>
             Discard
