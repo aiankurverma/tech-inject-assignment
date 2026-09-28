@@ -5,7 +5,7 @@ import { existsSync, mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { Readable, Writable } from "node:stream";
-import { assertPublicUrl, type Resolver } from "./guard";
+import { assertPublicUrl, isBlockedIp, type Resolver } from "./guard";
 import { EXTRACT_SCRIPT, type InventoryItem } from "./extract";
 import type { RawStyles } from "./tokens";
 
@@ -129,6 +129,10 @@ export async function capturePage(
       "--mute-audio",
       "--hide-scrollbars",
       "--window-size=1280,800",
+      // No WebRTC/UDP side channel around the request interceptor.
+      "--force-webrtc-ip-handling-policy=disable_non_proxied_udp",
+      "--webrtc-ip-handling-policy=disable_non_proxied_udp",
+      "--no-proxy-server",
     ],
     { stdio: ["ignore", "ignore", "ignore", "pipe", "pipe"] },
   );
@@ -207,6 +211,24 @@ async function run(
         aborted = "Page is larger than the capture size limit.";
         void s("Page.stopLoading").catch(() => undefined);
       }
+    } else if (m.method === "Network.responseReceived") {
+      // DNS rebinding: Chrome resolves again after our check; fail if it actually hit a private IP.
+      const ip = (p.response as { remoteIPAddress?: string } | undefined)?.remoteIPAddress;
+      if (ip && isBlockedIp(ip.replace(/^\[|\]$/g, "")) && !aborted) {
+        aborted = "The page reached a private or reserved address.";
+        void s("Page.stopLoading").catch(() => undefined);
+      }
+    } else if (m.method === "Network.webSocketCreated") {
+      // WebSockets are not paused by Fetch; any socket to a non-vetted origin fails the capture.
+      try {
+        const u = new URL(p.url as string);
+        const origin = `${u.protocol === "wss:" ? "https:" : "http:"}//${u.host}`;
+        void assertPublicUrl(`${origin}/`, resolve).then((r) => {
+          if (!r.ok && !aborted) aborted = "The page opened a socket to a blocked host.";
+        });
+      } catch {
+        aborted ??= "The page opened an invalid socket.";
+      }
     } else if (m.method === "Page.loadEventFired") {
       resolveLoad();
     }
@@ -214,6 +236,8 @@ async function run(
 
   await s("Fetch.enable", { patterns: [{ urlPattern: "*" }] });
   await s("Network.enable");
+  // Service workers could fetch outside the page's intercepted session.
+  await s("Network.setBypassServiceWorker", { bypass: true }).catch(() => undefined);
   await s("Page.enable");
   await s("Emulation.setDeviceMetricsOverride", {
     width: 1280,
@@ -245,6 +269,7 @@ async function run(
     quality: 60,
     clip: { x: 0, y: 0, width: 1280, height: 800, scale: 1 },
   }).catch(() => ({}))) as { data?: string };
+  if (aborted) throw new Error(aborted);
   const hist = (await s("Page.getNavigationHistory")) as {
     currentIndex: number;
     entries: { url: string }[];

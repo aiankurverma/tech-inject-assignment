@@ -43,6 +43,7 @@ function parse<T extends z.ZodTypeAny>(schema: T, value: unknown): z.infer<T> {
 
 /** At most this many captures may be queued or running at once (Chrome is heavy). */
 const MAX_IN_FLIGHT = 3;
+const STALE_MS = 10 * 60_000;
 
 export function captureRoutes(auth: Auth, deps: CaptureDeps) {
   const r = Router();
@@ -52,7 +53,11 @@ export function captureRoutes(auth: Auth, deps: CaptureDeps) {
     const { url } = parse(createBody, req.body);
     const guard = await assertPublicUrl(url);
     if (!guard.ok) throw new HttpError(400, "url_blocked", guard.reason);
-    const inFlight = await CaptureModel.countDocuments({ status: { $in: ["queued", "running"] } });
+    // Ignore jobs stuck by a crash/restart so they cannot block new captures forever.
+    const inFlight = await CaptureModel.countDocuments({
+      status: { $in: ["queued", "running"] },
+      updatedAt: { $gt: new Date(Date.now() - STALE_MS) },
+    });
     if (inFlight >= MAX_IN_FLIGHT)
       throw new HttpError(429, "busy", "Too many captures running. Try again in a minute.");
     const doc = await CaptureModel.create({ url: guard.url.href });
