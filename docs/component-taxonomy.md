@@ -7,11 +7,11 @@ Legend: `[x]` shipped · `[ ]` planned. Batch 1 items are marked **B1**.
 
 | Tier               | Target  | Shipped |
 | ------------------ | ------- | ------- |
-| Primitives         | 60      | 18      |
-| Composites         | 100     | 28      |
+| Primitives         | 60      | 20      |
+| Composites         | 100     | 36      |
 | Blocks             | 100     | 0       |
 | Industry templates | 40      | 0       |
-| **Total**          | **300** | **46**  |
+| **Total**          | **300** | **56**  |
 
 Rules for new entries: only `ALLOWED_DEPENDENCIES` (packages/core/src/constants.ts), `@/` imports,
 reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.ts`.
@@ -23,9 +23,9 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 ### Actions (8)
 
 - [x] `button` — Pill button, variants, sizes, loading; IconButton.
-- [ ] `button-group` — Joined buttons / split button.
+- [x] `button-group` — Joined buttons / split button.
 - [ ] `toggle` — Pressed/unpressed single button.
-- [ ] `toggle-group` — Exclusive or multi toggle row (view switcher).
+- [x] `toggle-group` — Exclusive or multi toggle row (view switcher).
 - [ ] `link` — Styled inline/external link with icon.
 - [ ] `copy-button` — Copies text, shows confirmation.
 - [ ] `fab` — Floating action button.
@@ -107,11 +107,11 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `stepper` — **B1** Horizontal/vertical steps.
 - [ ] `top-nav` — Horizontal app bar.
 - [ ] `mobile-nav` — Bottom tab bar / drawer.
-- [ ] `workspace-switcher` — Org/team dropdown.
-- [ ] `user-menu` — Avatar menu with account links.
-- [ ] `vertical-tabs` — Settings-style side tabs.
+- [x] `workspace-switcher` — Org/team dropdown.
+- [x] `user-menu` — Avatar menu with account links.
+- [x] `vertical-tabs` — Settings-style side tabs.
 - [ ] `anchor-nav` — Scroll-spy section links.
-- [ ] `segmented-control` — Pill view switcher.
+- [x] `segmented-control` — Pill view switcher.
 - [ ] `tree-nav` — Nested folders/objects.
 
 ### Overlays (12)
@@ -121,11 +121,11 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `command-palette` — ⌘K search and actions.
 - [x] `notifications` — Notification popover.
 - [x] `dropdown-menu` — **B1** Items, checkbox items, shortcuts.
-- [ ] `popover` — Generic styled popover.
+- [x] `popover` — Generic styled popover.
 - [ ] `context-menu` — Right-click menu.
-- [ ] `confirm-dialog` — Destructive confirmation.
-- [ ] `hover-card` — Record preview on hover.
-- [ ] `drawer` — Bottom sheet for mobile.
+- [x] `confirm-dialog` — Destructive confirmation.
+- [x] `hover-card` — Record preview on hover.
+- [x] `drawer` — Bottom sheet for mobile.
 - [ ] `lightbox` — Image/file viewer.
 - [ ] `spotlight-tour` — Onboarding coachmarks.
 

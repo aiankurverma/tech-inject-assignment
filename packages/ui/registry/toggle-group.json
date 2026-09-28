@@ -1,0 +1,73 @@
+{
+  "name": "Toggle Group",
+  "slug": "toggle-group",
+  "description": "Row of toggle buttons: single mode acts as a radio group (view switcher), multiple mode as pressed toggles. Roving arrow-key focus.",
+  "category": "Primitives",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/toggle-group.tsx"],
+  "examples": [
+    {
+      "title": "View switcher and formatting",
+      "file": "toggle-group-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "type",
+      "type": "\"single\" | \"multiple\"",
+      "description": "Selection mode",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "string | string[]",
+      "description": "Controlled or initial selection",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value) => void",
+      "description": "Called with the new selection",
+      "required": false
+    },
+    {
+      "name": "allowEmpty",
+      "type": "boolean",
+      "description": "Single mode: clicking the active item clears it",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "\"sm\" | \"md\"",
+      "description": "Item height (default md)",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name for the group",
+      "required": false
+    },
+    {
+      "name": "value (Item)",
+      "type": "string",
+      "description": "Item value",
+      "required": true
+    },
+    {
+      "name": "icon (Item)",
+      "type": "ReactNode",
+      "description": "Leading icon",
+      "required": false
+    },
+    {
+      "name": "label (Item)",
+      "type": "string",
+      "description": "Accessible name, required for icon-only items",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Vertical Tabs",
+  "slug": "vertical-tabs",
+  "description": "Settings-style side tabs with icons, group labels and badges. Radix tabs in vertical orientation; stacks on small screens.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-tabs", "lucide-react"],
+  "files": ["components/crm/vertical-tabs.tsx"],
+  "examples": [
+    {
+      "title": "Settings",
+      "file": "vertical-tabs-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "defaultValue / value",
+      "type": "string",
+      "description": "Active tab",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(value: string) => void",
+      "description": "Called when the tab changes",
+      "required": false
+    },
+    {
+      "name": "stackOnMobile",
+      "type": "boolean",
+      "description": "Put the list above the panel below sm (default true)",
+      "required": false
+    },
+    {
+      "name": "icon (Trigger)",
+      "type": "ReactNode",
+      "description": "Leading icon",
+      "required": false
+    },
+    {
+      "name": "badge (Trigger)",
+      "type": "ReactNode",
+      "description": "Trailing count or badge",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

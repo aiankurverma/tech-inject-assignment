@@ -1,0 +1,55 @@
+{
+  "name": "Workspace Switcher",
+  "slug": "workspace-switcher",
+  "description": "Org/team dropdown with logos or letter tiles, plan line, current check, extra items and Create workspace.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "lucide-react"],
+  "files": ["components/crm/workspace-switcher.tsx", "components/crm/dropdown-menu.tsx"],
+  "examples": [
+    {
+      "title": "Sidebar switcher",
+      "file": "workspace-switcher-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "workspaces",
+      "type": "{ id, name, logo?, meta? }[]",
+      "description": "Available workspaces",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue",
+      "type": "string",
+      "description": "Current workspace id",
+      "required": false
+    },
+    {
+      "name": "onValueChange",
+      "type": "(id: string) => void",
+      "description": "Called on switch",
+      "required": false
+    },
+    {
+      "name": "onCreate",
+      "type": "() => void",
+      "description": "Shows Create workspace when set",
+      "required": false
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Extra menu items",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "description": "Logo-only trigger for collapsed sidebars",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
