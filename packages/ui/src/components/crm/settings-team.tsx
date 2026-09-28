@@ -357,6 +357,20 @@ export function SettingsTeam({
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    <span className="flex w-24 shrink-0 justify-end">
+                      {m.status === "invited" ? (
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          onClick={() => {
+                            onResendInvite?.(m);
+                            setNotice(`Invite re-sent to ${m.email}.`);
+                          }}
+                        >
+                          <RotateCw /> Resend
+                        </Button>
+                      ) : null}
+                    </span>
                     <Select
                       aria-label={`Role for ${m.name}`}
                       className="w-32"
@@ -365,18 +379,6 @@ export function SettingsTeam({
                       onValueChange={(v) => changeRole(m, v as TeamRole)}
                       options={ROLE_OPTIONS}
                     />
-                    {m.status === "invited" ? (
-                      <Button
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => {
-                          onResendInvite?.(m);
-                          setNotice(`Invite re-sent to ${m.email}.`);
-                        }}
-                      >
-                        <RotateCw /> Resend
-                      </Button>
-                    ) : null}
                     {confirmId === m.id ? (
                       <span className="flex items-center gap-1">
                         <Button size="sm" variant="danger" onClick={() => remove(m)}>

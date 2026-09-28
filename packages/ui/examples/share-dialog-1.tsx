@@ -13,7 +13,7 @@ const nameFromEmail = (email: string) =>
   (email.split("@")[0] ?? email).replace(/[._]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
 export default function Example() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const [members, setMembers] = React.useState(initial);
   const [access, setAccess] = React.useState<LinkAccess>("workspace");
   return (

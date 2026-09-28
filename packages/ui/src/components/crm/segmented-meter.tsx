@@ -39,7 +39,7 @@ export function SegmentedMeter({
   const clamped = Math.max(0, Math.min(100, value));
   const filled = Math.round((clamped / 100) * segments);
   return (
-    <span className={cn("inline-flex items-center gap-2 font-crm", className)}>
+    <span className={cn("flex w-full min-w-0 items-center gap-2 font-crm", className)}>
       <span
         role="meter"
         aria-valuemin={0}
@@ -53,7 +53,7 @@ export function SegmentedMeter({
             key={i}
             className={cn(
               "flex-1 rounded-[1px]",
-              size === "sm" ? "h-3 min-w-[2px] max-w-[2px]" : "h-2 min-w-1",
+              size === "sm" ? "h-3 min-w-[2px]" : "h-2 min-w-1",
               i < filled
                 ? tone === "scale"
                   ? scaleColor(i, segments)
