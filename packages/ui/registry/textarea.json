@@ -1,0 +1,53 @@
+{
+  "name": "Textarea",
+  "slug": "textarea",
+  "description": "Multi-line text field matching Input, with auto-resize, max rows, invalid state and live character counter.",
+  "category": "Forms",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/textarea.tsx"],
+  "examples": [
+    {
+      "title": "Variants",
+      "file": "textarea-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "autoResize",
+      "type": "boolean",
+      "description": "Grow with content",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "maxRows",
+      "type": "number",
+      "description": "Row cap when auto-resizing",
+      "default": "8",
+      "required": false
+    },
+    {
+      "name": "showCount",
+      "type": "boolean",
+      "description": "Show n / maxLength counter (needs maxLength)",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "invalid",
+      "type": "boolean",
+      "description": "Red error border",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "...props",
+      "type": "TextareaHTMLAttributes",
+      "description": "All native textarea props",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

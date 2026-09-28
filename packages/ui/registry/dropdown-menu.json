@@ -1,0 +1,45 @@
+{
+  "name": "Dropdown Menu",
+  "slug": "dropdown-menu",
+  "description": "Radix dropdown menu styled for the CRM: items with icons and shortcuts, checkbox items, labels, separators and destructive items.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-dropdown-menu", "@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/dropdown-menu.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Row actions",
+      "file": "dropdown-menu-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "icon (Item)",
+      "type": "ReactNode",
+      "description": "Leading icon",
+      "required": false
+    },
+    {
+      "name": "shortcut (Item)",
+      "type": "string",
+      "description": "Right-aligned hint",
+      "required": false
+    },
+    {
+      "name": "destructive (Item)",
+      "type": "boolean",
+      "description": "Red danger style",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "align (Content)",
+      "type": "\"start\" | \"center\" | \"end\"",
+      "description": "Alignment to trigger",
+      "default": "\"start\"",
+      "required": false
+    }
+  ],
+  "usage": "Compose DropdownMenu > DropdownMenuTrigger asChild + DropdownMenuContent > items."
+}

@@ -1,0 +1,56 @@
+{
+  "name": "Deal Card",
+  "slug": "deal-card",
+  "description": "Compact deal tile with title, company, amount, win-probability meter, close date (overdue in red), owner and tag; draggable.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/deal-card.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/data-cells.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Cards",
+      "file": "deal-card-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "deal",
+      "type": "Deal",
+      "description": "{ id, title, company, amount, currency?, probability?, closeDate?, owner?, tag?, overdue? }",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "(deal: Deal) => void",
+      "description": "Makes the whole card clickable",
+      "required": false
+    },
+    {
+      "name": "draggable",
+      "type": "boolean",
+      "description": "Grip handle + native drag",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "onDragStart",
+      "type": "(e, deal) => void",
+      "description": "Drag start handler",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "boolean",
+      "description": "Highlighted border",
+      "default": "false",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

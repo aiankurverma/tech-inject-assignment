@@ -1,0 +1,31 @@
+{
+  "name": "Activity Timeline",
+  "slug": "activity-timeline",
+  "description": "Record activity feed of emails, calls, meetings, notes and tasks with typed icons, actor avatars, previews and day groups.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/activity-timeline.tsx", "components/crm/avatar.tsx"],
+  "examples": [
+    {
+      "title": "Grouped feed",
+      "file": "activity-timeline-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "Activity[]",
+      "description": "{ id, type, actor, text, detail?, time }",
+      "required": true
+    },
+    {
+      "name": "groups",
+      "type": "{ label: string; ids: string[] }[]",
+      "description": "Optional section headings",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

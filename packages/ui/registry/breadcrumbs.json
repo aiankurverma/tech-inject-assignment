@@ -1,0 +1,39 @@
+{
+  "name": "Breadcrumbs",
+  "slug": "breadcrumbs",
+  "description": "Location trail with icons, links or buttons, aria-current on the last item and an expandable ellipsis for deep paths.",
+  "category": "Navigation",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/breadcrumbs.tsx"],
+  "examples": [
+    {
+      "title": "Default and collapsed",
+      "file": "breadcrumbs-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "BreadcrumbItem[]",
+      "description": "{ label, href?, icon?, onClick? }",
+      "required": true
+    },
+    {
+      "name": "maxItems",
+      "type": "number",
+      "description": "Collapse the middle beyond this count",
+      "default": "4",
+      "required": false
+    },
+    {
+      "name": "separator",
+      "type": "ReactNode",
+      "description": "Custom separator",
+      "default": "<ChevronRight />",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

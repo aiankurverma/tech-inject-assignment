@@ -1,0 +1,56 @@
+{
+  "name": "Alert",
+  "slug": "alert",
+  "description": "Inline banner in info, success, warning and danger tones with title, body, actions and optional dismiss.",
+  "category": "Feedback",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/alert.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Tones",
+      "file": "alert-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "tone",
+      "type": "\"info\" | \"success\" | \"warning\" | \"danger\"",
+      "description": "Colour and icon",
+      "default": "\"info\"",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Main message",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactNode",
+      "description": "Supporting text",
+      "required": false
+    },
+    {
+      "name": "action",
+      "type": "ReactNode",
+      "description": "Buttons under the text",
+      "required": false
+    },
+    {
+      "name": "onDismiss",
+      "type": "() => void",
+      "description": "Shows a close button",
+      "required": false
+    },
+    {
+      "name": "icon",
+      "type": "ReactNode",
+      "description": "Override the tone icon",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,32 @@
+{
+  "name": "KPI Grid",
+  "slug": "kpi-grid",
+  "description": "Responsive grid of KPI tiles with value, period-over-period delta pill (invertible for lower-is-better) and optional sparkline.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/kpi-grid.tsx", "components/crm/sparkline.tsx"],
+  "examples": [
+    {
+      "title": "Dashboard row",
+      "file": "kpi-grid-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "Kpi[]",
+      "description": "{ label, value, delta?, invert?, caption?, icon?, trend? }",
+      "required": true
+    },
+    {
+      "name": "columns",
+      "type": "2 | 3 | 4",
+      "description": "Columns at desktop width",
+      "default": "4",
+      "required": false
+    }
+  ],
+  "usage": "DeltaPill is exported for use in tables."
+}

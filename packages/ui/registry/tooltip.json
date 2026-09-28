@@ -1,0 +1,45 @@
+{
+  "name": "Tooltip",
+  "slug": "tooltip",
+  "description": "Dependency-free tooltip shown on hover and keyboard focus, dismissible with Escape and wired with aria-describedby.",
+  "category": "Overlays",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": ["components/crm/tooltip.tsx", "components/crm/button.tsx"],
+  "examples": [
+    {
+      "title": "Icon buttons",
+      "file": "tooltip-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "content",
+      "type": "ReactNode",
+      "description": "Tooltip text",
+      "required": true
+    },
+    {
+      "name": "children",
+      "type": "ReactElement",
+      "description": "One focusable trigger element",
+      "required": true
+    },
+    {
+      "name": "side",
+      "type": "\"top\" | \"bottom\" | \"left\" | \"right\"",
+      "description": "Placement",
+      "default": "\"top\"",
+      "required": false
+    },
+    {
+      "name": "delay",
+      "type": "number",
+      "description": "Hover delay in ms",
+      "default": "300",
+      "required": false
+    }
+  ],
+  "usage": "Wrap a single focusable element. Do not put essential information only in a tooltip."
+}
