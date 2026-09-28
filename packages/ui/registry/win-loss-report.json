@@ -1,0 +1,55 @@
+{
+  "name": "Win/Loss Report",
+  "slug": "win-loss-report",
+  "description": "Win/loss analysis: win-rate trend by month or quarter, ranked win and loss reasons, competitor head-to-head table and deal drill-down; any reason, competitor or period cross-filters the whole report, weighted by count or value.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/win-loss-report.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Last 12 months",
+      "file": "win-loss-report-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "deals",
+      "type": "ClosedDeal[]",
+      "description": "{ id, name, outcome: 'won' | 'lost', amount, closedAt, reason, competitor?, segment?, cycleDays? }",
+      "required": true
+    },
+    {
+      "name": "bucket",
+      "type": "\"month\" | \"quarter\"",
+      "description": "Trend grouping",
+      "default": "\"quarter\"",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onDealSelect",
+      "type": "(dealId) => void",
+      "description": "Drill-down row click",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "name": "Forecast View",
+  "slug": "forecast-view",
+  "description": "Sales forecast roll-up: per-rep stacked bars (closed / commit / best case / pipeline) against a quota marker, inline manager overrides, call-basis switch, and team quota, gap and pipeline-coverage KPIs.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/forecast-view.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Q3 forecast with an override",
+      "file": "forecast-view-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "reps",
+      "type": "ForecastRep[]",
+      "description": "{ id, name, avatar?, team?, quota, closedWon, commit, bestCase, pipeline }",
+      "required": true
+    },
+    {
+      "name": "period",
+      "type": "string",
+      "description": "Period label shown in the header",
+      "required": true
+    },
+    {
+      "name": "overrides",
+      "type": "Record<string, number>",
+      "description": "Controlled manager overrides of each rep's call",
+      "required": false
+    },
+    {
+      "name": "defaultOverrides",
+      "type": "Record<string, number>",
+      "description": "Uncontrolled initial overrides",
+      "required": false
+    },
+    {
+      "name": "onOverridesChange",
+      "type": "(o) => void",
+      "description": "Fires when an override is set or cleared",
+      "required": false
+    },
+    {
+      "name": "callBasis",
+      "type": "\"commit\" | \"bestCase\" | \"pipeline\"",
+      "description": "Initial category counted as the rep's call",
+      "default": "\"commit\"",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton rows",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "repCall(rep, basis) is exported for server-side roll-ups."
+}

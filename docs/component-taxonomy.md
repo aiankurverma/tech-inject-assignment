@@ -227,25 +227,25 @@ Full sections built from primitives and composites.
 
 ### Dashboards (15)
 
-- [x] `sales-dashboard` — KPIs, pipeline, leaderboard.
-- [x] `revenue-dashboard` — MRR/ARR, churn, expansion.
-- [x] `marketing-dashboard` — Leads by source, campaigns.
-- [x] `support-dashboard` — Tickets, SLA, CSAT.
-- [x] `rep-dashboard` — My deals, tasks, quota.
-- [x] `executive-summary` — Board-level metrics.
-- [ ] `forecast-view` — Commit/best case/pipeline.
-- [ ] `activity-dashboard` — Calls/emails/meetings.
-- [ ] `cohort-retention` — Retention grid.
-- [ ] `funnel-report` — Conversion by stage.
-- [ ] `win-loss-report` — Reasons and trends.
-- [ ] `territory-map` — Region performance.
-- [ ] `product-usage` — Adoption metrics.
-- [ ] `health-overview` — Accounts by health.
-- [ ] `goal-tracker` — Team goals progress.
+- [ ] `sales-dashboard` — KPIs, pipeline, leaderboard.
+- [ ] `revenue-dashboard` — MRR/ARR, churn, expansion.
+- [ ] `marketing-dashboard` — Leads by source, campaigns.
+- [ ] `support-dashboard` — Tickets, SLA, CSAT.
+- [ ] `rep-dashboard` — My deals, tasks, quota.
+- [ ] `executive-summary` — Board-level metrics.
+- [x] `forecast-view` — Commit/best case/pipeline.
+- [x] `activity-dashboard` — Calls/emails/meetings.
+- [x] `cohort-retention` — Retention grid.
+- [x] `funnel-report` — Conversion by stage.
+- [x] `win-loss-report` — Reasons and trends.
+- [x] `territory-map` — Region performance.
+- [x] `product-usage` — Adoption metrics.
+- [x] `health-overview` — Accounts by health.
+- [x] `goal-tracker` — Team goals progress.
 
 ### Records (20)
 
-- [ ] `contact-list` · [ ] `contact-detail` · [ ] `company-list` · [ ] `company-detail` ·
+- [x] `contact-list` · [ ] `contact-detail` · [ ] `company-list` · [ ] `company-detail` ·
       [ ] `deal-list` · [ ] `deal-detail` · [ ] `deal-board` · [ ] `lead-inbox` ·
       [ ] `lead-detail` · [ ] `ticket-list` · [ ] `ticket-detail` · [ ] `task-board` ·
       [ ] `task-inbox` · [ ] `product-catalog` · [ ] `quote-builder` · [ ] `invoice-detail` ·

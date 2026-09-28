@@ -1,0 +1,80 @@
+{
+  "name": "Funnel Report",
+  "slug": "funnel-report",
+  "description": "Conversion funnel report: volume bars per stage, step and cumulative conversion, period-over-period change pills, biggest drop-off callout, segment filter and expandable stage details.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/funnel-report.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Inbound funnel by segment",
+      "file": "funnel-report-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "stages",
+      "type": "FunnelStage[]",
+      "description": "{ id, label, counts: Record<segment, number>, previous?, medianDays?, avgValue? }",
+      "required": true
+    },
+    {
+      "name": "segments",
+      "type": "string[]",
+      "description": "Segment names; 'All' is added automatically",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Report title",
+      "default": "\"Pipeline funnel\"",
+      "required": false
+    },
+    {
+      "name": "segment",
+      "type": "string",
+      "description": "Controlled segment",
+      "required": false
+    },
+    {
+      "name": "defaultSegment",
+      "type": "string",
+      "description": "Uncontrolled segment",
+      "default": "\"All\"",
+      "required": false
+    },
+    {
+      "name": "onSegmentChange",
+      "type": "(segment) => void",
+      "description": "Segment change callback",
+      "required": false
+    },
+    {
+      "name": "onStageSelect",
+      "type": "(stageId) => void",
+      "description": "Stage click callback",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Currency for average value",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ]
+}

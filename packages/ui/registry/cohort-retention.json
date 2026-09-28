@@ -1,0 +1,76 @@
+{
+  "name": "Cohort Retention",
+  "slug": "cohort-retention",
+  "description": "Cohort retention triangle heatmap with percent/count toggle, weighted-average row, below-threshold flags, net-revenue mode (>100% expansion) and arrow-key grid navigation with a live cell readout.",
+  "category": "Dashboards",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/cohort-retention.tsx", "components/crm/segmented-control.tsx"],
+  "examples": [
+    {
+      "title": "Monthly logo retention",
+      "file": "cohort-retention-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "cohorts",
+      "type": "Cohort[]",
+      "description": "{ label, size, retained: number[] } — retained[i] is period i+1",
+      "required": true
+    },
+    {
+      "name": "periodLabel",
+      "type": "string",
+      "description": "Period unit",
+      "default": "\"Month\"",
+      "required": false
+    },
+    {
+      "name": "kind",
+      "type": "\"logo\" | \"revenue\"",
+      "description": "Customer counts or revenue (NRR)",
+      "default": "\"logo\"",
+      "required": false
+    },
+    {
+      "name": "mode",
+      "type": "\"percent\" | \"count\"",
+      "description": "Controlled display mode",
+      "required": false
+    },
+    {
+      "name": "defaultMode",
+      "type": "\"percent\" | \"count\"",
+      "description": "Uncontrolled display mode",
+      "default": "\"percent\"",
+      "required": false
+    },
+    {
+      "name": "onModeChange",
+      "type": "(mode) => void",
+      "description": "Mode change callback",
+      "required": false
+    },
+    {
+      "name": "alertBelow",
+      "type": "number",
+      "description": "Flag cells whose retention % is below this",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "Currency for revenue mode",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ]
+}
