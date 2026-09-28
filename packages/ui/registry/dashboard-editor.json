@@ -6,11 +6,7 @@
   "version": "1.0.0",
   "access": "free",
   "dependencies": ["@radix-ui/react-slot", "lucide-react"],
-  "files": [
-    "components/crm/dashboard-editor.tsx",
-    "components/crm/button.tsx",
-    "components/crm/sparkline.tsx"
-  ],
+  "files": ["components/crm/dashboard-editor.tsx", "components/crm/button.tsx"],
   "examples": [
     {
       "title": "Sales dashboard",

@@ -146,7 +146,7 @@ export function DealBoard({
             </option>
           ))}
         </select>
-        <dl className="ml-auto flex gap-4 text-xs">
+        <dl className="ml-auto flex gap-4 pr-2 text-xs">
           <div>
             <dt className="crm-caption text-crm-subtle">Pipeline</dt>
             <dd className="text-crm-fg tabular-nums">{money(total, currency)}</dd>
@@ -209,7 +209,7 @@ export function DealBoard({
           description="Create your first deal to start forecasting."
         />
       ) : (
-        <div className="flex gap-3 overflow-x-auto pb-2">
+        <div className="flex gap-3 overflow-x-auto pr-1 pb-2">
           {stages.map((s) => {
             const col = visible.filter((d) => d.stageId === s.id);
             const colTotal = col.reduce((t, d) => t + d.amount, 0);
@@ -217,6 +217,7 @@ export function DealBoard({
             return (
               <KanbanColumn
                 key={s.id}
+                className="w-auto min-w-[220px] flex-1 basis-0"
                 title={s.label}
                 color={s.color}
                 limit={s.limit}

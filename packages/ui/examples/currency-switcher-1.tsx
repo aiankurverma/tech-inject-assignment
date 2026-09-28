@@ -33,7 +33,7 @@ export default function Example() {
     <div className="w-full max-w-md rounded-crm border border-crm-border bg-crm-card p-4 font-crm">
       <div className="mb-3 flex items-center justify-between">
         <div>
-          <p className="crm-eyebrow text-crm-faint">Open pipeline</p>
+          <p className="crm-eyebrow text-crm-muted-fg">Open pipeline</p>
           <p className="text-xl font-medium text-crm-fg tabular-nums">
             {formatMoney(convertAmount(total, rate), code)}
           </p>

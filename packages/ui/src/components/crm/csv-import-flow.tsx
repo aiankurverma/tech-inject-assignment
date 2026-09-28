@@ -94,9 +94,10 @@ function checkValue(f: ImportField, v: string): string | null {
 }
 
 const STEPS = [
-  { title: "Upload", description: "CSV file or paste" },
-  { title: "Map columns", description: "Match to fields" },
-  { title: "Review", description: "Errors & duplicates" },
+  // Short, description-free titles keep the stepper single-line in narrow cards.
+  { title: "Upload" },
+  { title: "Map" },
+  { title: "Review" },
   { title: "Import" },
 ];
 

@@ -13,7 +13,6 @@ import {
   TableRow,
 } from "@/components/crm/data-table";
 import { SegmentedMeter } from "@/components/crm/segmented-meter";
-import { Sparkline } from "@/components/crm/sparkline";
 import { TagList, type TagColor } from "@/components/crm/tag";
 
 const rows: {
@@ -71,7 +70,7 @@ export default function Example() {
   const toggle = (n: string) =>
     setSelected((s) => (s.includes(n) ? s.filter((x) => x !== n) : [...s, n]));
   return (
-    <div className="w-[980px] max-w-full rounded-crm border border-crm-border">
+    <div className="w-full max-w-[1040px] overflow-hidden rounded-crm border border-crm-border bg-crm-card">
       <Table>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
@@ -88,7 +87,6 @@ export default function Example() {
             <TableHead align="right">Open Deals</TableHead>
             <TableHead align="right">Pipeline Value</TableHead>
             <TableHead>Win Probability</TableHead>
-            <TableHead>Activity Trend</TableHead>
             <TableHead>Last Interaction</TableHead>
             <TableHead>
               <span className="sr-only">Action</span>
@@ -121,9 +119,6 @@ export default function Example() {
               </TableCell>
               <TableCell>
                 <SegmentedMeter value={r.win} showValue label={r.name + " win probability"} />
-              </TableCell>
-              <TableCell>
-                <Sparkline data={[2, 4, 1, 5, 3, 6, 4, 7, 5, 8]} />
               </TableCell>
               <TableCell>
                 <DateCell date={r.date} type={r.type} />
