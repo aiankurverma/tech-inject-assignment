@@ -1,0 +1,93 @@
+{
+  "name": "Agency Clients",
+  "slug": "agency-clients",
+  "description": "Agency client roster with retainer hour burn and overage, receivables ageing, renewal countdown, quick filters with counts, sortable columns, bulk selection and a totals footer.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/agency-clients.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/data-table.tsx"
+  ],
+  "examples": [{ "title": "Retainer roster", "file": "agency-clients-1.tsx" }],
+  "props": [
+    {
+      "name": "clients",
+      "type": "AgencyClient[]",
+      "description": "{ id, name, industry, accountLead, status, retainer, hoursIncluded, hoursUsed, outstanding, oldestInvoiceDays, renewsOn }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale for number formatting",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton rows",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message; renders an error state with retry",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry handler for the error state",
+      "required": false
+    },
+    {
+      "name": "selected",
+      "type": "string[]",
+      "description": "Controlled selected client ids",
+      "required": false
+    },
+    {
+      "name": "defaultSelected",
+      "type": "string[]",
+      "description": "Initial selection when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(ids: string[]) => void",
+      "description": "Selection change callback",
+      "required": false
+    },
+    {
+      "name": "onOpenClient",
+      "type": "(client: AgencyClient) => void",
+      "description": "Called when a client name is clicked",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "Date",
+      "description": "Reference date for renewal countdowns",
+      "default": "new Date()",
+      "required": false
+    }
+  ],
+  "usage": "retainerBurn(client) is exported for reuse in dashboards. Over-retainer = burn > 100%; at-risk = burn > 90% or an invoice older than 30 days."
+}

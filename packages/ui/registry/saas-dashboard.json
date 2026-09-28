@@ -1,0 +1,47 @@
+{
+  "name": "SaaS Dashboard",
+  "slug": "saas-dashboard",
+  "description": "SaaS revenue metrics dashboard computed from raw MRR movements: MRR bridge waterfall (new, reactivation, expansion, contraction, churn), NRR and GRR, logo churn, CAC payback months, period switcher and a type-filterable movements ledger.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/saas-dashboard.tsx",
+    "components/crm/card.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [{ "title": "Monthly MRR bridge", "file": "saas-dashboard-1.tsx" }],
+  "props": [
+    {
+      "name": "periods",
+      "type": "Record<string, SaasDashboardPeriod>",
+      "description": "{ label, startingMrr, startingCustomers, salesMarketingSpend, grossMargin, movements[], mrrTrend[] } per period id",
+      "required": true
+    },
+    {
+      "name": "defaultPeriod",
+      "type": "string",
+      "description": "Initially selected period id",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    }
+  ],
+  "usage": "mrrBridge(period) is exported and returns { by, net, ending, grr, nrr, churnedLogos, newLogos, logoChurn, payback }."
+}

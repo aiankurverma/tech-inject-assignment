@@ -1,0 +1,62 @@
+{
+  "name": "Agency Dashboard",
+  "slug": "agency-dashboard",
+  "description": "Agency operations dashboard with period switcher: revenue, gross margin delta in points, billable utilisation vs. target, effective hourly rate, stacked per-person utilisation bars with target marker and overbooking flags, and client revenue concentration warnings.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/agency-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/card.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [{ "title": "Month and quarter", "file": "agency-dashboard-1.tsx" }],
+  "props": [
+    {
+      "name": "periods",
+      "type": "Record<string, AgencyDashboardPeriod>",
+      "description": "{ label, revenue, previousRevenue, deliveryCost, previousDeliveryCost, backlog, revenueTrend, team[], clients[] } per period id",
+      "required": true
+    },
+    {
+      "name": "defaultPeriod",
+      "type": "string",
+      "description": "Initially selected period id",
+      "required": false
+    },
+    {
+      "name": "utilisationTarget",
+      "type": "number",
+      "description": "Billable utilisation target 0–1",
+      "default": "0.75",
+      "required": false
+    },
+    {
+      "name": "concentrationLimit",
+      "type": "number",
+      "description": "Max healthy revenue share of one client 0–1",
+      "default": "0.3",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    }
+  ],
+  "usage": "Pair with agency-clients and agency-projects for a full agency workspace."
+}
