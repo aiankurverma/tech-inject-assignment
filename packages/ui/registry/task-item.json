@@ -1,0 +1,65 @@
+{
+  "name": "Task Item",
+  "slug": "task-item",
+  "description": "Checkbox task row with type icon, related record, overdue/today due colouring, priority flag, recurrence and owner.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-checkbox"],
+  "files": [
+    "components/crm/task-item.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/checkbox.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Task",
+      "file": "task-item-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "task",
+      "type": "Task",
+      "description": "id, title, done, due, priority, type, assignee, related, repeat, completedAt",
+      "required": true
+    },
+    {
+      "name": "onToggle",
+      "type": "(id: string, done: boolean) => void",
+      "description": "Checkbox change",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(task: Task) => void",
+      "description": "Title becomes a button that opens the task",
+      "required": false
+    },
+    {
+      "name": "onMenu",
+      "type": "(task: Task, anchor: HTMLElement) => void",
+      "description": "Shows a hover overflow button",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Clock override",
+      "required": false
+    },
+    {
+      "name": "compact",
+      "type": "boolean",
+      "description": "Denser row",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable the checkbox",
+      "required": false
+    }
+  ],
+  "usage": "Use inside task lists, record sidebars and daily agendas."
+}

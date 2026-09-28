@@ -1,0 +1,103 @@
+{
+  "name": "Share Dialog",
+  "slug": "share-dialog",
+  "description": "Invite by email with validation, duplicate/external/seat checks, per-person roles, owner protection, general link access and copy link.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-dialog", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/share-dialog.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/dialog.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Share",
+      "file": "share-dialog-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "resourceName",
+      "type": "string",
+      "description": "Record being shared",
+      "required": true
+    },
+    {
+      "name": "members",
+      "type": "ShareMember[]",
+      "description": "People with access (id, name, email, role, pending)",
+      "required": true
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Viewer; only owners/editors can manage",
+      "required": true
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Controlled open state",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open: boolean) => void",
+      "description": "Open change",
+      "required": false
+    },
+    {
+      "name": "onInvite",
+      "type": "({ emails, role, message, notify }) => Promise<void> | void",
+      "description": "Send invites; errors are shown inline",
+      "required": false
+    },
+    {
+      "name": "onRoleChange",
+      "type": "(memberId, role | \"remove\") => void",
+      "description": "Change or remove access",
+      "required": false
+    },
+    {
+      "name": "linkAccess",
+      "type": "\"restricted\" | \"workspace\" | \"anyone\"",
+      "description": "General access",
+      "default": "\"restricted\"",
+      "required": false
+    },
+    {
+      "name": "onLinkAccessChange",
+      "type": "(access) => void",
+      "description": "General access change",
+      "required": false
+    },
+    {
+      "name": "shareUrl",
+      "type": "string",
+      "description": "Enables Copy link",
+      "required": false
+    },
+    {
+      "name": "workspaceDomain",
+      "type": "string",
+      "description": "Flags invites outside this domain",
+      "required": false
+    },
+    {
+      "name": "workspaceName",
+      "type": "string",
+      "description": "Label for workspace access",
+      "required": false
+    },
+    {
+      "name": "seatLimit",
+      "type": "number",
+      "description": "Maximum people with access",
+      "required": false
+    }
+  ],
+  "usage": "Use to share deals, reports and views with teammates or clients."
+}

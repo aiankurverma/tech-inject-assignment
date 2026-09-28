@@ -1,0 +1,53 @@
+{
+  "name": "Version History",
+  "slug": "version-history",
+  "description": "Record revision browser grouped by day with named versions, diff against previous, compare any two, and async restore.",
+  "category": "Collaboration",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/version-history.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Versions",
+      "file": "version-history-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "versions",
+      "type": "RecordVersion[]",
+      "description": "id, number, at, author, label, snapshot",
+      "required": true
+    },
+    {
+      "name": "fieldLabels",
+      "type": "Record<string, string>",
+      "description": "Labels for snapshot keys",
+      "required": false
+    },
+    {
+      "name": "onRestore",
+      "type": "(version) => Promise<void> | void",
+      "description": "Restore handler",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Loading state",
+      "required": false
+    }
+  ],
+  "usage": "Use for quotes, contracts and records that need rollback."
+}

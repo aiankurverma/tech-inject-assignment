@@ -187,16 +187,16 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 
 - [ ] `mention-list` — @mention suggestion list.
 - [ ] `comment-thread` — Threaded comments with replies.
-- [ ] `reaction-bar` — Emoji reactions.
-- [ ] `presence-avatars` — Who is viewing.
-- [ ] `assignee-picker` — Owner selector.
-- [ ] `task-item` — Checkbox task with due date.
-- [ ] `task-list` — Grouped tasks.
-- [ ] `reminder-chip` — Snoozed follow-up.
-- [ ] `share-dialog` — Invite + permission levels.
-- [ ] `audit-log-row` — Field change diff.
-- [ ] `version-history` — Record revisions.
-- [ ] `chat-bubble` — Live chat message.
+- [x] `reaction-bar` — Emoji reactions.
+- [x] `presence-avatars` — Who is viewing.
+- [x] `assignee-picker` — Owner selector.
+- [x] `task-item` — Checkbox task with due date.
+- [x] `task-list` — Grouped tasks.
+- [x] `reminder-chip` — Snoozed follow-up.
+- [x] `share-dialog` — Invite + permission levels.
+- [x] `audit-log-row` — Field change diff.
+- [x] `version-history` — Record revisions.
+- [x] `chat-bubble` — Live chat message.
 
 ### Commerce and billing (14)
 
