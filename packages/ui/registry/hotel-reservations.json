@@ -1,0 +1,86 @@
+{
+  "name": "Hotel Reservations",
+  "slug": "hotel-reservations",
+  "description": "Front-desk reservation list with arrivals/departures/in-house views, sortable stays, folio balances, double-booking detection and check-in/out guards.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/hotel-reservations.tsx",
+    "components/crm/button.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "hotel-reservations-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "reservations",
+      "type": "Reservation[]",
+      "description": "Bookings with dates, room, rate and paid amount in minor units",
+      "required": true
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "ISO date used for arrivals and departures",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code (default USD)",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale (default en-US)",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton rows",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message shown in place of rows",
+      "required": false
+    },
+    {
+      "name": "onCheckIn",
+      "type": "(r: Reservation) => void",
+      "description": "Check in; disabled until a conflict-free room is assigned",
+      "required": false
+    },
+    {
+      "name": "onCheckOut",
+      "type": "(r: Reservation) => void",
+      "description": "Check out; disabled while a balance is due",
+      "required": false
+    },
+    {
+      "name": "onCancel",
+      "type": "(r: Reservation) => void",
+      "description": "Cancel a confirmed booking",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(r: Reservation) => void",
+      "description": "Row click / Enter",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -293,4 +293,4 @@ Opinionated page sets (shell + records + dashboard) per vertical, 4 per industry
 - [ ] E-commerce: `shop-customers`, `shop-orders`, `shop-returns`, `shop-dashboard`.
 - [ ] Field service: `fs-jobs`, `fs-dispatch`, `fs-technicians`, `fs-dashboard`.
 - [ ] Nonprofit: `np-donors`, `np-campaigns`, `np-volunteers`, `np-dashboard`.
-- [ ] Hospitality: `hotel-reservations`, `hotel-guests`, `hotel-housekeeping`, `hotel-dashboard`.
+- [x] Hospitality: `hotel-reservations`, `hotel-guests`, `hotel-housekeeping`, `hotel-dashboard`.

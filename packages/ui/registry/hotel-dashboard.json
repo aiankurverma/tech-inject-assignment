@@ -1,0 +1,80 @@
+{
+  "name": "Hotel Dashboard",
+  "slug": "hotel-dashboard",
+  "description": "Revenue-manager dashboard: occupancy, ADR and RevPAR vs last week, 14-night pace chart, room-type inventory, channel mix and today's arrivals/departures.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/hotel-dashboard.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "hotel-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "propertyName",
+      "type": "string",
+      "description": "Hotel name",
+      "required": true
+    },
+    {
+      "name": "totalRooms",
+      "type": "number",
+      "description": "Sellable room count",
+      "required": true
+    },
+    {
+      "name": "nights",
+      "type": "HotelNight[]",
+      "description": "Nightly rooms sold and revenue (minor units), history + forecast",
+      "required": true
+    },
+    {
+      "name": "today",
+      "type": "string",
+      "description": "ISO date of tonight",
+      "required": true
+    },
+    {
+      "name": "roomTypes",
+      "type": "HotelRoomType[]",
+      "description": "Inventory per room type",
+      "required": true
+    },
+    {
+      "name": "movements",
+      "type": "HotelMovement[]",
+      "description": "Today's arrivals and departures",
+      "required": true
+    },
+    {
+      "name": "channels",
+      "type": "{ name: string; roomNights: number }[]",
+      "description": "Booking channel mix",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
