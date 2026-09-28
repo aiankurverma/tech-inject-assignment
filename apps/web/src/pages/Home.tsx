@@ -1,9 +1,24 @@
-import { useMemo, useState, type ReactNode } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Bot, Copy, PackageOpen, SearchX, Terminal, TriangleAlert } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import {
+  ArrowRight,
+  Bot,
+  Copy,
+  PackageOpen,
+  Search as SearchIcon,
+  SearchX,
+  Terminal,
+  TriangleAlert,
+} from "lucide-react";
 import { CopyButton } from "@ti/client";
 import { Layout } from "../components/Layout";
 import { useSession, type ListItem } from "../context/session";
+import {
+  applyCatalogueQuery,
+  categoryCounts,
+  type AccessFilter,
+  type SortKey,
+} from "../lib/catalogue";
 import { AccessBadge, btn, EmptyState, PageHeader, Skeleton } from "../components/ui";
 
 /** Thumbnails whose component is tiny in the capture get extra zoom. */
@@ -265,72 +280,245 @@ export function Home() {
   );
 }
 
+const PAGE = 24;
+const SORTS: { value: SortKey; label: string }[] = [
+  { value: "category", label: "Category" },
+  { value: "name", label: "Name" },
+  { value: "newest", label: "Newest" },
+];
+const ACCESS: { value: AccessFilter; label: string }[] = [
+  { value: "all", label: "All" },
+  { value: "free", label: "Free" },
+  { value: "premium", label: "Pro" },
+];
+
+const chipClass = (on: boolean) =>
+  `inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border px-3 text-sm transition-colors ${
+    on
+      ? "border-primary bg-primary text-primary-foreground"
+      : "border-border bg-background text-muted-foreground hover:border-foreground/20 hover:text-foreground"
+  }`;
+
+interface CatalogueState {
+  query: string;
+  categories: string[];
+  access: AccessFilter;
+  sort: SortKey;
+}
+
+/** Filters live in the URL (?q=&cat=&access=&sort=) so views are shareable and survive back/forward. */
+function useCatalogueParams() {
+  const [params, setParams] = useSearchParams();
+  const access = params.get("access");
+  const sort = params.get("sort");
+  const state: CatalogueState = {
+    query: params.get("q") ?? "",
+    categories: params.getAll("cat"),
+    access: access === "free" || access === "premium" ? access : "all",
+    sort: sort === "name" || sort === "newest" ? sort : "category",
+  };
+  const update = (patch: Partial<CatalogueState>) => {
+    const next = { ...state, ...patch };
+    const p = new URLSearchParams();
+    if (next.query) p.set("q", next.query);
+    for (const c of next.categories) p.append("cat", c);
+    if (next.access !== "all") p.set("access", next.access);
+    if (next.sort !== "category") p.set("sort", next.sort);
+    setParams(p, { replace: true });
+  };
+  return [state, update] as const;
+}
+
+/** Grid that grows by PAGE as a sentinel nears the viewport; the button is the keyboard fallback. */
+function CatalogueGrid({ items }: { items: ListItem[] }) {
+  const [limit, setLimit] = useState(PAGE);
+  const sentinel = useRef<HTMLDivElement>(null);
+  // Reset paging when the result set changes.
+  const key = items.map((c) => c.slug).join(",");
+  useEffect(() => setLimit(PAGE), [key]);
+  const more = limit < items.length;
+  useEffect(() => {
+    const el = sentinel.current;
+    if (!el || !more || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) setLimit((l) => l + PAGE);
+      },
+      { rootMargin: "800px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [more, limit]);
+
+  return (
+    <>
+      <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {items.slice(0, limit).map((c, i) => (
+          <li key={c.slug}>
+            <ComponentCard c={c} eager={i < 6} />
+          </li>
+        ))}
+      </ul>
+      {more ? (
+        <div ref={sentinel} className="mt-8 flex justify-center">
+          <button type="button" onClick={() => setLimit((l) => l + PAGE)} className={btn.secondary}>
+            Show more ({items.length - limit} left)
+          </button>
+        </div>
+      ) : null}
+    </>
+  );
+}
+
+function Catalogue({ items }: { items: ListItem[] }) {
+  const [state, update] = useCatalogueParams();
+  const [draft, setDraft] = useState(state.query);
+  // Follow external URL changes (e.g. "see all results" from Ctrl+K while already here).
+  useEffect(() => setDraft(state.query), [state.query]);
+  // Debounce URL writes while typing; filtering itself runs on every keystroke.
+  useEffect(() => {
+    if (draft === state.query) return;
+    const t = setTimeout(() => update({ query: draft }), 200);
+    return () => clearTimeout(t);
+  });
+  const counts = useMemo(() => categoryCounts(items), [items]);
+  const catKey = state.categories.join("|");
+  const shown = useMemo(
+    () =>
+      applyCatalogueQuery(items, {
+        query: draft,
+        categories: catKey ? catKey.split("|") : [],
+        access: state.access,
+        sort: state.sort,
+      }),
+    [items, draft, catKey, state.access, state.sort],
+  );
+  const toggleCat = (cat: string) =>
+    update({
+      categories: state.categories.includes(cat)
+        ? state.categories.filter((c) => c !== cat)
+        : [...state.categories, cat],
+    });
+  const searching = !!draft.trim();
+  const filtered = searching || state.categories.length > 0 || state.access !== "all";
+  const clear = () => {
+    setDraft("");
+    update({ query: "", categories: [], access: "all" });
+  };
+
+  return (
+    <>
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <label className="relative flex-1">
+          <span className="sr-only">Filter components</span>
+          <SearchIcon
+            className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden
+          />
+          <input
+            type="search"
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            placeholder={`Filter ${items.length} components...`}
+            className="h-9 w-full rounded-md border border-border bg-background pr-3 pl-9 text-sm outline-none placeholder:text-muted-foreground/70 focus-visible:border-foreground/30"
+          />
+        </label>
+        <div className="flex items-center gap-2">
+          <div role="group" aria-label="Access" className="flex gap-1">
+            {ACCESS.map((a) => (
+              <button
+                key={a.value}
+                type="button"
+                aria-pressed={state.access === a.value}
+                onClick={() => update({ access: a.value })}
+                className={chipClass(state.access === a.value)}
+              >
+                {a.label}
+              </button>
+            ))}
+          </div>
+          <label className="flex items-center gap-2 text-sm text-muted-foreground">
+            <span className="sr-only sm:not-sr-only">Sort</span>
+            <select
+              value={state.sort}
+              onChange={(e) => {
+                const v = SORTS.find((o) => o.value === e.target.value);
+                if (v) update({ sort: v.value });
+              }}
+              disabled={searching}
+              title={searching ? "Search results are ordered by relevance" : undefined}
+              className="h-8 rounded-md border border-border bg-background px-2 text-sm text-foreground disabled:opacity-50"
+            >
+              {SORTS.map((o) => (
+                <option key={o.value} value={o.value}>
+                  {o.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+      </div>
+      {counts.length > 1 ? (
+        <div className="mb-4 flex flex-wrap gap-2" role="group" aria-label="Filter by category">
+          <button
+            type="button"
+            aria-pressed={!state.categories.length}
+            onClick={() => update({ categories: [] })}
+            className={chipClass(!state.categories.length)}
+          >
+            All
+            <span className="text-xs tabular-nums opacity-60">{items.length}</span>
+          </button>
+          {counts.map(([cat, n]) => (
+            <button
+              key={cat}
+              type="button"
+              aria-pressed={state.categories.includes(cat)}
+              onClick={() => toggleCat(cat)}
+              className={chipClass(state.categories.includes(cat))}
+            >
+              {cat}
+              <span className="text-xs tabular-nums opacity-60">{n}</span>
+            </button>
+          ))}
+        </div>
+      ) : null}
+      <p className="mb-5 text-sm text-muted-foreground" aria-live="polite">
+        {shown.length === items.length
+          ? `${items.length} components`
+          : `${shown.length} of ${items.length} components`}
+        {filtered ? (
+          <>
+            {" "}
+            <button
+              type="button"
+              onClick={clear}
+              className="font-medium text-foreground underline-offset-2 hover:underline"
+            >
+              Clear filters
+            </button>
+          </>
+        ) : null}
+      </p>
+      {shown.length ? (
+        <CatalogueGrid items={shown} />
+      ) : (
+        <EmptyState icon={<SearchX className="size-5" />} title="No components match">
+          Try another word or clear the filters.
+        </EmptyState>
+      )}
+    </>
+  );
+}
+
 export function ComponentsIndex() {
-  const [category, setCategory] = useState<string | null>(null);
-  const { components } = useSession();
-  const categories = useMemo(
-    () => [...new Set((components ?? []).map((c) => c.category))],
-    [components],
-  );
-
-  const chip = (value: string | null, label: string, count: number) => (
-    <button
-      key={label}
-      type="button"
-      aria-pressed={category === value}
-      onClick={() => setCategory(value)}
-      className={`inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-sm transition-colors ${
-        category === value
-          ? "border-primary bg-primary text-primary-foreground"
-          : "border-border bg-background text-muted-foreground hover:border-foreground/20 hover:text-foreground"
-      }`}
-    >
-      {label}
-      <span className="text-xs tabular-nums opacity-60">{count}</span>
-    </button>
-  );
-
   return (
     <Layout>
       <PageHeader title="Components">
         Every component ships as source you copy into your project. Premium components need a
         premium account.
       </PageHeader>
-      <ComponentsState>
-        {(items) => {
-          const shown = category ? items.filter((c) => c.category === category) : items;
-          return (
-            <>
-              {categories.length > 1 ? (
-                <div
-                  className="mb-6 flex flex-wrap gap-2"
-                  role="group"
-                  aria-label="Filter by category"
-                >
-                  {chip(null, "All", items.length)}
-                  {categories.map((cat) =>
-                    chip(cat, cat, items.filter((c) => c.category === cat).length),
-                  )}
-                </div>
-              ) : null}
-              {shown.length ? (
-                <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-                  {shown.map((c, i) => (
-                    <li key={c.slug}>
-                      <ComponentCard c={c} eager={i < 6} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <EmptyState
-                  icon={<SearchX className="size-5" />}
-                  title="Nothing in this category"
-                />
-              )}
-            </>
-          );
-        }}
-      </ComponentsState>
+      <ComponentsState>{(items) => <Catalogue items={items} />}</ComponentsState>
     </Layout>
   );
 }

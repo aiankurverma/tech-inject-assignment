@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { Lock, Menu, X } from "lucide-react";
-import { useSession } from "../context/session";
+import { ChevronRight, Lock, Menu, X } from "lucide-react";
+import { useSession, type ListItem } from "../context/session";
+import { groupByCategory, type CategoryGroup } from "../lib/catalogue";
 import { Search } from "./Search";
 import { ThemeToggle } from "../context/theme";
 import { btn, PlanBadge, Skeleton } from "./ui";
@@ -33,13 +34,117 @@ function SidebarHeading({ children }: { children: ReactNode }) {
   return <p className="mb-1 px-2.5 text-xs font-medium text-muted-foreground">{children}</p>;
 }
 
+const OPEN_KEY = "kitbase.sidebar.open";
+
+function readOpen(): Set<string> | null {
+  try {
+    const raw = localStorage.getItem(OPEN_KEY);
+    return raw ? new Set(JSON.parse(raw) as string[]) : null;
+  } catch {
+    return null;
+  }
+}
+
+function ProBadge({ locked }: { locked: boolean }) {
+  return (
+    <span className="inline-flex h-4.5 shrink-0 items-center gap-1 rounded border border-border bg-background px-1.5 text-[10px] font-medium text-muted-foreground">
+      {locked ? <Lock className="size-2.5" aria-label="Locked" /> : null}Pro
+    </span>
+  );
+}
+
+/** One collapsible category. Collapsed groups render no links, so 300 items stay cheap. */
+function SidebarGroup({
+  group,
+  open,
+  onToggle,
+  onNavigate,
+}: {
+  group: CategoryGroup<ListItem>;
+  open: boolean;
+  onToggle: () => void;
+  onNavigate?: () => void;
+}) {
+  const id = `side-${group.category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+  return (
+    <div>
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        onClick={onToggle}
+        className="flex h-7 w-full items-center gap-1.5 rounded-md px-2.5 text-left text-xs font-medium text-muted-foreground transition-colors hover:bg-muted/60 hover:text-foreground"
+      >
+        <ChevronRight
+          className={`size-3 shrink-0 transition-transform ${open ? "rotate-90" : ""}`}
+          aria-hidden
+        />
+        <span className="min-w-0 flex-1 truncate">{group.category}</span>
+        {group.premium ? (
+          <span className="text-[10px] opacity-70" title={`${group.premium} Pro`}>
+            {group.premium} Pro
+          </span>
+        ) : null}
+        <span className="tabular-nums opacity-70">{group.items.length}</span>
+      </button>
+      {open ? (
+        <div id={id} className="mt-0.5 mb-2 ml-3 border-l border-border pl-1.5">
+          {group.items.map((c) => (
+            <NavLink
+              key={c.slug}
+              to={`/components/${c.slug}`}
+              className={sideLink}
+              onClick={onNavigate}
+            >
+              <span className="truncate">{c.name}</span>
+              {c.access === "premium" ? <ProBadge locked={!!c.locked} /> : null}
+            </NavLink>
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { components, componentsError } = useSession();
-  const groups = useMemo(() => {
-    const map = new Map<string, NonNullable<typeof components>>();
-    for (const c of components ?? []) map.set(c.category, [...(map.get(c.category) ?? []), c]);
-    return [...map.entries()];
-  }, [components]);
+  const location = useLocation();
+  const groups = useMemo(() => groupByCategory(components ?? []), [components]);
+  const activeCategory = useMemo(() => {
+    const slug = /^\/components\/([^/]+)/.exec(location.pathname)?.[1];
+    return components?.find((c) => c.slug === slug)?.category ?? null;
+  }, [components, location.pathname]);
+
+  // Remembered open groups; first visit opens only the first group.
+  const [open, setOpen] = useState<Set<string> | null>(readOpen);
+  const openSet = useMemo(
+    () => new Set(open ?? (groups[0] ? [groups[0].category] : [])),
+    [open, groups],
+  );
+  // Open the current component's group on navigation, but let the user collapse it after.
+  useEffect(() => {
+    if (!activeCategory) return;
+    setOpen((prev) => {
+      const base = prev ?? new Set(groups[0] ? [groups[0].category] : []);
+      return base.has(activeCategory) ? prev : new Set([...base, activeCategory]);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- run per active group only
+  }, [activeCategory]);
+  const save = (next: Set<string>) => {
+    setOpen(next);
+    try {
+      localStorage.setItem(OPEN_KEY, JSON.stringify([...next]));
+    } catch {
+      // Storage blocked: state still works for this session.
+    }
+  };
+  const toggle = (category: string) => {
+    const next = new Set(openSet);
+    if (!next.delete(category)) next.add(category);
+    save(next);
+  };
+  const allOpen = groups.length > 0 && groups.every((g) => openSet.has(g.category));
+  const setAll = (value: boolean) => save(new Set(value ? groups.map((g) => g.category) : []));
 
   return (
     <nav aria-label="Documentation" className="flex flex-col gap-6 text-sm">
@@ -52,7 +157,10 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           Get started
         </NavLink>
         <NavLink to="/components" end className={sideLink} onClick={onNavigate}>
-          All components
+          <span>All components</span>
+          {components ? (
+            <span className="text-xs text-muted-foreground tabular-nums">{components.length}</span>
+          ) : null}
         </NavLink>
       </div>
       {componentsError ? (
@@ -68,26 +176,29 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           ))}
         </div>
       ) : null}
-      {groups.map(([category, items]) => (
-        <div key={category}>
-          <SidebarHeading>{category}</SidebarHeading>
-          {items.map((c) => (
-            <NavLink
-              key={c.slug}
-              to={`/components/${c.slug}`}
-              className={sideLink}
-              onClick={onNavigate}
+      {groups.length ? (
+        <div>
+          <div className="mb-1 flex items-center justify-between px-2.5">
+            <p className="text-xs font-medium text-muted-foreground">Categories</p>
+            <button
+              type="button"
+              onClick={() => setAll(!allOpen)}
+              className="rounded text-[11px] text-muted-foreground hover:text-foreground"
             >
-              <span className="truncate">{c.name}</span>
-              {c.access === "premium" ? (
-                <span className="inline-flex h-4.5 shrink-0 items-center gap-1 rounded border border-border bg-background px-1.5 text-[10px] font-medium text-muted-foreground">
-                  {c.locked ? <Lock className="size-2.5" aria-label="Locked" /> : null}Pro
-                </span>
-              ) : null}
-            </NavLink>
+              {allOpen ? "Collapse all" : "Expand all"}
+            </button>
+          </div>
+          {groups.map((g) => (
+            <SidebarGroup
+              key={g.category}
+              group={g}
+              open={openSet.has(g.category)}
+              onToggle={() => toggle(g.category)}
+              onNavigate={onNavigate}
+            />
           ))}
         </div>
-      ))}
+      ) : null}
     </nav>
   );
 }

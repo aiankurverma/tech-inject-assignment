@@ -3,6 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { CornerDownLeft, Lock, Search as SearchIcon } from "lucide-react";
 import { ComingSoonNotice } from "@ti/feature-radar/client";
 import { useSession } from "../context/session";
+import { searchGroups } from "../lib/catalogue";
+
+/** Visible Ctrl+K results; the rest is one click away on the index page. */
+const MAX_RESULTS = 40;
+const groupId = (category: string) =>
+  `search-group-${category.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
 /** Header search: a trigger button plus a Ctrl/Cmd+K (or "/") command dialog over the components. */
 export function Search() {
@@ -49,21 +55,14 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [active, setActive] = useState(0);
-  const listRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const all = components ?? [];
-    if (!q) return all;
-    // Name matches first (exact, then prefix, then anywhere), then category/description matches.
-    const rank = (name: string) =>
-      name === q ? 0 : name.startsWith(q) ? 1 : name.includes(q) ? 2 : 3;
-    return all
-      .filter((c) => `${c.name} ${c.category} ${c.description}`.toLowerCase().includes(q))
-      .map((c, i) => ({ c, i, r: rank(c.name.toLowerCase()) }))
-      .sort((a, b) => a.r - b.r || a.i - b.i)
-      .map(({ c }) => c);
-  }, [components, query]);
+  // Same ranking as the index page; capped so 300 items never render at once.
+  const {
+    groups,
+    flat: results,
+    total,
+  } = useMemo(() => searchGroups(components ?? [], query, MAX_RESULTS), [components, query]);
 
   useEffect(() => setActive(0), [query]);
   useEffect(() => {
@@ -137,35 +136,67 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
               </div>
             </div>
           ) : (
-            <ul id="search-results" role="listbox" ref={listRef} aria-label="Components">
-              {results.map((c, i) => (
-                <li
-                  key={c.slug}
-                  id={`search-${c.slug}`}
-                  role="option"
-                  aria-selected={i === active}
-                  data-index={i}
-                  onMouseMove={() => setActive(i)}
-                  onClick={() => go(c.slug)}
-                  className={`flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm ${
-                    i === active ? "bg-muted text-foreground" : "text-foreground/80"
-                  }`}
-                >
-                  <span className="min-w-0 flex-1 truncate">
-                    <span className="font-medium">{c.name}</span>
-                    <span className="ml-2 text-xs text-muted-foreground">{c.category}</span>
-                  </span>
-                  {c.access === "premium" ? (
-                    <span className="inline-flex items-center gap-1 text-[10px] font-medium text-muted-foreground">
-                      {c.locked ? <Lock className="size-2.5" aria-label="Locked" /> : null}Pro
-                    </span>
-                  ) : null}
-                  {i === active ? (
-                    <CornerDownLeft className="size-3.5 text-muted-foreground/70" aria-hidden />
-                  ) : null}
-                </li>
+            <div id="search-results" role="listbox" ref={listRef} aria-label="Components">
+              {groups.map((g) => (
+                <div key={g.category} role="group" aria-labelledby={groupId(g.category)}>
+                  <p
+                    id={groupId(g.category)}
+                    className="px-3 pt-2 pb-1 text-xs font-medium text-muted-foreground"
+                  >
+                    {g.category}
+                  </p>
+                  {g.items.map((c) => {
+                    const i = results.indexOf(c);
+                    return (
+                      <div
+                        key={c.slug}
+                        id={`search-${c.slug}`}
+                        role="option"
+                        aria-selected={i === active}
+                        data-index={i}
+                        onMouseMove={() => setActive(i)}
+                        onClick={() => go(c.slug)}
+                        className={`flex cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm ${
+                          i === active ? "bg-muted text-foreground" : "text-foreground/80"
+                        }`}
+                      >
+                        <span className="min-w-0 flex-1 truncate font-medium">{c.name}</span>
+                        {c.access === "premium" ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-medium text-muted-foreground">
+                            {c.locked ? <Lock className="size-2.5" aria-label="Locked" /> : null}
+                            Pro
+                          </span>
+                        ) : null}
+                        {i === active ? (
+                          <CornerDownLeft
+                            className="size-3.5 text-muted-foreground/70"
+                            aria-hidden
+                          />
+                        ) : null}
+                      </div>
+                    );
+                  })}
+                </div>
               ))}
-            </ul>
+              {total > results.length ? (
+                <p className="px-3 pt-2 pb-1 text-xs text-muted-foreground">
+                  Showing {results.length} of {total}. Keep typing to narrow down, or{" "}
+                  <button
+                    type="button"
+                    className="font-medium text-foreground underline-offset-2 hover:underline"
+                    onClick={() => {
+                      onClose();
+                      navigate(
+                        `/components${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ""}`,
+                      );
+                    }}
+                  >
+                    see all results
+                  </button>
+                  .
+                </p>
+              ) : null}
+            </div>
           )}
         </div>
       </div>

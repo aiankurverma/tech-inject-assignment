@@ -63,6 +63,9 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
             access: b.access,
             version: b.version,
             locked: decision.allowed ? null : decision.reason,
+            // ISO dates for "newest" sorting; cached docs may hold strings, so normalise.
+            createdAt: isoDate(d.createdAt),
+            publishedAt: isoDate(d.publishedAt),
           };
         });
     },
@@ -119,6 +122,13 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
       });
     },
   };
+}
+
+/** ISO string for a Date or cached date string; null when missing or invalid. */
+export function isoDate(v: Date | string | undefined | null): string | null {
+  if (!v) return null;
+  const d = new Date(v);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString();
 }
 
 /** What the sandboxed preview iframe needs to render a bundle. */
