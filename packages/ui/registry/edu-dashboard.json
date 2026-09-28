@@ -1,0 +1,53 @@
+{
+  "name": "Edu Dashboard",
+  "slug": "edu-dashboard",
+  "description": "Per-term institution overview with enrollment, retention, attendance and fee-collection KPIs vs. prior term, program fill, receivables aging and at-risk students.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/edu-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Term overview",
+      "file": "edu-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "terms",
+      "type": "EduTermStats[]",
+      "description": "Oldest first: { term, programs, attendanceTrend, billedCents, collectedCents, aging?, atRisk }",
+      "required": true
+    },
+    {
+      "name": "term / defaultTerm / onTermChange",
+      "type": "string",
+      "description": "Selected term (defaults to latest)",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onOpenStudent",
+      "type": "(id) => void",
+      "description": "At-risk row click",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "name": "ATS Interviews",
+  "slug": "ats-interviews",
+  "description": "Interview loop tracker grouped by day with live, awaiting-feedback and SLA-overdue scorecard states, panel consensus verdicts and one-click reminders.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/ats-interviews.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Interview schedule",
+      "file": "ats-interviews-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "interviews",
+      "type": "Interview[]",
+      "description": "{ id, candidate, role, stage, start, durationMin, location?, panel: { name, focus?, recommendation?, score? }[], canceled? }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for status and overdue math",
+      "required": false
+    },
+    {
+      "name": "feedbackSlaHours",
+      "type": "number",
+      "description": "Hours after end before missing scorecards are overdue",
+      "default": "24",
+      "required": false
+    },
+    {
+      "name": "filter / defaultFilter / onFilterChange",
+      "type": "\"upcoming\" | \"feedback\" | \"completed\" | \"all\"",
+      "description": "Controlled or uncontrolled filter",
+      "default": "\"upcoming\"",
+      "required": false
+    },
+    {
+      "name": "onNudge",
+      "type": "(interview, pending) => void",
+      "description": "Remind panelists who owe a scorecard",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(interview) => void",
+      "description": "Row activation",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton rows",
+      "required": false
+    }
+  ],
+  "usage": "panelConsensus(panel) is exported for use in candidate pages."
+}

@@ -284,10 +284,10 @@ Full sections built from primitives and composites.
 
 Opinionated page sets (shell + records + dashboard) per vertical, 4 per industry.
 
-- [x] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
-- [ ] Recruiting: [x] `ats-pipeline`, [x] `ats-candidate`, `ats-interviews`, `ats-dashboard`.
-- [ ] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
-- [ ] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
+- [ ] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
+- [ ] Recruiting: `ats-pipeline`, `ats-candidate`, [x] `ats-interviews`, [x] `ats-dashboard`.
+- [x] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
+- [x] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
 - [ ] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.
 - [ ] SaaS B2B: `saas-accounts`, `saas-renewals`, `saas-health`, `saas-dashboard`.
 - [ ] E-commerce: `shop-customers`, `shop-orders`, `shop-returns`, `shop-dashboard`.

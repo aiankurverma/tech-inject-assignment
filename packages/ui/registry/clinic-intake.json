@@ -1,0 +1,69 @@
+{
+  "name": "Clinic Intake",
+  "slug": "clinic-intake",
+  "description": "Four-step patient intake with demographics, insurance or self-pay, allergy and medication history and typed-signature e-consent; per-step validation, phone masking and focus management.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/clinic-intake.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/stepper.tsx",
+    "components/crm/textarea.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Patient intake",
+      "file": "clinic-intake-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "defaultValues",
+      "type": "Partial<IntakeValues>",
+      "description": "Prefill (e.g. from the booking)",
+      "required": false
+    },
+    {
+      "name": "insurers",
+      "type": "string[]",
+      "description": "Carrier options",
+      "required": false
+    },
+    {
+      "name": "conditionOptions",
+      "type": "string[]",
+      "description": "Condition checklist",
+      "required": false
+    },
+    {
+      "name": "onSubmit",
+      "type": "(values) => void | Promise<void>",
+      "description": "Final submit; a rejected promise shows an error",
+      "required": false
+    },
+    {
+      "name": "onDraftChange",
+      "type": "(values) => void",
+      "description": "Every change, for autosave",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for DOB validation",
+      "required": false
+    }
+  ],
+  "usage": "validateIntake() and formatUsPhone() are exported."
+}
