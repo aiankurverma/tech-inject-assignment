@@ -1,0 +1,77 @@
+{
+  "name": "Quota Gauge",
+  "slug": "quota-gauge",
+  "description": "Semicircle attainment gauge with closed and forecast arcs, time-elapsed pace marker, on-pace/at-risk status and the daily run-rate needed to hit quota.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [],
+  "files": ["components/crm/quota-gauge.tsx"],
+  "examples": [
+    {
+      "title": "Rep and team quotas",
+      "file": "quota-gauge-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "closed",
+      "type": "number",
+      "description": "Closed-won amount",
+      "required": true
+    },
+    {
+      "name": "quota",
+      "type": "number",
+      "description": "Target amount",
+      "required": true
+    },
+    {
+      "name": "forecast",
+      "type": "number",
+      "description": "Weighted open pipeline expected to close",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "periodStart",
+      "type": "Date | string",
+      "description": "Start of the quota period",
+      "required": true
+    },
+    {
+      "name": "periodEnd",
+      "type": "Date | string",
+      "description": "End of the quota period",
+      "required": true
+    },
+    {
+      "name": "asOf",
+      "type": "Date | string",
+      "description": "Reference date for pace",
+      "default": "now",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Number formatting locale",
+      "required": false
+    },
+    {
+      "name": "size",
+      "type": "number",
+      "description": "Pixel width",
+      "default": "220",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

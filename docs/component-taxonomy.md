@@ -174,19 +174,19 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [ ] `bar-chart` — SVG bars.
 - [ ] `line-chart` — SVG line/area.
 - [ ] `donut-chart` — Share breakdown.
-- [ ] `heatmap` — Activity by day/hour.
-- [ ] `leaderboard` — Ranked reps.
-- [ ] `quota-gauge` — Attainment gauge.
-- [ ] `calendar-month` — Month event grid.
-- [ ] `agenda-list` — Upcoming meetings.
-- [ ] `file-list` — Attachments with type icons.
-- [ ] `email-thread` — Collapsible message thread.
-- [ ] `tree-table` — Hierarchical rows.
+- [x] `heatmap` — Activity by day/hour.
+- [x] `leaderboard` — Ranked reps.
+- [x] `quota-gauge` — Attainment gauge.
+- [x] `calendar-month` — Month event grid.
+- [x] `agenda-list` — Upcoming meetings.
+- [x] `file-list` — Attachments with type icons.
+- [x] `email-thread` — Collapsible message thread.
+- [x] `tree-table` — Hierarchical rows.
 
 ### Collaboration (12)
 
-- [ ] `mention-list` — @mention suggestion list.
-- [ ] `comment-thread` — Threaded comments with replies.
+- [x] `mention-list` — @mention suggestion list.
+- [x] `comment-thread` — Threaded comments with replies.
 - [ ] `reaction-bar` — Emoji reactions.
 - [ ] `presence-avatars` — Who is viewing.
 - [ ] `assignee-picker` — Owner selector.

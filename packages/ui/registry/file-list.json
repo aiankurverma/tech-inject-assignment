@@ -1,0 +1,74 @@
+{
+  "name": "File List",
+  "slug": "file-list",
+  "description": "Attachment list with type-aware icons, human file sizes, upload progress, error and retry, sorting, multi-select bulk actions and total size.",
+  "category": "Data display",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": ["components/crm/file-list.tsx"],
+  "examples": [
+    {
+      "title": "Deal attachments",
+      "file": "file-list-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "files",
+      "type": "FileItem[]",
+      "description": "{ id, name, size (bytes), mimeType?, uploadedAt?, uploadedBy?, status?, progress?, error? }",
+      "required": true
+    },
+    {
+      "name": "onOpen",
+      "type": "(file) => void",
+      "description": "File name clicked",
+      "required": false
+    },
+    {
+      "name": "onDownload",
+      "type": "(file) => void",
+      "description": "Download a ready file",
+      "required": false
+    },
+    {
+      "name": "onRemove",
+      "type": "(file) => void",
+      "description": "Remove or cancel upload",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "(file) => void",
+      "description": "Retry a failed upload",
+      "required": false
+    },
+    {
+      "name": "selectable",
+      "type": "boolean",
+      "description": "Enable checkboxes and bulk actions",
+      "required": false
+    },
+    {
+      "name": "onBulkDownload",
+      "type": "(files) => void",
+      "description": "Bulk download selected",
+      "required": false
+    },
+    {
+      "name": "onBulkRemove",
+      "type": "(files) => void",
+      "description": "Bulk remove selected",
+      "required": false
+    },
+    {
+      "name": "defaultSort",
+      "type": "\"date\" | \"name\" | \"size\"",
+      "description": "Initial sort",
+      "default": "\"date\"",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
