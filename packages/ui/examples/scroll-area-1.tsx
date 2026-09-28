@@ -66,13 +66,16 @@ export default function Example() {
   const [loadedOlder, setLoadedOlder] = React.useState(false);
 
   return (
-    <div className="w-full max-w-md space-y-2 font-crm">
+    <div className="w-full max-w-md overflow-hidden rounded-crm border border-crm-border bg-crm-surface font-crm">
+      <div className="flex items-center justify-between border-b border-crm-border px-3 py-2">
+        <p className="text-sm font-medium text-crm-fg">Globex · Billing question</p>
+        <span className="text-xs text-crm-subtle">{msgs.length} messages</span>
+      </div>
       <ScrollArea
         label="Conversation with Globex"
         maxHeight={260}
         stickToBottom
         contentKey={msgs.length}
-        className="rounded-crm border border-crm-border bg-crm-surface"
       >
         <ol className="space-y-2 p-3">
           {!loadedOlder && (
@@ -105,49 +108,51 @@ export default function Example() {
           ))}
         </ol>
       </ScrollArea>
-      <Button
-        size="sm"
-        onClick={() =>
-          setMsgs((prev) => [
-            ...prev,
-            {
-              id: prev.length + 1,
-              from: "customer",
-              name: "Dana (Globex)",
-              text: replies[prev.length % replies.length] ?? "",
-              at: "09:1" + (prev.length % 10),
-            },
-          ])
-        }
-      >
-        Simulate customer reply
-      </Button>
-      <ScrollArea
-        orientation="horizontal"
-        label="Pipeline stages"
-        className="rounded-crm border border-crm-border"
-      >
-        <div className="flex gap-2 p-2">
-          {[
-            "Lead",
-            "Qualified",
-            "Discovery",
-            "Demo",
-            "Proposal",
-            "Negotiation",
-            "Legal",
-            "Closed won",
-            "Closed lost",
-          ].map((s) => (
-            <span
-              key={s}
-              className="shrink-0 rounded-full bg-crm-raised px-3 py-1 text-xs text-crm-soft"
-            >
-              {s}
-            </span>
-          ))}
-        </div>
-      </ScrollArea>
+      <div className="flex items-center justify-between gap-2 border-t border-crm-border px-3 py-2">
+        <span className="text-xs text-crm-subtle">SLA 4h · first reply met</span>
+        <Button
+          size="sm"
+          variant="secondary"
+          onClick={() =>
+            setMsgs((prev) => [
+              ...prev,
+              {
+                id: prev.length + 1,
+                from: "customer",
+                name: "Dana (Globex)",
+                text: replies[prev.length % replies.length] ?? "",
+                at: "09:1" + (prev.length % 10),
+              },
+            ])
+          }
+        >
+          Simulate customer reply
+        </Button>
+      </div>
+      <div className="border-t border-crm-border [mask-image:linear-gradient(to_right,black_calc(100%-32px),transparent)]">
+        <ScrollArea orientation="horizontal" label="Pipeline stages">
+          <div className="flex gap-2 p-2 pr-8">
+            {[
+              "Lead",
+              "Qualified",
+              "Discovery",
+              "Demo",
+              "Proposal",
+              "Negotiation",
+              "Legal",
+              "Closed won",
+              "Closed lost",
+            ].map((s) => (
+              <span
+                key={s}
+                className="shrink-0 rounded-full bg-crm-raised px-3 py-1 text-xs text-crm-soft"
+              >
+                {s}
+              </span>
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
     </div>
   );
 }

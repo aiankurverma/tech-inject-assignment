@@ -97,19 +97,28 @@ export function TerritoryMap({
   const rows = Math.max(1, ...territories.map((t) => t.row + 1));
   const byPos = new Map(territories.map((t) => [`${t.col}:${t.row}`, t]));
 
+  const heat = [
+    "bg-crm-primary/15",
+    "bg-crm-primary/25",
+    "bg-crm-primary/40",
+    "bg-crm-primary/55",
+    "bg-crm-primary/70",
+    "bg-crm-primary/85",
+  ];
   const shade = (t: Territory) => {
     const v = value(t);
     if (mt === "attainment") {
-      const tone =
-        v >= 1 ? "--color-crm-success" : v >= 0.75 ? "--color-crm-warning" : "--color-crm-danger";
-      return {
-        background: `color-mix(in oklab, var(${tone}) ${Math.round(30 + Math.min(1, Math.abs(1 - v) + 0.2) * 50)}%, transparent)`,
-      };
+      return v >= 1
+        ? "border-crm-success/60 bg-crm-success/35"
+        : v >= 0.75
+          ? "border-crm-warning/60 bg-crm-warning/30"
+          : "border-crm-danger/60 bg-crm-danger/30";
     }
     const r = max === min ? 1 : (v - min) / (max - min);
-    return {
-      background: `color-mix(in oklab, var(--color-crm-primary) ${Math.round(10 + r * 75)}%, transparent)`,
-    };
+    return cn(
+      "border-crm-primary/50",
+      heat[Math.min(heat.length - 1, Math.floor(r * heat.length))],
+    );
   };
 
   const ranked = [...territories].sort((a, b) => value(b) - value(a));
@@ -178,7 +187,7 @@ export function TerritoryMap({
           No territories defined. Create territories to assign accounts and quota.
         </p>
       ) : (
-        <div className="grid gap-3 lg:grid-cols-[1fr_280px]">
+        <div className="grid items-start gap-3 lg:grid-cols-[1fr_280px]">
           <div className="rounded-crm border border-crm-border bg-crm-card p-4 shadow-crm-raised">
             <div
               role="group"
@@ -188,7 +197,15 @@ export function TerritoryMap({
             >
               {Array.from({ length: rows * cols }, (_, i) => {
                 const t = byPos.get(`${i % cols}:${Math.floor(i / cols)}`);
-                if (!t) return <span key={i} aria-hidden className="aspect-square" />;
+                if (!t)
+                  return (
+                    <span
+                      key={i}
+                      aria-hidden
+                      className="rounded-sm border border-dashed border-crm-border/60"
+                      style={{ aspectRatio: "1 / 1" }}
+                    />
+                  );
                 const isSel = t.code === sel;
                 return (
                   <button
@@ -203,9 +220,11 @@ export function TerritoryMap({
                     title={`${t.name} · ${fmt(t)}`}
                     onClick={() => select(isSel ? null : t.code)}
                     onKeyDown={(e) => onKey(e, t)}
-                    style={shade(t)}
+                    style={{ aspectRatio: "1 / 1" }}
                     className={cn(
-                      "flex aspect-square min-w-0 flex-col items-center justify-center rounded-sm text-[10px] leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-ring sm:text-xs",
+                      "flex min-h-10 min-w-0 cursor-pointer flex-col items-center justify-center rounded-md border text-[10px] text-crm-fg transition-transform hover:scale-[1.04]",
+                      shade(t),
+                      "leading-tight outline-none focus-visible:ring-2 focus-visible:ring-crm-ring sm:text-xs",
                       isSel && "ring-2 ring-crm-fg",
                     )}
                   >
@@ -283,7 +302,7 @@ export function TerritoryMap({
                     )}
                   >
                     <span className="w-4 text-crm-faint tabular-nums">{i + 1}</span>
-                    <span className="size-2.5 rounded-sm" style={shade(t)} aria-hidden />
+                    <span className={cn("size-2.5 rounded-sm border", shade(t))} aria-hidden />
                     <span className="flex-1 truncate">{t.name}</span>
                     <span className="font-medium tabular-nums">{fmt(t)}</span>
                   </button>
