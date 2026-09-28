@@ -1,0 +1,56 @@
+{
+  "name": "Field Service Dashboard",
+  "slug": "fs-dashboard",
+  "description": "Field operations dashboard computing completion, average response, SLA breach rate and first-time-fix per region, with jobs by type, backlog aging and a tech leaderboard.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/fs-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Operations overview",
+      "file": "fs-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "visits",
+      "type": "ServiceVisit[]",
+      "description": "{ id, region, technician, jobType, createdAt, arrivedAt?, completedAt?, slaHours, returnVisit?, revenue }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference time for SLA and backlog aging",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ]
+}

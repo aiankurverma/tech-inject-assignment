@@ -1,0 +1,69 @@
+{
+  "name": "Nonprofit Dashboard",
+  "slug": "np-dashboard",
+  "description": "Development dashboard over a configurable fiscal year: raised vs same point last year, donor retention, new donors, recurring monthly revenue, monthly comparison and fund mix.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/np-dashboard.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/segmented-control.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Fiscal year overview",
+      "file": "np-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "gifts",
+      "type": "Gift[]",
+      "description": "{ donorId, date, amount, fund, recurring? }",
+      "required": true
+    },
+    {
+      "name": "fiscalStartMonth",
+      "type": "number",
+      "description": "Month the fiscal year starts (1–12)",
+      "default": "7",
+      "required": false
+    },
+    {
+      "name": "goal",
+      "type": "number",
+      "description": "Annual goal for progress caption",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "fiscalYear(date, startMonth) is exported."
+}

@@ -1,0 +1,84 @@
+{
+  "name": "Shop Returns",
+  "slug": "shop-returns",
+  "description": "E-commerce RMA queue with status workflow, return-window checks, restocking/damage fee math, store-credit bonus and defective-shipping refunds.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/shop-returns.tsx",
+    "components/crm/button.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Return requests queue",
+      "file": "shop-returns-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "returns",
+      "type": "ReturnRequest[]",
+      "description": "{ id, orderId, customer, email, deliveredAt, requestedAt, status, resolution, lines[], shipping? }",
+      "required": true
+    },
+    {
+      "name": "onStatusChange",
+      "type": "(id, status, refund) => void",
+      "description": "Fires when a return is approved, received, refunded or rejected",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Locale for number formatting",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "windowDays",
+      "type": "number",
+      "description": "Return window from delivery",
+      "default": "30",
+      "required": false
+    },
+    {
+      "name": "restockingFeePct",
+      "type": "number",
+      "description": "Fee on opened non-defective items",
+      "default": "15",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for waiting/window checks",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton rows",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "computeRefund(return, feePct) is exported for server-side parity."
+}

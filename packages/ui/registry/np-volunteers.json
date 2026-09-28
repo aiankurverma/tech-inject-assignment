@@ -1,0 +1,57 @@
+{
+  "name": "Nonprofit Volunteers",
+  "slug": "np-volunteers",
+  "description": "Volunteer shift scheduler with fill rates, ranked suggestions and eligibility checks for background checks, skills, weekday availability and double-booking.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/np-volunteers.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Shift sign-ups",
+      "file": "np-volunteers-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "volunteers",
+      "type": "Volunteer[]",
+      "description": "{ id, name, skills, availability, hoursYtd, backgroundCheckExpires? }",
+      "required": true
+    },
+    {
+      "name": "shifts",
+      "type": "VolunteerShift[]",
+      "description": "{ id, role, location, date, startHour, hours, capacity, requiredSkill?, requiresCheck?, volunteerIds }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date (past shifts are locked)",
+      "required": false
+    },
+    {
+      "name": "onShiftsChange",
+      "type": "(shifts) => void",
+      "description": "Called after each add/remove",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root section",
+      "required": false
+    }
+  ],
+  "usage": "eligibility(volunteer, shift, allShifts, now) is exported."
+}
