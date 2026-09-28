@@ -1,0 +1,62 @@
+{
+  "name": "Currency Switcher",
+  "slug": "currency-switcher",
+  "description": "Display-currency picker with search, pinned favourites, per-currency converted preview, keyboard listbox and a stale-rate warning; exports convertAmount and formatMoney.",
+  "category": "Commerce and billing",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-popover", "lucide-react"],
+  "files": ["components/crm/currency-switcher.tsx"],
+  "examples": [
+    {
+      "title": "Default",
+      "file": "currency-switcher-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "currencies",
+      "type": "CurrencyOption[]",
+      "description": "Code, name, rate per 1 base unit, optional flag",
+      "required": true
+    },
+    {
+      "name": "baseCurrency",
+      "type": "string",
+      "description": "Currency the stored amounts use",
+      "required": true
+    },
+    {
+      "name": "value / defaultValue / onValueChange",
+      "type": "string",
+      "description": "Controlled or uncontrolled selected code",
+      "required": false
+    },
+    {
+      "name": "favorites",
+      "type": "string[]",
+      "description": "Codes pinned to the top",
+      "required": false
+    },
+    {
+      "name": "previewAmount",
+      "type": "number",
+      "description": "Base amount previewed in every option",
+      "required": false
+    },
+    {
+      "name": "ratesAsOf / staleAfterHours",
+      "type": "Date / number",
+      "description": "Rate timestamp; warns when older than the threshold",
+      "required": false,
+      "default": "24"
+    },
+    {
+      "name": "loading / disabled",
+      "type": "boolean",
+      "description": "Busy or disabled trigger",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

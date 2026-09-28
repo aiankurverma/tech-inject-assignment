@@ -1,0 +1,65 @@
+{
+  "name": "Split Shell",
+  "slug": "shell-split",
+  "description": "List/detail layout with a pointer- and keyboard-resizable divider (clamped, double-click reset), empty detail state and a single-pane master/detail flow with back button on narrow containers.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/shell-split.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Support inbox",
+      "file": "shell-split-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "list / detail",
+      "type": "ReactNode",
+      "description": "Pane contents",
+      "required": true
+    },
+    {
+      "name": "listHeader / detailHeader / emptyDetail",
+      "type": "ReactNode",
+      "description": "Pane chrome",
+      "required": false
+    },
+    {
+      "name": "detailOpen / onCloseDetail",
+      "type": "boolean / () => void",
+      "description": "Selection state",
+      "required": true
+    },
+    {
+      "name": "size / defaultSize / onSizeChange",
+      "type": "number",
+      "description": "List width in px",
+      "required": false,
+      "default": "360"
+    },
+    {
+      "name": "minSize / maxSize",
+      "type": "number",
+      "description": "Clamp",
+      "required": false,
+      "default": "260 / 640"
+    },
+    {
+      "name": "stackBelow",
+      "type": "number",
+      "description": "Container width that switches to one pane",
+      "required": false,
+      "default": "768"
+    }
+  ],
+  "usage": ""
+}

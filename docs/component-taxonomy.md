@@ -210,10 +210,10 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [ ] `order-summary` — Totals block.
 - [ ] `subscription-status` — Active/past due/cancelled.
 - [ ] `product-picker` — Catalog search + add.
-- [ ] `currency-switcher` — Change display currency.
-- [ ] `tax-breakdown` — Tax lines.
-- [ ] `receipt` — Printable receipt.
-- [ ] `upgrade-banner` — Upsell prompt.
+- [x] `currency-switcher` — Change display currency.
+- [x] `tax-breakdown` — Tax lines.
+- [x] `receipt` — Printable receipt.
+- [x] `upgrade-banner` — Upsell prompt.
 
 ## 3. Blocks (100)
 
@@ -221,8 +221,8 @@ Full sections built from primitives and composites.
 
 ### App shells (10)
 
-- [ ] `shell-sidebar` · [ ] `shell-topnav` · [ ] `shell-split` · [ ] `shell-settings` ·
-      [ ] `shell-mobile` · [ ] `shell-auth` · [ ] `shell-onboarding` · [ ] `shell-admin` ·
+- [x] `shell-sidebar` · [x] `shell-topnav` · [x] `shell-split` · [x] `shell-settings` ·
+      [x] `shell-mobile` · [x] `shell-auth` · [ ] `shell-onboarding` · [ ] `shell-admin` ·
       [ ] `shell-inbox` · [ ] `shell-docs` — application layouts.
 
 ### Dashboards (15)

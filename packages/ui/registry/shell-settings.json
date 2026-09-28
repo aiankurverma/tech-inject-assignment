@@ -1,0 +1,66 @@
+{
+  "name": "Settings Shell",
+  "slug": "shell-settings",
+  "description": "Settings layout with searchable grouped nav (select on mobile), page header, sticky unsaved-changes bar with save/discard and Ctrl/Cmd+S, and a guard when leaving a dirty page.",
+  "category": "App shells",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/shell-settings.tsx",
+    "components/crm/button.tsx",
+    "components/crm/input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/select.tsx",
+    "components/crm/settings-row.tsx",
+    "components/crm/switch.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Workspace settings",
+      "file": "shell-settings-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "pages",
+      "type": "SettingsPage[]",
+      "description": "id, label, group, icon, description, keywords, badge, disabled",
+      "required": true
+    },
+    {
+      "name": "activeId / defaultActiveId / onNavigate",
+      "type": "string",
+      "description": "Current page",
+      "required": false
+    },
+    {
+      "name": "dirty / saving / saveError",
+      "type": "boolean / string",
+      "description": "Save bar state",
+      "required": false
+    },
+    {
+      "name": "onSave / onDiscard",
+      "type": "() => void",
+      "description": "Save bar actions",
+      "required": false
+    },
+    {
+      "name": "confirmLeave",
+      "type": "() => boolean",
+      "description": "Guard for dirty navigation; defaults to window.confirm",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Nav title",
+      "required": false,
+      "default": "\"Settings\""
+    }
+  ],
+  "usage": ""
+}
