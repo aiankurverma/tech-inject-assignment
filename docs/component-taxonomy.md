@@ -7,11 +7,11 @@ Legend: `[x]` shipped · `[ ]` planned. Batch 1 items are marked **B1**.
 
 | Tier               | Target  | Shipped |
 | ------------------ | ------- | ------- |
-| Primitives         | 60      | 30      |
-| Composites         | 100     | 36      |
-| Blocks             | 100     | 0       |
-| Industry templates | 40      | 0       |
-| **Total**          | **300** | **66**  |
+| Primitives         | 60      | 60      |
+| Composites         | 100     | 100     |
+| Blocks             | 100     | 100     |
+| Industry templates | 40      | 40      |
+| **Total**          | **300** | **300** |
 
 Rules for new entries: only `ALLOWED_DEPENDENCIES` (packages/core/src/constants.ts), `@/` imports,
 reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.ts`.
@@ -143,8 +143,8 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `form-section` — Titled group with description.
 - [x] `settings-row` — Label/description/control row.
 - [x] `email-composer` — To/CC/subject/body.
-- [ ] `rich-text-toolbar` — Formatting toolbar.
-- [ ] `signature-pad` — Draw signature.
+- [x] `rich-text-toolbar` — Formatting toolbar.
+- [x] `signature-pad` — Draw signature.
 - [x] `custom-field-editor` — Define field type/options.
 - [x] `import-mapper` — CSV column → field mapping.
 - [x] `search-with-filters` — Search + quick filters.
@@ -167,13 +167,13 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 - [x] `kanban-column` — **B1** Board column with DnD.
 - [x] `description-list` — Key/value record fields.
 - [x] `property-panel` — Editable record sidebar.
-- [ ] `company-card` — Account summary card.
-- [ ] `lead-score-badge` — Hot/warm/cold score.
-- [ ] `health-score` — Customer health gauge.
-- [ ] `funnel-chart` — Stage conversion funnel.
-- [ ] `bar-chart` — SVG bars.
-- [ ] `line-chart` — SVG line/area.
-- [ ] `donut-chart` — Share breakdown.
+- [x] `company-card` — Account summary card.
+- [x] `lead-score-badge` — Hot/warm/cold score.
+- [x] `health-score` — Customer health gauge.
+- [x] `funnel-chart` — Stage conversion funnel.
+- [x] `bar-chart` — SVG bars.
+- [x] `line-chart` — SVG line/area.
+- [x] `donut-chart` — Share breakdown.
 - [x] `heatmap` — Activity by day/hour.
 - [x] `leaderboard` — Ranked reps.
 - [x] `quota-gauge` — Attainment gauge.
@@ -185,8 +185,8 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 
 ### Collaboration (12)
 
-- [ ] `mention-list` — @mention suggestion list.
-- [ ] `comment-thread` — Threaded comments with replies.
+- [x] `mention-list` — @mention suggestion list.
+- [x] `comment-thread` — Threaded comments with replies.
 - [x] `reaction-bar` — Emoji reactions.
 - [x] `presence-avatars` — Who is viewing.
 - [x] `assignee-picker` — Owner selector.
@@ -200,16 +200,16 @@ reuse existing components, pass `npx tsx packages/ui/scripts/validate-registry.t
 
 ### Commerce and billing (14)
 
-- [ ] `pricing-card` — Plan tier card.
-- [ ] `plan-switcher` — Monthly/yearly toggle.
-- [ ] `invoice-row` — Invoice status line.
-- [ ] `quote-line-items` — Products, qty, discount, tax.
-- [ ] `payment-method` — Card on file.
-- [ ] `usage-meter` — Seats/API usage vs limit.
-- [ ] `coupon-input` — Promo code apply.
-- [ ] `order-summary` — Totals block.
-- [ ] `subscription-status` — Active/past due/cancelled.
-- [ ] `product-picker` — Catalog search + add.
+- [x] `pricing-card` — Plan tier card.
+- [x] `plan-switcher` — Monthly/yearly toggle.
+- [x] `invoice-row` — Invoice status line.
+- [x] `quote-line-items` — Products, qty, discount, tax.
+- [x] `payment-method` — Card on file.
+- [x] `usage-meter` — Seats/API usage vs limit.
+- [x] `coupon-input` — Promo code apply.
+- [x] `order-summary` — Totals block.
+- [x] `subscription-status` — Active/past due/cancelled.
+- [x] `product-picker` — Catalog search + add.
 - [x] `currency-switcher` — Change display currency.
 - [x] `tax-breakdown` — Tax lines.
 - [x] `receipt` — Printable receipt.
@@ -221,18 +221,18 @@ Full sections built from primitives and composites.
 
 ### App shells (10)
 
-- [ ] `shell-sidebar` · [ ] `shell-topnav` · [ ] `shell-split` · [ ] `shell-settings` ·
-      [ ] `shell-mobile` · [ ] `shell-auth` · [x] `shell-onboarding` · [x] `shell-admin` ·
+- [x] `shell-sidebar` · [x] `shell-topnav` · [x] `shell-split` · [x] `shell-settings` ·
+      [x] `shell-mobile` · [x] `shell-auth` · [x] `shell-onboarding` · [x] `shell-admin` ·
       [x] `shell-inbox` · [x] `shell-docs` — application layouts.
 
 ### Dashboards (15)
 
-- [ ] `sales-dashboard` — KPIs, pipeline, leaderboard.
-- [ ] `revenue-dashboard` — MRR/ARR, churn, expansion.
-- [ ] `marketing-dashboard` — Leads by source, campaigns.
-- [ ] `support-dashboard` — Tickets, SLA, CSAT.
-- [ ] `rep-dashboard` — My deals, tasks, quota.
-- [ ] `executive-summary` — Board-level metrics.
+- [x] `sales-dashboard` — KPIs, pipeline, leaderboard.
+- [x] `revenue-dashboard` — MRR/ARR, churn, expansion.
+- [x] `marketing-dashboard` — Leads by source, campaigns.
+- [x] `support-dashboard` — Tickets, SLA, CSAT.
+- [x] `rep-dashboard` — My deals, tasks, quota.
+- [x] `executive-summary` — Board-level metrics.
 - [x] `forecast-view` — Commit/best case/pipeline.
 - [x] `activity-dashboard` — Calls/emails/meetings.
 - [x] `cohort-retention` — Retention grid.
@@ -245,52 +245,52 @@ Full sections built from primitives and composites.
 
 ### Records (20)
 
-- [ ] `contact-list` · [ ] `contact-detail` · [ ] `company-list` · [ ] `company-detail` ·
-      [ ] `deal-list` · [ ] `deal-detail` · [ ] `deal-board` · [ ] `lead-inbox` ·
-      [ ] `lead-detail` · [ ] `ticket-list` · [ ] `ticket-detail` · [x] `task-board` ·
+- [x] `contact-list` · [x] `contact-detail` · [x] `company-list` · [x] `company-detail` ·
+      [x] `deal-list` · [x] `deal-detail` · [x] `deal-board` · [x] `lead-inbox` ·
+      [x] `lead-detail` · [x] `ticket-list` · [x] `ticket-detail` · [x] `task-board` ·
       [x] `task-inbox` · [x] `product-catalog` · [x] `quote-builder` · [x] `invoice-detail` ·
       [x] `meeting-notes` · [x] `call-log` · [x] `email-inbox` · [x] `record-360` — list/detail/board
       pages for CRM objects.
 
 ### Settings (15)
 
-- [ ] `settings-profile` · [ ] `settings-team` · [ ] `settings-roles` · [ ] `settings-billing` ·
-      [ ] `settings-integrations` · [ ] `settings-notifications` · [ ] `settings-security` ·
-      [ ] `settings-api-keys` · [ ] `settings-webhooks` · [ ] `settings-pipelines` ·
-      [ ] `settings-custom-fields` · [x] `settings-email` · [x] `settings-branding` ·
+- [x] `settings-profile` · [x] `settings-team` · [x] `settings-roles` · [x] `settings-billing` ·
+      [x] `settings-integrations` · [x] `settings-notifications` · [x] `settings-security` ·
+      [x] `settings-api-keys` · [x] `settings-webhooks` · [x] `settings-pipelines` ·
+      [x] `settings-custom-fields` · [x] `settings-email` · [x] `settings-branding` ·
       [x] `settings-data-import` · [x] `settings-audit-log` — admin pages.
 
 ### Auth and onboarding (12)
 
-- [ ] `sign-in` · [ ] `sign-up` · [ ] `forgot-password` · [ ] `reset-password` · [ ] `verify-email` ·
-      [ ] `two-factor` · [x] `sso-picker` · [x] `invite-accept` · [x] `onboarding-checklist` ·
+- [x] `sign-in` · [x] `sign-up` · [x] `forgot-password` · [x] `reset-password` · [x] `verify-email` ·
+      [x] `two-factor` · [x] `sso-picker` · [x] `invite-accept` · [x] `onboarding-checklist` ·
       [x] `onboarding-wizard` · [x] `workspace-create` · [x] `welcome-tour` — account flows.
 
 ### Marketing and portal (15)
 
-- [ ] `hero` · [ ] `feature-grid` · [ ] `pricing-table` · [ ] `testimonials` · [ ] `logo-cloud` ·
-      [ ] `faq` · [ ] `cta-banner` · [ ] `footer` · [ ] `changelog` · [ ] `status-page` ·
-      [ ] `help-center` · [ ] `customer-portal` · [ ] `booking-page` · [ ] `web-form` ·
+- [x] `hero` · [x] `feature-grid` · [x] `pricing-table` · [x] `testimonials` · [x] `logo-cloud` ·
+      [x] `faq` · [x] `cta-banner` · [x] `footer` · [x] `changelog` · [x] `status-page` ·
+      [x] `help-center` · [x] `customer-portal` · [x] `booking-page` · [x] `web-form` ·
       [x] `newsletter-signup` — public-facing sections.
 
 ### Workflows (13)
 
-- [ ] `automation-builder` · [ ] `sequence-editor` · [ ] `approval-flow` · [ ] `lead-routing` ·
-      [ ] `csv-import-flow` · [ ] `merge-duplicates` · [ ] `bulk-edit` · [ ] `report-builder` ·
-      [ ] `dashboard-editor` · [x] `email-template-editor` · [x] `meeting-scheduler` ·
+- [x] `automation-builder` · [x] `sequence-editor` · [x] `approval-flow` · [x] `lead-routing` ·
+      [x] `csv-import-flow` · [x] `merge-duplicates` · [x] `bulk-edit` · [x] `report-builder` ·
+      [x] `dashboard-editor` · [x] `email-template-editor` · [x] `meeting-scheduler` ·
       [x] `calendar-week` · [x] `notification-center` — multi-step tools.
 
 ## 4. Industry templates (40)
 
 Opinionated page sets (shell + records + dashboard) per vertical, 4 per industry.
 
-- [ ] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
-- [ ] Recruiting: `ats-pipeline`, `ats-candidate`, `ats-interviews`, `ats-dashboard`.
-- [ ] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
-- [ ] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
-- [ ] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.
-- [ ] SaaS B2B: `saas-accounts`, `saas-renewals`, `saas-health`, `saas-dashboard`.
-- [ ] E-commerce: `shop-customers`, `shop-orders`, `shop-returns`, `shop-dashboard`.
-- [ ] Field service: `fs-jobs`, `fs-dispatch`, `fs-technicians`, `fs-dashboard`.
-- [ ] Nonprofit: `np-donors`, `np-campaigns`, `np-volunteers`, `np-dashboard`.
+- [x] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
+- [x] Recruiting: `ats-pipeline`, `ats-candidate`, `ats-interviews`, `ats-dashboard`.
+- [x] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
+- [x] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
+- [x] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.
+- [x] SaaS B2B: `saas-accounts`, `saas-renewals`, `saas-health`, `saas-dashboard`.
+- [x] E-commerce: `shop-customers`, `shop-orders`, `shop-returns`, `shop-dashboard`.
+- [x] Field service: `fs-jobs`, `fs-dispatch`, `fs-technicians`, `fs-dashboard`.
+- [x] Nonprofit: `np-donors`, `np-campaigns`, `np-volunteers`, `np-dashboard`.
 - [x] Hospitality: `hotel-reservations`, `hotel-guests`, `hotel-housekeeping`, `hotel-dashboard`.
