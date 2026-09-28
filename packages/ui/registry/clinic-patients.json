@@ -1,0 +1,73 @@
+{
+  "name": "Clinic Patients",
+  "slug": "clinic-patients",
+  "description": "Patient roster with PHI masking, recall-due / balance / allergy segments, sortable columns, keyboard row navigation, currency totals and an allergy-alert detail pane.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/clinic-patients.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Patient roster",
+      "file": "clinic-patients-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "patients",
+      "type": "ClinicPatient[]",
+      "description": "{ id, mrn, name, dob, sex?, phone?, insurer?, lastVisit?, nextAppointment?, recallMonths?, allergies?, conditions?, balanceCents?, primaryProvider? }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for age and recall",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for balances",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "maskPhi",
+      "type": "boolean",
+      "description": "Mask MRNs except on the selected row",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "selectedId / onSelect",
+      "type": "string | null",
+      "description": "Controlled selection",
+      "required": false
+    },
+    {
+      "name": "onBook",
+      "type": "(patient) => void",
+      "description": "Book appointment action",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string",
+      "description": "Loading skeleton and error state",
+      "required": false
+    }
+  ],
+  "usage": "ageFrom() and isRecallDue() helpers are exported."
+}

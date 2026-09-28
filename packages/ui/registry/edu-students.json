@@ -1,0 +1,62 @@
+{
+  "name": "Edu Students",
+  "slug": "edu-students",
+  "description": "Student roster with computed academic standing (dean's list / watch / probation), attendance risk, GPA trend, degree progress, tuition balance and cohort filters.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-select", "lucide-react"],
+  "files": [
+    "components/crm/edu-students.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/select.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Student roster",
+      "file": "edu-students-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "students",
+      "type": "StudentRecord[]",
+      "description": "{ id, studentId, name, cohort, program, gpa, termGpa?, creditsEarned, creditsRequired, attended, sessions, balanceCents?, advisor? }",
+      "required": true
+    },
+    {
+      "name": "attendanceThreshold",
+      "type": "number",
+      "description": "Attendance % that triggers a flag",
+      "default": "80",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(student) => void",
+      "description": "Row activation",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    }
+  ],
+  "usage": "academicStanding() is exported."
+}

@@ -1,0 +1,53 @@
+{
+  "name": "ATS Dashboard",
+  "slug": "ats-dashboard",
+  "description": "Recruiting overview with open-seat, applicant, time-to-hire and offer-acceptance KPIs, stage conversion funnel, applicant source mix and an SLA-ranked open requisitions table.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/ats-dashboard.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/card.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Recruiting dashboard",
+      "file": "ats-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "requisitions",
+      "type": "Requisition[]",
+      "description": "{ id, title, department, recruiter, openedAt, targetDays, headcount, funnel, sources, offersExtended?, offersAccepted?, daysToHire? }",
+      "required": true
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date for days-open",
+      "required": false
+    },
+    {
+      "name": "department / defaultDepartment / onDepartmentChange",
+      "type": "string",
+      "description": "Department filter (\"all\")",
+      "default": "\"all\"",
+      "required": false
+    },
+    {
+      "name": "onOpenRequisition",
+      "type": "(req) => void",
+      "description": "Row click / Enter",
+      "required": false
+    }
+  ]
+}

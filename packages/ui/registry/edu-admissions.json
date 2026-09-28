@@ -1,0 +1,59 @@
+{
+  "name": "Edu Admissions",
+  "slug": "edu-admissions",
+  "description": "Admissions review queue with stage counts, document completeness, program seat caps, yield, decision-deadline countdown and guarded bulk admit / waitlist / decline.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-checkbox",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/edu-admissions.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/checkbox.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/select.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Admissions queue",
+      "file": "edu-admissions-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "applicants / defaultApplicants / onApplicantsChange",
+      "type": "Applicant[]",
+      "description": "{ id, name, program, stage, gpa?, testScore?, documents, submittedAt, scholarship? }",
+      "required": false
+    },
+    {
+      "name": "seats",
+      "type": "Record<string, number>",
+      "description": "Seats per program",
+      "required": false
+    },
+    {
+      "name": "decisionDeadline",
+      "type": "string",
+      "description": "ISO date for the countdown",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference date",
+      "required": false
+    }
+  ]
+}
