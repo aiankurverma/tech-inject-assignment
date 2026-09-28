@@ -1,0 +1,63 @@
+{
+  "name": "Shop Customers",
+  "slug": "shop-customers",
+  "description": "E-commerce customer list with automatic RFM scoring (1–5 per dimension, relative to your base) and segments (champions, loyal, new, at risk, hibernating, lost), segment tiles with revenue share, sortable LTV / AOV / recency columns, repeat-rate totals and a marketing-consent aware segment export.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/shop-customers.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/data-table.tsx"
+  ],
+  "examples": [{ "title": "RFM segments", "file": "shop-customers-1.tsx" }],
+  "props": [
+    {
+      "name": "customers",
+      "type": "ShopCustomer[]",
+      "description": "{ id, name, email, city?, orders, totalSpent, firstOrder, lastOrder, acceptsMarketing }",
+      "required": true
+    },
+    {
+      "name": "today",
+      "type": "Date",
+      "description": "Reference date for recency",
+      "default": "new Date()",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton rows", "required": false },
+    { "name": "error", "type": "string", "description": "Error state message", "required": false },
+    {
+      "name": "onOpenCustomer",
+      "type": "(customer: ShopCustomer) => void",
+      "description": "Open customer record",
+      "required": false
+    },
+    {
+      "name": "onExportSegment",
+      "type": "(segment: RfmSegment | \"all\", customers: ShopCustomer[]) => void",
+      "description": "Shows an export button; receives only opted-in customers",
+      "required": false
+    }
+  ],
+  "usage": "rfmSegments(customers, today) is exported for server-side or report use."
+}

@@ -285,12 +285,12 @@ Full sections built from primitives and composites.
 Opinionated page sets (shell + records + dashboard) per vertical, 4 per industry.
 
 - [ ] Real estate: `re-listings`, `re-lead-board`, `re-showings`, `re-agent-dashboard`.
-- [ ] Recruiting: `ats-pipeline`, `ats-candidate`, [x] `ats-interviews`, [x] `ats-dashboard`.
-- [x] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
-- [x] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
-- [ ] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.
-- [ ] SaaS B2B: `saas-accounts`, `saas-renewals`, `saas-health`, `saas-dashboard`.
-- [ ] E-commerce: `shop-customers`, `shop-orders`, `shop-returns`, `shop-dashboard`.
+- [ ] Recruiting: `ats-pipeline`, `ats-candidate`, `ats-interviews`, `ats-dashboard`.
+- [ ] Healthcare clinic: `clinic-patients`, `clinic-appointments`, `clinic-intake`, `clinic-dashboard`.
+- [ ] Education: `edu-admissions`, `edu-students`, `edu-courses`, `edu-dashboard`.
+- [x] Agency: `agency-clients`, `agency-projects`, `agency-timesheets`, `agency-dashboard`.
+- [x] SaaS B2B: `saas-accounts`, `saas-renewals`, `saas-health`, `saas-dashboard`.
+- [ ] E-commerce: `shop-customers` ✓, `shop-orders` ✓, `shop-returns`, `shop-dashboard`.
 - [ ] Field service: `fs-jobs`, `fs-dispatch`, `fs-technicians`, `fs-dashboard`.
 - [ ] Nonprofit: `np-donors`, `np-campaigns`, `np-volunteers`, `np-dashboard`.
 - [ ] Hospitality: `hotel-reservations`, `hotel-guests`, `hotel-housekeeping`, `hotel-dashboard`.

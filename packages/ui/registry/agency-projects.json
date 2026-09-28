@@ -1,0 +1,73 @@
+{
+  "name": "Agency Projects",
+  "slug": "agency-projects",
+  "description": "Agency project portfolio grouped by phase with budget burn vs. delivered progress, derived health (on track / at risk / over budget / late), client filter, portfolio spend summary and expandable milestones with overdue flags.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react"],
+  "files": [
+    "components/crm/agency-projects.tsx",
+    "components/crm/avatar-group.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [{ "title": "Portfolio by phase", "file": "agency-projects-1.tsx" }],
+  "props": [
+    {
+      "name": "projects",
+      "type": "AgencyProject[]",
+      "description": "{ id, name, client, phase, billing, budget, spent, progress, dueDate, team, milestones? }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO 4217 currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "Date",
+      "description": "Reference date for lateness",
+      "default": "new Date()",
+      "required": false
+    },
+    {
+      "name": "riskMargin",
+      "type": "number",
+      "description": "Points by which budget burn may exceed progress before flagging at risk",
+      "default": "15",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton cards",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "Error message; renders error state",
+      "required": false
+    },
+    {
+      "name": "onOpenProject",
+      "type": "(project: AgencyProject) => void",
+      "description": "Called when a project title is clicked",
+      "required": false
+    }
+  ],
+  "usage": "projectHealth(project, today, margin) is exported so dashboards can reuse the same rule."
+}

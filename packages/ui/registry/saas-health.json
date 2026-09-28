@@ -1,0 +1,73 @@
+{
+  "name": "SaaS Health",
+  "slug": "saas-health",
+  "description": "Customer health workbench: tune five factor weights (usage, adoption, support, sentiment, billing) with live normalisation, re-rank accounts lowest-first, and inspect a driver breakdown showing each factor's point contribution, points lost, trend and the single biggest recovery lever.",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slider", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/saas-health.tsx",
+    "components/crm/button.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/progress.tsx",
+    "components/crm/slider.tsx",
+    "components/crm/sparkline.tsx",
+    "components/crm/tag.tsx"
+  ],
+  "examples": [{ "title": "Tunable health model", "file": "saas-health-1.tsx" }],
+  "props": [
+    {
+      "name": "accounts",
+      "type": "HealthAccount[]",
+      "description": "{ id, name, arr, factors: { usage, adoption, support, sentiment, billing } (0–100), history: number[] }",
+      "required": true
+    },
+    {
+      "name": "weights",
+      "type": "HealthWeights",
+      "description": "Controlled factor weights (normalised)",
+      "required": false
+    },
+    {
+      "name": "defaultWeights",
+      "type": "HealthWeights",
+      "description": "Initial weights",
+      "default": "DEFAULT_HEALTH_WEIGHTS",
+      "required": false
+    },
+    {
+      "name": "onWeightsChange",
+      "type": "(weights: HealthWeights) => void",
+      "description": "Weight change callback",
+      "required": false
+    },
+    {
+      "name": "selectedId",
+      "type": "string",
+      "description": "Controlled selected account id",
+      "required": false
+    },
+    {
+      "name": "onSelectedIdChange",
+      "type": "(id: string) => void",
+      "description": "Selection callback",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    }
+  ],
+  "usage": "healthScore(factors, weights) and DEFAULT_HEALTH_WEIGHTS are exported. Arrow keys move through the account list."
+}

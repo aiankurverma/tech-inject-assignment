@@ -1,0 +1,83 @@
+{
+  "name": "SaaS Accounts",
+  "slug": "saas-accounts",
+  "description": "B2B SaaS account list with ARR, seat utilisation meters, health score, activity recency and derived expansion / churn-risk / dormant signals; plan and signal filters with counts, search, sorting, bulk selection with ARR sum and portfolio totals (ARR-weighted health, ARR at risk).",
+  "category": "Industry templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["lucide-react", "@radix-ui/react-slot"],
+  "files": [
+    "components/crm/saas-accounts.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/feedback.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/tag.tsx",
+    "components/crm/data-table.tsx"
+  ],
+  "examples": [{ "title": "Portfolio with bulk action", "file": "saas-accounts-1.tsx" }],
+  "props": [
+    {
+      "name": "accounts",
+      "type": "SaasAccount[]",
+      "description": "{ id, name, domain, plan, arr, seatsPurchased, seatsActive, health, owner, lastActiveDays, openTickets }",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton rows", "required": false },
+    { "name": "error", "type": "string", "description": "Error state message", "required": false },
+    {
+      "name": "selected",
+      "type": "string[]",
+      "description": "Controlled selection",
+      "required": false
+    },
+    {
+      "name": "defaultSelected",
+      "type": "string[]",
+      "description": "Initial selection",
+      "required": false
+    },
+    {
+      "name": "onSelectedChange",
+      "type": "(ids: string[]) => void",
+      "description": "Selection callback",
+      "required": false
+    },
+    {
+      "name": "onOpenAccount",
+      "type": "(account: SaasAccount) => void",
+      "description": "Open account record",
+      "required": false
+    },
+    {
+      "name": "expansionThreshold",
+      "type": "number",
+      "description": "Seat utilisation 0–1 that flags expansion",
+      "default": "0.9",
+      "required": false
+    },
+    {
+      "name": "bulkActions",
+      "type": "(ids: string[]) => ReactNode",
+      "description": "Actions rendered in the selection bar",
+      "required": false
+    }
+  ],
+  "usage": "accountSignal(account, threshold) is exported: churn-risk when health < 40, dormant after 14 idle days, expansion at seat threshold."
+}
