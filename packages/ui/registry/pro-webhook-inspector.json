@@ -12,6 +12,7 @@
     "@tanstack/react-query",
     "@uiw/react-codemirror",
     "@codemirror/lang-json",
+    "@codemirror/view",
     "date-fns"
   ],
   "files": [

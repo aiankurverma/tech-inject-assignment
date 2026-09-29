@@ -1,5 +1,15 @@
 import { memo, useMemo, useState } from "react";
-import CodeMirror, { EditorView } from "@uiw/react-codemirror";
+import * as ReactCodeMirrorModule from "@uiw/react-codemirror";
+import { EditorView } from "@codemirror/view";
+
+// Some ESM/CJS interop layers (e.g. sandboxed previews) wrap the default export once more.
+type CodeMirrorComponent = typeof ReactCodeMirrorModule.default;
+const cmDefault = ReactCodeMirrorModule.default as unknown as
+  CodeMirrorComponent | { default: CodeMirrorComponent };
+const CodeMirror: CodeMirrorComponent =
+  "default" in cmDefault && cmDefault.default
+    ? cmDefault.default
+    : (cmDefault as CodeMirrorComponent);
 import { json } from "@codemirror/lang-json";
 import { Check, Copy } from "lucide-react";
 import { cn } from "@/lib/utils";
