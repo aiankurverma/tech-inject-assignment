@@ -150,4 +150,6 @@ Notes:
 
 ## Adapted code
 
-None yet.
+- `packages/ui/src/components/crm/pro-web-terminal/xterm-styles.ts` contains a minified copy of
+  `@xterm/xterm@6.0.0` `css/xterm.css` (MIT, Copyright (c) 2017-2019 The xterm.js authors), inlined so
+  the Pro Web Terminal renders without the host bundler handling a CSS import.
