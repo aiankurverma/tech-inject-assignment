@@ -1,0 +1,101 @@
+{
+  "name": "Pro API Playground",
+  "slug": "pro-api-playground",
+  "description": "Postman-style try-it console driven by an OpenAPI 3.x document: virtualised, searchable endpoint tree; bearer / basic / API-key auth; path, query and header params; CodeMirror JSON body with Ajv schema validation; timed fetch with cancel; pretty / raw / headers response views; cURL, JavaScript and Python snippets; persisted request history; resizable panes.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@codemirror/lang-javascript",
+    "@codemirror/lang-json",
+    "@codemirror/lint",
+    "@radix-ui/react-tabs",
+    "@tanstack/react-query",
+    "@tanstack/react-virtual",
+    "@uiw/react-codemirror",
+    "ajv",
+    "lucide-react",
+    "react-resizable-panels"
+  ],
+  "files": [
+    "components/crm/pro-api-playground.tsx",
+    "components/crm/pro-api-playground/openapi.ts",
+    "components/crm/pro-api-playground/snippets.ts",
+    "components/crm/pro-api-playground/request.ts",
+    "components/crm/pro-api-playground/endpoint-tree.tsx",
+    "components/crm/pro-api-playground/json-editor.tsx",
+    "components/crm/pro-api-playground/request-panel.tsx",
+    "components/crm/pro-api-playground/response-panel.tsx",
+    "hooks/use-request-history.ts"
+  ],
+  "examples": [
+    {
+      "title": "Northwind CRM API (90+ endpoints, mocked network)",
+      "file": "pro-api-playground-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "spec",
+      "type": "object | string",
+      "description": "OpenAPI 3.0 / 3.1 document (parsed JSON or JSON string); local $refs are resolved",
+      "required": true
+    },
+    {
+      "name": "fetcher",
+      "type": "(url, init) => Promise<Response>",
+      "description": "Replace window.fetch (proxy through your backend, add tracing, mock)",
+      "required": false
+    },
+    {
+      "name": "defaultServer",
+      "type": "string",
+      "description": "Server URL override (defaults to first servers entry)",
+      "required": false
+    },
+    {
+      "name": "defaultOperation",
+      "type": "string",
+      "description": "Initially selected operation: operationId or \"METHOD /path\"",
+      "required": false
+    },
+    {
+      "name": "historyStorageKey",
+      "type": "string | null",
+      "description": "Persist request history to localStorage under this key (secrets are never stored in snippets)",
+      "required": false
+    },
+    {
+      "name": "historyLimit",
+      "type": "number",
+      "description": "Max history entries (default 50)",
+      "required": false
+    },
+    {
+      "name": "defaultSnippetLanguage",
+      "type": "\"curl\" | \"javascript\" | \"python\"",
+      "description": "Initial code snippet language",
+      "required": false
+    },
+    {
+      "name": "onResponse",
+      "type": "(operation, response) => void",
+      "description": "Fires after each completed request with status, timing and body",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Existing React Query client (private one created otherwise)",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Component height (default 640)",
+      "required": false
+    },
+    { "name": "disabled", "type": "boolean", "description": "Read-only mode", "required": false }
+  ],
+  "usage": "Requests are sent from the browser, so the target API must allow CORS; pass a fetcher to route through a proxy."
+}
