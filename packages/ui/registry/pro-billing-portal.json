@@ -1,0 +1,104 @@
+{
+  "name": "Pro Billing Portal",
+  "slug": "pro-billing-portal",
+  "description": "White-label self-serve billing area: plan switching (monthly/yearly), tokenised payment methods, sortable paginated invoice history with PDF download, zod-validated billing address and tax ID form, usage meters and credit balance. Provider-agnostic API adapter cached with TanStack Query.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "@radix-ui/react-tabs",
+    "@tanstack/react-query",
+    "@tanstack/react-table",
+    "date-fns",
+    "lucide-react",
+    "react-hook-form",
+    "zod"
+  ],
+  "files": [
+    "components/crm/pro-billing-portal.tsx",
+    "components/crm/pro-billing-portal/billing-types.ts",
+    "components/crm/pro-billing-portal/plan-panel.tsx",
+    "components/crm/pro-billing-portal/payment-methods-panel.tsx",
+    "components/crm/pro-billing-portal/invoices-panel.tsx",
+    "components/crm/pro-billing-portal/details-panel.tsx",
+    "components/crm/pro-billing-portal/usage-panel.tsx",
+    "components/crm/button.tsx",
+    "components/crm/tabs.tsx"
+  ],
+  "examples": [{ "title": "SaaS billing portal", "file": "pro-billing-portal-1.tsx" }],
+  "props": [
+    {
+      "name": "api",
+      "type": "BillingApi",
+      "description": "Adapter: getOverview, listInvoices(cursor), changePlan, setDefaultPaymentMethod, removePaymentMethod, updateDetails, optional cancelSubscription / downloadInvoice",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency; amounts are minor units",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale for money and numbers",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "tab",
+      "type": "\"plan\" | \"payment\" | \"invoices\" | \"details\" | \"usage\"",
+      "description": "Controlled active tab",
+      "required": false
+    },
+    {
+      "name": "defaultTab",
+      "type": "BillingTab",
+      "description": "Initial tab when uncontrolled",
+      "default": "\"plan\"",
+      "required": false
+    },
+    {
+      "name": "onTabChange",
+      "type": "(tab: BillingTab) => void",
+      "description": "Tab change callback",
+      "required": false
+    },
+    {
+      "name": "onAddPaymentMethod",
+      "type": "() => void",
+      "description": "Open your provider's hosted card/bank element; shows Add button",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable all mutations (non-admin members)",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share your app's TanStack QueryClient; an isolated one is created otherwise",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading",
+      "default": "\"Billing\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
