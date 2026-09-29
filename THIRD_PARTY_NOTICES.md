@@ -151,3 +151,9 @@ Notes:
 ## Adapted code
 
 None yet.
+
+## Adapted source
+
+- `packages/ui/src/components/crm/pro-workflow-builder/flow-styles.ts` inlines the structural rules of
+  `@xyflow/react/dist/base.css` (MIT, copyright webkid GmbH) so the workflow builder needs no CSS
+  import; colours are themed with CRM tokens.

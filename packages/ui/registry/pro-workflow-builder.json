@@ -1,0 +1,103 @@
+{
+  "name": "Pro Automation Workflow Builder",
+  "slug": "pro-workflow-builder",
+  "description": "Zapier-style trigger / condition / action canvas on React Flow: palette drag-in, typed ports with connection validation (type, fan-out, loops), schema-validated step settings, in-house layered auto-layout, minimap, undo/redo, run-state overlay and JSON import/export.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@xyflow/react",
+    "zustand",
+    "immer",
+    "zod",
+    "react-resizable-panels",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-workflow-builder.tsx",
+    "components/crm/pro-workflow-builder/types.ts",
+    "components/crm/pro-workflow-builder/flow-styles.ts",
+    "components/crm/pro-workflow-builder/validation.ts",
+    "components/crm/pro-workflow-builder/auto-layout.ts",
+    "components/crm/pro-workflow-builder/store.ts",
+    "components/crm/pro-workflow-builder/context.ts",
+    "components/crm/pro-workflow-builder/workflow-node.tsx",
+    "components/crm/pro-workflow-builder/palette.tsx",
+    "components/crm/pro-workflow-builder/config-panel.tsx"
+  ],
+  "examples": [
+    { "title": "Inbound demo routing with test run", "file": "pro-workflow-builder-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "definitions",
+      "type": "NodeDefinition[]",
+      "description": "Step catalogue: type, kind, ports (outputs typed event/flow/error, inputs list accepted types), fields and optional summarize()",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "WorkflowJSON",
+      "description": "Controlled workflow; pass the value from onChange back in",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "WorkflowJSON",
+      "description": "Initial workflow when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(wf: WorkflowJSON) => void",
+      "description": "After every committed edit (not selection or mid-drag)",
+      "required": false
+    },
+    {
+      "name": "runState",
+      "type": "Record<string, NodeRunState>",
+      "description": "Per-node queued/running/success/error/skipped overlay with durations and messages",
+      "required": false
+    },
+    {
+      "name": "onRun",
+      "type": "(wf: WorkflowJSON) => void",
+      "description": "Shows a Test run button, disabled while errors exist",
+      "required": false
+    },
+    {
+      "name": "running",
+      "type": "boolean",
+      "description": "Run in progress",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "View-only canvas; hides the palette",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Builder height",
+      "default": "640",
+      "required": false
+    },
+    {
+      "name": "onImportError",
+      "type": "(errors: string[]) => void",
+      "description": "JSON import was rejected (also shown inline)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Drag steps from the palette (or focus one and press Enter to drop it at the viewport centre). Connections are checked for port type, one edge per output and loops; rejected drops explain why. Ctrl+Z / Ctrl+Shift+Z undo and redo, Delete removes, Ctrl+D duplicates, Ctrl+Shift+L tidies the layout. Imported JSON is validated with zod against workflowJsonSchema and the step catalogue. Auto-layout is a small in-house layered layout (longest-path layering + barycenter sweeps)."
+}
