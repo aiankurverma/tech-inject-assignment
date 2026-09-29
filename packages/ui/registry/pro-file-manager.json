@@ -1,0 +1,108 @@
+{
+  "name": "Pro File Manager",
+  "slug": "pro-file-manager",
+  "description": "Drive-style attachment browser: resizable folder tree (react-arborist), virtualised list (TanStack Table + Virtual) and grid views over 10k+ files, shift/ctrl multi-select, drag into folders, inline rename, sort, search, type filters, drop-to-upload and a preview pane.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "dependencies": [
+    "react-arborist",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "react-dropzone",
+    "react-resizable-panels",
+    "date-fns",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-file-manager.tsx",
+    "components/crm/pro-file-manager/types.ts",
+    "components/crm/pro-file-manager/file-table.ts",
+    "components/crm/pro-file-manager/file-views.tsx",
+    "components/crm/pro-file-manager/folder-tree.tsx",
+    "components/crm/pro-file-manager/preview-pane.tsx",
+    "hooks/use-file-selection.ts"
+  ],
+  "examples": [
+    {
+      "title": "Account drive, 12k files",
+      "file": "pro-file-manager-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "nodes / defaultNodes / onNodesChange",
+      "type": "FileNode[]",
+      "description": "Controlled or uncontrolled flat list of folders and files linked by parentId",
+      "required": false
+    },
+    {
+      "name": "folderId / defaultFolderId / onFolderChange",
+      "type": "string | null",
+      "description": "Controlled or uncontrolled current folder (null is root)",
+      "required": false
+    },
+    {
+      "name": "defaultView",
+      "type": "\"list\" | \"grid\"",
+      "description": "Initial view",
+      "required": false,
+      "default": "\"list\""
+    },
+    {
+      "name": "defaultSort",
+      "type": "{ key: \"name\" | \"modifiedAt\" | \"size\" | \"type\"; desc: boolean }",
+      "description": "Initial sort; folders always first",
+      "required": false
+    },
+    {
+      "name": "onOpenFile",
+      "type": "(node: FileNode) => void",
+      "description": "Double-click / Enter on a file",
+      "required": false
+    },
+    {
+      "name": "onMove",
+      "type": "(ids: string[], folderId: string | null) => void",
+      "description": "Items dropped on a folder, tree node or breadcrumb",
+      "required": false
+    },
+    {
+      "name": "onRename",
+      "type": "(id: string, name: string) => void",
+      "description": "Inline rename committed (validated for duplicates)",
+      "required": false
+    },
+    {
+      "name": "onDelete",
+      "type": "(ids: string[]) => void",
+      "description": "Delete key or toolbar",
+      "required": false
+    },
+    {
+      "name": "onCreateFolder",
+      "type": "(parentId: string | null, name: string) => void",
+      "description": "New folder created",
+      "required": false
+    },
+    {
+      "name": "onUpload",
+      "type": "(files: File[], folderId: string | null) => void",
+      "description": "Files dropped or picked; without it they are added locally",
+      "required": false
+    },
+    {
+      "name": "renderPreview",
+      "type": "(node: FileNode) => ReactNode",
+      "description": "Custom preview body (PDF viewer, video)",
+      "required": false
+    },
+    {
+      "name": "loading / error / readOnly",
+      "type": "boolean / string / boolean",
+      "description": "States",
+      "required": false
+    }
+  ],
+  "usage": "",
+  "access": "free"
+}
