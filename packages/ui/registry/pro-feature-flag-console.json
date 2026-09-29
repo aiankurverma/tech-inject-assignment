@@ -1,0 +1,122 @@
+{
+  "name": "Pro Feature Flag Console",
+  "slug": "pro-feature-flag-console",
+  "description": "LaunchDarkly-style flag console: virtualised flag list with per-environment switches, ordered targeting rules built with react-querybuilder, percentage rollout and multi-thumb variant split (Radix Slider), react-hook-form + zod validation, jsondiffpatch change review before publishing, and a virtualised audit trail.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-slider",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "jsondiffpatch",
+    "lucide-react",
+    "react-hook-form",
+    "react-querybuilder",
+    "zod"
+  ],
+  "files": [
+    "components/crm/pro-feature-flag-console.tsx",
+    "components/crm/pro-feature-flag-console/types.ts",
+    "components/crm/pro-feature-flag-console/modal.tsx",
+    "components/crm/pro-feature-flag-console/flag-list.tsx",
+    "components/crm/pro-feature-flag-console/flag-editor.tsx",
+    "components/crm/pro-feature-flag-console/targeting-rules.tsx",
+    "components/crm/pro-feature-flag-console/rollout-slider.tsx",
+    "components/crm/pro-feature-flag-console/diff-preview.tsx",
+    "components/crm/pro-feature-flag-console/audit-trail.tsx",
+    "hooks/zod-form-resolver.ts",
+    "hooks/use-feature-flags.ts"
+  ],
+  "examples": [
+    { "title": "2,500 flags across three environments", "file": "pro-feature-flag-console-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "environments",
+      "type": "{ key, name, critical? }[]",
+      "description": "Environment columns; critical ones require a reason to toggle",
+      "required": true
+    },
+    {
+      "name": "attributes",
+      "type": "Field[] (react-querybuilder)",
+      "description": "Context attributes usable in targeting rules",
+      "required": true
+    },
+    {
+      "name": "flags / defaultFlags",
+      "type": "FeatureFlag[]",
+      "description": "Controlled or initial flags",
+      "required": false
+    },
+    {
+      "name": "onFlagsChange",
+      "type": "(flags: FeatureFlag[]) => void",
+      "description": "Called on toggle or save",
+      "required": false
+    },
+    {
+      "name": "audit / defaultAudit",
+      "type": "FlagAuditEntry[]",
+      "description": "Controlled or initial audit log, newest first",
+      "required": false
+    },
+    {
+      "name": "onAuditChange",
+      "type": "(audit: FlagAuditEntry[]) => void",
+      "description": "Called when an entry is appended",
+      "required": false
+    },
+    {
+      "name": "onToggle",
+      "type": "(flag, env, enabled, comment?) => Promise<void>",
+      "description": "Persist a toggle; throwing rolls back the optimistic update",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(flag, env, config, { comment, changes }) => Promise<void>",
+      "description": "Persist a reviewed environment config; throwing keeps the draft",
+      "required": false
+    },
+    {
+      "name": "selectedFlag / defaultSelectedFlag / onSelectedFlagChange",
+      "type": "string",
+      "description": "Controlled or uncontrolled selection",
+      "required": false
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Actor recorded in the audit trail",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disables toggles and editing",
+      "required": false
+    },
+    {
+      "name": "loading / error / onRetry",
+      "type": "boolean / ReactNode / () => void",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Console height in px (default 640)",
+      "required": false
+    },
+    {
+      "name": "portalContainer",
+      "type": "HTMLElement | null",
+      "description": "Portal target for dialogs",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
