@@ -1,0 +1,105 @@
+{
+  "name": "Pro Schema ERD Viewer",
+  "slug": "pro-schema-erd",
+  "description": "Entity-relationship diagram viewer on React Flow: table nodes with typed columns and PK/FK/UQ badges, per-column crow's-foot edges showing cardinality and optionality, in-house layered auto-layout, search-to-focus combobox with upstream/downstream lineage highlighting, minimap and data-driven SVG export. Scales to hundreds of tables.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@xyflow/react", "zustand"],
+  "files": [
+    "components/crm/pro-schema-erd.tsx",
+    "components/crm/pro-schema-erd/types.ts",
+    "components/crm/pro-schema-erd/table-node.tsx",
+    "components/crm/pro-schema-erd/relation-edge.tsx",
+    "components/crm/pro-schema-erd/toolbar.tsx",
+    "components/crm/pro-schema-erd/svg-export.ts",
+    "hooks/use-erd-store.ts",
+    "lib/erd-layout.ts"
+  ],
+  "examples": [{ "title": "130-table warehouse schema", "file": "pro-schema-erd-1.tsx" }],
+  "props": [
+    {
+      "name": "tables",
+      "type": "ErdTable[]",
+      "description": "Tables with columns (name, type, pk, fk, nullable, unique, note), optional schema and accent colour",
+      "required": true
+    },
+    {
+      "name": "relations",
+      "type": "ErdRelation[]",
+      "description": "Extra or overriding relations (cardinality, optional, label). FK columns produce relations automatically",
+      "required": false
+    },
+    {
+      "name": "focusedTable",
+      "type": "string | null",
+      "description": "Controlled focused table id",
+      "required": false
+    },
+    {
+      "name": "defaultFocusedTable",
+      "type": "string | null",
+      "description": "Initially focused table when uncontrolled",
+      "default": "null",
+      "required": false
+    },
+    {
+      "name": "onFocusedTableChange",
+      "type": "(id: string | null) => void",
+      "description": "Fires on click, search, Enter or Escape",
+      "required": false
+    },
+    {
+      "name": "defaultLineageMode",
+      "type": "\"both\" | \"upstream\" | \"downstream\"",
+      "description": "Which lineage direction to highlight",
+      "default": "\"both\"",
+      "required": false
+    },
+    {
+      "name": "defaultLineageDepth",
+      "type": "number",
+      "description": "Relation hops highlighted from the focused table",
+      "default": "2",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Canvas height in px",
+      "default": "640",
+      "required": false
+    },
+    {
+      "name": "showMinimap",
+      "type": "boolean",
+      "description": "Show the minimap",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "exportFileName",
+      "type": "string",
+      "description": "Downloaded SVG file name",
+      "default": "\"schema.svg\"",
+      "required": false
+    },
+    {
+      "name": "onExportSvg",
+      "type": "(svg: string) => boolean | void",
+      "description": "Receives the exported SVG; return false to skip the download",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
+    { "name": "error", "type": "string", "description": "Error message", "required": false },
+    {
+      "name": "emptyMessage",
+      "type": "string",
+      "description": "Shown when there are no tables",
+      "required": false
+    },
+    { "name": "title", "type": "string", "description": "Header title", "required": false },
+    { "name": "className", "type": "string", "description": "Root class names", "required": false }
+  ],
+  "usage": "Click a table, pick a search result or press Enter on a focused node to highlight its lineage; Escape or clicking the canvas clears it. Auto-layout re-runs the layered layout; Export SVG downloads a standalone diagram."
+}
