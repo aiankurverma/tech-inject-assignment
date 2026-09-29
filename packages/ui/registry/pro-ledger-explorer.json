@@ -1,0 +1,121 @@
+{
+  "name": "Pro Ledger Explorer",
+  "slug": "pro-ledger-explorer",
+  "description": "Double-entry ledger explorer for 100k+ posting lines: virtualised journal with debit, credit and per-account running balance, chart-of-accounts tree filter (descendants included), grouping by account/month/quarter/year with collapsible subtotals, postings drawer, search, balance check and CSV export.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-slot",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react",
+    "react-arborist"
+  ],
+  "files": [
+    "components/crm/pro-ledger-explorer.tsx",
+    "components/crm/pro-ledger-explorer/ledger-model.ts",
+    "components/crm/pro-ledger-explorer/account-tree.tsx",
+    "components/crm/pro-ledger-explorer/journal-grid.tsx",
+    "components/crm/button.tsx",
+    "components/crm/sheet.tsx"
+  ],
+  "examples": [{ "title": "50k-entry general ledger", "file": "pro-ledger-explorer-1.tsx" }],
+  "props": [
+    {
+      "name": "accounts",
+      "type": "LedgerAccount[]",
+      "description": "Chart of accounts ({ id, code, name, type, parentId })",
+      "required": true
+    },
+    {
+      "name": "entries",
+      "type": "JournalEntry[]",
+      "description": "Balanced journal entries; posting amounts in integer minor units",
+      "required": true
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Intl locale",
+      "default": "\"en-US\"",
+      "required": false
+    },
+    {
+      "name": "selectedAccounts",
+      "type": "string[]",
+      "description": "Controlled account filter",
+      "required": false
+    },
+    {
+      "name": "defaultSelectedAccounts",
+      "type": "string[]",
+      "description": "Initial filter when uncontrolled",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "onSelectedAccountsChange",
+      "type": "(ids: string[]) => void",
+      "description": "Filter change callback",
+      "required": false
+    },
+    {
+      "name": "groupBy",
+      "type": "\"none\" | \"account\" | \"month\" | \"quarter\" | \"year\"",
+      "description": "Controlled grouping",
+      "required": false
+    },
+    {
+      "name": "defaultGroupBy",
+      "type": "GroupBy",
+      "description": "Initial grouping",
+      "default": "\"none\"",
+      "required": false
+    },
+    {
+      "name": "onGroupByChange",
+      "type": "(g: GroupBy) => void",
+      "description": "Grouping change callback",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
+    {
+      "name": "error",
+      "type": "string | null",
+      "description": "Error state message",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry button in error state",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Grid viewport height (px)",
+      "default": "520",
+      "required": false
+    },
+    {
+      "name": "exportFileName",
+      "type": "string",
+      "description": "CSV file name",
+      "default": "\"ledger.csv\"",
+      "required": false
+    },
+    { "name": "className", "type": "string", "description": "Extra classes", "required": false }
+  ],
+  "usage": ""
+}
