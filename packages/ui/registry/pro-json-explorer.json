@@ -1,0 +1,133 @@
+{
+  "name": "Pro JSON Explorer",
+  "slug": "pro-json-explorer",
+  "description": "Virtualised, collapsible JSON tree for multi-megabyte webhook, event and API payloads: in-house path search, copy path/value, type badges, structural diff of two payloads (jsondiffpatch) and inline editing validated against a JSON Schema (ajv).",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@tanstack/react-virtual", "jsondiffpatch", "ajv", "lucide-react"],
+  "files": [
+    "components/crm/pro-json-explorer.tsx",
+    "components/crm/pro-json-explorer/tree-row.tsx",
+    "components/crm/pro-json-explorer/diff-view.tsx",
+    "hooks/use-json-tree.ts",
+    "hooks/use-json-schema.ts",
+    "lib/json-explorer.ts"
+  ],
+  "examples": [{ "title": "Webhook payload explorer", "file": "pro-json-explorer-1.tsx" }],
+  "props": [
+    {
+      "name": "value",
+      "type": "JsonValue",
+      "description": "Controlled document",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "JsonValue",
+      "description": "Uncontrolled initial document",
+      "required": false
+    },
+    {
+      "name": "source",
+      "type": "string",
+      "description": "Raw JSON text, parsed lazily (alternative to value)",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(next: JsonValue) => void",
+      "description": "Called after an edit",
+      "required": false
+    },
+    {
+      "name": "editable",
+      "type": "boolean",
+      "description": "Enable inline value editing",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "schema",
+      "type": "object",
+      "description": "JSON Schema used by ajv to validate edits",
+      "required": false
+    },
+    {
+      "name": "blockInvalidEdits",
+      "type": "boolean",
+      "description": "Reject edits that fail schema validation",
+      "required": false
+    },
+    {
+      "name": "compareTo",
+      "type": "JsonValue",
+      "description": "Second payload; enables diff view",
+      "required": false
+    },
+    {
+      "name": "compareLabels",
+      "type": "[string, string]",
+      "description": "Labels for before/after",
+      "required": false
+    },
+    {
+      "name": "expanded",
+      "type": "string[]",
+      "description": "Controlled expanded JSON pointers",
+      "required": false
+    },
+    {
+      "name": "defaultExpanded",
+      "type": "string[]",
+      "description": "Initial expanded pointers",
+      "required": false
+    },
+    {
+      "name": "onExpandedChange",
+      "type": "(pointers: string[]) => void",
+      "description": "Expansion change callback",
+      "required": false
+    },
+    {
+      "name": "initialDepth",
+      "type": "number",
+      "description": "Depth auto-expanded on load",
+      "required": false
+    },
+    {
+      "name": "onSelect",
+      "type": "(pointer: string, path: string) => void",
+      "description": "Row selection callback",
+      "required": false
+    },
+    {
+      "name": "diffObjectKey",
+      "type": "string",
+      "description": "Key used to match array items in diffs (e.g. id)",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show loading state",
+      "required": false
+    },
+    { "name": "error", "type": "ReactNode", "description": "Show error state", "required": false },
+    { "name": "rowHeight", "type": "number", "description": "Row height in px", "required": false },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Viewport height",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name of the tree",
+      "required": false
+    },
+    { "name": "className", "type": "string", "description": "Extra classes", "required": false }
+  ],
+  "usage": ""
+}
