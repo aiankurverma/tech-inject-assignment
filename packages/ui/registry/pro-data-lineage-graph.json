@@ -1,0 +1,103 @@
+{
+  "name": "Pro Data Lineage Graph",
+  "slug": "pro-data-lineage-graph",
+  "description": "Upstream/downstream data lineage DAG for dbt and data-catalog products: lazy N-level expansion through react-query, column-level lineage tracing, status badges, focus mode, dataset search, minimap and a layered dagre layout that stays smooth at 2k+ nodes.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@xyflow/react",
+    "@tanstack/react-query",
+    "zustand",
+    "@dagrejs/dagre",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-data-lineage-graph.tsx",
+    "components/crm/pro-data-lineage-graph/types.ts",
+    "components/crm/pro-data-lineage-graph/store.ts",
+    "components/crm/pro-data-lineage-graph/layout.ts",
+    "components/crm/pro-data-lineage-graph/context.ts",
+    "components/crm/pro-data-lineage-graph/lineage-node.tsx",
+    "components/crm/pro-data-lineage-graph/toolbar.tsx",
+    "components/crm/pro-data-lineage-graph/details-panel.tsx"
+  ],
+  "examples": [
+    { "title": "dbt project with 2,000 models", "file": "pro-data-lineage-graph-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "rootId",
+      "type": "string",
+      "description": "Dataset the graph centres on; changing it resets the graph",
+      "required": true
+    },
+    {
+      "name": "fetchLineage",
+      "type": "(id, direction, depth, signal?) => Promise<LineagePage>",
+      "description": "Loads `depth` levels upstream or downstream of a dataset; results are cached by react-query",
+      "required": true
+    },
+    {
+      "name": "initialDepth",
+      "type": "number",
+      "description": "Levels loaded in both directions on mount (default 1)",
+      "required": false
+    },
+    {
+      "name": "defaultExpandDepth",
+      "type": "number",
+      "description": "Levels loaded per expand click; changeable from the toolbar (default 1)",
+      "required": false
+    },
+    {
+      "name": "maxDepth",
+      "type": "number",
+      "description": "Depth sent for \"All levels\" (default 50)",
+      "required": false
+    },
+    {
+      "name": "selectedId / onSelectedChange",
+      "type": "string | null / (d: LineageDataset | null) => void",
+      "description": "Controlled or observed selection",
+      "required": false
+    },
+    {
+      "name": "focusId / onFocusChange",
+      "type": "string | null / (id: string | null) => void",
+      "description": "Controlled focus mode: dims everything outside the dataset's full upstream + downstream",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share the app's react-query cache; a private client is created otherwise",
+      "required": false
+    },
+    {
+      "name": "staleTime",
+      "type": "number",
+      "description": "Cache lifetime of expand results in ms (default 5 minutes)",
+      "required": false
+    },
+    {
+      "name": "showMiniMap / showDetails",
+      "type": "boolean",
+      "description": "Toggle the minimap and the selected-dataset panel (default true)",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Canvas height (default 640)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes for the frame",
+      "required": false
+    }
+  ],
+  "usage": "Pass a fetcher returning { nodes, edges } for a dataset's neighbourhood. Set hasUpstream / hasDownstream on datasets that can be expanded further, and add columns plus edge column links for column-level lineage. Keyboard: Tab to a dataset, F focus mode, [ / ] expand upstream / downstream, C toggle columns, Escape clears."
+}
