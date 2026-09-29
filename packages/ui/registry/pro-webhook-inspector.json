@@ -1,0 +1,144 @@
+{
+  "name": "Pro Webhook Event Inspector",
+  "slug": "pro-webhook-inspector",
+  "description": "Webhook delivery inspector: virtualised, sortable log of 10k+ events (TanStack Table + Virtual), endpoint and status filters, a timeline of delivery attempts with HTTP status chips, request/response headers and bodies in a read-only CodeMirror viewer, an HMAC-SHA256 signature verifier with timestamp-skew check, and replay via a React Query mutation.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "lucide-react",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "@tanstack/react-query",
+    "@uiw/react-codemirror",
+    "@codemirror/lang-json",
+    "date-fns"
+  ],
+  "files": [
+    "components/crm/pro-webhook-inspector.tsx",
+    "components/crm/pro-webhook-inspector/types.ts",
+    "components/crm/pro-webhook-inspector/status-chip.tsx",
+    "components/crm/pro-webhook-inspector/event-table.tsx",
+    "components/crm/pro-webhook-inspector/event-detail.tsx",
+    "components/crm/pro-webhook-inspector/code-view.tsx",
+    "components/crm/pro-webhook-inspector/signature-verifier.tsx",
+    "hooks/use-webhook-signature.ts"
+  ],
+  "examples": [
+    {
+      "title": "10,000 signed deliveries across 4 endpoints",
+      "file": "pro-webhook-inspector-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "events",
+      "type": "WebhookEvent[]",
+      "description": "{ id, type, endpointId, createdAt, payload (raw signed body), attempts: WebhookAttempt[], nextRetryAt? }",
+      "required": true
+    },
+    {
+      "name": "endpoints",
+      "type": "WebhookEndpoint[]",
+      "description": "{ id, url, description? } used for the endpoint filter and labels",
+      "required": true
+    },
+    {
+      "name": "onReplay",
+      "type": "(event) => Promise<WebhookAttempt | void>",
+      "description": "Re-sends an event. Resolve with the new attempt to append it to the timeline; reject to show the error. Replay is disabled when omitted",
+      "required": false
+    },
+    {
+      "name": "getSigningSecret",
+      "type": "(endpointId) => string | undefined",
+      "description": "Prefills the signature verifier; hashing happens locally with WebCrypto",
+      "required": false
+    },
+    {
+      "name": "signatureHeader",
+      "type": "string",
+      "description": "Header holding 't=<unix>,v1=<hex>'",
+      "default": "\"Webhook-Signature\"",
+      "required": false
+    },
+    {
+      "name": "toleranceSeconds",
+      "type": "number",
+      "description": "Allowed skew between the signed timestamp and the attempt",
+      "default": "300",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a skeleton",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string | null",
+      "description": "Shows an error state",
+      "required": false
+    },
+    {
+      "name": "onRetryLoad",
+      "type": "() => void",
+      "description": "Retry button in the error state",
+      "required": false
+    },
+    {
+      "name": "endpointId / defaultEndpointId / onEndpointChange",
+      "type": "string | 'all'",
+      "description": "Controlled or uncontrolled endpoint filter",
+      "default": "\"all\"",
+      "required": false
+    },
+    {
+      "name": "outcome / defaultOutcome / onOutcomeChange",
+      "type": "'all' | 'succeeded' | 'retrying' | 'failed' | 'pending'",
+      "description": "Controlled or uncontrolled status filter",
+      "default": "\"all\"",
+      "required": false
+    },
+    {
+      "name": "selectedEventId / defaultSelectedEventId / onSelectedEventChange",
+      "type": "string | null",
+      "description": "Controlled or uncontrolled selected event",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "number",
+      "description": "Reference epoch ms for relative times; defaults to mount time",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Reuse the app's React Query client; one is created otherwise",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Component height in px",
+      "default": "680",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Header title",
+      "default": "\"Webhook deliveries\"",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes for the root",
+      "required": false
+    }
+  ]
+}
