@@ -1,0 +1,100 @@
+{
+  "name": "Pro SQL Console",
+  "slug": "pro-sql-console",
+  "description": "Schema-aware SQL workbench: CodeMirror 6 editor with an in-house SQL tokenizer, table/column/alias autocomplete and lint squiggles with quick fixes, run selection or statement under cursor, cancellable multi-tab queries, searchable history, schema browser, and a virtualised sortable, resizable result grid (100k rows) with keyboard navigation and CSV export.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "dependencies": [
+    "@uiw/react-codemirror",
+    "@codemirror/autocomplete",
+    "@codemirror/lint",
+    "@codemirror/state",
+    "@codemirror/view",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "react-resizable-panels",
+    "papaparse",
+    "date-fns",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-sql-console.tsx",
+    "components/crm/pro-sql-console/types.ts",
+    "components/crm/pro-sql-console/sql-language.ts",
+    "components/crm/pro-sql-console/sql-analysis.ts",
+    "components/crm/pro-sql-console/sql-editor.tsx",
+    "components/crm/pro-sql-console/result-grid.tsx",
+    "components/crm/pro-sql-console/schema-tree.tsx",
+    "components/crm/pro-sql-console/query-history.tsx",
+    "hooks/use-sql-console.ts"
+  ],
+  "examples": [{ "title": "CRM warehouse, 50k-row tables", "file": "pro-sql-console-1.tsx" }],
+  "props": [
+    {
+      "name": "schema",
+      "type": "SqlTable[]",
+      "description": "Tables (name, schema, columns with type/pk/nullable/description, rowCount) driving completion, lint and the schema browser",
+      "required": true
+    },
+    {
+      "name": "onRun",
+      "type": "(sql, { signal }) => Promise<QueryResult>",
+      "description": "Executes SQL. Reject with { message, position? } to show an error with a jump-to link; honour signal to support Cancel",
+      "required": true
+    },
+    {
+      "name": "tabs / defaultTabs / onTabsChange",
+      "type": "QueryTab[]",
+      "description": "Controlled or uncontrolled query tabs; createQueryTab() builds one",
+      "required": false
+    },
+    {
+      "name": "historyKey",
+      "type": "string",
+      "description": "Persist run history in localStorage under this key",
+      "required": false
+    },
+    {
+      "name": "defaultHistory",
+      "type": "HistoryEntry[]",
+      "description": "Initial history entries",
+      "required": false
+    },
+    {
+      "name": "onExport",
+      "type": "(result, sortedRows) => void",
+      "description": "Override the built-in CSV download (papaparse)",
+      "required": false
+    },
+    {
+      "name": "schemaLoading",
+      "type": "boolean",
+      "description": "Skeleton in the schema browser",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable editing and running",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "hideSidebar",
+      "type": "boolean",
+      "description": "Hide the schema/history panel",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Console height",
+      "default": "640",
+      "required": false
+    }
+  ],
+  "usage": "<ProSqlConsole\n  schema={tables}\n  onRun={(sql, { signal }) => api.query(sql, { signal })}\n  historyKey=\"sql-history\"\n/>",
+  "access": "free"
+}
