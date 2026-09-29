@@ -1,0 +1,105 @@
+{
+  "name": "Pro Revenue Forecast Dashboard",
+  "slug": "pro-forecast-dashboard",
+  "description": "Forecast vs quota: stacked closed/commit/best-case/pipeline bars with a quota line, month/quarter/year switcher, change waterfall since the last call, virtualized deal drilldown and accessible table fallbacks for every chart.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "dependencies": [
+    "recharts",
+    "date-fns",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "@radix-ui/react-toggle-group",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-forecast-dashboard.tsx",
+    "components/crm/pro-forecast-dashboard/chart-frame.tsx",
+    "components/crm/pro-forecast-dashboard/deals-table.tsx",
+    "components/crm/pro-forecast-dashboard/forecast-chart.tsx",
+    "components/crm/pro-forecast-dashboard/model.ts",
+    "components/crm/pro-forecast-dashboard/types.ts",
+    "components/crm/pro-forecast-dashboard/waterfall-chart.tsx",
+    "hooks/use-controllable-state.ts"
+  ],
+  "examples": [
+    {
+      "title": "Global forecast",
+      "file": "pro-forecast-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "deals",
+      "type": "ForecastDeal[]",
+      "description": "Deals with category, amount, close date and last-call snapshot",
+      "required": true
+    },
+    {
+      "name": "quota",
+      "type": "(periodStart: Date, g: Granularity) => number | null",
+      "description": "Quota per period",
+      "required": false
+    },
+    {
+      "name": "asOf",
+      "type": "Date",
+      "description": "Forecast reference date",
+      "required": false,
+      "default": "new Date()"
+    },
+    {
+      "name": "fiscalYearStartMonth",
+      "type": "number",
+      "description": "0 = January",
+      "required": false,
+      "default": "0"
+    },
+    {
+      "name": "granularity / defaultGranularity / onGranularityChange",
+      "type": "\"month\" | \"quarter\" | \"year\"",
+      "description": "Period switcher, controlled or uncontrolled",
+      "required": false,
+      "default": "\"quarter\""
+    },
+    {
+      "name": "drill / onDrillChange",
+      "type": "DrillFilter",
+      "description": "Controlled drilldown",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency",
+      "required": false,
+      "default": "\"USD\""
+    },
+    {
+      "name": "snapshotLabel",
+      "type": "string",
+      "description": "Label of the comparison call",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton state",
+      "required": false
+    },
+    {
+      "name": "error / onRetry",
+      "type": "string | null, () => void",
+      "description": "Error state with retry",
+      "required": false
+    },
+    {
+      "name": "onDealClick",
+      "type": "(deal: ForecastDeal) => void",
+      "description": "Row activation in the drilldown",
+      "required": false
+    }
+  ],
+  "usage": "",
+  "access": "free"
+}
