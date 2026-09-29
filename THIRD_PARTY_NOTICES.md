@@ -150,10 +150,9 @@ Notes:
 
 ## Adapted code
 
-None yet.
-
-## Adapted source
-
 - `packages/ui/src/components/crm/pro-workflow-builder/flow-styles.ts` inlines the structural rules of
   `@xyflow/react/dist/base.css` (MIT, copyright webkid GmbH) so the workflow builder needs no CSS
   import; colours are themed with CRM tokens.
+- `packages/ui/src/components/crm/pro-web-terminal/xterm-styles.ts` contains a minified copy of
+  `@xterm/xterm@6.0.0` `css/xterm.css` (MIT, Copyright (c) 2017-2019 The xterm.js authors), inlined so
+  the Pro Web Terminal renders without the host bundler handling a CSS import.
