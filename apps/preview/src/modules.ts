@@ -136,6 +136,7 @@ export const LAZY_MODULES: Record<string, () => Promise<unknown>> = {
   zod: () => import("zod"),
   zustand: () => import("zustand"),
   "zustand/middleware": () => import("zustand/middleware"),
+  "@hookform/resolvers/zod": () => import("@hookform/resolvers/zod"),
   "@codemirror/autocomplete": () => import("@codemirror/autocomplete"),
   "@codemirror/lint": () => import("@codemirror/lint"),
   "@tanstack/react-query": () => import("@tanstack/react-query"),
@@ -183,7 +184,7 @@ export const LAZY_MODULES: Record<string, () => Promise<unknown>> = {
 };
 
 const IMPORT_RE =
-  /(?:import|export)s[^'"]*?froms*["']([^"']+)["']|imports*(s*["']([^"']+)["']s*)|imports+["']([^"']+)["']|requires*(s*["']([^"']+)["']s*)/g;
+  /(?:import|export)\s[^'"]*?from\s*["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)|import\s+["']([^"']+)["']|require\s*\(\s*["']([^"']+)["']\s*\)/g;
 
 /** Resolves every lazy module the given sources import so the synchronous require() finds it. */
 export async function loadModules(sources: string[]): Promise<void> {

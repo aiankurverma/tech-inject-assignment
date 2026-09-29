@@ -1,0 +1,121 @@
+{
+  "name": "Pro Bank Reconciliation",
+  "slug": "pro-bank-reconciliation",
+  "description": "Bank reconciliation workspace: statement and ledger in resizable, virtualised panes (10k+ lines), in-house confidence scorer with bulk accept, click / shift-range / drag many-to-one matching, live difference calculator with optional adjustments, rules created from matches, resolved filters, search and full keyboard support.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-resizable-panels",
+    "@tanstack/react-virtual",
+    "zustand",
+    "date-fns",
+    "@radix-ui/react-slot"
+  ],
+  "files": [
+    "components/crm/pro-bank-reconciliation.tsx",
+    "components/crm/pro-bank-reconciliation/scorer.ts",
+    "components/crm/pro-bank-reconciliation/store.ts",
+    "components/crm/pro-bank-reconciliation/line-list.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "10k-line operating account",
+      "file": "pro-bank-reconciliation-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "bankLines",
+      "type": "BankLine[]",
+      "description": "Statement lines { id, date, description, reference?, amount } in minor units",
+      "required": true
+    },
+    {
+      "name": "bookEntries",
+      "type": "BookEntry[]",
+      "description": "Ledger entries { id, date, description, reference?, account?, amount }",
+      "required": true
+    },
+    {
+      "name": "matches / defaultMatches",
+      "type": "ReconMatch[]",
+      "description": "Controlled / initial matches",
+      "required": false
+    },
+    {
+      "name": "onMatchesChange",
+      "type": "(matches) => void",
+      "description": "Fires whenever matches change",
+      "required": false
+    },
+    {
+      "name": "rules / defaultRules",
+      "type": "ReconRule[]",
+      "description": "Controlled / initial matching rules",
+      "required": false
+    },
+    {
+      "name": "onRulesChange",
+      "type": "(rules) => void",
+      "description": "Fires when rules are created or removed",
+      "required": false
+    },
+    {
+      "name": "tolerance",
+      "type": "number",
+      "description": "Amount tolerance in minor units",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "allowAdjustments",
+      "type": "boolean",
+      "description": "Allow unbalanced matches, recording the difference",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "maxDays",
+      "type": "number",
+      "description": "Max date drift for suggestions",
+      "default": "7",
+      "required": false
+    },
+    {
+      "name": "autoAcceptThreshold",
+      "type": "number",
+      "description": "Confidence needed by Accept suggestions",
+      "default": "0.9",
+      "required": false
+    },
+    {
+      "name": "currency / locale / minorUnits",
+      "type": "string / string / number",
+      "description": "Money formatting",
+      "default": "USD / en-US / 100",
+      "required": false
+    },
+    {
+      "name": "defaultFilter",
+      "type": "\"unresolved\" | \"resolved\" | \"all\"",
+      "description": "Initial filter",
+      "default": "unresolved",
+      "required": false
+    },
+    {
+      "name": "loading / error / onRetry",
+      "type": "boolean / ReactNode / () => void",
+      "description": "Loading skeleton and error state",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Height of the panes",
+      "default": "560",
+      "required": false
+    }
+  ]
+}
