@@ -1,0 +1,154 @@
+{
+  "name": "Pro Ticket Console",
+  "slug": "pro-ticket-console",
+  "description": "Three-pane support inbox: resizable, persisted queue / thread / details panes, a virtualised queue that handles 20k tickets, shift-range multi-select with bulk actions and undo, live business-hours SLA countdowns, j/k/e/# keyboard triage, agent collision indicators and macros.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@date-fns/tz",
+    "@tanstack/react-query",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react",
+    "react-hotkeys-hook",
+    "react-resizable-panels",
+    "@radix-ui/react-slot"
+  ],
+  "files": [
+    "components/crm/pro-ticket-console.tsx",
+    "components/crm/pro-ticket-console/types.ts",
+    "components/crm/pro-ticket-console/business-hours.ts",
+    "components/crm/pro-ticket-console/apply-patch.ts",
+    "components/crm/pro-ticket-console/sla-timer.tsx",
+    "components/crm/pro-ticket-console/ticket-queue.tsx",
+    "components/crm/pro-ticket-console/ticket-thread.tsx",
+    "components/crm/pro-ticket-console/ticket-details.tsx",
+    "components/crm/button.tsx",
+    "hooks/use-shared-clock.ts",
+    "hooks/use-range-selection.ts"
+  ],
+  "examples": [
+    {
+      "title": "20,000-ticket support inbox",
+      "file": "pro-ticket-console-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Signed-in agent; drives 'Mine', assign-to-me and collision filtering",
+      "required": true
+    },
+    {
+      "name": "tickets",
+      "type": "Ticket[]",
+      "description": "Controlled tickets (pair with onTicketsChange)",
+      "required": false
+    },
+    {
+      "name": "defaultTickets",
+      "type": "Ticket[]",
+      "description": "Uncontrolled initial tickets",
+      "required": false
+    },
+    {
+      "name": "onTicketsChange",
+      "type": "(next: Ticket[]) => void",
+      "description": "Called with the next array after any edit, bulk action, macro or undo",
+      "required": false
+    },
+    {
+      "name": "onAction",
+      "type": "(action: TicketBulkAction, ids: string[]) => void",
+      "description": "Semantic action log for syncing to your API",
+      "required": false
+    },
+    {
+      "name": "loadThread",
+      "type": "(ticket) => Promise<TicketMessage[]>",
+      "description": "Loads a conversation; cached per ticket with TanStack Query",
+      "required": false
+    },
+    {
+      "name": "onReply",
+      "type": "(ticketId, body, internal) => void | Promise<void>",
+      "description": "Send handler; reject to roll back the optimistic message",
+      "required": false
+    },
+    {
+      "name": "agents",
+      "type": "string[]",
+      "description": "Assignable agents",
+      "required": false
+    },
+    {
+      "name": "macros",
+      "type": "TicketMacro[]",
+      "description": "Macros: a patch (status, priority, assignee, tags) plus optional canned reply with {{name}}",
+      "required": false
+    },
+    {
+      "name": "businessHours",
+      "type": "BusinessHours",
+      "description": "Team zone, working days, start/end and holidays for SLA maths",
+      "required": false
+    },
+    {
+      "name": "slaPolicy",
+      "type": "Partial<Record<TicketPriority, number>>",
+      "description": "Business minutes to next response per priority",
+      "required": false
+    },
+    {
+      "name": "view / defaultView / onViewChange",
+      "type": "TicketView",
+      "description": "open | mine | unassigned | breaching | solved | all",
+      "required": false
+    },
+    {
+      "name": "activeId / onActiveChange",
+      "type": "string | null",
+      "description": "Controlled open ticket",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable all mutations",
+      "required": false
+    },
+    {
+      "name": "layoutId",
+      "type": "string",
+      "description": "Storage key for the persisted pane layout",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Freeze the SLA clock",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share a QueryClient with the host app",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Root classes",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
