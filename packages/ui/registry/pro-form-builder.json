@@ -1,0 +1,97 @@
+{
+  "name": "Pro Form Builder",
+  "slug": "pro-form-builder",
+  "description": "No-code builder for lead, intake and survey forms: field palette with native drag and drop, multi-page, per-field validation and options, visual conditional logic (react-querybuilder), undo/redo, live preview and Ajv-validated JSON schema output.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@hookform/resolvers",
+    "@radix-ui/react-slot",
+    "ajv",
+    "immer",
+    "lucide-react",
+    "react-dropzone",
+    "react-hook-form",
+    "react-querybuilder",
+    "zod",
+    "zustand"
+  ],
+  "files": [
+    "components/crm/pro-form-builder.tsx",
+    "components/crm/pro-form-builder/store.ts",
+    "components/crm/pro-form-builder/palette.tsx",
+    "components/crm/pro-form-builder/canvas.tsx",
+    "components/crm/pro-form-builder/settings-panel.tsx",
+    "components/crm/pro-form-builder/logic-editor.tsx",
+    "components/crm/pro-form-renderer.tsx",
+    "components/crm/pro-form-renderer/schema.ts",
+    "components/crm/pro-form-renderer/fields.tsx",
+    "hooks/use-form-autosave.ts",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    { "title": "Inbound lead intake (controlled)", "file": "pro-form-builder-1.tsx" },
+    { "title": "Blank form (uncontrolled)", "file": "pro-form-builder-2.tsx" }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "FormSchema",
+      "description": "Controlled schema; pair with onChange",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "FormSchema",
+      "description": "Uncontrolled initial schema (default: empty one-page form)",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(schema: FormSchema) => void",
+      "description": "Called with the new immutable schema after every edit",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(schema: FormSchema) => void | Promise<void>",
+      "description": "Shows a Save button; only called when the schema passes validation",
+      "required": false
+    },
+    {
+      "name": "asyncValidators",
+      "type": "Record<string, AsyncValidator>",
+      "description": "Server checks fields can reference; also used by the live preview",
+      "required": false
+    },
+    {
+      "name": "onPreviewSubmit",
+      "type": "(values) => void",
+      "description": "Receives submissions made in Preview mode",
+      "required": false
+    },
+    {
+      "name": "defaultMode",
+      "type": "\"build\" | \"preview\" | \"json\"",
+      "default": "\"build\"",
+      "description": "Initial tab",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only inspection mode",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "default": "640",
+      "description": "Builder surface height",
+      "required": false
+    },
+    { "name": "className", "type": "string", "required": false }
+  ],
+  "usage": "const [schema, setSchema] = useState(emptySchema(\"Lead intake\"));\n<ProFormBuilder value={schema} onChange={setSchema} onSave={(s) => api.saveForm(s)} />\n// Render anywhere: <ProFormRenderer schema={schema} onSubmit={...} />"
+}
