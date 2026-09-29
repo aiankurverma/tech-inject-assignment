@@ -1,0 +1,134 @@
+{
+  "name": "Pro Deal Pipeline Board",
+  "slug": "pro-pipeline-board",
+  "description": "Production deal pipeline / kanban: virtualised columns of 1k+ cards, stage totals and weighted forecast, WIP limits, rotting-deal flags, owner swimlanes, accessible pointer and keyboard drag and drop with live announcements, and optimistic moves with rollback via TanStack Query.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-query",
+    "@tanstack/react-virtual",
+    "zustand",
+    "motion",
+    "lucide-react",
+    "@radix-ui/react-slot"
+  ],
+  "files": [
+    "components/crm/pro-pipeline-board.tsx",
+    "components/crm/pro-pipeline-board/model.ts",
+    "components/crm/pro-pipeline-board/context.ts",
+    "components/crm/pro-pipeline-board/deal-card.tsx",
+    "components/crm/pro-pipeline-board/stage-cell.tsx",
+    "components/crm/pro-pipeline-board/stage-header.tsx",
+    "components/crm/pro-pipeline-board/board-overlays.tsx",
+    "hooks/use-pipeline-store.ts",
+    "hooks/use-pipeline-dnd.ts",
+    "hooks/use-controllable-state-object.ts",
+    "components/crm/avatar.tsx",
+    "components/crm/button.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx"
+  ],
+  "examples": [
+    { "title": "12,000-deal FY27 pipeline with failing saves", "file": "pro-pipeline-board-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "stages",
+      "type": "PipelineStage[]",
+      "description": "{ id, title, probability 0-1, wipLimit?, rotDays? } in order",
+      "required": true
+    },
+    {
+      "name": "owners",
+      "type": "PipelineOwner[]",
+      "description": "{ id, name, avatarUrl? }; one swimlane each when grouped",
+      "required": true
+    },
+    {
+      "name": "deals / defaultDeals",
+      "type": "PipelineDeal[]",
+      "description": "Controlled or uncontrolled deals: { id, title, company, amount, stageId, ownerId, rank, stageEnteredAt, closeDate?, probability? }",
+      "required": false
+    },
+    {
+      "name": "onDealsChange",
+      "type": "(deals) => void",
+      "description": "Next deals after an optimistic move or a rollback",
+      "required": false
+    },
+    {
+      "name": "onMoveDeal",
+      "type": "(move: DealMove) => Promise<unknown>",
+      "description": "Persist a move; reject to roll it back (error toast + announcement)",
+      "required": false
+    },
+    {
+      "name": "onOpenDeal",
+      "type": "(deal) => void",
+      "description": "Click or Enter on a card",
+      "required": false
+    },
+    {
+      "name": "groupByOwner / defaultGroupByOwner",
+      "type": "boolean",
+      "description": "Owner swimlanes; dropping in another lane reassigns the owner",
+      "required": false
+    },
+    {
+      "name": "onGroupByOwnerChange",
+      "type": "(value: boolean) => void",
+      "description": "Swimlane toggle callback",
+      "required": false
+    },
+    {
+      "name": "enforceWipLimits",
+      "type": "boolean",
+      "description": "Reject drops into a stage at its WIP limit (default warns only)",
+      "required": false
+    },
+    {
+      "name": "currency / locale",
+      "type": "string",
+      "description": "Money formatting, default USD / en-US",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Override current time for rotting flags",
+      "required": false
+    },
+    {
+      "name": "height / laneHeight",
+      "type": "number",
+      "description": "Column height (px) without / with swimlanes",
+      "required": false
+    },
+    {
+      "name": "loading / error / onRetry",
+      "type": "boolean / string / () => void",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable drag and drop",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share your app's TanStack QueryClient; a private one is created otherwise",
+      "required": false
+    },
+    {
+      "name": "renderCardExtra",
+      "type": "(deal) => ReactNode",
+      "description": "Extra node in each card footer",
+      "required": false
+    }
+  ],
+  "usage": "Keyboard: arrows move focus between cards; Space picks up, arrows move (Shift+Up/Down changes owner lane), Space drops, Escape cancels; Enter opens. Every step is announced in a live region. Drag and drop is implemented in-house (hooks/use-pipeline-dnd.ts)."
+}

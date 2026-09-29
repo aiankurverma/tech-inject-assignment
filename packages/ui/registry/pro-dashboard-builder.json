@@ -1,0 +1,106 @@
+{
+  "name": "Pro Dashboard Builder",
+  "slug": "pro-dashboard-builder",
+  "description": "User-configurable analytics dashboard: resizable widget grid, KPI/line/bar/virtualized-table widgets, per-widget query builder, zod-validated JSON layouts and undo/redo.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-resizable-panels",
+    "recharts",
+    "react-querybuilder",
+    "zustand",
+    "immer",
+    "zod",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-dashboard-builder.tsx",
+    "components/crm/pro-dashboard-builder/schema.ts",
+    "components/crm/pro-dashboard-builder/store.ts",
+    "components/crm/pro-dashboard-builder/query.ts",
+    "components/crm/pro-dashboard-builder/widgets.tsx",
+    "components/crm/pro-dashboard-builder/widget-editor.tsx"
+  ],
+  "examples": [
+    { "title": "Revenue analytics over 10,000 invoices", "file": "pro-dashboard-builder-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "T[]",
+      "description": "Records every widget queries; filtering and aggregation are memoized per widget",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "DashboardField[]",
+      "description": "{ name, label, type: 'number' | 'string' | 'date', options? } drives the query builder, metrics and dimensions",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "DashboardConfig",
+      "description": "Controlled layout (pair with onChange)",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "DashboardConfig",
+      "description": "Initial layout when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(config: DashboardConfig) => void",
+      "description": "Fires on every committed change (resize end, edit, undo/redo)",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(config: DashboardConfig) => void | Promise<void>",
+      "description": "Save button handler; receives the zod-validated layout JSON",
+      "required": false
+    },
+    {
+      "name": "defaultEditing",
+      "type": "boolean",
+      "description": "Start in edit mode (default true)",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "View only: no toolbar, no resizing",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show skeleton widgets",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "ReactNode",
+      "description": "Render an error state instead of the grid",
+      "required": false
+    },
+    {
+      "name": "rowHeight",
+      "type": "number",
+      "description": "Pixel height per row (default 260)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Keyboard: Ctrl+Z / Ctrl+Shift+Z undo/redo; focus a widget then Enter to configure, Delete to remove, Alt+Arrow to move. Resize handles are keyboard accessible. Use parseDashboard(json) to validate stored layouts server-side."
+}

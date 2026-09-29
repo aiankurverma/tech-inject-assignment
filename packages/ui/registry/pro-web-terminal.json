@@ -1,0 +1,85 @@
+{
+  "name": "Pro Web Terminal",
+  "slug": "pro-web-terminal",
+  "description": "Multi-tab, split-pane xterm.js console with fit-on-resize, scrollback search, fuzzy command-history palette, session recording with replay timeline and asciicast export, and hotkeys.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@xterm/xterm",
+    "@xterm/addon-fit",
+    "react-resizable-panels",
+    "react-hotkeys-hook",
+    "zustand",
+    "date-fns",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-web-terminal.tsx",
+    "components/crm/pro-web-terminal/types.ts",
+    "components/crm/pro-web-terminal/store.ts",
+    "components/crm/pro-web-terminal/terminal-pane.tsx",
+    "components/crm/pro-web-terminal/demo-shell.ts",
+    "components/crm/pro-web-terminal/history-palette.tsx",
+    "components/crm/pro-web-terminal/replay.tsx",
+    "components/crm/pro-web-terminal/xterm-styles.ts"
+  ],
+  "examples": [{ "title": "Bastion console with audit log", "file": "pro-web-terminal-1.tsx" }],
+  "props": [
+    {
+      "name": "shell",
+      "type": "ShellFactory",
+      "description": "(ctx: { id, cols, rows }) => ShellSession { write, onOutput, resize?, dispose }. Defaults to the in-browser demo shell; keep the reference stable",
+      "required": false
+    },
+    {
+      "name": "initialTabs",
+      "type": "number",
+      "description": "Tabs opened on mount (default 1)",
+      "required": false
+    },
+    {
+      "name": "maxTabs",
+      "type": "number",
+      "description": "Tab limit (default 12)",
+      "required": false
+    },
+    {
+      "name": "fontSize",
+      "type": "number",
+      "description": "Terminal font size (default 13)",
+      "required": false
+    },
+    {
+      "name": "scrollback",
+      "type": "number",
+      "description": "Scrollback lines per pane (default 5000)",
+      "required": false
+    },
+    {
+      "name": "theme",
+      "type": "ITheme",
+      "description": "xterm theme override; defaults to the CRM tokens",
+      "required": false
+    },
+    {
+      "name": "onCommand",
+      "type": "(entry: CommandEntry) => void",
+      "description": "Fires for every command entered (audit logging)",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Console height (default 460)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Hotkeys (focus inside): Ctrl+Shift+T new tab, Ctrl+Shift+W close pane, Ctrl+Shift+D / E split right / down, Ctrl+Shift+F search, Ctrl+Shift+P history palette, Ctrl+Shift+R replay, Alt+1-9 switch tab, Ctrl+Shift+[ / ] cycle. Arrow keys move between tabs, Alt+Arrow reorders, F2 renames."
+}

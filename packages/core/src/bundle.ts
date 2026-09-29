@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   ALLOWED_DEPENDENCIES,
   ALLOWED_IMPORTS,
+  dependencyOf,
   LIMITS,
   THEME_FILE_PATH,
   UTILS_FILE_PATH,
@@ -132,8 +133,8 @@ export function validateBundle(input: unknown): ValidationResult {
         errors.push(`${where}: use "@/..." imports instead of relative "${spec}"`);
       } else if (!ALLOWED_IMPORTS.includes(spec)) {
         errors.push(`${where}: import "${spec}" is not allowed`);
-      } else if (spec !== "react" && spec !== "react/jsx-runtime") {
-        usedDeps.add(spec);
+      } else if (dependencyOf(spec) !== "react") {
+        usedDeps.add(dependencyOf(spec) ?? spec);
       }
     }
   }

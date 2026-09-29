@@ -1,0 +1,139 @@
+{
+  "name": "Pro Inline Comment Threads",
+  "slug": "pro-comment-threads",
+  "description": "Google-Docs style review comments on a Tiptap document: text-range anchors, a sidebar aligned to anchors with collision-free, virtualised cards, replies, reactions, @mentions, resolve/reopen, open/mine/resolved filters and optimistic writes with rollback via TanStack Query.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tiptap/react",
+    "@tiptap/starter-kit",
+    "@floating-ui/react",
+    "@tanstack/react-query",
+    "date-fns",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-comment-threads.tsx",
+    "components/crm/pro-comment-threads/types.ts",
+    "components/crm/pro-comment-threads/comment-mark.ts",
+    "components/crm/pro-comment-threads/avatar.tsx",
+    "components/crm/pro-comment-threads/mention-composer.tsx",
+    "components/crm/pro-comment-threads/thread-card.tsx",
+    "components/crm/pro-comment-threads/filter-bar.tsx",
+    "hooks/use-comment-threads.ts",
+    "hooks/use-anchored-layout.ts",
+    "hooks/use-controllable-state.ts"
+  ],
+  "examples": [{ "title": "Spec review with 220 threads", "file": "pro-comment-threads-1.tsx" }],
+  "props": [
+    {
+      "name": "documentId",
+      "type": "string",
+      "description": "Scopes the query cache and every adapter call",
+      "required": true
+    },
+    {
+      "name": "content",
+      "type": "Content (HTML | Tiptap JSON)",
+      "description": "Initial document; anchors are <span data-comment-id=\"…\">",
+      "required": true
+    },
+    {
+      "name": "adapter",
+      "type": "CommentAdapter",
+      "description": "listThreads / createThread / addReply / toggleReaction / setResolved / deleteComment? — all async, applied optimistically and rolled back on rejection",
+      "required": true
+    },
+    {
+      "name": "users",
+      "type": "CommentUser[]",
+      "description": "People who can be shown and @mentioned",
+      "required": true
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "Author of new comments; drives the “For me” filter",
+      "required": true
+    },
+    {
+      "name": "filter / defaultFilter",
+      "type": "\"open\" | \"mine\" | \"resolved\" | \"all\"",
+      "description": "Controlled or initial thread filter",
+      "default": "\"open\"",
+      "required": false
+    },
+    {
+      "name": "onFilterChange",
+      "type": "(f: ThreadFilter) => void",
+      "description": "Filter tab changed",
+      "required": false
+    },
+    {
+      "name": "activeThreadId / defaultActiveThreadId",
+      "type": "string | null",
+      "description": "Controlled or initial focused thread",
+      "required": false
+    },
+    {
+      "name": "onActiveThreadChange",
+      "type": "(id: string | null) => void",
+      "description": "Active thread changed (card click, cursor in anchor, keyboard)",
+      "required": false
+    },
+    {
+      "name": "editable",
+      "type": "boolean",
+      "description": "Allow editing the document text",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable creating, replying, reacting and resolving",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "reactions",
+      "type": "string[]",
+      "description": "Emoji offered in the reaction picker",
+      "default": "👍 🎉 👀 ❤️ ✅ 🤔",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Height of the scrolling review surface",
+      "default": "640",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share the host app's TanStack QueryClient",
+      "required": false
+    },
+    {
+      "name": "onContentChange",
+      "type": "(html: string) => void",
+      "description": "Document HTML (including anchors) after any change, for persistence",
+      "required": false
+    },
+    {
+      "name": "onError",
+      "type": "(error: unknown, action: string) => void",
+      "description": "An optimistic write was rolled back",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Select text, then click Comment in the bubble menu or press Ctrl+Alt+M. In the sidebar: Arrow Up/Down (or j/k) moves between threads, Enter focuses a thread's anchor, Escape clears. In a composer type @ to mention (Arrow keys + Enter), Ctrl+Enter sends. Persist `onContentChange` HTML so anchors survive reloads; threads whose anchor text was deleted are shown as Detached. The anchor mark is built in-house because Tiptap's comments extension is proprietary."
+}

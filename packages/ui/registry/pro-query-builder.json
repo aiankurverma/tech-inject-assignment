@@ -1,0 +1,99 @@
+{
+  "name": "Pro Query and Segment Builder",
+  "slug": "pro-query-builder",
+  "description": "Nested AND/OR segment builder on react-querybuilder: typed operators per field, relative-date / multi-select / number-between editors, drag reorder, validation, SQL / MongoDB / JsonLogic / JSON export and saved segments.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-querybuilder",
+    "date-fns",
+    "react-day-picker",
+    "zod",
+    "@radix-ui/react-popover",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-query-builder.tsx",
+    "components/crm/pro-query-builder/controls.tsx",
+    "components/crm/pro-query-builder/value-editor.tsx",
+    "components/crm/pro-query-builder/export-panel.tsx",
+    "components/crm/pro-query-builder/saved-segments.tsx",
+    "lib/pro-query-builder.ts"
+  ],
+  "examples": [
+    {
+      "title": "Account segment with saved segments",
+      "file": "pro-query-builder-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "QueryField[]",
+      "description": "Filterable fields; type (text, number, date, select, multiselect, boolean) drives operators, editor, validation and export",
+      "required": true
+    },
+    {
+      "name": "query",
+      "type": "RuleGroupType",
+      "description": "Controlled query",
+      "required": false
+    },
+    {
+      "name": "defaultQuery",
+      "type": "RuleGroupType",
+      "description": "Initial query when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onQueryChange",
+      "type": "(query: RuleGroupType) => void",
+      "description": "Called on every edit",
+      "required": false
+    },
+    {
+      "name": "onApply",
+      "type": "(query: RuleGroupType) => void",
+      "description": "Apply button handler, only fires for a valid query; omit to hide the button",
+      "required": false
+    },
+    {
+      "name": "segments / defaultSegments / onSegmentsChange",
+      "type": "SavedSegment[]",
+      "description": "Controlled or uncontrolled saved segments",
+      "required": false
+    },
+    {
+      "name": "exportFormats",
+      "type": "QueryExportFormat[]",
+      "description": "Export tabs (sql, mongodb, jsonlogic, json); [] hides the panel",
+      "required": false
+    },
+    {
+      "name": "maxDepth",
+      "type": "number",
+      "description": "Maximum group nesting depth (default 4)",
+      "required": false
+    },
+    {
+      "name": "allowNot",
+      "type": "boolean",
+      "description": "Show NOT toggles on groups (default true)",
+      "required": false
+    },
+    {
+      "name": "matchCount / matchCountLoading",
+      "type": "number | null / boolean",
+      "description": "Live preview of matching records",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only mode",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

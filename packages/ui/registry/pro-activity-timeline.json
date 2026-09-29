@@ -1,0 +1,116 @@
+{
+  "name": "Pro Activity Timeline",
+  "slug": "pro-activity-timeline",
+  "description": "Unified email, call, meeting, note, stage and task feed per account with bidirectional virtualised infinite scroll (TanStack Virtual + Query), dynamic row heights, sticky day headers, type filters, expandable email bodies, pinned notes, relative/absolute time and WAI-ARIA feed keyboard support.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-virtual",
+    "@tanstack/react-query",
+    "date-fns",
+    "motion",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-activity-timeline.tsx",
+    "components/crm/pro-activity-timeline/types.ts",
+    "components/crm/pro-activity-timeline/activity-item.tsx",
+    "components/crm/pro-activity-timeline/timeline-toolbar.tsx",
+    "hooks/use-activity-feed.ts",
+    "hooks/use-controllable-state.ts"
+  ],
+  "examples": [
+    {
+      "title": "12k-activity account feed opened 3 weeks back",
+      "file": "pro-activity-timeline-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "queryKey",
+      "type": "readonly unknown[]",
+      "description": "TanStack Query cache key for this feed; the active type filter is appended.",
+      "required": true
+    },
+    {
+      "name": "fetchPage",
+      "type": "(req: { cursor, direction: \"older\" | \"newer\", types, signal }) => Promise<{ items, olderCursor, newerCursor }>",
+      "description": "Server cursor source. Either this or items is required.",
+      "required": false
+    },
+    {
+      "name": "items",
+      "type": "TimelineActivity[]",
+      "description": "In-memory data, paged locally through the same code path (createLocalActivitySource).",
+      "required": false
+    },
+    {
+      "name": "anchor",
+      "type": "Date",
+      "description": "Local mode: open the feed at this moment so newer items load when scrolling up.",
+      "required": false
+    },
+    {
+      "name": "availableTypes",
+      "type": "ActivityType[]",
+      "description": "Types shown in the filter bar. Default: email, call, meeting, note, stage, task.",
+      "required": false
+    },
+    {
+      "name": "types / defaultTypes / onTypesChange",
+      "type": "ActivityType[]",
+      "description": "Controlled or uncontrolled type filter.",
+      "required": false
+    },
+    {
+      "name": "timeMode / defaultTimeMode / onTimeModeChange",
+      "type": "\"relative\" | \"absolute\"",
+      "description": "Controlled or uncontrolled time display. Default relative.",
+      "required": false
+    },
+    {
+      "name": "pinnedIds / defaultPinnedIds / onPinnedIdsChange",
+      "type": "string[]",
+      "description": "Controlled or uncontrolled pinned activities, shown above the feed.",
+      "required": false
+    },
+    {
+      "name": "pinnedItems",
+      "type": "TimelineActivity[]",
+      "description": "Pinned items that may be outside the loaded window.",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Scroll viewport height. Default 560.",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name of the feed. Default \"Activity\".",
+      "required": false
+    },
+    {
+      "name": "emptyState",
+      "type": "ReactNode",
+      "description": "Custom empty state.",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Explicit client; otherwise the nearest provider or a private one.",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes for the root.",
+      "required": false
+    }
+  ],
+  "usage": "<ProActivityTimeline queryKey={[\"account\", id, \"activity\"]} fetchPage={api.activity} />"
+}

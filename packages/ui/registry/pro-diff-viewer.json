@@ -1,0 +1,137 @@
+{
+  "name": "Pro Diff and Version History",
+  "slug": "pro-diff-viewer",
+  "description": "Virtualised unified/split diff with Shiki highlighting, word-level changes, folded context, line comments, and a version timeline with named versions and restore. Handles 50k-line files.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["diff", "shiki", "@tanstack/react-virtual", "date-fns", "lucide-react"],
+  "files": [
+    "components/crm/pro-diff-viewer.tsx",
+    "components/crm/pro-diff-viewer/diff-model.ts",
+    "components/crm/pro-diff-viewer/diff-line.tsx",
+    "components/crm/pro-diff-viewer/diff-comments.tsx",
+    "components/crm/pro-diff-viewer/version-timeline.tsx",
+    "hooks/use-shiki-highlighter.ts"
+  ],
+  "examples": [
+    { "title": "Version history with restore", "file": "pro-diff-viewer-1.tsx" },
+    { "title": "50k-line code review", "file": "pro-diff-viewer-2.tsx" }
+  ],
+  "props": [
+    {
+      "name": "oldText",
+      "type": "string",
+      "description": "ProDiffViewer: original document",
+      "required": true
+    },
+    {
+      "name": "newText",
+      "type": "string",
+      "description": "ProDiffViewer: changed document",
+      "required": true
+    },
+    {
+      "name": "language",
+      "type": "string",
+      "default": "\"text\"",
+      "description": "Shiki language id (ts, tsx, json, yaml, sql, md...); text disables highlighting",
+      "required": false
+    },
+    {
+      "name": "oldLabel / newLabel",
+      "type": "string",
+      "description": "Header labels for each side",
+      "required": false
+    },
+    {
+      "name": "mode",
+      "type": "\"unified\" | \"split\"",
+      "description": "Controlled layout; pair with onModeChange",
+      "required": false
+    },
+    {
+      "name": "defaultMode",
+      "type": "\"unified\" | \"split\"",
+      "default": "\"unified\"",
+      "description": "Uncontrolled initial layout",
+      "required": false
+    },
+    {
+      "name": "onModeChange",
+      "type": "(mode) => void",
+      "description": "Layout toggle callback",
+      "required": false
+    },
+    {
+      "name": "contextLines",
+      "type": "number",
+      "default": "3",
+      "description": "Unchanged lines kept around each change before folding",
+      "required": false
+    },
+    {
+      "name": "wordDiff",
+      "type": "boolean",
+      "default": "true",
+      "description": "Highlight changed words inside modified lines",
+      "required": false
+    },
+    {
+      "name": "comments",
+      "type": "DiffComment[]",
+      "description": "{ id, side: 'old'|'new', line, author, body, createdAt } threads anchored to lines",
+      "required": false
+    },
+    {
+      "name": "onAddComment",
+      "type": "({ side, line, body }) => Promise<void> | void",
+      "description": "Enables the per-line comment composer; throw to show an error",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "default": "560",
+      "description": "Height of the virtualised body",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string | null",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "versions",
+      "type": "DocVersion[]",
+      "description": "ProVersionHistory: { id, name?, createdAt, author, content, message? }",
+      "required": false
+    },
+    {
+      "name": "currentId",
+      "type": "string",
+      "description": "ProVersionHistory: live version (defaults to newest)",
+      "required": false
+    },
+    {
+      "name": "selectedId / onSelectedChange",
+      "type": "string / (id) => void",
+      "description": "ProVersionHistory: controlled selection",
+      "required": false
+    },
+    {
+      "name": "onRestore",
+      "type": "(version) => Promise<void> | void",
+      "description": "ProVersionHistory: two-step confirmed async restore",
+      "required": false
+    },
+    {
+      "name": "onRename",
+      "type": "(version, name) => Promise<void> | void",
+      "description": "ProVersionHistory: name or rename a version (named versions are starred and filterable)",
+      "required": false
+    }
+  ],
+  "usage": "Use ProDiffViewer for code review, config changes and document revisions; use ProVersionHistory to browse saved versions, compare any two (Compare from), name milestones and restore. Keyboard: j/k (or n/p) jump between changes when the diff has focus; Up/Down/Home/End move through the timeline; Ctrl+Enter posts a comment. Files over 4000 lines are highlighted lazily per visible line."
+}

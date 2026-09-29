@@ -1,0 +1,170 @@
+{
+  "name": "Pro Rich Text Editor",
+  "slug": "pro-rich-text-editor",
+  "description": "Tiptap-based notes editor: slash menu, @mentions and #record links, markdown shortcuts, tables, code blocks, to-dos, image paste/drop, bubble toolbar, HTML/JSON/Markdown output and optional yjs collaboration with live presence.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tiptap/react",
+    "@tiptap/starter-kit",
+    "@tiptap/extension-table",
+    "@tiptap/extension-list",
+    "@tiptap/extensions",
+    "@tiptap/extension-mention",
+    "@tiptap/suggestion",
+    "@floating-ui/react",
+    "react-dropzone",
+    "yjs",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-rich-text-editor.tsx",
+    "components/crm/pro-rich-text-editor/extensions.ts",
+    "components/crm/pro-rich-text-editor/slash-commands.tsx",
+    "components/crm/pro-rich-text-editor/suggestion-menu.tsx",
+    "components/crm/pro-rich-text-editor/toolbar.tsx",
+    "components/crm/pro-rich-text-editor/markdown.ts",
+    "components/crm/pro-rich-text-editor/collab.ts",
+    "components/crm/pro-rich-text-editor/presence.tsx",
+    "hooks/use-editor-collaboration.ts"
+  ],
+  "examples": [
+    {
+      "title": "Account note with 10k records",
+      "file": "pro-rich-text-editor-1.tsx"
+    },
+    {
+      "title": "Live co-editing",
+      "file": "pro-rich-text-editor-2.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "defaultValue",
+      "type": "JSONContent | string",
+      "description": "Initial document as Tiptap JSON or HTML",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(value: RichTextValue) => void",
+      "description": "Fires on edits with lazy getJSON/getHTML/getMarkdown",
+      "required": false
+    },
+    {
+      "name": "placeholder",
+      "type": "string",
+      "description": "Empty-line hint",
+      "required": false,
+      "default": "\"Write, or press '/' for commands…\""
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only mode",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show a skeleton",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "error",
+      "type": "string",
+      "description": "External error shown in the footer",
+      "required": false
+    },
+    {
+      "name": "mentionSources",
+      "type": "MentionSource[]",
+      "description": "Triggers such as @ people and # records; search may be async",
+      "required": false,
+      "default": "[]"
+    },
+    {
+      "name": "slashCommands",
+      "type": "SlashCommand[]",
+      "description": "Slash menu items",
+      "required": false,
+      "default": "DEFAULT_SLASH_COMMANDS"
+    },
+    {
+      "name": "onUploadImage",
+      "type": "(file: File) => Promise<string>",
+      "description": "Upload pasted/dropped images; resolve to URL",
+      "required": false,
+      "default": "data URL"
+    },
+    {
+      "name": "maxImageBytes",
+      "type": "number",
+      "description": "Reject larger images",
+      "required": false,
+      "default": "5 MB"
+    },
+    {
+      "name": "characterLimit",
+      "type": "number",
+      "description": "Hard character limit",
+      "required": false
+    },
+    {
+      "name": "collaboration",
+      "type": "{ doc: Y.Doc; awareness?; user: { name; color }; field? }",
+      "description": "Enable realtime co-editing and presence",
+      "required": false
+    },
+    {
+      "name": "showToolbar",
+      "type": "boolean",
+      "description": "Show the fixed toolbar",
+      "required": false,
+      "default": "true"
+    },
+    {
+      "name": "toolbarTrailing",
+      "type": "ReactNode",
+      "description": "Slot at the toolbar end (e.g. Save)",
+      "required": false
+    },
+    {
+      "name": "minHeight",
+      "type": "number",
+      "description": "Editor min height in px",
+      "required": false,
+      "default": "220"
+    },
+    {
+      "name": "maxHeight",
+      "type": "number",
+      "description": "Scroll after this height",
+      "required": false
+    },
+    {
+      "name": "autoFocus",
+      "type": "boolean",
+      "description": "Focus on mount",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "aria-label",
+      "type": "string",
+      "description": "Accessible name",
+      "required": false,
+      "default": "\"Rich text editor\""
+    },
+    {
+      "name": "ref",
+      "type": "Ref<ProRichTextEditorHandle>",
+      "description": "getJSON/getHTML/getMarkdown/setContent/focus/clear and the Tiptap editor",
+      "required": false
+    }
+  ],
+  "usage": "Mention sources and the schema are fixed for the editor's lifetime; change the React key to rebuild. Sanitise getHTML() output on the server before rendering it elsewhere. For multiplayer pass a Y.Doc and awareness from any provider (y-websocket works as-is); the built-in binding syncs per top-level block (last-writer-wins inside one block) because y-prosemirror is not an approved dependency. createLocalCollabRoom() links editors in one tab for demos and tests."
+}

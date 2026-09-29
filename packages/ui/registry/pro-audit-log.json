@@ -1,0 +1,125 @@
+{
+  "name": "Pro Audit Log Explorer",
+  "slug": "pro-audit-log",
+  "description": "SOC 2-ready audit log explorer: infinite, virtualised event table (TanStack Table + Virtual + Query) with faceted actor / action / resource filters, date-range picker, URL-synced state (nuqs), before/after JSON diff drawer (jsondiffpatch), CSV export and relative / absolute time toggle.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-tabs",
+    "@radix-ui/react-toggle-group",
+    "@tanstack/react-query",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "jsondiffpatch",
+    "lucide-react",
+    "nuqs",
+    "papaparse",
+    "react-day-picker"
+  ],
+  "files": [
+    "components/crm/pro-audit-log.tsx",
+    "components/crm/pro-audit-log/types.ts",
+    "components/crm/pro-audit-log/format.ts",
+    "components/crm/pro-audit-log/json-diff.tsx",
+    "components/crm/pro-audit-log/event-table.tsx",
+    "components/crm/pro-audit-log/event-drawer.tsx",
+    "components/crm/pro-audit-log/filter-bar.tsx",
+    "hooks/use-audit-log-url-state.ts"
+  ],
+  "examples": [
+    { "title": "Workspace audit log (25k events, URL-synced)", "file": "pro-audit-log-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "fetchPage",
+      "type": "AuditFetchPage",
+      "description": "Cursor-paginated loader ({ filters, cursor, pageSize, signal }) returning events, nextCursor, total and facets",
+      "required": true
+    },
+    {
+      "name": "pageSize",
+      "type": "number",
+      "description": "Events per page (default 100)",
+      "required": false
+    },
+    {
+      "name": "filters / defaultFilters / onFiltersChange",
+      "type": "AuditFilters",
+      "description": "Controlled or uncontrolled filters (q, actors, actions, resources, from, to)",
+      "required": false
+    },
+    {
+      "name": "timeMode / defaultTimeMode / onTimeModeChange",
+      "type": "\"relative\" | \"absolute\"",
+      "description": "Controlled or uncontrolled time display",
+      "required": false
+    },
+    {
+      "name": "defaultHiddenColumns",
+      "type": "AuditColumnId[]",
+      "description": "Columns hidden initially",
+      "required": false
+    },
+    {
+      "name": "onExport",
+      "type": "(filters) => void | Promise<void>",
+      "description": "Replace built-in CSV export (e.g. server export job)",
+      "required": false
+    },
+    {
+      "name": "exportLimit",
+      "type": "number",
+      "description": "Cap for exporting all matching events",
+      "required": false
+    },
+    {
+      "name": "exportFileName",
+      "type": "string",
+      "description": "CSV file name prefix",
+      "required": false
+    },
+    {
+      "name": "onEventOpen",
+      "type": "(event) => void",
+      "description": "Fires when an event opens in the drawer",
+      "required": false
+    },
+    {
+      "name": "renderEventActions",
+      "type": "(event) => ReactNode",
+      "description": "Extra actions in the drawer footer",
+      "required": false
+    },
+    {
+      "name": "queryKey / queryClient",
+      "type": "unknown[] / QueryClient",
+      "description": "Share an existing React Query cache",
+      "required": false
+    },
+    {
+      "name": "refetchInterval",
+      "type": "number",
+      "description": "Poll for new events (ms)",
+      "required": false
+    },
+    {
+      "name": "height / rowHeight",
+      "type": "number | string / number",
+      "description": "Viewport and row sizing for virtualisation",
+      "required": false
+    },
+    { "name": "title", "type": "ReactNode", "description": "Header title", "required": false },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable all interaction",
+      "required": false
+    }
+  ],
+  "usage": "Wrap in a nuqs adapter when using useAuditLogUrlState; otherwise pass filters / onFiltersChange yourself."
+}

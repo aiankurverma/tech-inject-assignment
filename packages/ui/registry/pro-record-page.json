@@ -1,0 +1,126 @@
+{
+  "name": "Pro Record Page",
+  "slug": "pro-record-page",
+  "description": "Salesforce-style record page: key-field header, typed inline-editable fields (text, email, phone, money, number, date, picklist) validated per field with zod, dirty tracking with batch or per-field save, optimistic updates with rollback, related-record tabs and an embedded activity timeline slot.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "@tanstack/react-query",
+    "@radix-ui/react-tabs",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-select",
+    "libphonenumber-js",
+    "react-day-picker",
+    "date-fns",
+    "@tanstack/react-virtual",
+    "motion",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-record-page.tsx",
+    "components/crm/pro-record-page/schema.ts",
+    "components/crm/pro-record-page/field-editors.tsx",
+    "components/crm/pro-record-page/inline-field.tsx",
+    "hooks/use-optimistic-record.ts",
+    "hooks/use-controllable-state.ts",
+    "components/crm/pro-activity-timeline.tsx",
+    "components/crm/pro-activity-timeline/types.ts",
+    "components/crm/pro-activity-timeline/activity-item.tsx",
+    "components/crm/pro-activity-timeline/timeline-toolbar.tsx",
+    "hooks/use-activity-feed.ts"
+  ],
+  "examples": [
+    { "title": "Opportunity with related lists and activity", "file": "pro-record-page-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "queryKey",
+      "type": "readonly unknown[]",
+      "description": "TanStack Query cache key of the record.",
+      "required": true
+    },
+    {
+      "name": "record",
+      "type": "T",
+      "description": "Initial data; the source of truth when loadRecord is omitted.",
+      "required": false
+    },
+    {
+      "name": "loadRecord",
+      "type": "(signal: AbortSignal) => Promise<T>",
+      "description": "Server fetch; the record is refetched after each save.",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(patch: Partial<T>, next: T) => Promise<T | void>",
+      "description": "Persist changed fields (phones normalised to E.164). Reject to roll back; edits come back as dirty.",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "RecordFieldDef<T>[]",
+      "description": "{ name, label, type, required?, readOnly?, section?, wide?, options?, currency?, defaultCountry?, min?, max?, help?, schema? }",
+      "required": true
+    },
+    {
+      "name": "titleField",
+      "type": "keyof T",
+      "description": "Field used as the page title.",
+      "required": true
+    },
+    {
+      "name": "headerFields",
+      "type": "(keyof T)[]",
+      "description": "Key fields in the header strip.",
+      "required": false
+    },
+    {
+      "name": "objectLabel / icon / actions",
+      "type": "string / ReactNode / ReactNode",
+      "description": "Header decoration and action buttons.",
+      "required": false
+    },
+    {
+      "name": "related",
+      "type": "{ id, label, count?, content }[]",
+      "description": "Related-record tabs after Details.",
+      "required": false
+    },
+    {
+      "name": "activity",
+      "type": "ReactNode",
+      "description": "Right column slot, e.g. <ProActivityTimeline />.",
+      "required": false
+    },
+    {
+      "name": "saveMode",
+      "type": "\"batch\" | \"field\"",
+      "description": "Batch with a save bar and Ctrl/Cmd+S (default), or save each field on commit.",
+      "required": false
+    },
+    { "name": "readOnly", "type": "boolean", "description": "Lock all fields.", "required": false },
+    {
+      "name": "tab / defaultTab / onTabChange",
+      "type": "string",
+      "description": "Controlled or uncontrolled active tab. Default \"details\".",
+      "required": false
+    },
+    {
+      "name": "onSaved / onSaveError",
+      "type": "callbacks",
+      "description": "Save lifecycle notifications.",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Explicit client; otherwise the nearest provider or a private one.",
+      "required": false
+    }
+  ],
+  "usage": "<ProRecordPage queryKey={[\"deal\", id]} record={deal} fields={fields} titleField=\"name\" onSave={api.patchDeal} />"
+}

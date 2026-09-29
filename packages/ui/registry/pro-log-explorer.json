@@ -1,0 +1,104 @@
+{
+  "name": "Pro Log Explorer",
+  "slug": "pro-log-explorer",
+  "description": "Streaming log explorer for 100k+ lines: virtualised live tail with follow/pause, ANSI colours, level facets with counts, regex search highlighting, brushable histogram, JSON field expansion and permalinks.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-virtual",
+    "recharts",
+    "date-fns",
+    "react-hotkeys-hook",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-log-explorer.tsx",
+    "components/crm/pro-log-explorer/ansi.ts",
+    "components/crm/pro-log-explorer/log-row.tsx",
+    "components/crm/pro-log-explorer/log-histogram.tsx",
+    "hooks/use-log-index.ts"
+  ],
+  "examples": [{ "title": "Live production tail (100k lines)", "file": "pro-log-explorer-1.tsx" }],
+  "props": [
+    {
+      "name": "logs",
+      "type": "readonly LogEntry[]",
+      "description": "Append-only buffer, oldest first: { id, timestamp, level, message, source?, fields? }. Pass a new array when lines arrive",
+      "required": true
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "default": "\"Logs\"",
+      "description": "Header title and region label",
+      "required": false
+    },
+    {
+      "name": "live",
+      "type": "boolean",
+      "description": "Controlled live state; paused freezes the view and counts buffered lines",
+      "required": false
+    },
+    {
+      "name": "defaultLive",
+      "type": "boolean",
+      "default": "true",
+      "description": "Uncontrolled initial live state",
+      "required": false
+    },
+    {
+      "name": "onLiveChange",
+      "type": "(live: boolean) => void",
+      "description": "Pause/resume callback",
+      "required": false
+    },
+    {
+      "name": "defaultLevels",
+      "type": "LogLevel[]",
+      "default": "all but trace",
+      "description": "Initially visible levels",
+      "required": false
+    },
+    {
+      "name": "initialLineId",
+      "type": "string",
+      "description": "Line to focus on mount; defaults to #log-<id> in the URL hash",
+      "required": false
+    },
+    {
+      "name": "onPermalink",
+      "type": "(id: string) => void",
+      "description": "Override permalink behaviour (default copies URL with #log-<id>)",
+      "required": false
+    },
+    {
+      "name": "showSource",
+      "type": "boolean",
+      "default": "true",
+      "description": "Show the source/service column",
+      "required": false
+    },
+    {
+      "name": "histogramBuckets",
+      "type": "number",
+      "default": "60",
+      "description": "Number of histogram bars",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "default": "520",
+      "description": "Height of the virtualised list",
+      "required": false
+    },
+    {
+      "name": "loading / error",
+      "type": "boolean / string | null",
+      "description": "Skeleton and error states",
+      "required": false
+    }
+  ],
+  "usage": "Feed it your log stream (WebSocket, SSE, polling) as an append-only array. Keyboard (focus inside): / search, j/k move, Enter expand JSON, f follow, space pause, g/G top/bottom, Esc clear. Alt+click a level chip to solo it; drag the histogram brush to narrow the time window. ANSI SGR colours are parsed by a small in-house parser (no approved library)."
+}

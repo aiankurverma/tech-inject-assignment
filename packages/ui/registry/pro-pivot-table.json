@@ -1,0 +1,98 @@
+{
+  "name": "Pro Pivot Table",
+  "slug": "pro-pivot-table",
+  "description": "Drag fields into rows, columns, values and filters; sum / avg / count / min / max / distinct with subtotals and grand totals, expandable headers, heatmap cells, virtualised output for large datasets and CSV export.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "immer",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-pivot-table.tsx",
+    "components/crm/pro-pivot-table/field-shelves.tsx",
+    "components/crm/pro-pivot-table/pivot-grid.tsx",
+    "hooks/use-pivot-config.ts",
+    "lib/pro-pivot.ts"
+  ],
+  "examples": [
+    {
+      "title": "25k bookings by region and quarter",
+      "file": "pro-pivot-table-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "data",
+      "type": "readonly T[]",
+      "description": "Source records",
+      "required": true
+    },
+    {
+      "name": "fields",
+      "type": "PivotField<T>[]",
+      "description": "Dimensions and measures with optional accessor, format and member sort",
+      "required": true
+    },
+    {
+      "name": "config / defaultConfig / onConfigChange",
+      "type": "PivotConfig",
+      "description": "Controlled or uncontrolled layout: rows, cols, values (field + agg), filters (excluded members)",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show loading state",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "ReactNode",
+      "description": "Error message replaces the grid",
+      "required": false
+    },
+    {
+      "name": "showShelves",
+      "type": "boolean",
+      "description": "Show the drag-and-drop field shelves (default true)",
+      "required": false
+    },
+    {
+      "name": "showGrandTotals",
+      "type": "boolean",
+      "description": "Grand total row and column (default true)",
+      "required": false
+    },
+    {
+      "name": "defaultHeatmap",
+      "type": "boolean",
+      "description": "Start with heatmap shading on",
+      "required": false
+    },
+    {
+      "name": "defaultExpandDepth",
+      "type": "number",
+      "description": "Row levels expanded initially (default 1)",
+      "required": false
+    },
+    {
+      "name": "height / rowHeaderWidth / cellWidth / rowHeight",
+      "type": "number",
+      "description": "Viewport and cell sizing",
+      "required": false
+    },
+    {
+      "name": "csvFileName",
+      "type": "string",
+      "description": "File name for CSV export",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

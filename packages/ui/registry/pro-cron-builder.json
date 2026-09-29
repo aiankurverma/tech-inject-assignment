@@ -1,0 +1,125 @@
+{
+  "name": "Pro Cron Schedule Builder",
+  "slug": "pro-cron-builder",
+  "description": "Visual cron editor kept in sync with the raw expression: per-field Every/Interval/Specific/Range pickers, presets, cronstrue description, cron-parser validation and the next N runs in any IANA timezone.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "cron-parser",
+    "cronstrue",
+    "date-fns",
+    "@date-fns/tz",
+    "@radix-ui/react-toggle-group",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-cron-builder.tsx",
+    "components/crm/pro-cron-builder/cron-model.ts",
+    "components/crm/pro-cron-builder/cron-field-editor.tsx",
+    "components/crm/pro-cron-builder/cron-next-runs.tsx",
+    "hooks/use-cron-schedule.ts"
+  ],
+  "examples": [
+    {
+      "title": "Job scheduler",
+      "file": "pro-cron-builder-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "value",
+      "type": "string",
+      "description": "Controlled cron expression (5 fields; macros like @daily accepted)",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "string",
+      "description": "Initial expression when uncontrolled",
+      "required": false,
+      "default": "\"0 9 * * 1-5\""
+    },
+    {
+      "name": "onChange",
+      "type": "(expression, { valid, error }) => void",
+      "description": "Fires on every edit from the picker, presets or raw input",
+      "required": false
+    },
+    {
+      "name": "timezone",
+      "type": "string",
+      "description": "Controlled IANA timezone for the next-run preview",
+      "required": false
+    },
+    {
+      "name": "defaultTimezone",
+      "type": "string",
+      "description": "Initial timezone when uncontrolled",
+      "required": false,
+      "default": "browser timezone"
+    },
+    {
+      "name": "onTimezoneChange",
+      "type": "(tz: string) => void",
+      "description": "Timezone picker change",
+      "required": false
+    },
+    {
+      "name": "timezones",
+      "type": "string[]",
+      "description": "Timezones offered",
+      "required": false,
+      "default": "Intl.supportedValuesOf('timeZone')"
+    },
+    {
+      "name": "runCount",
+      "type": "number",
+      "description": "Upcoming runs to preview",
+      "required": false,
+      "default": "5"
+    },
+    {
+      "name": "presets",
+      "type": "CronPreset[] | false",
+      "description": "Quick schedule chips",
+      "required": false,
+      "default": "DEFAULT_CRON_PRESETS"
+    },
+    {
+      "name": "use24HourTimeFormat",
+      "type": "boolean",
+      "description": "24h clock in descriptions",
+      "required": false,
+      "default": "true"
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable all controls",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Visible label and group name",
+      "required": false,
+      "default": "\"Schedule\""
+    },
+    {
+      "name": "idPrefix",
+      "type": "string",
+      "description": "Prefix for element ids",
+      "required": false,
+      "default": "auto"
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Store the expression and timezone together. Re-validate on the server with the exported validateCron() (cron-parser) before saving; getNextRuns() and describeCron() are exported for list views. Six-field (seconds) expressions are accepted in the raw input but only five-field ones are editable visually."
+}

@@ -1,0 +1,132 @@
+{
+  "name": "Pro Time-Series Explorer",
+  "slug": "pro-time-series-explorer",
+  "description": "WebGL (deck.gl) time-series explorer for millions of points: in-house LTTB downsampling per visible window, stacked panels with a synced crosshair and tooltip, wheel/drag/keyboard zoom and pan, shift-drag zoom-to-selection, overview brush with slider handles, series toggles, annotations and range presets. Falls back to SVG without WebGL2.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["deck.gl", "date-fns", "@radix-ui/react-toggle-group"],
+  "files": [
+    "components/crm/pro-time-series-explorer.tsx",
+    "components/crm/pro-time-series-explorer/types.ts",
+    "components/crm/pro-time-series-explorer/scale.ts",
+    "components/crm/pro-time-series-explorer/panel.tsx",
+    "components/crm/pro-time-series-explorer/overview-brush.tsx",
+    "components/crm/pro-time-series-explorer/toolbar.tsx",
+    "hooks/use-element-size.ts",
+    "hooks/use-time-range.ts",
+    "lib/lttb.ts"
+  ],
+  "examples": [
+    { "title": "1M-point production metrics", "file": "pro-time-series-explorer-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "series",
+      "type": "TimeSeries[]",
+      "description": "Series with ascending epoch-ms timestamps and values (typed arrays recommended; NaN = gap), optional colour, unit and panel id",
+      "required": true
+    },
+    {
+      "name": "panels",
+      "type": "TimeSeriesPanel[]",
+      "description": "Stacked panels sharing the time axis: id, title, height, formatValue, fixed yDomain",
+      "required": false
+    },
+    {
+      "name": "annotations",
+      "type": "TimeAnnotation[]",
+      "description": "Point or band annotations (time, endTime, label, color, panel); clicking one zooms to it",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "range",
+      "type": "[number, number]",
+      "description": "Controlled visible window in epoch ms",
+      "required": false
+    },
+    {
+      "name": "defaultRange",
+      "type": "[number, number]",
+      "description": "Initial window when uncontrolled; defaults to the full extent",
+      "required": false
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range: [number, number]) => void",
+      "description": "Fires on zoom, pan, brush or preset",
+      "required": false
+    },
+    {
+      "name": "visibleSeries",
+      "type": "string[]",
+      "description": "Controlled visible series ids",
+      "required": false
+    },
+    {
+      "name": "defaultVisibleSeries",
+      "type": "string[]",
+      "description": "Initially visible series; all when omitted",
+      "required": false
+    },
+    {
+      "name": "onVisibleSeriesChange",
+      "type": "(ids: string[]) => void",
+      "description": "Series toggle callback",
+      "required": false
+    },
+    {
+      "name": "presets",
+      "type": "RangePreset[]",
+      "description": "Range preset buttons anchored to the data end",
+      "default": "1h, 6h, 24h, 7d, 30d, All",
+      "required": false
+    },
+    {
+      "name": "density",
+      "type": "number",
+      "description": "Rendered points per pixel column after LTTB",
+      "default": "1.5",
+      "required": false
+    },
+    {
+      "name": "renderer",
+      "type": "\"auto\" | \"webgl\" | \"svg\"",
+      "description": "Line renderer; auto uses WebGL2 when available",
+      "default": "\"auto\"",
+      "required": false
+    },
+    {
+      "name": "minSpan",
+      "type": "number",
+      "description": "Smallest zoom window in ms",
+      "default": "1000",
+      "required": false
+    },
+    {
+      "name": "showOverview",
+      "type": "boolean",
+      "description": "Show the overview brush strip",
+      "default": "true",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
+    { "name": "error", "type": "string", "description": "Error message", "required": false },
+    {
+      "name": "emptyMessage",
+      "type": "string",
+      "description": "Shown when there are no samples",
+      "required": false
+    },
+    {
+      "name": "onAnnotationClick",
+      "type": "(a: TimeAnnotation) => void",
+      "description": "Annotation click callback",
+      "required": false
+    },
+    { "name": "title", "type": "string", "description": "Header title", "required": false },
+    { "name": "className", "type": "string", "description": "Root class names", "required": false }
+  ],
+  "usage": "Pass typed arrays for large series. Drag to pan, Shift+drag to zoom to a selection, scroll to zoom around the cursor, double-click or Home to reset. Keyboard: arrows pan, +/- zoom, Shift+arrows move the crosshair."
+}

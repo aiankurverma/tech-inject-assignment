@@ -1,0 +1,120 @@
+{
+  "name": "Pro API Key Manager",
+  "slug": "pro-api-key-manager",
+  "description": "Developer-platform API key console: create dialog with grouped scopes and expiry (react-hook-form + zod), show-once secret reveal with copy, virtualised sortable key list (TanStack Table + Virtual) with masked secrets, last-used and 14-day usage sparklines (Recharts), and guarded rotate/revoke flows.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react",
+    "react-hook-form",
+    "recharts",
+    "zod"
+  ],
+  "files": [
+    "components/crm/pro-api-key-manager.tsx",
+    "components/crm/pro-api-key-manager/types.ts",
+    "components/crm/pro-api-key-manager/modal.tsx",
+    "components/crm/pro-api-key-manager/create-key-dialog.tsx",
+    "components/crm/pro-api-key-manager/reveal-key-dialog.tsx",
+    "components/crm/pro-api-key-manager/confirm-key-action.tsx",
+    "components/crm/pro-api-key-manager/usage-sparkline.tsx",
+    "components/crm/pro-api-key-manager/key-table.tsx",
+    "hooks/zod-form-resolver.ts",
+    "hooks/use-api-key-manager.ts"
+  ],
+  "examples": [
+    { "title": "10,000 keys with create, rotate and revoke", "file": "pro-api-key-manager-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "scopes",
+      "type": "ApiKeyScope[]",
+      "description": "Scopes offered in the create dialog ({ id, label, group?, description?, sensitive? })",
+      "required": true
+    },
+    {
+      "name": "keys / defaultKeys",
+      "type": "ApiKey[]",
+      "description": "Controlled or initial key list",
+      "required": false
+    },
+    {
+      "name": "onKeysChange",
+      "type": "(keys: ApiKey[]) => void",
+      "description": "Called after a create, rotate or revoke succeeds",
+      "required": false
+    },
+    {
+      "name": "onCreate",
+      "type": "(input: CreateApiKeyInput) => Promise<IssuedApiKey>",
+      "description": "Backend create returning the secret once; defaults to a local crypto-random issuer",
+      "required": false
+    },
+    {
+      "name": "onRotate",
+      "type": "(key: ApiKey) => Promise<IssuedApiKey>",
+      "description": "Backend rotate; the old key is marked revoked",
+      "required": false
+    },
+    {
+      "name": "onRevoke",
+      "type": "(key: ApiKey) => Promise<void>",
+      "description": "Backend revoke; throw to show the error inline",
+      "required": false
+    },
+    {
+      "name": "allowNoExpiry",
+      "type": "boolean",
+      "description": "Offer the No expiry option (default true)",
+      "required": false
+    },
+    {
+      "name": "defaultExpiry",
+      "type": "\"7\" | \"30\" | \"90\" | \"365\" | \"never\"",
+      "description": "Preselected expiry in days (default 90)",
+      "required": false
+    },
+    {
+      "name": "loading / error / onRetry",
+      "type": "boolean / ReactNode / () => void",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only: hides create, disables rotate/revoke",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Scrollable list height in px (default 420)",
+      "required": false
+    },
+    {
+      "name": "title / description",
+      "type": "ReactNode",
+      "description": "Header copy",
+      "required": false
+    },
+    {
+      "name": "currentUser",
+      "type": "string",
+      "description": "Stored as createdBy on locally issued keys",
+      "required": false
+    },
+    {
+      "name": "portalContainer",
+      "type": "HTMLElement | null",
+      "description": "Portal target for dialogs",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

@@ -1,0 +1,122 @@
+{
+  "name": "Pro Checkout Flow",
+  "slug": "pro-checkout-flow",
+  "description": "Multi-step checkout (contact, shipping, payment, review) on react-hook-form + zod: libphonenumber phone validation and formatting, coupon states, sticky summary with live tax recalculation (inclusive/exclusive regions, EU reverse charge), VAT ID syntax + optional remote check, locale money formatting, payment provider slot (no PSP SDK bundled) and an accessible error summary.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "@hookform/resolvers",
+    "libphonenumber-js",
+    "motion",
+    "@radix-ui/react-slot"
+  ],
+  "files": [
+    "components/crm/pro-checkout-flow.tsx",
+    "components/crm/pro-checkout-flow/schema.ts",
+    "components/crm/pro-checkout-flow/pricing.ts",
+    "components/crm/pro-checkout-flow/order-summary.tsx",
+    "components/crm/pro-checkout-flow/fields.tsx",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Hardware store checkout",
+      "file": "pro-checkout-flow-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "CartItem[]",
+      "description": "Cart lines { id, name, variant?, unitPrice, quantity, taxCategory? } in minor units",
+      "required": true
+    },
+    {
+      "name": "shippingOptions",
+      "type": "ShippingOption[]",
+      "description": "Delivery methods, optionally restricted by country",
+      "required": true
+    },
+    {
+      "name": "paymentMethods",
+      "type": "PaymentMethod[]",
+      "description": "Methods; render(ctx) mounts a provider element and calls ctx.setReady",
+      "required": true
+    },
+    {
+      "name": "onPlaceOrder",
+      "type": "(order) => Promise<void | { error }>",
+      "description": "Submit the order; return { error } to show it",
+      "required": true
+    },
+    {
+      "name": "onApplyCoupon",
+      "type": "(code) => CouponResult | Promise<CouponResult>",
+      "description": "Validate a discount code",
+      "required": false
+    },
+    {
+      "name": "verifyVatId",
+      "type": "(vatId, country) => Promise<boolean>",
+      "description": "Optional remote VAT registry check",
+      "required": false
+    },
+    {
+      "name": "currency / locale",
+      "type": "string",
+      "description": "Money formatting",
+      "default": "USD / en-US",
+      "required": false
+    },
+    {
+      "name": "sellerCountry",
+      "type": "string",
+      "description": "Seller country for EU reverse charge",
+      "default": "US",
+      "required": false
+    },
+    {
+      "name": "taxTable",
+      "type": "Record<string, TaxRegion>",
+      "description": "Tax rates per destination",
+      "default": "DEFAULT_TAX",
+      "required": false
+    },
+    {
+      "name": "countries",
+      "type": "{ code, name }[]",
+      "description": "Selectable countries",
+      "required": false
+    },
+    {
+      "name": "defaultValues",
+      "type": "Partial<CheckoutValues>",
+      "description": "Prefill",
+      "required": false
+    },
+    {
+      "name": "step / defaultStep / onStepChange",
+      "type": "StepId",
+      "description": "Controlled or uncontrolled step",
+      "default": "contact",
+      "required": false
+    },
+    {
+      "name": "termsHref",
+      "type": "string",
+      "description": "Link to terms of sale",
+      "default": "#",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disable the whole flow",
+      "default": "false",
+      "required": false
+    }
+  ]
+}

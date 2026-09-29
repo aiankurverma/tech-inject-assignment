@@ -1,0 +1,143 @@
+{
+  "name": "Pro Usage Metering Dashboard",
+  "slug": "pro-usage-metering-dashboard",
+  "description": "Usage-based billing dashboard: per-meter cumulative series with limit and alert-threshold lines, quota bars with forecast overlay, linear forecast to period end with limit-exhaustion date, projected bill, a virtualised sortable cost breakdown by any dimension, an alert threshold editor and a preset date range picker.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-popover",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react",
+    "react-day-picker",
+    "recharts"
+  ],
+  "files": [
+    "components/crm/pro-usage-metering-dashboard.tsx",
+    "components/crm/pro-usage-metering-dashboard/types.ts",
+    "components/crm/pro-usage-metering-dashboard/meter-chart.tsx",
+    "components/crm/pro-usage-metering-dashboard/quota-bar.tsx",
+    "components/crm/pro-usage-metering-dashboard/cost-breakdown.tsx",
+    "components/crm/pro-usage-metering-dashboard/threshold-editor.tsx",
+    "components/crm/pro-usage-metering-dashboard/date-range-picker.tsx",
+    "hooks/use-usage-forecast.ts"
+  ],
+  "examples": [
+    {
+      "title": "Cloud platform bill, 5 meters, ~29k usage records",
+      "file": "pro-usage-metering-dashboard-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "meters",
+      "type": "UsageMeter[]",
+      "description": "{ id, name, unit, limit?, included?, unitPrice, per?, alertThresholds?: number[] (fractions) }",
+      "required": true
+    },
+    {
+      "name": "records",
+      "type": "UsageRecord[]",
+      "description": "{ meterId, date: 'yyyy-mm-dd', quantity, dimensions?: Record<string, string> }",
+      "required": true
+    },
+    {
+      "name": "asOf",
+      "type": "Date",
+      "description": "Today; later days are forecast",
+      "default": "new Date()",
+      "required": false
+    },
+    {
+      "name": "range",
+      "type": "{ from: Date; to: Date }",
+      "description": "Controlled billing period / view range",
+      "required": false
+    },
+    {
+      "name": "defaultRange",
+      "type": "{ from: Date; to: Date }",
+      "description": "Uncontrolled initial range; defaults to the month containing asOf",
+      "required": false
+    },
+    {
+      "name": "onRangeChange",
+      "type": "(range) => void",
+      "description": "Range change callback",
+      "required": false
+    },
+    {
+      "name": "thresholds",
+      "type": "Record<string, number[]>",
+      "description": "Controlled alert thresholds per meter id",
+      "required": false
+    },
+    {
+      "name": "onThresholdsChange",
+      "type": "(next) => void",
+      "description": "Fires when alerts are edited",
+      "required": false
+    },
+    {
+      "name": "baseFee",
+      "type": "number",
+      "description": "Fixed platform fee added to the bill",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency code",
+      "default": "\"USD\"",
+      "required": false
+    },
+    {
+      "name": "forecastWindowDays",
+      "type": "number",
+      "description": "Trailing days averaged for the forecast rate",
+      "default": "7",
+      "required": false
+    },
+    {
+      "name": "dimensions",
+      "type": "string[]",
+      "description": "Breakdown dimensions; inferred from records when omitted",
+      "required": false
+    },
+    {
+      "name": "presets",
+      "type": "RangePreset[]",
+      "description": "Date picker presets { label, range(asOf) }",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
+    {
+      "name": "error",
+      "type": "ReactNode",
+      "description": "Error message; shows an error state",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry button in the error state",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Hide the threshold editor",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Overage cost = max(0, usage - included) / per * unitPrice; the breakdown allocates each meter's overage to a dimension in proportion to usage."
+}

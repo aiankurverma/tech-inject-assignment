@@ -1,0 +1,116 @@
+{
+  "name": "Pro Faceted Filter Bar",
+  "slug": "pro-filter-bar",
+  "description": "Linear/Notion-style filter bar: typed chips with operator and value popovers, typeahead across fields and values, live facet counts, URL-synced state (nuqs), saved views, clear and undo/redo. Filters 10k+ rows and all facets in one pass.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "dependencies": [
+    "@radix-ui/react-popover",
+    "cmdk",
+    "date-fns",
+    "lucide-react",
+    "nuqs",
+    "react-day-picker",
+    "react-hotkeys-hook",
+    "@tanstack/react-virtual"
+  ],
+  "files": [
+    "components/crm/pro-filter-bar.tsx",
+    "components/crm/pro-filter-bar/types.ts",
+    "components/crm/pro-filter-bar/operators.ts",
+    "components/crm/pro-filter-bar/value-editors.tsx",
+    "components/crm/pro-filter-bar/filter-chip.tsx",
+    "components/crm/pro-filter-bar/add-filter-menu.tsx",
+    "components/crm/pro-filter-bar/saved-views.tsx",
+    "hooks/use-filter-state.ts",
+    "hooks/use-filtered-rows.ts"
+  ],
+  "examples": [{ "title": "Deals, 10k rows, URL-synced", "file": "pro-filter-bar-1.tsx" }],
+  "props": [
+    {
+      "name": "fields",
+      "type": "FilterField<TRow>[]",
+      "description": "Filterable fields: id, label, type (enum/text/number/date/boolean), icon, options, accessor",
+      "required": true
+    },
+    {
+      "name": "value / onChange",
+      "type": "FilterCondition[] / (filters) => void",
+      "description": "Controlled filters; useUrlFilters(key) returns a URL-backed pair",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "FilterCondition[]",
+      "description": "Initial filters when uncontrolled",
+      "default": "[]",
+      "required": false
+    },
+    {
+      "name": "options",
+      "type": "Record<string, FilterOption[]>",
+      "description": "Enum options per field id (useFilteredRows derives them from data)",
+      "required": false
+    },
+    {
+      "name": "facets",
+      "type": "Record<string, Map<string, number>>",
+      "description": "Live counts per enum value, computed against all other filters",
+      "required": false
+    },
+    {
+      "name": "views / defaultViews / onViewsChange",
+      "type": "SavedView[]",
+      "description": "Saved views, controlled or uncontrolled; locked views cannot be deleted",
+      "required": false
+    },
+    {
+      "name": "hideViews",
+      "type": "boolean",
+      "description": "Hide the saved views menu",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "resultCount / totalCount",
+      "type": "number",
+      "description": "Shows \"1,204 of 10,000\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Spinner while results refresh",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Disables every control",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "hotkeys",
+      "type": "boolean",
+      "description": "F opens the typeahead; Mod+Z and Mod+Shift+Z undo and redo",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "actions",
+      "type": "ReactNode",
+      "description": "Extra controls at the right end",
+      "required": false
+    },
+    {
+      "name": "useFilteredRows(rows, fields, filters)",
+      "type": "{ rows, facets, options, stale }",
+      "description": "Client-side filtering plus facet counts in a single deferred pass",
+      "required": false
+    }
+  ],
+  "usage": "const [filters, setFilters] = useUrlFilters(\"f\");\nconst { rows, facets, options } = useFilteredRows(deals, FIELDS, filters);\n\n<ProFilterBar\n  fields={FIELDS}\n  value={filters}\n  onChange={setFilters}\n  facets={facets}\n  options={options}\n  resultCount={rows.length}\n  totalCount={deals.length}\n/>",
+  "access": "free"
+}

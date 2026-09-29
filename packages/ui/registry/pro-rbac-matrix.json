@@ -1,0 +1,114 @@
+{
+  "name": "Pro RBAC Permission Matrix",
+  "slug": "pro-rbac-matrix",
+  "description": "Sticky roles-by-resources/actions permission grid built on TanStack Table and Virtual: tri-state group checkboxes, inherited vs explicit badges, bulk row/column toggles, keyboard grid navigation and a dirty diff (jsondiffpatch) before save; state updates via immer.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "immer",
+    "jsondiffpatch",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-rbac-matrix.tsx",
+    "components/crm/pro-rbac-matrix/matrix-cell.tsx",
+    "components/crm/pro-rbac-matrix/diff-panel.tsx",
+    "hooks/use-rbac-state.ts",
+    "lib/rbac-matrix.ts"
+  ],
+  "examples": [{ "title": "Enterprise roles editor", "file": "pro-rbac-matrix-1.tsx" }],
+  "props": [
+    {
+      "name": "roles",
+      "type": "RbacRole[]",
+      "description": "Columns; roles may inherit from other roles",
+      "required": true
+    },
+    {
+      "name": "permissions",
+      "type": "RbacPermission[]",
+      "description": "Rows grouped by resource and action",
+      "required": true
+    },
+    {
+      "name": "value",
+      "type": "RbacGrants",
+      "description": "Controlled grants",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "RbacGrants",
+      "description": "Uncontrolled initial grants",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(next: RbacGrants) => void",
+      "description": "Called on every edit",
+      "required": false
+    },
+    {
+      "name": "baseline",
+      "type": "RbacGrants",
+      "description": "Saved state used for the dirty diff",
+      "required": false
+    },
+    {
+      "name": "onSave",
+      "type": "(next: RbacGrants, changes: GrantChange[]) => Promise<void> | void",
+      "description": "Save handler, invoked after reviewing the diff",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable editing",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show loading state",
+      "required": false
+    },
+    { "name": "error", "type": "ReactNode", "description": "Show error state", "required": false },
+    {
+      "name": "defaultCollapsed",
+      "type": "string[]",
+      "description": "Resource groups collapsed initially",
+      "required": false
+    },
+    {
+      "name": "roleColumnWidth",
+      "type": "number",
+      "description": "Role column width in px",
+      "required": false
+    },
+    {
+      "name": "permissionColumnWidth",
+      "type": "number",
+      "description": "Sticky permission column width in px",
+      "required": false
+    },
+    { "name": "rowHeight", "type": "number", "description": "Row height in px", "required": false },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Viewport height",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name of the grid",
+      "required": false
+    },
+    { "name": "className", "type": "string", "description": "Extra classes", "required": false }
+  ],
+  "usage": ""
+}

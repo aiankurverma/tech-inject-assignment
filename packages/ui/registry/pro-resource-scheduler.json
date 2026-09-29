@@ -1,0 +1,146 @@
+{
+  "name": "Pro Resource Scheduler",
+  "slug": "pro-resource-scheduler",
+  "description": "Resource timeline for booking and field-service apps: virtualised resource rows, pointer drag to create / move across rows / resize with snapping, live conflict detection, timezone-aware day / week / month zoom, recurring bookings with per-occurrence detach, keyboard nudging and a floating event card.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@date-fns/tz",
+    "@floating-ui/react",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react",
+    "zustand",
+    "@radix-ui/react-slot"
+  ],
+  "files": [
+    "components/crm/pro-resource-scheduler.tsx",
+    "components/crm/pro-resource-scheduler/types.ts",
+    "components/crm/pro-resource-scheduler/time-scale.ts",
+    "components/crm/pro-resource-scheduler/recurrence.ts",
+    "components/crm/pro-resource-scheduler/layout.ts",
+    "components/crm/pro-resource-scheduler/store.ts",
+    "components/crm/pro-resource-scheduler/resource-row.tsx",
+    "components/crm/pro-resource-scheduler/event-popover.tsx",
+    "components/crm/button.tsx",
+    "hooks/use-scheduler-drag.ts"
+  ],
+  "examples": [
+    {
+      "title": "1,500 field engineers, ~12k jobs",
+      "file": "pro-resource-scheduler-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "resources",
+      "type": "SchedulerResource[]",
+      "description": "Rows: id, name, subtitle, color, disabled",
+      "required": true
+    },
+    {
+      "name": "events",
+      "type": "SchedulerEvent[]",
+      "description": "Controlled bookings (pair with onEventsChange)",
+      "required": false
+    },
+    {
+      "name": "defaultEvents",
+      "type": "SchedulerEvent[]",
+      "description": "Uncontrolled initial bookings",
+      "required": false
+    },
+    {
+      "name": "onEventsChange",
+      "type": "(next: SchedulerEvent[]) => void",
+      "description": "Next array after create / move / resize / delete",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(change: SchedulerChange) => void",
+      "description": "Semantic change: create, update, detach (recurring occurrence), delete",
+      "required": false
+    },
+    {
+      "name": "view / defaultView / onViewChange",
+      "type": "'day' | 'week' | 'month'",
+      "description": "Zoom level",
+      "required": false
+    },
+    {
+      "name": "date / defaultDate / onDateChange",
+      "type": "Date",
+      "description": "Any instant inside the visible range",
+      "required": false
+    },
+    {
+      "name": "timeZone / defaultTimeZone / onTimeZoneChange",
+      "type": "string",
+      "description": "IANA zone for labels, snapping and recurrence",
+      "required": false
+    },
+    {
+      "name": "timeZones",
+      "type": "string[]",
+      "description": "Zones offered in the switcher",
+      "required": false
+    },
+    {
+      "name": "weekStartsOn",
+      "type": "0 | 1",
+      "description": "Week start (default Monday)",
+      "required": false
+    },
+    {
+      "name": "allowConflicts",
+      "type": "boolean",
+      "description": "False rejects overlapping drops (default true: flagged only)",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable editing",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton rows",
+      "required": false
+    },
+    {
+      "name": "newEventTitle",
+      "type": "string",
+      "description": "Title for drag-created bookings",
+      "required": false
+    },
+    {
+      "name": "labelWidth",
+      "type": "number",
+      "description": "Resource column width (px)",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Viewport height (px)",
+      "required": false
+    },
+    {
+      "name": "renderEventDetails",
+      "type": "(occ) => ReactNode",
+      "description": "Extra content in the event card",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Root classes",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
