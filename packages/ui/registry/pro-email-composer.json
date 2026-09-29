@@ -1,0 +1,137 @@
+{
+  "name": "Pro Email Composer",
+  "slug": "pro-email-composer",
+  "description": "Sales email composer on Tiptap: {{merge}} field chips with fallbacks, slash snippets, attachment dropzone, time-zone aware send-later and a preview rendered against sample records.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "dependencies": [
+    "@tiptap/react",
+    "@tiptap/starter-kit",
+    "@tiptap/extensions",
+    "@tiptap/extension-mention",
+    "@tiptap/suggestion",
+    "@floating-ui/react",
+    "react-dropzone",
+    "react-day-picker",
+    "date-fns",
+    "@date-fns/tz",
+    "@radix-ui/react-tabs",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-email-composer.tsx",
+    "components/crm/pro-email-composer/attachment-dropzone.tsx",
+    "components/crm/pro-email-composer/email-preview.tsx",
+    "components/crm/pro-email-composer/merge-field-extension.tsx",
+    "components/crm/pro-email-composer/merge.ts",
+    "components/crm/pro-email-composer/recipient-input.tsx",
+    "components/crm/pro-email-composer/send-later-picker.tsx",
+    "components/crm/pro-email-composer/suggestion-menu.tsx",
+    "components/crm/pro-email-composer/toolbar.tsx",
+    "components/crm/pro-email-composer/types.ts",
+    "hooks/use-controllable-state.ts"
+  ],
+  "examples": [
+    {
+      "title": "Sales sequence",
+      "file": "pro-email-composer-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "MergeFieldDef[]",
+      "description": "Merge fields offered after typing {{",
+      "required": true
+    },
+    {
+      "name": "snippets",
+      "type": "EmailSnippet[]",
+      "description": "Reusable blocks inserted with /",
+      "required": false
+    },
+    {
+      "name": "sampleRecords",
+      "type": "SampleRecord[]",
+      "description": "Records the Preview tab renders against",
+      "required": false
+    },
+    {
+      "name": "to / defaultTo / onToChange",
+      "type": "string[]",
+      "description": "Controlled or uncontrolled recipients",
+      "required": false
+    },
+    {
+      "name": "defaultSubject",
+      "type": "string",
+      "description": "Initial subject",
+      "required": false
+    },
+    {
+      "name": "defaultContent",
+      "type": "JSONContent | string",
+      "description": "Initial body; {{tokens}} become chips",
+      "required": false
+    },
+    {
+      "name": "schedule / onScheduleChange",
+      "type": "ScheduleValue | null",
+      "description": "Controlled send-later value; null sends now",
+      "required": false
+    },
+    {
+      "name": "attachments / onAttachmentsChange",
+      "type": "EmailAttachment[]",
+      "description": "Controlled attachments",
+      "required": false
+    },
+    {
+      "name": "onDraftChange",
+      "type": "(draft: EmailDraft) => void",
+      "description": "Called on every change",
+      "required": false
+    },
+    {
+      "name": "onSend",
+      "type": "(draft: EmailDraft) => void | Promise<void>",
+      "description": "Send or schedule; reject to show an error",
+      "required": true
+    },
+    {
+      "name": "defaultTimeZone",
+      "type": "string",
+      "description": "IANA zone for the send-later picker",
+      "required": false,
+      "default": "local zone"
+    },
+    {
+      "name": "maxAttachmentBytes",
+      "type": "number",
+      "description": "Per-file size limit",
+      "required": false
+    },
+    {
+      "name": "maxAttachments",
+      "type": "number",
+      "description": "Maximum attachment count",
+      "required": false
+    },
+    {
+      "name": "disabled",
+      "type": "boolean",
+      "description": "Read-only state",
+      "required": false,
+      "default": "false"
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Skeleton while template data loads",
+      "required": false,
+      "default": "false"
+    }
+  ],
+  "usage": "",
+  "access": "free"
+}
