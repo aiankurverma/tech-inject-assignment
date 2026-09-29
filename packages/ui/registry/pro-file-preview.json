@@ -1,0 +1,129 @@
+{
+  "name": "Pro File Previewer",
+  "slug": "pro-file-preview",
+  "description": "Inline or lightbox file previewer: virtualised PDF pages with a thumbnail rail, zoom, rotate and full-text search; image zoom/pan/pinch/rotate; Shiki syntax-highlighted code with line numbers; video and audio players; and a virtualised gallery strip with full keyboard navigation.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@tanstack/react-virtual",
+    "lucide-react",
+    "pdf-lib",
+    "pdfjs-dist",
+    "react-pdf",
+    "react-zoom-pan-pinch",
+    "shiki"
+  ],
+  "files": [
+    "components/crm/pro-file-preview.tsx",
+    "components/crm/pro-file-preview/types.ts",
+    "components/crm/pro-file-preview/toolbar.tsx",
+    "components/crm/pro-file-preview/gallery-strip.tsx",
+    "components/crm/pro-file-preview/image-viewer.tsx",
+    "components/crm/pro-file-preview/pdf-viewer.tsx",
+    "components/crm/pro-file-preview/code-viewer.tsx",
+    "components/crm/pro-file-preview/media-viewer.tsx",
+    "hooks/use-object-url.ts",
+    "hooks/use-pdf-search.ts"
+  ],
+  "examples": [
+    {
+      "title": "Deal attachments: 48-page contract, images, code, media",
+      "file": "pro-file-preview-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "files",
+      "type": "PreviewFile[]",
+      "description": "{ id, name, kind?, mimeType?, src?: url | ArrayBuffer | Uint8Array | Blob, content?, language?, size?, thumbnail?, meta? }",
+      "required": true
+    },
+    {
+      "name": "index",
+      "type": "number",
+      "description": "Controlled active file index",
+      "required": false
+    },
+    {
+      "name": "defaultIndex",
+      "type": "number",
+      "description": "Uncontrolled initial index",
+      "default": "0",
+      "required": false
+    },
+    {
+      "name": "onIndexChange",
+      "type": "(index, file) => void",
+      "description": "Fires when the active file changes",
+      "required": false
+    },
+    {
+      "name": "mode",
+      "type": "\"inline\" | \"dialog\"",
+      "description": "Render in place or as a full-screen Radix dialog lightbox",
+      "default": "\"inline\"",
+      "required": false
+    },
+    {
+      "name": "open",
+      "type": "boolean",
+      "description": "Controlled dialog open state",
+      "required": false
+    },
+    {
+      "name": "defaultOpen",
+      "type": "boolean",
+      "description": "Uncontrolled dialog open state",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "onOpenChange",
+      "type": "(open) => void",
+      "description": "Dialog open change callback",
+      "required": false
+    },
+    {
+      "name": "onDownload",
+      "type": "(file) => void",
+      "description": "Shows a download button; you perform the download",
+      "required": false
+    },
+    {
+      "name": "renderUnsupported",
+      "type": "(file) => ReactNode",
+      "description": "Fallback renderer for unknown file types",
+      "required": false
+    },
+    {
+      "name": "pdfWorkerSrc",
+      "type": "string",
+      "description": "pdf.js worker URL; defaults to the matching pdfjs-dist CDN build",
+      "required": false
+    },
+    {
+      "name": "showGallery",
+      "type": "boolean",
+      "description": "Show the thumbnail gallery strip",
+      "default": "true",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Inline height",
+      "default": "640",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": "Keys: Left/Right switch files, + / - / 0 zoom, R rotates, Ctrl+F searches the PDF, Enter / Shift+Enter step through matches."
+}
