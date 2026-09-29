@@ -1,0 +1,85 @@
+{
+  "name": "Pro Subscription Manager",
+  "slug": "pro-subscription-manager",
+  "description": "Self-serve subscription console: plan card with seat usage, three-step change-plan wizard with exact proration preview, seat changes, pause/resume, cancel flow with reason-matched retention offers, upcoming invoice and billing timeline over a pluggable API.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "@radix-ui/react-dialog",
+    "lucide-react",
+    "react-hook-form",
+    "zod",
+    "date-fns",
+    "@tanstack/react-query"
+  ],
+  "files": [
+    "components/crm/pro-subscription-manager.tsx",
+    "components/crm/pro-subscription-manager/billing.ts",
+    "components/crm/pro-subscription-manager/dialog-shell.tsx",
+    "components/crm/pro-subscription-manager/change-plan-dialog.tsx",
+    "components/crm/pro-subscription-manager/lifecycle-dialogs.tsx",
+    "components/crm/pro-subscription-manager/invoice-panel.tsx",
+    "hooks/use-subscription.ts",
+    "components/crm/button.tsx"
+  ],
+  "examples": [{ "title": "Growth plan with history", "file": "pro-subscription-manager-1.tsx" }],
+  "props": [
+    {
+      "name": "api",
+      "type": "SubscriptionApi",
+      "description": "Adapter: getSubscription, changePlan, updateSeats, pause, resume, cancel, acceptOffer, reactivate",
+      "required": true
+    },
+    {
+      "name": "subscriptionId",
+      "type": "string",
+      "description": "Subscription to load (query key)",
+      "required": true
+    },
+    {
+      "name": "plans",
+      "type": "Plan[]",
+      "description": "{ id, name, rank, prices: { month, year } per seat, features, minSeats?, maxSeats?, legacy? }",
+      "required": true
+    },
+    {
+      "name": "retentionOffers",
+      "type": "RetentionOffer[]",
+      "description": "Offers shown in the cancel flow, matched to the chosen reason",
+      "required": false
+    },
+    {
+      "name": "usedSeats",
+      "type": "number",
+      "description": "Assigned seats; floor for seat reductions",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share your app's TanStack Query cache",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable all actions",
+      "required": false
+    },
+    {
+      "name": "onChanged",
+      "type": "(sub: Subscription) => void",
+      "description": "Called after every successful mutation",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Formatting locale (default en-US)",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

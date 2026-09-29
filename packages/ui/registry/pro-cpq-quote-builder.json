@@ -1,0 +1,102 @@
+{
+  "name": "Pro CPQ Quote Builder",
+  "slug": "pro-cpq-quote-builder",
+  "description": "Configure-price-quote workspace: bundle picker with option rules, virtualised 10k-line grid with qty/discount/term, tiered and volume pricing, discount approval thresholds, exact multi-currency minor-unit totals, undo, saved versions and paginated PDF export.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "lucide-react",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "react-hook-form",
+    "zod",
+    "@react-pdf/renderer",
+    "immer"
+  ],
+  "files": [
+    "components/crm/pro-cpq-quote-builder.tsx",
+    "components/crm/pro-cpq-quote-builder/types.ts",
+    "components/crm/pro-cpq-quote-builder/money.ts",
+    "components/crm/pro-cpq-quote-builder/pricing.ts",
+    "components/crm/pro-cpq-quote-builder/bundle-picker.tsx",
+    "components/crm/pro-cpq-quote-builder/line-grid.tsx",
+    "components/crm/pro-cpq-quote-builder/quote-header-form.tsx",
+    "components/crm/pro-cpq-quote-builder/quote-pdf.tsx",
+    "hooks/use-cpq-quote.ts",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    { "title": "Reseller renewal, 10,000 lines", "file": "pro-cpq-quote-builder-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "products",
+      "type": "CpqProduct[]",
+      "description": "Price book: { id, sku, name, currency, model: flat|tiered|volume, unitPrice, tiers?, billing, maxRepDiscountBp? } in minor units",
+      "required": true
+    },
+    {
+      "name": "bundles",
+      "type": "CpqBundle[]",
+      "description": "Bundles with options and rules (requires, excludes, minQty, pickOne)",
+      "required": true
+    },
+    {
+      "name": "fx",
+      "type": "FxTable",
+      "description": "{ base, rates } decimal-string FX rates to the base currency",
+      "required": true
+    },
+    {
+      "name": "policy",
+      "type": "ApprovalPolicy",
+      "description": "{ repMaxDiscountBp, tiers: { minDiscountBp, approver }[], largeDealMinor? }",
+      "required": true
+    },
+    {
+      "name": "defaultValue",
+      "type": "QuoteDraft",
+      "description": "Initial quote (uncontrolled)",
+      "required": true
+    },
+    {
+      "name": "value / onChange",
+      "type": "QuoteDraft / (q) => void",
+      "description": "Controlled quote state",
+      "required": false
+    },
+    {
+      "name": "versions / defaultVersions / onVersionsChange",
+      "type": "QuoteVersion[]",
+      "description": "Saved snapshots; export PDF saves a new version",
+      "required": false
+    },
+    {
+      "name": "currencies",
+      "type": "string[]",
+      "description": "Selectable quote currencies (default: fx base + rates)",
+      "required": false
+    },
+    {
+      "name": "onRequestApproval",
+      "type": "(quote, approvers) => void",
+      "description": "Submit for approval when thresholds are exceeded",
+      "required": false
+    },
+    {
+      "name": "readOnly / loading / error",
+      "type": "boolean / boolean / string",
+      "description": "State flags",
+      "required": false
+    },
+    {
+      "name": "sellerName / locale / defaultTermMonths / gridHeight",
+      "type": "string / string / number / number",
+      "description": "Display options",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
