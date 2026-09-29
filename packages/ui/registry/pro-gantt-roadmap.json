@@ -1,0 +1,132 @@
+{
+  "name": "Pro Gantt and Roadmap Planner",
+  "slug": "pro-gantt-roadmap",
+  "description": "Dependency-aware Gantt for 10k+ tasks: virtualised tree rows, draggable and resizable bars, finish-to-start arrows, CPM critical path with float, auto-scheduling of successors, milestones, day/week/quarter zoom and baseline compare.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-virtual",
+    "date-fns",
+    "zustand",
+    "immer",
+    "@floating-ui/react",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-gantt-roadmap.tsx",
+    "components/crm/pro-gantt-roadmap/types.ts",
+    "components/crm/pro-gantt-roadmap/gantt-toolbar.tsx",
+    "components/crm/pro-gantt-roadmap/timeline-header.tsx",
+    "components/crm/pro-gantt-roadmap/grid-cell.tsx",
+    "components/crm/pro-gantt-roadmap/task-bar.tsx",
+    "components/crm/pro-gantt-roadmap/dependency-layer.tsx",
+    "components/crm/pro-gantt-roadmap/task-tooltip.tsx",
+    "hooks/use-gantt-store.ts",
+    "lib/gantt-schedule.ts"
+  ],
+  "examples": [{ "title": "10k-task product roadmap", "file": "pro-gantt-roadmap-1.tsx" }],
+  "props": [
+    {
+      "name": "tasks",
+      "type": "GanttTask[]",
+      "description": "Controlled tasks { id, name, start, end, parentId?, dependencies?, progress?, milestone?, baselineStart?, baselineEnd?, assignee?, color? }",
+      "required": false
+    },
+    {
+      "name": "defaultTasks",
+      "type": "GanttTask[]",
+      "description": "Uncontrolled initial tasks",
+      "required": false
+    },
+    {
+      "name": "onTasksChange",
+      "type": "(tasks: GanttTask[], changedId: string) => void",
+      "description": "Committed move/resize (successors already auto-scheduled)",
+      "required": false
+    },
+    {
+      "name": "onTaskOpen",
+      "type": "(task: GanttTask) => void",
+      "description": "Double-click or Enter on a row",
+      "required": false
+    },
+    {
+      "name": "defaultZoom",
+      "type": "\"day\" | \"week\" | \"quarter\"",
+      "description": "Initial zoom",
+      "default": "\"week\"",
+      "required": false
+    },
+    {
+      "name": "defaultCollapsed",
+      "type": "string[]",
+      "description": "Parent ids collapsed initially",
+      "required": false
+    },
+    {
+      "name": "autoSchedule",
+      "type": "boolean",
+      "description": "Push successors forward when a predecessor overlaps them",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "showCritical",
+      "type": "boolean",
+      "description": "Highlight critical path initially",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "showBaseline",
+      "type": "boolean",
+      "description": "Show baseline ghost bars initially",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable dragging and keyboard edits",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "today",
+      "type": "Date",
+      "description": "Reference date for the today marker",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Toolbar heading",
+      "default": "\"Roadmap\"",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Panel height",
+      "default": "640",
+      "required": false
+    },
+    {
+      "name": "rowHeight",
+      "type": "number",
+      "description": "Row height in px",
+      "default": "36",
+      "required": false
+    },
+    {
+      "name": "gridWidth",
+      "type": "number",
+      "description": "Task column width in px",
+      "default": "340",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Show skeleton", "required": false }
+  ],
+  "usage": "Keyboard: arrows move between rows, Left/Right collapse/expand, Alt+Left/Right nudges a task a day, Alt+Shift+Left/Right resizes its end, Enter opens."
+}

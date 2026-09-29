@@ -1,0 +1,131 @@
+{
+  "name": "Pro Notification Inbox",
+  "slug": "pro-notification-inbox",
+  "description": "Virtualised, grouped notification feed with unread/snoozed/archived views, type filters, search, mark-all-read, snooze, bulk actions, optimistic TanStack Query mutations with rollback, keyboard triage and realtime insert animation that respects reduced motion.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-query",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "motion",
+    "@floating-ui/react",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-notification-inbox.tsx",
+    "components/crm/pro-notification-inbox/types.ts",
+    "components/crm/pro-notification-inbox/notification-row.tsx",
+    "components/crm/pro-notification-inbox/inbox-toolbar.tsx",
+    "components/crm/pro-notification-inbox/snooze-menu.tsx",
+    "hooks/use-notification-inbox.ts"
+  ],
+  "examples": [
+    { "title": "12k notifications with live feed", "file": "pro-notification-inbox-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "items",
+      "type": "InboxNotification[]",
+      "description": "Local data { id, type, title, body?, actor?, createdAt, readAt?, archivedAt?, snoozedUntil? }",
+      "required": false
+    },
+    {
+      "name": "queryFn",
+      "type": "() => Promise<InboxNotification[]>",
+      "description": "Remote loader run through TanStack Query",
+      "required": false
+    },
+    {
+      "name": "queryKey",
+      "type": "QueryKey",
+      "description": "Cache key for the feed",
+      "default": "[\"pro-notification-inbox\"]",
+      "required": false
+    },
+    {
+      "name": "queryClient",
+      "type": "QueryClient",
+      "description": "Share your app's client; otherwise an isolated one is created",
+      "required": false
+    },
+    {
+      "name": "onAction",
+      "type": "(action: InboxAction) => Promise<void> | void",
+      "description": "Persist read/unread/archive/restore/snooze; a rejection rolls back the optimistic update",
+      "required": false
+    },
+    {
+      "name": "subscribe",
+      "type": "(emit) => () => void",
+      "description": "Realtime source; emitted items are inserted at the top with an animation",
+      "required": false
+    },
+    {
+      "name": "onOpen",
+      "type": "(n: InboxNotification) => void",
+      "description": "Row opened (click / Enter)",
+      "required": false
+    },
+    {
+      "name": "onError",
+      "type": "(err, action) => void",
+      "description": "Action failed after rollback",
+      "required": false
+    },
+    {
+      "name": "typeMeta",
+      "type": "Record<string, { label; tone? }>",
+      "description": "Labels and accent classes per type; drives filter chips",
+      "required": false
+    },
+    {
+      "name": "view",
+      "type": "\"inbox\" | \"unread\" | \"snoozed\" | \"archived\"",
+      "description": "Controlled view",
+      "required": false
+    },
+    {
+      "name": "defaultView",
+      "type": "InboxView",
+      "description": "Uncontrolled initial view",
+      "default": "\"inbox\"",
+      "required": false
+    },
+    {
+      "name": "onViewChange",
+      "type": "(v: InboxView) => void",
+      "description": "View tab changed",
+      "required": false
+    },
+    {
+      "name": "markReadOnOpen",
+      "type": "boolean",
+      "description": "Mark as read when opened",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "now",
+      "type": "Date",
+      "description": "Reference clock for grouping and snooze expiry",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading and landmark label",
+      "default": "\"Notifications\"",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Panel height",
+      "default": "640",
+      "required": false
+    }
+  ],
+  "usage": "Keyboard: j/k or arrows move, Shift+arrows extend selection, Space/x select, Ctrl/Cmd+A select all, Enter open, e archive/restore, u toggle read, Esc clear selection."
+}
