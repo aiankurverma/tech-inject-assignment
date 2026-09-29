@@ -126,6 +126,7 @@ export const ALLOWED_SUBPATH_IMPORTS = [
   "read-excel-file/browser",
   "@tiptap/react/menus",
   "zustand/middleware",
+  "@hookform/resolvers/zod",
   "motion/react",
   "nuqs/adapters/react",
   "@xterm/xterm/css/xterm.css",

@@ -136,6 +136,7 @@ export const LAZY_MODULES: Record<string, () => Promise<unknown>> = {
   zod: () => import("zod"),
   zustand: () => import("zustand"),
   "zustand/middleware": () => import("zustand/middleware"),
+  "@hookform/resolvers/zod": () => import("@hookform/resolvers/zod"),
   "@codemirror/autocomplete": () => import("@codemirror/autocomplete"),
   "@codemirror/lint": () => import("@codemirror/lint"),
   "@tanstack/react-query": () => import("@tanstack/react-query"),
