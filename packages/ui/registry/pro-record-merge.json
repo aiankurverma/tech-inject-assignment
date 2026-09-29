@@ -1,0 +1,117 @@
+{
+  "name": "Pro Bulk Edit and Merge",
+  "slug": "pro-record-merge",
+  "description": "Dedupe and merge CRM records: duplicate groups via union-find match rules, side-by-side compare of 2-4 records with a winner per field, conflict highlighting with word diff, a validated merged-record form, merge audit summary, plus virtualised bulk field updates with diff preview and immer-patch undo/redo.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-hook-form",
+    "zod",
+    "diff",
+    "immer",
+    "@tanstack/react-virtual",
+    "@radix-ui/react-tabs",
+    "@radix-ui/react-select",
+    "@radix-ui/react-slot",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-record-merge.tsx",
+    "components/crm/pro-record-merge/model.ts",
+    "components/crm/pro-record-merge/word-diff.tsx",
+    "components/crm/pro-record-merge/merge-compare.tsx",
+    "components/crm/pro-record-merge/merge-audit.tsx",
+    "components/crm/pro-record-merge/bulk-edit.tsx",
+    "hooks/use-record-history.ts",
+    "hooks/use-controllable-state.ts",
+    "components/crm/button.tsx",
+    "components/crm/select.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx"
+  ],
+  "examples": [
+    { "title": "10,000 contacts with messy duplicates", "file": "pro-record-merge-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "fields",
+      "type": "MergeField[]",
+      "description": "{ key, label, type?: text|longtext|email|phone|url|number|date|tags, required?, options?, bulkEditable? }",
+      "required": true
+    },
+    {
+      "name": "records / defaultRecords",
+      "type": "MergeRecord[]",
+      "description": "Controlled or uncontrolled: { id, values, updatedAt, createdAt?, source? }",
+      "required": false
+    },
+    {
+      "name": "onRecordsChange",
+      "type": "(records) => void",
+      "description": "Next records after merge, bulk update, undo or redo",
+      "required": false
+    },
+    {
+      "name": "titleKey",
+      "type": "string",
+      "description": "Field used as each record's display name",
+      "required": true
+    },
+    {
+      "name": "listColumns",
+      "type": "string[]",
+      "description": "Extra columns in the bulk-edit list",
+      "required": false
+    },
+    {
+      "name": "matchRules",
+      "type": "{ label, key(record) => string }[]",
+      "description": "Duplicate match keys; default same email and same phone",
+      "required": false
+    },
+    {
+      "name": "duplicateGroups",
+      "type": "DuplicateGroup[]",
+      "description": "Precomputed groups from your dedupe service",
+      "required": false
+    },
+    {
+      "name": "onMerge",
+      "type": "(result: MergeResult) => void | Promise<void>",
+      "description": "Persist a merge (survivor, removedIds, audit); reject to keep records",
+      "required": false
+    },
+    {
+      "name": "onBulkUpdate",
+      "type": "(op: BulkOp, ids: string[]) => void",
+      "description": "Called after a bulk update is applied",
+      "required": false
+    },
+    {
+      "name": "defaultTab",
+      "type": "\"merge\" | \"bulk\"",
+      "description": "Initial mode",
+      "required": false
+    },
+    {
+      "name": "loading / error / onRetry",
+      "type": "boolean / string / () => void",
+      "description": "Skeleton and error states",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable merging, bulk updates and undo",
+      "required": false
+    },
+    {
+      "name": "locale",
+      "type": "string",
+      "description": "Number and date formatting",
+      "required": false
+    }
+  ],
+  "usage": "Each field row is a radio group: Left/Right picks a source, Up/Down moves between fields. Typing in the merged column marks the field as a custom edit. Ctrl/Cmd+Z undoes and Ctrl/Cmd+Shift+Z redoes merges and bulk updates."
+}
