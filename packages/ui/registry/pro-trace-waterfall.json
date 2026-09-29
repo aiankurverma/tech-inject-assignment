@@ -1,0 +1,127 @@
+{
+  "name": "Pro Trace Waterfall",
+  "slug": "pro-trace-waterfall",
+  "description": "Jaeger-style trace waterfall: collapsible span tree as an ARIA treegrid virtualised with TanStack Virtual for 10k spans, zoom/pan time axis (react-zoom-pan-pinch) over a density overview, critical-path highlight, error markers, find-in-trace, and a Radix Dialog attribute drawer. Scale and tick maths are in-house because @visx is not approved.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "lucide-react",
+    "@tanstack/react-virtual",
+    "react-zoom-pan-pinch",
+    "@radix-ui/react-dialog"
+  ],
+  "files": [
+    "components/crm/pro-trace-waterfall.tsx",
+    "components/crm/pro-trace-waterfall/types.ts",
+    "components/crm/pro-trace-waterfall/time-scale.ts",
+    "components/crm/pro-trace-waterfall/timeline-overview.tsx",
+    "components/crm/pro-trace-waterfall/span-row.tsx",
+    "components/crm/pro-trace-waterfall/span-drawer.tsx",
+    "hooks/use-span-tree.ts"
+  ],
+  "examples": [
+    {
+      "title": "Checkout request, ~10k spans across 8 services",
+      "file": "pro-trace-waterfall-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "spans",
+      "type": "TraceSpan[]",
+      "description": "{ spanId, parentSpanId?, name, service, startTime (ms), duration (ms), status?: 'ok' | 'error', kind?, attributes?, events?: { time, name, attributes? }[] }. Orphans become roots",
+      "required": true
+    },
+    {
+      "name": "traceId",
+      "type": "string",
+      "description": "Shown in the header",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "ReactNode",
+      "description": "Header title (usually the root operation)",
+      "default": "\"Trace\"",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a skeleton",
+      "default": "false",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string | null",
+      "description": "Shows an error state",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry button in the error state",
+      "required": false
+    },
+    {
+      "name": "defaultCollapsedIds",
+      "type": "string[]",
+      "description": "Initially collapsed spans (uncontrolled)",
+      "required": false
+    },
+    {
+      "name": "collapsedIds / onCollapsedChange",
+      "type": "string[] / (ids) => void",
+      "description": "Controlled collapse state",
+      "required": false
+    },
+    {
+      "name": "selectedSpanId / onSelectedSpanChange",
+      "type": "string | null",
+      "description": "Controlled keyboard / click selection",
+      "required": false
+    },
+    {
+      "name": "defaultShowCriticalPath",
+      "type": "boolean",
+      "description": "Highlight the critical path initially",
+      "default": "true",
+      "required": false
+    },
+    {
+      "name": "serviceColor",
+      "type": "(service, index) => string",
+      "description": "Override service colours (defaults to CRM tag colours)",
+      "required": false
+    },
+    {
+      "name": "rowHeight",
+      "type": "number",
+      "description": "Row height in px",
+      "default": "26",
+      "required": false
+    },
+    {
+      "name": "labelWidth",
+      "type": "number",
+      "description": "Width of the tree column in px",
+      "default": "340",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number",
+      "description": "Component height in px",
+      "default": "640",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes for the root",
+      "required": false
+    }
+  ]
+}
