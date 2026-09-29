@@ -1,0 +1,81 @@
+{
+  "name": "Pro Spreadsheet",
+  "slug": "pro-spreadsheet",
+  "description": "Embeddable Excel-style spreadsheet: virtualised grid for 10k+ rows, formula engine with ~50 functions and an incremental dependency graph, cross-sheet references, fill handle, TSV copy/paste with Excel, undo/redo, number formats, column resize, frozen panes and sheet tabs.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-virtual",
+    "immer",
+    "zustand",
+    "@radix-ui/react-tabs",
+    "@formulajs/formulajs",
+    "papaparse",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-spreadsheet.tsx",
+    "components/crm/pro-spreadsheet/address.ts",
+    "components/crm/pro-spreadsheet/formula.ts",
+    "components/crm/pro-spreadsheet/functions.ts",
+    "components/crm/pro-spreadsheet/engine.ts",
+    "components/crm/pro-spreadsheet/store.ts",
+    "components/crm/pro-spreadsheet/operations.ts",
+    "components/crm/pro-spreadsheet/grid.tsx",
+    "components/crm/pro-spreadsheet/toolbar.tsx",
+    "components/crm/pro-spreadsheet/sheet-tabs.tsx"
+  ],
+  "examples": [{ "title": "10,000-order revenue workbook", "file": "pro-spreadsheet-1.tsx" }],
+  "props": [
+    {
+      "name": "value / defaultValue",
+      "type": "WorkbookData",
+      "description": "Controlled or initial workbook: sheets with sparse raw cells keyed \"row:col\", formats, column widths and frozen panes",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(wb: WorkbookData) => void",
+      "description": "Called after every edit, paste, fill, undo/redo, format or sheet change",
+      "required": false
+    },
+    {
+      "name": "onSelectionChange",
+      "type": "(range: CellRange, sheetId: string) => void",
+      "description": "Called when the selected range changes",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disables editing, paste, fill and sheet management",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a skeleton instead of the grid",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO code used by the currency format (default USD)",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Component height (default 560)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes for the frame",
+      "required": false
+    }
+  ],
+  "usage": "Formulas start with \"=\" and support A1, $A$1, ranges and Sheet!A1 references with SUM, AVERAGE, COUNTIF(S), SUMIF(S), VLOOKUP, INDEX/MATCH, IF, IFERROR, ROUND, DATE, PMT and more (see FUNCTION_NAMES). Keyboard: arrows, Shift/Ctrl+arrows, Tab, Enter, F2, Delete, Ctrl+Z/Y, Ctrl+C/X/V, Ctrl+A."
+}
