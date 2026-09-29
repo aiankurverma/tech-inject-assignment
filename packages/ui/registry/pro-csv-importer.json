@@ -1,0 +1,92 @@
+{
+  "name": "Pro CSV Importer",
+  "slug": "pro-csv-importer",
+  "description": "Onboarding-grade CSV import: react-dropzone upload, chunked streaming parse in a Blob web worker (50MB+ files, delimiter + header detection), Fuse.js fuzzy auto-mapping with one-to-one assignment, a TanStack-virtualised fix-up grid with per-cell zod errors and inline editing, and a dedupe preview against the file and existing CRM records.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "react-dropzone",
+    "zod",
+    "@tanstack/react-virtual",
+    "@tanstack/react-table",
+    "immer",
+    "fuse.js",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-csv-importer.tsx",
+    "components/crm/pro-csv-importer/types.ts",
+    "components/crm/pro-csv-importer/csv-parser.ts",
+    "components/crm/pro-csv-importer/matching.ts",
+    "components/crm/pro-csv-importer/upload-step.tsx",
+    "components/crm/pro-csv-importer/mapping-step.tsx",
+    "components/crm/pro-csv-importer/review-grid.tsx",
+    "components/crm/pro-csv-importer/dedupe-panel.tsx",
+    "hooks/use-csv-import.ts"
+  ],
+  "examples": [{ "title": "25k-row contacts export", "file": "pro-csv-importer-1.tsx" }],
+  "props": [
+    {
+      "name": "fields",
+      "type": "ImporterField[]",
+      "description": "key, label, aliases (for auto-mapping), required, example and a zod schema that validates and transforms the raw cell text",
+      "required": true
+    },
+    {
+      "name": "onImport",
+      "type": "(records: TRecord[], summary: ImportSummary) => void | Promise<void>",
+      "description": "Typed records of every valid, kept row; reject to show an error",
+      "required": true
+    },
+    {
+      "name": "dedupeKeys",
+      "type": "string[]",
+      "description": "Field keys that identify a record (e.g. [\"email\"])",
+      "required": false
+    },
+    {
+      "name": "existingKeys",
+      "type": "ReadonlySet<string>",
+      "description": "Keys already in the CRM (lower-cased, trimmed, multi-key joined by |)",
+      "required": false
+    },
+    {
+      "name": "maxFileSize",
+      "type": "number",
+      "description": "Max upload size in bytes (default 50 MB)",
+      "required": false
+    },
+    {
+      "name": "parseOptions",
+      "type": "{ chunkSize?, maxRows?, delimiter? }",
+      "description": "Parser tuning; delimiter is auto-detected by default",
+      "required": false
+    },
+    {
+      "name": "sampleFile",
+      "type": "() => File",
+      "description": "Adds a Try a sample file button",
+      "required": false
+    },
+    {
+      "name": "initialFile",
+      "type": "File",
+      "description": "Start with this file already parsing",
+      "required": false
+    },
+    {
+      "name": "gridHeight",
+      "type": "number",
+      "description": "Review grid height in px (default 420)",
+      "required": false
+    },
+    {
+      "name": "title",
+      "type": "string",
+      "description": "Heading and accessible name",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

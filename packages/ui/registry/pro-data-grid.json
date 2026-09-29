@@ -1,0 +1,160 @@
+{
+  "name": "Pro Data Grid",
+  "slug": "pro-data-grid",
+  "description": "Spreadsheet-grade CRM grid on TanStack Table + TanStack Virtual: 100k-row, 2-D virtualisation; pin, resize, drag-reorder and hide columns; multi-sort; faceted filters; grouping with aggregates and totals; zod-validated inline editing with optimistic rollback; saved views synced to the URL (nuqs); CSV export; full WAI-ARIA grid keyboard model.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "zod",
+    "nuqs",
+    "react-hotkeys-hook",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-data-grid.tsx",
+    "components/crm/pro-data-grid/types.ts",
+    "components/crm/pro-data-grid/engine.ts",
+    "components/crm/pro-data-grid/cells.tsx",
+    "components/crm/pro-data-grid/filters.tsx",
+    "components/crm/pro-data-grid/header-cell.tsx",
+    "components/crm/pro-data-grid/toolbar.tsx",
+    "components/crm/pro-data-grid/grid-body.tsx",
+    "hooks/use-grid-url-view.ts"
+  ],
+  "examples": [{ "title": "100k deals with URL-synced views", "file": "pro-data-grid-1.tsx" }],
+  "props": [
+    {
+      "name": "data",
+      "type": "readonly TData[]",
+      "description": "Rows; virtualised, so 100k+ is fine",
+      "required": true
+    },
+    {
+      "name": "columns",
+      "type": "GridColumn<TData>[]",
+      "description": "id, header, type (text | number | currency | percent | date | enum | boolean), options, width, pinned, hidden, editable, zod schema, aggregate, render, toText",
+      "required": true
+    },
+    {
+      "name": "getRowId",
+      "type": "(row, index) => string",
+      "description": "Stable row identity for editing and focus",
+      "required": true
+    },
+    {
+      "name": "view",
+      "type": "GridView",
+      "description": "Controlled layout: sorting, filters, search, hidden, order, pinning, sizing, grouping. Pair with useGridUrlView to sync it to the URL",
+      "required": false
+    },
+    {
+      "name": "defaultView",
+      "type": "Partial<GridView>",
+      "description": "Initial layout when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onViewChange",
+      "type": "(view: GridView) => void",
+      "description": "Layout change handler",
+      "required": false
+    },
+    {
+      "name": "savedViews",
+      "type": "SavedGridView[]",
+      "description": "Controlled named views; builtIn views cannot be deleted",
+      "required": false
+    },
+    {
+      "name": "defaultSavedViews",
+      "type": "SavedGridView[]",
+      "description": "Initial named views when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onSavedViewsChange",
+      "type": "(views: SavedGridView[]) => void",
+      "description": "Saved views change handler",
+      "required": false
+    },
+    {
+      "name": "onCellEdit",
+      "type": "(edit: GridCellEdit<TData>) => void | Promise<void>",
+      "description": "Runs after zod validation; throw / reject to roll the optimistic edit back",
+      "required": false
+    },
+    {
+      "name": "onDataChange",
+      "type": "(data: TData[]) => void",
+      "description": "Next data array after a saved edit",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Disable all editing",
+      "required": false
+    },
+    { "name": "loading", "type": "boolean", "description": "Skeleton state", "required": false },
+    {
+      "name": "error",
+      "type": "string | null",
+      "description": "Error state message",
+      "required": false
+    },
+    {
+      "name": "onRetry",
+      "type": "() => void",
+      "description": "Retry button in the error state",
+      "required": false
+    },
+    {
+      "name": "rowHeight",
+      "type": "number",
+      "description": "Row height in px (default 36)",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Viewport height (default 560)",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for currency columns (default USD)",
+      "required": false
+    },
+    {
+      "name": "exportFileName",
+      "type": "string",
+      "description": "CSV file name without extension",
+      "required": false
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "description": "Accessible name of the grid",
+      "required": false
+    },
+    {
+      "name": "toolbarActions",
+      "type": "ReactNode",
+      "description": "Extra toolbar content",
+      "required": false
+    },
+    {
+      "name": "emptyState",
+      "type": "ReactNode",
+      "description": "Shown when data is empty",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

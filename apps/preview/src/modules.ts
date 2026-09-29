@@ -183,7 +183,7 @@ export const LAZY_MODULES: Record<string, () => Promise<unknown>> = {
 };
 
 const IMPORT_RE =
-  /(?:import|export)s[^'"]*?froms*["']([^"']+)["']|imports*(s*["']([^"']+)["']s*)|imports+["']([^"']+)["']|requires*(s*["']([^"']+)["']s*)/g;
+  /(?:import|export)\s[^'"]*?from\s*["']([^"']+)["']|import\s*\(\s*["']([^"']+)["']\s*\)|import\s+["']([^"']+)["']|require\s*\(\s*["']([^"']+)["']\s*\)/g;
 
 /** Resolves every lazy module the given sources import so the synchronous require() finds it. */
 export async function loadModules(sources: string[]): Promise<void> {
@@ -195,7 +195,11 @@ export async function loadModules(sources: string[]): Promise<void> {
     }
   await Promise.all(
     [...wanted].map(async (spec) => {
-      MODULES[spec] = await LAZY_MODULES[spec]!();
+      const ns = await LAZY_MODULES[spec]!();
+      // Sucrase's default-import interop reads `.default` only from objects flagged __esModule;
+      // a dynamic-import namespace is not, so `import Fuse from "fuse.js"` would get the namespace.
+      MODULES[spec] =
+        ns && typeof ns === "object" && "default" in ns ? { ...ns, __esModule: true } : ns;
     }),
   );
 }
