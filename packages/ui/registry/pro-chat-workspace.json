@@ -1,0 +1,111 @@
+{
+  "name": "Pro Chat Workspace",
+  "slug": "pro-chat-workspace",
+  "description": "Slack-style in-product chat: channel list with unread counts and drafts, reverse-virtualised history (react-virtuoso) with day dividers and jump-to-unread, threads panel, reactions, and a Tiptap composer with @mentions, emoji picker, per-channel drafts and attachment chips.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "dependencies": [
+    "react-virtuoso",
+    "@tiptap/react",
+    "@tiptap/starter-kit",
+    "@tiptap/extension-mention",
+    "@floating-ui/react",
+    "react-dropzone",
+    "date-fns",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-chat-workspace.tsx",
+    "components/crm/pro-chat-workspace/types.ts",
+    "components/crm/pro-chat-workspace/channel-list.tsx",
+    "components/crm/pro-chat-workspace/message-list.tsx",
+    "components/crm/pro-chat-workspace/message-item.tsx",
+    "components/crm/pro-chat-workspace/composer.tsx",
+    "components/crm/pro-chat-workspace/mention-menu.tsx",
+    "components/crm/pro-chat-workspace/emoji-picker.tsx",
+    "hooks/use-chat-drafts.ts"
+  ],
+  "examples": [
+    {
+      "title": "Sales workspace, 15k messages",
+      "file": "pro-chat-workspace-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "channels",
+      "type": "ChatChannel[]",
+      "description": "Conversations; lastReadAt drives unread counts and the New marker",
+      "required": true
+    },
+    {
+      "name": "users",
+      "type": "ChatUser[]",
+      "description": "Members, used for authors and the mention picker",
+      "required": true
+    },
+    {
+      "name": "currentUserId",
+      "type": "string",
+      "description": "The signed-in user",
+      "required": true
+    },
+    {
+      "name": "messages / defaultMessages / onMessagesChange",
+      "type": "ChatMessage[]",
+      "description": "Controlled or uncontrolled message store (replies carry threadId)",
+      "required": false
+    },
+    {
+      "name": "activeChannelId / defaultChannelId / onActiveChannelChange",
+      "type": "string",
+      "description": "Controlled or uncontrolled active conversation",
+      "required": false
+    },
+    {
+      "name": "onSend",
+      "type": "(payload: ChatSendPayload) => Promise<ChatMessage | void> | void",
+      "description": "Persist a message; optimistic until resolved, marked failed with retry on reject",
+      "required": false
+    },
+    {
+      "name": "onReact",
+      "type": "(messageId, emoji, added) => void",
+      "description": "Reaction toggled",
+      "required": false
+    },
+    {
+      "name": "onMarkRead",
+      "type": "(channelId, at) => void",
+      "description": "Conversation read to the bottom",
+      "required": false
+    },
+    {
+      "name": "hasMoreHistory / onLoadOlder",
+      "type": "(channelId) => boolean / (channelId) => void",
+      "description": "Prepend older history; scroll position is preserved",
+      "required": false
+    },
+    {
+      "name": "initialDrafts",
+      "type": "Record<string, ChatDraft>",
+      "description": "Restore composer drafts per channel or thread:<id>",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Loading state for an empty history",
+      "required": false
+    },
+    {
+      "name": "workspaceName",
+      "type": "string",
+      "description": "Heading above the channel list",
+      "required": false,
+      "default": "\"Workspace\""
+    }
+  ],
+  "usage": "",
+  "access": "free"
+}
