@@ -2,7 +2,7 @@
 // Run: npx tsx packages/ui/scripts/sync-deps.ts
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { ALLOWED_DEPENDENCIES, findImports } from "@ti/core";
+import { dependencyOf, findImports } from "@ti/core";
 
 const ui = (p: string) => fileURLToPath(new URL(`../${p}`, import.meta.url));
 
@@ -20,7 +20,8 @@ for (const file of readdirSync(ui("registry")).filter((f) => f.endsWith(".json")
   const used = new Set(
     sources
       .flatMap(findImports)
-      .filter((s) => (ALLOWED_DEPENDENCIES as readonly string[]).includes(s) && s !== "react"),
+      .map(dependencyOf)
+      .filter((d): d is NonNullable<typeof d> => d !== undefined && d !== "react"),
   );
   entry.dependencies = [...used].sort();
   writeFileSync(path, JSON.stringify(entry, null, 2) + "\n");

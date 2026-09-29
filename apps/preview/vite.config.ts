@@ -13,6 +13,8 @@ const CSP = [
   "font-src https://fonts.gstatic.com",
   "img-src 'self' data: blob:",
   "connect-src 'none'",
+  // maplibre-gl and pdf.js decode off the main thread in blob/same-origin workers.
+  "worker-src 'self' blob:",
   "form-action 'none'",
   "base-uri 'none'",
 ].join("; ");

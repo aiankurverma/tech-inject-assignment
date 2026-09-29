@@ -1,6 +1,7 @@
 import "@tailwindcss/browser";
 import { Component, type ComponentType, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
+import { loadModules } from "./modules";
 import { loadModule, type PreviewFile } from "./runtime";
 
 /**
@@ -63,6 +64,7 @@ const ErrorView = ({ message }: { message: string }) => (
 
 const root = createRoot(document.getElementById("root")!);
 let parentOrigin = "";
+let renderSeq = 0;
 
 function post(msg: Record<string, unknown>) {
   if (parentOrigin) window.parent.postMessage(msg, parentOrigin);
@@ -80,14 +82,17 @@ function setTheme(css: string) {
   el.textContent = `@import "tailwindcss";\n${css.replace(/@import url\([^)]*\);?/g, "")}\nbody{background:var(--color-crm-bg);color:var(--color-crm-fg);font-family:var(--font-crm);margin:0}`;
 }
 
-window.addEventListener("message", (event) => {
+window.addEventListener("message", async (event) => {
   if (!allowed.includes(event.origin) || !isRender(event.data)) return;
   parentOrigin = event.origin;
   const { payload, example } = event.data;
   setTheme(payload.themeCss);
   const ex = payload.examples[example] ?? payload.examples[0];
+  const seq = ++renderSeq;
   try {
     if (!ex) throw new Error("No example to render");
+    await loadModules([...payload.files.map((f) => f.content), ex.code]);
+    if (seq !== renderSeq) return; // a newer render message arrived while libraries loaded
     const mod = loadModule(payload.files, ex.code);
     const Example = mod.default as ComponentType | undefined;
     if (typeof Example !== "function")
@@ -101,6 +106,7 @@ window.addEventListener("message", (event) => {
     );
     post({ type: "rendered" });
   } catch (e) {
+    if (seq !== renderSeq) return;
     const message = e instanceof Error ? e.message : String(e);
     root.render(<ErrorView message={message} />);
     post({ type: "error", message });
