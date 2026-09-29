@@ -24,7 +24,7 @@
     "components/crm/pro-record-merge/merge-audit.tsx",
     "components/crm/pro-record-merge/bulk-edit.tsx",
     "hooks/use-record-history.ts",
-    "hooks/use-controllable-state.ts",
+    "hooks/use-controllable-state-object.ts",
     "components/crm/button.tsx",
     "components/crm/select.tsx",
     "components/crm/search-input.tsx",

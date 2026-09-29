@@ -23,7 +23,7 @@
     "components/crm/pro-pipeline-board/board-overlays.tsx",
     "hooks/use-pipeline-store.ts",
     "hooks/use-pipeline-dnd.ts",
-    "hooks/use-controllable-state.ts",
+    "hooks/use-controllable-state-object.ts",
     "components/crm/avatar.tsx",
     "components/crm/button.tsx",
     "components/crm/search-input.tsx",
