@@ -1,0 +1,99 @@
+{
+  "name": "Pro Approval Workflow Builder",
+  "slug": "pro-approval-workflow",
+  "description": "Multi-level approval rule builder: auto-laid-out React Flow canvas of approver, condition, parallel and outcome steps, react-querybuilder rules, role / person / manager-chain approvers, zod-validated JSON import/export, issue checker, undo/redo and a simulation panel showing who approves a sample request.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@xyflow/react",
+    "@dagrejs/dagre",
+    "react-querybuilder",
+    "zod",
+    "zustand",
+    "immer",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-tabs",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-approval-workflow.tsx",
+    "components/crm/pro-approval-workflow/types.ts",
+    "components/crm/pro-approval-workflow/model.ts",
+    "components/crm/pro-approval-workflow/store.ts",
+    "components/crm/pro-approval-workflow/layout.ts",
+    "components/crm/pro-approval-workflow/flow-parts.tsx",
+    "components/crm/pro-approval-workflow/inspector.tsx",
+    "components/crm/pro-approval-workflow/simulation-panel.tsx"
+  ],
+  "examples": [{ "title": "Enterprise discount approval", "file": "pro-approval-workflow-1.tsx" }],
+  "props": [
+    {
+      "name": "value",
+      "type": "Workflow",
+      "description": "Controlled workflow (pair with onChange)",
+      "required": false
+    },
+    {
+      "name": "defaultValue",
+      "type": "Workflow",
+      "description": "Initial workflow when uncontrolled",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(wf: Workflow) => void",
+      "description": "Fires after every edit, undo, redo or import",
+      "required": false
+    },
+    {
+      "name": "fields",
+      "type": "WorkflowField[]",
+      "description": "react-querybuilder fields rules can test; `sample` seeds the simulator",
+      "required": true
+    },
+    {
+      "name": "directory",
+      "type": "DirectoryPerson[]",
+      "description": "People with roles and managerId, used to resolve approvers",
+      "required": true
+    },
+    {
+      "name": "roles",
+      "type": "string[]",
+      "description": "Roles offered in the approver picker (default: all directory roles)",
+      "required": false
+    },
+    {
+      "name": "defaultSample",
+      "type": "SampleRequest",
+      "description": "Initial sample request for the simulation tab",
+      "required": false
+    },
+    {
+      "name": "onPublish",
+      "type": "(wf: Workflow) => void | Promise<void>",
+      "description": "Publishes a version-bumped workflow; hidden when omitted",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "View and simulate only",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Builder height (default 640)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}

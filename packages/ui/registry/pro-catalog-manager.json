@@ -1,0 +1,87 @@
+{
+  "name": "Pro Product Catalog and Variant Manager",
+  "slug": "pro-catalog-manager",
+  "description": "Spreadsheet-style catalog editor: virtualised TanStack grid with variant sub-rows (10k+), Cartesian variant generation from option chips, zod cell validation and duplicate-SKU checks, range select, fill-down, Excel paste, bulk percent/fixed price changes, undo/redo and a dirty-state save bar.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "zod",
+    "immer",
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-popover",
+    "lucide-react"
+  ],
+  "files": [
+    "components/crm/pro-catalog-manager.tsx",
+    "components/crm/pro-catalog-manager/types.ts",
+    "components/crm/pro-catalog-manager/catalog.ts",
+    "components/crm/pro-catalog-manager/columns.ts",
+    "components/crm/pro-catalog-manager/grid.tsx",
+    "components/crm/pro-catalog-manager/option-editor.tsx",
+    "components/crm/pro-catalog-manager/bulk-price.tsx",
+    "hooks/use-catalog-history.ts"
+  ],
+  "examples": [
+    { "title": "Apparel and home catalog, 10k variants", "file": "pro-catalog-manager-1.tsx" }
+  ],
+  "props": [
+    {
+      "name": "products",
+      "type": "Product[]",
+      "description": "Saved catalog (products with options and variants); a new reference resets the editor",
+      "required": true
+    },
+    {
+      "name": "onSave",
+      "type": "(changes: CatalogChanges, next: Product[]) => void | Promise<void>",
+      "description": "Persist edits; resolve to mark them saved, reject to keep them dirty and show the error",
+      "required": false
+    },
+    {
+      "name": "onChange",
+      "type": "(next: Product[]) => void",
+      "description": "Working copy after every edit, undo or redo",
+      "required": false
+    },
+    {
+      "name": "readOnly",
+      "type": "boolean",
+      "description": "Browse, select and copy only",
+      "required": false
+    },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Shows a skeleton instead of the grid",
+      "required": false
+    },
+    {
+      "name": "error",
+      "type": "string | null",
+      "description": "Load error shown in place of the grid",
+      "required": false
+    },
+    {
+      "name": "defaultExpanded",
+      "type": "boolean",
+      "description": "Expand every product initially",
+      "required": false
+    },
+    {
+      "name": "height",
+      "type": "number | string",
+      "description": "Component height (default 640)",
+      "required": false
+    },
+    {
+      "name": "className",
+      "type": "string",
+      "description": "Extra classes on the root",
+      "required": false
+    }
+  ],
+  "usage": ""
+}
