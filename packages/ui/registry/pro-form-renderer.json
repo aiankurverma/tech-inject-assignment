@@ -1,0 +1,102 @@
+{
+  "name": "Pro Schema Form Renderer",
+  "slug": "pro-form-renderer",
+  "description": "Renders form-builder JSON as themed, validated multi-step forms: Ajv-checked schema, zod rules per page, react-querybuilder show/hide and page skipping, async server checks, react-dropzone file fields and debounced partial saves.",
+  "category": "Pro",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@hookform/resolvers",
+    "@radix-ui/react-slot",
+    "ajv",
+    "lucide-react",
+    "react-dropzone",
+    "react-hook-form",
+    "react-querybuilder",
+    "zod"
+  ],
+  "files": [
+    "components/crm/pro-form-renderer.tsx",
+    "components/crm/pro-form-renderer/schema.ts",
+    "components/crm/pro-form-renderer/fields.tsx",
+    "hooks/use-form-autosave.ts",
+    "components/crm/button.tsx"
+  ],
+  "examples": [
+    { "title": "Demo request with logic and async checks", "file": "pro-form-renderer-1.tsx" },
+    { "title": "180-question security assessment", "file": "pro-form-renderer-2.tsx" }
+  ],
+  "props": [
+    {
+      "name": "schema",
+      "type": "FormSchema",
+      "description": "Form JSON from ProFormBuilder or your API; validated with Ajv before rendering (invalid schemas show an error state)",
+      "required": true
+    },
+    {
+      "name": "initialValues",
+      "type": "Record<string, unknown>",
+      "description": "Prefill or resume values (merged over schema defaults and any stored draft)",
+      "required": false
+    },
+    {
+      "name": "initialStep",
+      "type": "number",
+      "default": "0",
+      "description": "Step to open on",
+      "required": false
+    },
+    {
+      "name": "onSubmit",
+      "type": "(values, meta) => void | Promise<void>",
+      "description": "Final submit with hidden-field values stripped; throw to show an error banner",
+      "required": false
+    },
+    {
+      "name": "onSavePartial",
+      "type": "(partial: { values, step, savedAt }) => void | Promise<void>",
+      "description": "Debounced partial-response save (files serialised as metadata)",
+      "required": false
+    },
+    {
+      "name": "draftKey",
+      "type": "string",
+      "description": "Mirror drafts to localStorage under this key and restore on mount",
+      "required": false
+    },
+    {
+      "name": "asyncValidators",
+      "type": "Record<string, (value, values) => Promise<string | null>>",
+      "description": "Server checks referenced by field.asyncValidator; resolve an error message or null",
+      "required": false
+    },
+    {
+      "name": "onStepChange",
+      "type": "(step: number, pageId: string) => void",
+      "description": "Step navigation callback",
+      "required": false
+    },
+    {
+      "name": "keepHiddenValues",
+      "type": "boolean",
+      "default": "false",
+      "description": "Keep values of logic-hidden fields in the payload",
+      "required": false
+    },
+    { "name": "disabled", "type": "boolean", "description": "Render read-only", "required": false },
+    {
+      "name": "loading",
+      "type": "boolean",
+      "description": "Show a skeleton while the schema loads",
+      "required": false
+    },
+    {
+      "name": "renderSuccess",
+      "type": "(reset: () => void) => ReactNode",
+      "description": "Replace the thank-you panel",
+      "required": false
+    },
+    { "name": "className", "type": "string", "required": false }
+  ],
+  "usage": "<ProFormRenderer schema={schema} asyncValidators={{ businessEmail }} onSavePartial={saveDraft} onSubmit={(values) => api.submit(values)} />"
+}
