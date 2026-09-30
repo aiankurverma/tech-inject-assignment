@@ -14,7 +14,7 @@ MERN + TypeScript (strict) + Tailwind CSS v4: MongoDB (Mongoose), Express 5, Rea
 apps/
   api/       Express API (MVC: models/, routes/, services/, middleware/, config/, utils/).
              Also serves the built catalogue (/) and admin (/admin), so cookies are same-origin.
-  web/       Public catalogue (pages/, components/, context/)
+  web/       Public catalogue (pages/, components/, context/) and the page builder (builder/)
   admin/     Admin panel: Overview, Components, Editor, Privileges, Feature radar
   preview/   Sandboxed renderer on its own origin; compiles component TSX in the browser
 packages/
@@ -70,6 +70,18 @@ Then start the main CSS with the three printed lines (Geist font import, `@impor
 
 **Premium:** the admin grants Premium (no payments, no self-upgrade). The customer creates a token on the **Account** page and sets `KITBASE_TOKEN` in the shell; the token is stored only as a sha256 hash. Signed-out requests get 401, free accounts 403. Revocation blocks the next request; code already installed stays in the consumer's project.
 
+## Page builder
+
+`/builder` (top nav "Builder", also linked from the admin sidebar) composes a page from catalogue components without writing code:
+
+- **Palette** (left): layout blocks (Section, Row, Column) and every registry component, searchable and grouped by category. Click adds to the selected container; drag drops at a position. Locked components are disabled until you sign in / have Premium.
+- **Canvas** (centre, top): the page as nested cards. Drag handles reorder and nest (`@dnd-kit`); a card's buttons and shortcuts do the rest: `Del` delete, `Ctrl+D` duplicate, `Alt+Arrows` move, `Ctrl+Z` / `Ctrl+Y` undo and redo. Focus a drag handle and press `Space` to sort with the keyboard.
+- **Live preview** (centre, bottom): the generated page rendered in the same sandboxed preview iframe as the docs, so the CRM theme and premium checks are identical (`/api/components/:slug/preview` per component, merged client-side).
+- **Props** (right): a form generated from each registry entry's `props` metadata (text, number, select from literal unions, boolean, string lists). Callbacks and complex types are edited in the JSON editor underneath.
+- **Export**: `Page.tsx` built from the tree (imports, layout wrappers as Tailwind classes, props as JSX) plus one `kitbase add <slug>` command per component and the `npm install` line. Copy or download.
+
+The page is a JSON tree `{ id, type, props, children }` kept in a zustand store with immer-based undo/redo and saved to `localStorage` only; nothing is written to the database. Code: `apps/web/src/builder/` (pure `tree.ts`, `codegen.ts`, `propsSchema.ts`, `dnd.ts` are unit tested).
+
 ## Capture Engine
 
 Admin page **Capture** (`/admin/capture`): paste a public URL, get its design tokens and a
@@ -115,14 +127,15 @@ copy another company's brand, logos or content.
 
 ## Tests
 
-`npm run check` is clean; **32 unit tests** pass.
+`npm run check` is clean; **130 unit tests** pass (32 of them cover the page builder).
 
-| File                                                 | Covers                                                  |
-| ---------------------------------------------------- | ------------------------------------------------------- |
-| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses |
-| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                      |
-| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                       |
-| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                       |
+| File                                                 | Covers                                                                |
+| ---------------------------------------------------- | --------------------------------------------------------------------- |
+| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses               |
+| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                                    |
+| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                                     |
+| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                                     |
+| `apps/web/src/builder/*.test.ts`                     | tree ops, undo/redo + persistence, codegen, prop schema, drop targets |
 
 ## Deployed checks (live, 2026-09-27)
 

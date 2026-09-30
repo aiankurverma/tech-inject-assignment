@@ -4,6 +4,7 @@ import { GetStarted } from "./pages/GetStarted";
 import { ComponentPage } from "./pages/ComponentPage";
 import { SignIn } from "./pages/SignIn";
 import { Account } from "./pages/Account";
+import { Builder } from "./pages/Builder";
 import { NotFound } from "./pages/NotFound";
 
 export function App() {
@@ -15,6 +16,7 @@ export function App() {
       <Route path="/components/:slug" element={<ComponentPage />} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/builder" element={<Builder />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
