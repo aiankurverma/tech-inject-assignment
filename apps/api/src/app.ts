@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import express from "express";
+import compression from "compression";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import type { Request } from "express";
@@ -16,6 +17,7 @@ import { errorHandler, HttpError } from "./utils/http";
 import { adminRoutes, customerRoutes, publicRoutes } from "./routes";
 import { captureRoutes } from "./routes/captures";
 import { processCaptureJob, type CaptureJob } from "./services/capture";
+import { CLI_SLUG, createUsageRecorder } from "./services/analytics";
 import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
 import { featureRadarRoutes, type BuildJob } from "@ti/feature-radar/server";
 
@@ -78,8 +80,12 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   });
   // Capture Engine: one headless Chrome at a time.
   const captureJobs = createQueue<CaptureJob>("capture", processCaptureJob, { redis });
+  // Anonymous usage counters, flushed to Mongo in batches (off in tests: no DB writes).
+  const usage = createUsageRecorder({ enabled: !test });
   const deps = {
     cache,
+    usage,
+    beaconLimit: burstLimit("beacon", 120, 1),
     customerLoginLimit: loginLimit("customer-login"),
     adminLoginLimit: loginLimit("admin-login"),
     registryLimit: burstLimit("registry", 60, 2),
@@ -105,6 +111,7 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
       },
     }),
   );
+  app.use(compression());
   app.use(express.json({ limit: "1mb" }));
   app.use(cookieParser());
   app.use("/api", sameOriginWrites(env));
@@ -198,12 +205,20 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   const cliTgz = root("packages/cli/dist/kitbase.tgz");
   app.get("/cli/kitbase.tgz", (_req, res) => {
     if (!existsSync(cliTgz)) throw new HttpError(404, "not_found", "Installer not built.");
+    usage.record(CLI_SLUG, "install");
+    // Not versioned in the URL: let clients revalidate, but spare repeat downloads within minutes.
+    res.set("Cache-Control", "public, max-age=300");
     res.type("application/gzip").sendFile(cliTgz);
   });
 
   // Built frontends (production). Admin UI under /admin, catalogue at /.
   const serveSpa = (mount: string, dir: string) => {
     if (!existsSync(dir)) return;
+    // Vite emits content-hashed files under assets/: cache them for a year. Everything else 1h.
+    app.use(
+      `${mount === "/" ? "" : mount}/assets`,
+      express.static(`${dir}/assets`, { index: false, immutable: true, maxAge: "365d" }),
+    );
     app.use(mount, express.static(dir, { index: false, maxAge: "1h" }));
     app.get(`${mount === "/" ? "" : mount}/{*splat}`, (_req, res) =>
       res.sendFile(`${dir}/index.html`),
@@ -215,7 +230,7 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   app.use(errorHandler);
   /** Graceful shutdown: let running jobs finish. The shared Redis connection is closed by the caller. */
   const shutdown = async () => {
-    await Promise.all([bundleJobs.close(), buildJobs.close(), captureJobs.close()]);
+    await Promise.all([usage.close(), bundleJobs.close(), buildJobs.close(), captureJobs.close()]);
   };
   return Object.assign(app, { shutdown });
 }

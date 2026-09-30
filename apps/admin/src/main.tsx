@@ -1,12 +1,10 @@
-import { StrictMode, useEffect, useState } from "react";
+import { lazy, StrictMode, Suspense, useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router-dom";
 import { Compass, Loader2 } from "lucide-react";
 import { api } from "@ti/client";
 import { FeatureRadarAdmin } from "@ti/feature-radar/client";
-import { Capture } from "./pages/Capture";
 import { ComponentList } from "./pages/ComponentList";
-import { Editor } from "./pages/Editor";
 import { Layout } from "./components/Layout";
 import { Login } from "./pages/Login";
 import { Overview } from "./pages/Overview";
@@ -14,6 +12,20 @@ import { Privileges } from "./pages/Privileges";
 import { initTheme } from "./context/theme";
 import { Card, EmptyState, PageHeader, ToastProvider, buttonClass } from "./components/ui";
 import "./index.css";
+
+// Heavy pages (code editor, capture tool, charts) load on demand.
+const Editor = lazy(() => import("./pages/Editor").then((m) => ({ default: m.Editor })));
+const Capture = lazy(() => import("./pages/Capture").then((m) => ({ default: m.Capture })));
+const Analytics = lazy(() => import("./pages/Analytics").then((m) => ({ default: m.Analytics })));
+
+function PageLoading() {
+  return (
+    <div role="status" className="flex items-center gap-2 py-10 text-sm text-muted-foreground">
+      <Loader2 className="size-4 animate-spin" aria-hidden />
+      Loading...
+    </div>
+  );
+}
 
 type Session = { state: "loading" } | { state: "out" } | { state: "in"; username: string };
 
@@ -74,19 +86,22 @@ function App() {
     void api("/api/admin/logout", { method: "POST" }).finally(() => setSession({ state: "out" }));
   return (
     <Layout username={session.username} onLogout={logout}>
-      <Routes>
-        <Route path="/" element={<Overview />} />
-        <Route path="/components" element={<ComponentList />} />
-        <Route path="/components/:slug" element={<Editor />} />
-        <Route path="/new" element={<Editor />} />
-        <Route path="/privileges" element={<Privileges />} />
-        <Route path="/customers" element={<Privileges />} />
-        <Route path="/capture" element={<Capture />} />
-        <Route path="/capture/:id" element={<Capture />} />
-        <Route path="/feature-radar" element={<FeatureRadarPage />} />
-        <Route path="/components-list" element={<Navigate to="/components" replace />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={<PageLoading />}>
+        <Routes>
+          <Route path="/" element={<Overview />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/components" element={<ComponentList />} />
+          <Route path="/components/:slug" element={<Editor />} />
+          <Route path="/new" element={<Editor />} />
+          <Route path="/privileges" element={<Privileges />} />
+          <Route path="/customers" element={<Privileges />} />
+          <Route path="/capture" element={<Capture />} />
+          <Route path="/capture/:id" element={<Capture />} />
+          <Route path="/feature-radar" element={<FeatureRadarPage />} />
+          <Route path="/components-list" element={<Navigate to="/components" replace />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </Layout>
   );
 }
