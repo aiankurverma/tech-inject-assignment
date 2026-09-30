@@ -158,6 +158,15 @@ Notes:
 
 These are tooling dependencies, not component dependencies, so they are not in `ALLOWED_DEPENDENCIES`.
 
+## Test tooling
+
+Dev-only (root `devDependencies`); never shipped in components or the installer.
+
+| Package                 | Version | Licence    | Source                                             |
+| ----------------------- | ------- | ---------- | -------------------------------------------------- |
+| `@playwright/test`      | 1.63.0  | Apache-2.0 | https://github.com/microsoft/playwright            |
+| `mongodb-memory-server` | 11.3.0  | MIT        | https://github.com/typegoose/mongodb-memory-server |
+
 ## Adapted code
 
 - `packages/ui/src/components/crm/pro-workflow-builder/flow-styles.ts` inlines the structural rules of

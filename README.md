@@ -190,12 +190,21 @@ Describe a page (public `/screens`, admin `/admin/screens`) and the AI composes 
 | `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                                     |
 | `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                                     |
 | `apps/web/src/builder/*.test.ts`                     | tree ops, undo/redo + persistence, codegen, prop schema, drop targets |
-| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses |
-| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                      |
 | `packages/core/src/page-tree.test.ts`                | page tree limits, exports, Page.tsx code generation     |
 | `apps/api/src/services/screens.test.ts`              | prompt to screen with a fake provider, retry, fallback  |
-| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                       |
-| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                       |
+
+**End-to-end** (Playwright, Chromium): catalogue, search, component page + live preview, copy
+code, premium lock for signed-out visitors, admin sign-in and publish. The API runs against an
+in-memory MongoDB, so no `.env` or database is needed:
+
+```sh
+npx playwright install chromium   # once
+npm run build && npm run test:e2e
+```
+
+Details in [`tests/e2e/README.md`](tests/e2e/README.md). CI (`.github/workflows/ci.yml`) runs
+format check, lint, typecheck, unit tests, build and e2e on every push and pull request, with no
+secrets.
 
 ## Deployed checks (live, 2026-09-27)
 
