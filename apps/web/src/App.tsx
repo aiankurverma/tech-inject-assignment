@@ -5,6 +5,7 @@ import { ComponentPage } from "./pages/ComponentPage";
 import { SignIn } from "./pages/SignIn";
 import { Account } from "./pages/Account";
 import { NotFound } from "./pages/NotFound";
+import { ThemeStudio } from "./pages/ThemeStudio";
 
 export function App() {
   return (
@@ -13,6 +14,7 @@ export function App() {
       <Route path="/components" element={<ComponentsIndex />} />
       <Route path="/docs/get-started" element={<GetStarted />} />
       <Route path="/components/:slug" element={<ComponentPage />} />
+      <Route path="/theme" element={<ThemeStudio />} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/account" element={<Account />} />
       <Route path="*" element={<NotFound />} />

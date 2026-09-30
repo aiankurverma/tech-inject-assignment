@@ -342,6 +342,9 @@ export function Layout({
             <NavLink to="/components" className={topLink}>
               Components
             </NavLink>
+            <NavLink to="/theme" className={topLink}>
+              Theme
+            </NavLink>
           </nav>
           <div className="ml-auto flex items-center gap-1 text-sm sm:gap-2">
             <Search />
