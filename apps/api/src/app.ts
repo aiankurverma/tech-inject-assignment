@@ -17,7 +17,10 @@ import { adminRoutes, customerRoutes, publicRoutes } from "./routes";
 import { captureRoutes } from "./routes/captures";
 import { processCaptureJob, type CaptureJob } from "./services/capture";
 import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
-import { featureRadarRoutes, type BuildJob } from "@ti/feature-radar/server";
+import { featureRadarRoutes, type BuildJob, type ProviderChain } from "@ti/feature-radar/server";
+import { screenRoutes } from "./routes/screens";
+import { findPublishedDocs } from "./services/catalog";
+import { makeScreens } from "./services/screens";
 
 const root = (p: string) => fileURLToPath(new URL(`../../../${p}`, import.meta.url));
 
@@ -35,6 +38,49 @@ function readStyleExample(): string {
   } catch {
     return "";
   }
+}
+
+/**
+ * LLM provider chain from the environment, shared by every AI feature.
+ * AI_PROVIDER=gemini uses GEMINI_API_KEY; anything else uses ANTHROPIC_API_KEY.
+ * Fallbacks: every OpenRouter key (comma separated), then Ollama Cloud.
+ */
+export function providerChain(
+  options: AppOptions,
+): Omit<ProviderChain, "apiKey"> & { apiKey: string | undefined } {
+  const provider = process.env.AI_PROVIDER === "gemini" ? "gemini" : "anthropic";
+  return {
+    provider,
+    apiKey:
+      options.builder && "apiKey" in options.builder
+        ? options.builder.apiKey
+        : (provider === "gemini" ? process.env.GEMINI_API_KEY : process.env.ANTHROPIC_API_KEY) ||
+          undefined,
+    model:
+      process.env.FEATURE_BUILDER_MODEL ??
+      (provider === "gemini" ? "gemini-2.5-flash" : "claude-sonnet-5"),
+    fallbacks: [
+      ...(process.env.OPENROUTER_API_KEYS ?? "")
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean)
+        .map((apiKey) => ({
+          provider: "openrouter" as const,
+          apiKey,
+          model: process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini",
+        })),
+      ...(process.env.OLLAMA_CLOUD_KEY
+        ? [
+            {
+              provider: "ollama" as const,
+              apiKey: process.env.OLLAMA_CLOUD_KEY,
+              model: process.env.OLLAMA_CLOUD_MODEL ?? "gpt-oss:120b",
+            },
+          ]
+        : []),
+    ],
+    fetchImpl: options.builder?.fetchImpl,
+  };
 }
 
 export interface AppOptions {
@@ -119,9 +165,23 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
     captureRoutes(auth, { captureJobs, captureLimit: burstLimit("capture", 5, 0.02) }),
   );
   app.use("/api/admin", adminRoutes(auth, theme, env, deps));
+  // Prompt to screen: AI composes a page tree from published components (services/screens).
+  const chain = providerChain(options);
+  const screens = makeScreens({
+    theme,
+    apiOrigin: env.PUBLIC_ORIGIN,
+    chain:
+      chain.apiKey || chain.fallbacks?.length ? { ...chain, apiKey: chain.apiKey ?? "" } : null,
+    loadPublished: async () =>
+      (await findPublishedDocs(cache)).flatMap((d) => (d.published ? [d.published] : [])),
+  });
+  const screenLimits = {
+    generateLimit: burstLimit("screens-generate", 5, 0.05),
+    renderLimit: burstLimit("screens-render", 30, 1),
+  };
+  app.use("/api/screens", screenRoutes(auth, screens, screenLimits, "public"));
+  app.use("/api/admin/screens", screenRoutes(auth, screens, screenLimits, "admin"));
   // Plugin: search-driven feature requests (plugins/feature-radar). Own models and routes.
-  // AI_PROVIDER=gemini uses GEMINI_API_KEY; anything else uses ANTHROPIC_API_KEY.
-  const aiProvider = process.env.AI_PROVIDER === "gemini" ? "gemini" : "anthropic";
   // AI draft builds are slow (LLM calls): they always go through the queue.
   const buildJobs = createQueue<BuildJob>(
     "feature-build",
@@ -151,41 +211,10 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
       return r.ok ? { ok: true } : { ok: false, errors: r.errors };
     },
     builder: {
-      provider: aiProvider,
-      apiKey:
-        options.builder && "apiKey" in options.builder
-          ? options.builder.apiKey
-          : (aiProvider === "gemini"
-              ? process.env.GEMINI_API_KEY
-              : process.env.ANTHROPIC_API_KEY) || undefined,
-      model:
-        process.env.FEATURE_BUILDER_MODEL ??
-        (aiProvider === "gemini" ? "gemini-2.5-flash" : "claude-sonnet-5"),
-      // Fallback chain: every OpenRouter key (comma separated), then Ollama Cloud.
-      fallbacks: [
-        ...(process.env.OPENROUTER_API_KEYS ?? "")
-          .split(",")
-          .map((k) => k.trim())
-          .filter(Boolean)
-          .map((apiKey) => ({
-            provider: "openrouter" as const,
-            apiKey,
-            model: process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini",
-          })),
-        ...(process.env.OLLAMA_CLOUD_KEY
-          ? [
-              {
-                provider: "ollama" as const,
-                apiKey: process.env.OLLAMA_CLOUD_KEY,
-                model: process.env.OLLAMA_CLOUD_MODEL ?? "gpt-oss:120b",
-              },
-            ]
-          : []),
-      ],
+      ...chain,
       styleExample: readStyleExample(),
       themeClasses: THEME_CLASSES,
       allowedDependencies: ALLOWED_DEPENDENCIES,
-      fetchImpl: options.builder?.fetchImpl,
     },
   });
   app.use("/api", featureRadar.publicRouter);

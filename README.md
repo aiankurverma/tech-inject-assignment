@@ -117,6 +117,16 @@ copy another company's brand, logos or content.
 - **Privileges:** grant/revoke Premium and Block/Unblock customers. A blocked customer cannot sign in, and their tokens and sessions stop working immediately.
 - **Feature radar:** searches with no result become feature requests with real counts (hidden below 5). The admin marks them valid, rejected or building with an ETA, and users see "Coming soon". For building requests, **Generate with AI** runs in the queue (Gemini, then OpenRouter, then Ollama as fallbacks), must pass the same `validateBundle()` rules, and is saved **only as a draft**.
 
+## Prompt to screen
+
+Describe a page (public `/screens`, admin `/admin/screens`) and the AI composes it from **published catalogue components only**, as a tree of `{ id, type, props, children }` nodes (`packages/core/src/page-tree.ts`). `type` is a registry slug, `slug/Export` for a secondary export, or `text`.
+
+- `POST /api/screens/generate` `{ prompt }` (also `/api/admin/screens/generate`): rate-limited per IP (token bucket, 5 burst / 3 per minute), zod-validated. Uses the same provider chain as the feature radar (`AI_PROVIDER` + fallbacks) via `completeJson()` in `plugins/feature-radar`. The reply is validated with `validatePageTree()`: unknown slugs/exports, non-JSON props, duplicate ids, more than 80 nodes, deeper than 8 levels or over 60 KB are rejected; one retry carries the errors back to the model.
+- Public callers only get components they may use (premium needs a premium session); admin gets everything published.
+- `POST /api/screens/render` `{ tree }` rebuilds a hand-edited tree without AI.
+- The response carries `code` (Page.tsx), `files` (every used component, deduplicated), `dependencies`, `installCommand` and a `preview` payload for the sandboxed `PreviewFrame`.
+- Known limits: props are JSON only (no icons, callbacks or JSX), so components whose required props are React nodes render with defaults.
+
 ## Security
 
 - **Sessions:** httpOnly, SameSite=strict cookies (Secure in production). A 15-minute access JWT plus a rotating 10-day refresh token (stored as sha256); reusing an old refresh token revokes the chain. Admin and customer use separate cookies and JWT audiences.
@@ -136,6 +146,12 @@ copy another company's brand, logos or content.
 | `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                                     |
 | `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                                     |
 | `apps/web/src/builder/*.test.ts`                     | tree ops, undo/redo + persistence, codegen, prop schema, drop targets |
+| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses |
+| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                      |
+| `packages/core/src/page-tree.test.ts`                | page tree limits, exports, Page.tsx code generation     |
+| `apps/api/src/services/screens.test.ts`              | prompt to screen with a fake provider, retry, fallback  |
+| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                       |
+| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                       |
 
 ## Deployed checks (live, 2026-09-27)
 

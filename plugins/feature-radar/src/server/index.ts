@@ -6,5 +6,5 @@ export { normalizeTerm, publicInterest } from "./normalize";
 export { clusterTerms, isSimilar } from "./cluster";
 export { demandScore, HALF_LIFE_DAYS, SUGGEST_BUILD_THRESHOLD } from "./demand";
 export { buildInsights } from "./router";
-export { buildBundle, termToSlug } from "./builder";
-export type { BuildOptions, BuildResult } from "./builder";
+export { buildBundle, completeJson, termToSlug } from "./builder";
+export type { BuildOptions, BuildResult, JsonResult, ProviderChain } from "./builder";
