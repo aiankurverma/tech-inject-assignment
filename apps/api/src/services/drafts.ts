@@ -55,13 +55,29 @@ export async function createDraftIn<R extends ComponentRecord = ComponentRecord>
     if (count >= scope.maxDocuments)
       throw new HttpError(409, "limit_reached", `Limit reached: ${scope.maxDocuments} components.`);
   }
-  const doc = await scope.model.create({
-    ...scope.filter,
-    ...scope.onCreate,
-    slug: bundle.slug,
-    status: "draft",
-    draft: bundle,
-  });
+  let doc;
+  try {
+    doc = await scope.model.create({
+      ...scope.filter,
+      ...scope.onCreate,
+      slug: bundle.slug,
+      status: "draft",
+      draft: bundle,
+    });
+  } catch (e) {
+    // Two concurrent creates of one slug both pass `exists()`; the unique index decides.
+    if ((e as { code?: number }).code === 11000)
+      throw new HttpError(409, "slug_taken", `Slug "${bundle.slug}" is already used.`);
+    throw e;
+  }
+  // Concurrent creates can pass the count together: re-check after the insert and undo ours.
+  if (
+    scope.maxDocuments !== null &&
+    (await scope.model.countDocuments(scope.filter)) > scope.maxDocuments
+  ) {
+    await scope.model.deleteOne({ ...scope.filter, _id: doc._id });
+    throw new HttpError(409, "limit_reached", `Limit reached: ${scope.maxDocuments} components.`);
+  }
   log.info("component created", { slug: bundle.slug });
   return { slug: bundle.slug, record: doc.toObject() as R };
 }

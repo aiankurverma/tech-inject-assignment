@@ -55,6 +55,15 @@ export function makeTeamCatalog(theme: ThemeFiles, apiOrigin: string) {
           category: d.published?.category ?? d.draft.category,
           description: d.published?.description ?? d.draft.description,
           version: d.published?.version ?? d.draft.version,
+          // Members (read, not read_draft) only learn about the live snapshot.
+          ...(includeDrafts
+            ? {}
+            : {
+                status: "published" as const,
+                draftVersion: null,
+                hasUnpublishedChanges: false,
+                updatedAt: isoDate(d.publishedAt),
+              }),
         }));
     },
 

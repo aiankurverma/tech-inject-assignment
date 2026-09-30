@@ -189,6 +189,21 @@ const teamJobSchema = new Schema(
 teamJobSchema.index({ teamId: 1 });
 teamJobSchema.plugin(teamScopedPlugin);
 
+/**
+ * When a customer was last removed from a team by someone else. Invites created before that
+ * moment can never bring them back (an unlocked link they kept, a pending email invite).
+ */
+const teamRemovalSchema = new Schema(
+  {
+    teamId: { type: Schema.Types.ObjectId, ref: "Team", required: true },
+    customerId: { type: Schema.Types.ObjectId, ref: "Customer", required: true },
+    removedAt: { type: Date, required: true },
+  },
+  { timestamps: false },
+);
+teamRemovalSchema.index({ teamId: 1, customerId: 1 }, { unique: true });
+teamRemovalSchema.plugin(teamScopedPlugin);
+
 export const Customer = mongoose.model("Customer", customerSchema);
 export const ApiToken = mongoose.model("ApiToken", apiTokenSchema);
 export const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
@@ -200,6 +215,7 @@ export const TeamMember = mongoose.model("TeamMember", teamMemberSchema);
 export const TeamComponent = mongoose.model("TeamComponent", teamComponentSchema);
 export const TeamInvite = mongoose.model("TeamInvite", teamInviteSchema);
 export const TeamJob = mongoose.model("TeamJob", teamJobSchema);
+export const TeamRemoval = mongoose.model("TeamRemoval", teamRemovalSchema);
 
 export type CustomerDoc = InferSchemaType<typeof customerSchema> & { _id: mongoose.Types.ObjectId };
 export type TeamDoc = InferSchemaType<typeof teamSchema> & { _id: mongoose.Types.ObjectId };

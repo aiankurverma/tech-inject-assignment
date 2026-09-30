@@ -39,6 +39,9 @@ const ADMIN_PATH = "/api/admin";
 /** Short-lived access JWT; the 10-day refresh token (refresh.ts) renews it. */
 export const ACCESS_TTL_S = 15 * 60;
 
+/** True when the request authenticates with an API token (same test `principal()` uses). */
+export const usesBearer = (req: Request) => !!req.get("authorization")?.startsWith("Bearer ");
+
 export const sha256 = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
 export function newApiToken() {
@@ -162,7 +165,7 @@ export function makeAuth(env: Env) {
      */
     async principal(req: Request): Promise<Principal | null> {
       const header = req.get("authorization");
-      if (header?.startsWith("Bearer ")) {
+      if (header && usesBearer(req)) {
         const token = await ApiToken.findOne({
           hash: sha256(header.slice(7).trim()),
           revokedAt: null,

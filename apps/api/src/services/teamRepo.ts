@@ -1,13 +1,16 @@
 import { Types, type Model } from "mongoose";
-import { validateBundle } from "@ti/core";
+import { decideTeamAccess, validateBundle } from "@ti/core";
 import {
+  Customer,
   Team,
   TeamComponent,
   TeamInvite,
   TeamJob,
+  TeamMember,
   type TeamComponentRecord,
   type TeamDoc,
   type TeamInviteDoc,
+  type TeamMemberDoc,
 } from "../models";
 import {
   createDraftIn,
@@ -181,13 +184,26 @@ export function teamScope(teamId: Id, teamSlug: string, actor?: Id) {
 export type TeamScope = ReturnType<typeof teamScope>;
 
 /**
- * Queue processor for big team uploads. The team is re-resolved when the job runs: a team
- * deleted or disabled in the meantime makes the job fail instead of writing orphan data.
+ * Queue processor for big team uploads. Authorization is re-checked when the job runs, not
+ * only at enqueue time: a team deleted or disabled in the meantime, or an uploader who was
+ * removed, demoted below admin or disabled, makes the job fail instead of writing.
  */
 export async function processTeamBundleJob(job: BundleJob) {
   const team = await Team.findOne({ _id: job.teamId, disabled: false }).lean<TeamDoc>();
   if (!team) throw new Error("Team no longer exists.");
-  const actor = job.customerId ? new Types.ObjectId(job.customerId) : undefined;
+  if (!job.customerId || !Types.ObjectId.isValid(job.customerId))
+    throw new Error("You no longer have permission to upload to this team.");
+  const actor = new Types.ObjectId(job.customerId);
+  const [member, active] = await Promise.all([
+    TeamMember.findOne({ teamId: team._id, customerId: actor }).lean<TeamMemberDoc>(),
+    Customer.exists({ _id: actor, disabled: { $ne: true } }),
+  ]);
+  const decision = decideTeamAccess(
+    null,
+    { kind: "customer", role: active ? (member?.role ?? null) : null },
+    "manage_components",
+  );
+  if (!decision.allowed) throw new Error("You no longer have permission to upload to this team.");
   await teamScope(team._id, team.slug, actor).runJob(job);
 }
 

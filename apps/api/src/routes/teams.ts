@@ -4,7 +4,13 @@ import type { Types } from "mongoose";
 import { z } from "zod";
 import { canInviteRole, roleRank, slugSchema, type TeamRole, type ThemeFiles } from "@ti/core";
 import type { Env } from "../config/env";
-import { sha256, type Auth, type Principal, type TeamContext } from "../middleware/auth";
+import {
+  sha256,
+  usesBearer,
+  type Auth,
+  type Principal,
+  type TeamContext,
+} from "../middleware/auth";
 import { previewPayload } from "../services/catalog";
 import { makeTeamCatalog, teamSummary } from "../services/teamCatalog";
 import { TEAM_LIMITS, teamScope } from "../services/teamRepo";
@@ -16,6 +22,7 @@ import {
   Team,
   TeamInvite,
   TeamMember,
+  TeamRemoval,
   type CustomerDoc,
   type TeamDoc,
   type TeamInviteDoc,
@@ -56,6 +63,7 @@ function newInviteToken() {
  * that team before anything happens.
  */
 const ANY_TEAM = { teamId: { $exists: true } } as const;
+const isDuplicateKey = (e: unknown) => (e as { code?: number }).code === 11000;
 const openInvite = () => ({
   ...ANY_TEAM,
   usedAt: null,
@@ -97,8 +105,18 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
     createdAt: team.createdAt,
   });
 
-  /** After consuming an invite: the team must be live and its creator still an admin. */
-  const inviteStillValid = async (invite: TeamInviteDoc) => {
+  /** True if `customerId` was removed from the team at or after `since` (an invite's creation). */
+  const removedSince = async (teamId: Types.ObjectId, customerId: Types.ObjectId, since: Date) => {
+    const removal = await TeamRemoval.findOne({ teamId, customerId }).lean<{ removedAt: Date }>();
+    return !!removal && removal.removedAt.getTime() >= new Date(since).getTime();
+  };
+
+  /**
+   * The team must be live, the invite's creator still an admin, and the caller must not have
+   * been removed from the team after the invite was made (a removed member can never come
+   * back through an invite that predates the removal).
+   */
+  const inviteStillValid = async (invite: TeamInviteDoc, me: CustomerDoc) => {
     const team = await Team.findOne({ _id: invite.teamId, disabled: false }).lean<TeamDoc>();
     if (!team) return null;
     const creator = await TeamMember.findOne({
@@ -106,6 +124,7 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
       customerId: invite.createdBy,
     }).lean<TeamMemberDoc>();
     if (!creator || roleRank(creator.role) < roleRank("admin")) return null;
+    if (await removedSince(team._id, me._id, invite.createdAt)) return null;
     return team;
   };
 
@@ -125,12 +144,73 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
         await TeamMember.updateOne({ _id: existing._id, teamId: team._id }, { role });
       return true;
     }
-    const members = await TeamMember.countDocuments({ teamId: team._id });
-    if (members >= TEAM_LIMITS.membersPerTeam)
-      throw teamErrors.limit(`${TEAM_LIMITS.membersPerTeam} members per team`);
-    await TeamMember.create({ teamId: team._id, customerId: customer._id, role, addedBy });
+    const limit = () => teamErrors.limit(`${TEAM_LIMITS.membersPerTeam} members per team`);
+    if ((await TeamMember.countDocuments({ teamId: team._id })) >= TEAM_LIMITS.membersPerTeam)
+      throw limit();
+    let created;
+    try {
+      created = await TeamMember.create({
+        teamId: team._id,
+        customerId: customer._id,
+        role,
+        addedBy,
+      });
+    } catch (e) {
+      // The same customer joining twice at once (email + link invite): one insert wins.
+      if (isDuplicateKey(e)) return true;
+      throw e;
+    }
+    // Concurrent joins can pass the count together: re-check after the insert and undo ours.
+    if ((await TeamMember.countDocuments({ teamId: team._id })) > TEAM_LIMITS.membersPerTeam) {
+      await TeamMember.deleteOne({ _id: created._id, teamId: team._id });
+      throw limit();
+    }
     log.info("team member joined", { team: team.slug, role });
     return false;
+  };
+
+  /**
+   * Validates, consumes and applies one invite. Every check that can fail runs before the
+   * invite is marked used, and if joining still fails afterwards the invite is released
+   * again, so a failed join never burns a one-time invite.
+   */
+  const acceptInvite = async (
+    filter: Record<string, unknown>,
+    me: CustomerDoc,
+    missing: () => HttpError,
+  ) => {
+    const found = await TeamInvite.findOne(filter).lean<TeamInviteDoc>();
+    if (!found) throw missing();
+    const team = await inviteStillValid(found, me);
+    if (!team) throw teamErrors.inviteInvalid();
+    const isMember = await TeamMember.exists({ teamId: team._id, customerId: me._id });
+    if (
+      !isMember &&
+      (await TeamMember.countDocuments({ teamId: team._id })) >= TEAM_LIMITS.membersPerTeam
+    )
+      throw teamErrors.limit(`${TEAM_LIMITS.membersPerTeam} members per team`);
+    // Atomic consume: two concurrent accepts can only ever get one document.
+    const invite = await TeamInvite.findOneAndUpdate(
+      { ...filter, _id: found._id },
+      { usedAt: new Date(), usedBy: me._id },
+      { new: true },
+    ).lean<TeamInviteDoc>();
+    if (!invite) throw missing();
+    try {
+      const already = await joinTeam(team, me, invite.role, invite.createdBy);
+      // A removal that ran while this accept was in flight wins over the invite.
+      if (!already && (await removedSince(team._id, me._id, invite.createdAt))) {
+        await TeamMember.deleteOne({ teamId: team._id, customerId: me._id });
+        throw teamErrors.inviteInvalid();
+      }
+      return { team, invite, already };
+    } catch (e) {
+      await TeamInvite.updateOne(
+        { _id: invite._id, teamId: invite.teamId },
+        { $unset: { usedAt: 1, usedBy: 1 } },
+      );
+      throw e;
+    }
   };
 
   // -------------------------------------------------------------------------
@@ -163,7 +243,7 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
     try {
       team = await Team.create({ slug, name, createdBy: c._id });
     } catch (e) {
-      if ((e as { code?: number }).code === 11000) throw teamErrors.slugTaken();
+      if (isDuplicateKey(e)) throw teamErrors.slugTaken();
       throw e;
     }
     try {
@@ -176,6 +256,15 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
     } catch (e) {
       await Team.deleteOne({ _id: team._id });
       throw e;
+    }
+    // Concurrent creates can pass the owned-teams count together: re-check and undo ours.
+    if (
+      (await TeamMember.countDocuments({ customerId: c._id, role: "owner" })) >
+      TEAM_LIMITS.ownedTeamsPerCustomer
+    ) {
+      await Team.deleteOne({ _id: team._id });
+      await TeamMember.deleteOne({ teamId: team._id, customerId: c._id });
+      throw teamErrors.limit(`${TEAM_LIMITS.ownedTeamsPerCustomer} teams you own`);
     }
     log.info("team created", { team: slug });
     res.status(201).json(await teamView(team.toObject() as TeamDoc, "owner"));
@@ -206,6 +295,7 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
       ctx.repo.invites.removeAll(),
       ctx.repo.jobs.removeAll(),
       ApiToken.deleteMany({ teamId: ctx.team._id }),
+      TeamRemoval.deleteMany({ teamId: ctx.team._id }),
     ]);
     log.info("team deleted", { team: ctx.team.slug });
     res.json({ ok: true });
@@ -270,7 +360,37 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
       throw new HttpError(403, "team_role_required", "Only an owner can remove an owner.");
     if (target.role === "owner" && (await ownerCount(ctx.team._id)) <= 1)
       throw teamErrors.lastOwner();
+    if (!self) {
+      // Recorded before the delete, so an invite accepted concurrently sees it (acceptInvite).
+      await TeamRemoval.updateOne(
+        { teamId: ctx.team._id, customerId: target.customerId },
+        { removedAt: new Date() },
+        { upsert: true },
+      );
+    }
     await TeamMember.deleteOne({ _id: target._id, teamId: ctx.team._id });
+    // The count above is check-then-act: two owners removing each other (or leaving, or a
+    // concurrent PATCH demotion) all pass it. Re-check after the write, as PATCH does, and
+    // put the member back if the team was left without an owner.
+    if (target.role === "owner" && (await ownerCount(ctx.team._id)) === 0) {
+      try {
+        await TeamMember.collection.insertOne(target);
+      } catch (e) {
+        if (!isDuplicateKey(e)) throw e;
+      }
+      throw teamErrors.lastOwner();
+    }
+    if (!self) {
+      // Their open invites to this team die too (email invites and email-locked links).
+      const removed = await Customer.findById(target.customerId)
+        .select("email")
+        .lean<CustomerDoc>();
+      if (removed)
+        await TeamInvite.updateMany(
+          { teamId: ctx.team._id, email: removed.email, usedAt: null, revokedAt: null },
+          { revokedAt: new Date() },
+        );
+    }
     // Their team-scoped tokens die with the membership.
     await ApiToken.updateMany(
       { customerId: target.customerId, teamId: ctx.team._id, revokedAt: null },
@@ -385,15 +505,11 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
   });
   r.post("/invites/:id/accept", auth.requireCustomer, async (req, res) => {
     const me = res.locals.customer as CustomerDoc;
-    const invite = await TeamInvite.findOneAndUpdate(
+    const { team, already } = await acceptInvite(
       myEmailInvite(idParam(req.params.id), me),
-      { usedAt: new Date(), usedBy: me._id },
-      { new: true },
-    ).lean<TeamInviteDoc>();
-    if (!invite) throw teamErrors.notFound();
-    const team = await inviteStillValid(invite);
-    if (!team) throw teamErrors.inviteInvalid();
-    const already = await joinTeam(team, me, invite.role, invite.createdBy);
+      me,
+      teamErrors.notFound,
+    );
     res.json({ ok: true, team: team.slug, already });
   });
   r.post("/invites/:id/decline", auth.requireCustomer, async (req, res) => {
@@ -428,7 +544,7 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
     const me = res.locals.customer as CustomerDoc;
     const invite = await TeamInvite.findOne(myLinkInvite(token, me)).lean<TeamInviteDoc>();
     if (!invite) throw teamErrors.inviteInvalid();
-    const team = await inviteStillValid(invite);
+    const team = await inviteStillValid(invite, me);
     if (!team) throw teamErrors.inviteInvalid();
     res.json({ team: { name: team.name, slug: team.slug }, role: invite.role });
   });
@@ -436,16 +552,11 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
   r.post("/join", auth.requireCustomer, ...joinLimit, async (req, res) => {
     const { token } = parseBody(joinBody, req.body);
     const me = res.locals.customer as CustomerDoc;
-    // Atomic consume: two concurrent accepts can only ever get one document.
-    const invite = await TeamInvite.findOneAndUpdate(
+    const { team, invite, already } = await acceptInvite(
       myLinkInvite(token, me),
-      { usedAt: new Date(), usedBy: me._id },
-      { new: true },
-    ).lean<TeamInviteDoc>();
-    if (!invite) throw teamErrors.inviteInvalid();
-    const team = await inviteStillValid(invite);
-    if (!team) throw teamErrors.inviteInvalid();
-    const already = await joinTeam(team, me, invite.role, invite.createdBy);
+      me,
+      teamErrors.inviteInvalid,
+    );
     res.json({ ok: true, team: team.slug, role: invite.role, already });
   });
 
@@ -530,9 +641,15 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
   // Components: read side (cookie or bearer token, member)
   // -------------------------------------------------------------------------
 
+  /**
+   * Draft visibility (read_draft) is cookie-only, like /draft and /draft-preview: an API token
+   * (personal or team-scoped) only ever sees published snapshots, whatever its owner's role.
+   */
+  const seesDrafts = (req: Request, ctx: TeamContext) => isAdmin(ctx) && !usesBearer(req);
+
   r.get("/teams/:team/components", async (req, res) => {
     const ctx = await anyCtx(req);
-    res.json(await catalog.list(ctx.repo, isAdmin(ctx)));
+    res.json(await catalog.list(ctx.repo, seesDrafts(req, ctx)));
   });
   r.get("/teams/:team/components/:slug", async (req, res) => {
     const ctx = await anyCtx(req);
@@ -540,7 +657,7 @@ export function teamRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteD
   });
   r.get("/teams/:team/components/:slug/thumbnail", async (req, res) => {
     const ctx = await anyCtx(req);
-    const draft = req.query.draft === "1" && isAdmin(ctx);
+    const draft = req.query.draft === "1" && seesDrafts(req, ctx);
     const { mime, bytes } = await catalog.thumbnail(ctx.repo, slugParam(req), draft);
     sendThumbnail(res, `data:${mime};base64,${bytes.toString("base64")}`);
   });
