@@ -2,6 +2,8 @@ import { PromptToScreen } from "@ti/client";
 import { Layout } from "../components/Layout";
 import { Breadcrumbs, PageHeader } from "../components/ui";
 import { useSession } from "../context/session";
+import { useThemeCss, useThemeStore } from "../theme/store";
+import { Link } from "react-router-dom";
 
 const toc = [
   { id: "prompt", label: "Describe" },
@@ -11,6 +13,8 @@ const toc = [
 /** Public "prompt to screen": compose a page from the components this visitor may use. */
 export function Screens() {
   const { me } = useSession();
+  const themeCss = useThemeCss();
+  const themeName = useThemeStore((s) => s.theme.name);
   return (
     <Layout toc={toc}>
       <div className="max-w-4xl">
@@ -25,7 +29,18 @@ export function Screens() {
           </PageHeader>
         </div>
         <section id="prompt" className="scroll-mt-20">
-          <PromptToScreen endpoint="/api/screens" componentHref={(s) => `/components/${s}`} />
+          <PromptToScreen
+            endpoint="/api/screens"
+            componentHref={(s) => `/components/${s}`}
+            themeCss={themeCss}
+          />
+          <p className="mt-3 text-xs text-muted-foreground">
+            Previews use your{" "}
+            <Link to="/theme" className="underline hover:text-foreground">
+              Theme studio
+            </Link>{" "}
+            theme: {themeName}.
+          </p>
         </section>
         <section id="how" className="mt-16 scroll-mt-20 space-y-3 text-sm text-muted-foreground">
           <h2 className="text-xl font-semibold tracking-tight text-foreground">How it works</h2>

@@ -27,6 +27,7 @@ import { PagePreview } from "../builder/PagePreview";
 import { LAYOUT_BLOCKS, Palette, type PaletteDrag } from "../builder/Palette";
 import { PropsPanel } from "../builder/PropsPanel";
 import { useBuilder } from "../builder/store";
+import { useThemeCss, useThemeStore } from "../theme/store";
 import {
   canContain,
   countNodes,
@@ -109,6 +110,8 @@ export function Builder() {
     () => mergePreviews(previews, slugs, previewCode),
     [previews, slugs, previewCode],
   );
+  const themeCss = useThemeCss();
+  const themeName = useThemeStore((s) => s.theme.name);
   const names = useMemo(
     () => Object.fromEntries((components ?? []).map((c) => [c.slug, c.name])),
     [components],
@@ -278,6 +281,8 @@ export function Builder() {
                     empty={slugs.length === 0}
                     pending={merged.pending}
                     failed={merged.failed}
+                    themeCss={themeCss}
+                    themeName={themeName}
                   />
                 </Panel>
               </Group>

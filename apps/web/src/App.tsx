@@ -4,7 +4,6 @@ import { Home, ComponentsIndex } from "./pages/Home";
 import { TeamPage } from "./pages/Team";
 import { Join } from "./pages/Join";
 import { NotFound } from "./pages/NotFound";
-import { ThemeStudio } from "./pages/ThemeStudio";
 import { Screens } from "./pages/Screens";
 import { Builder } from "./pages/Builder";
 
@@ -14,6 +13,9 @@ const ComponentPage = lazy(() =>
 );
 const GetStarted = lazy(() =>
   import("./pages/GetStarted").then((m) => ({ default: m.GetStarted })),
+);
+const ThemeStudio = lazy(() =>
+  import("./pages/ThemeStudio").then((m) => ({ default: m.ThemeStudio })),
 );
 const SignIn = lazy(() => import("./pages/SignIn").then((m) => ({ default: m.SignIn })));
 const Account = lazy(() => import("./pages/Account").then((m) => ({ default: m.Account })));
