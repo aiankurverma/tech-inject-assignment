@@ -1,16 +1,10 @@
 /** Page builder data model: a JSON tree of layout and component nodes. */
 
-export type LayoutType = "section" | "row" | "column";
-export type NodeType = "page" | LayoutType | "component";
-
-export interface PageNode {
-  id: string;
-  type: NodeType;
-  /** Registry slug; only for `type === "component"`. */
-  slug?: string;
-  props: Record<string, unknown>;
-  children: PageNode[];
-}
+export type {
+  BuilderLayoutType as LayoutType,
+  BuilderNodeType as NodeType,
+  BuilderNode as PageNode,
+} from "@ti/core";
 
 /** One documented prop from a registry entry (`props` in the bundle JSON). */
 export interface PropDoc {

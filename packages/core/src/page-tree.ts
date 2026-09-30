@@ -27,6 +27,23 @@ export interface PageNode {
   children?: PageNode[];
 }
 
+/**
+ * Visual builder variant of the page tree (apps/web/src/builder): explicit layout nodes
+ * (`section|row|column`) wrap component nodes that carry the registry `slug`.
+ * Kept next to `PageNode` so both page-tree formats live in one place.
+ */
+export type BuilderLayoutType = "section" | "row" | "column";
+export type BuilderNodeType = "page" | BuilderLayoutType | "component";
+
+export interface BuilderNode {
+  id: string;
+  type: BuilderNodeType;
+  /** Registry slug; only for `type === "component"`. */
+  slug?: string;
+  props: Record<string, unknown>;
+  children: BuilderNode[];
+}
+
 const jsonValue: z.ZodType<JsonValue> = z.lazy(() =>
   z.union([z.string(), z.number(), z.boolean(), z.null(), z.array(jsonValue), z.record(jsonValue)]),
 );
