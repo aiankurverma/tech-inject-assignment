@@ -15,11 +15,11 @@ import { Customer, ComponentModel } from "./models";
 const ui = (p: string) => fileURLToPath(new URL(`../../../packages/ui/${p}`, import.meta.url));
 
 const seedEnvSchema = z.object({
-    MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/techinject"),
-    SEED_FREE_EMAIL: z.string().email(),
-    SEED_FREE_PASSWORD: z.string().min(10),
-    SEED_PREMIUM_EMAIL: z.string().email(),
-    SEED_PREMIUM_PASSWORD: z.string().min(10),
+  MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/techinject"),
+  SEED_FREE_EMAIL: z.string().email(),
+  SEED_FREE_PASSWORD: z.string().min(10),
+  SEED_PREMIUM_EMAIL: z.string().email(),
+  SEED_PREMIUM_PASSWORD: z.string().min(10),
 });
 
 const entrySchema = z.object({

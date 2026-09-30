@@ -23,7 +23,8 @@ export default defineConfig({
       command: "npx tsx tests/e2e/server.ts",
       url: `${E2E_ORIGIN}/api/health`,
       timeout: 180_000,
-      reuseExistingServer: !process.env.CI,
+      // Never reuse: whatever already listens on this port may be a dev API on a real database.
+      reuseExistingServer: false,
       stdout: "pipe",
     },
     {

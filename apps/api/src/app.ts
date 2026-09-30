@@ -205,8 +205,9 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   const serveSpa = (mount: string, dir: string) => {
     if (!existsSync(dir)) return;
     app.use(mount, express.static(dir, { index: false, maxAge: "1h" }));
+    // `root` keeps the dotfile check to "index.html" only, so a checkout under a dot folder works.
     app.get(`${mount === "/" ? "" : mount}/{*splat}`, (_req, res) =>
-      res.sendFile(`${dir}/index.html`),
+      res.sendFile("index.html", { root: dir }),
     );
   };
   serveSpa("/admin", root("apps/admin/dist"));

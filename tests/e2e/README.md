@@ -17,10 +17,16 @@ npm run test:e2e
 
 Playwright starts two servers itself (see `playwright.config.ts`):
 
-- `tests/e2e/server.ts` on http://localhost:4100 (API + built catalogue and admin),
+- `tests/e2e/server.ts` on http://localhost:4000 (API + built catalogue and admin),
 - `vite preview` for `apps/preview` on http://localhost:5185 (the sandboxed preview origin).
 
-The first run downloads a MongoDB binary (~70 MB) into `~/.cache/mongodb-binaries`.
+Stop any local dev API first: port 4000 is fixed because the preview build only accepts render
+messages from its baked-in parent origins, and an existing server on that port is never reused.
+Build without `VITE_PREVIEW_ORIGIN` / `VITE_PARENT_ORIGINS` set so the local defaults apply.
+
+The first run downloads a MongoDB binary into `~/.cache/mongodb-binaries` (about 70 MB on
+Linux, several hundred MB on Windows). If the server start times out on that first download,
+run it again once the download has finished.
 
 Useful flags: `npm run test:e2e -- --ui`, `npm run test:e2e -- --headed`,
 `npx playwright show-report` after a failure.
