@@ -1,0 +1,64 @@
+{
+  "name": "Support Desk",
+  "slug": "support-desk-template",
+  "description": "Full-page support desk template: SLA and CSAT KPIs, queue navigation with live counts, and the pro ticket console (virtualised queue, threaded replies, macros, SLA timers).",
+  "category": "Templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@date-fns/tz",
+    "@radix-ui/react-slot",
+    "@tanstack/react-query",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "lucide-react",
+    "react-hotkeys-hook",
+    "react-resizable-panels"
+  ],
+  "files": [
+    "components/crm/support-desk-template.tsx",
+    "components/crm/button.tsx",
+    "components/crm/pro-ticket-console.tsx",
+    "components/crm/pro-ticket-console/apply-patch.ts",
+    "components/crm/pro-ticket-console/types.ts",
+    "components/crm/pro-ticket-console/business-hours.ts",
+    "components/crm/pro-ticket-console/ticket-details.tsx",
+    "components/crm/pro-ticket-console/sla-timer.tsx",
+    "hooks/use-shared-clock.ts",
+    "components/crm/pro-ticket-console/ticket-queue.tsx",
+    "components/crm/pro-ticket-console/ticket-thread.tsx",
+    "hooks/use-range-selection.ts",
+    "components/crm/template-shell.tsx",
+    "components/crm/app-sidebar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Ticket queue",
+      "file": "support-desk-template-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "kpis",
+      "type": "Kpi[]",
+      "description": "KPI tiles (open, first response, SLA, CSAT)",
+      "required": false
+    },
+    {
+      "name": "console",
+      "type": "ProTicketConsoleProps",
+      "description": "Forwarded to ProTicketConsole (tickets, currentUser, loadThread, onReply, …)",
+      "required": true
+    },
+    {
+      "name": "onNewTicket",
+      "type": "() => void",
+      "description": "Header action",
+      "required": false
+    }
+  ],
+  "usage": "Sidebar counts are derived from console.tickets."
+}
