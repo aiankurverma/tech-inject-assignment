@@ -9,6 +9,7 @@ import {
   Radar,
   ScanSearch,
   ShieldCheck,
+  Users,
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -28,6 +29,7 @@ const NAV: NavItem[] = [
   { to: "/", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/components", label: "Components", icon: Boxes, match: ["/new"] },
   { to: "/privileges", label: "Privileges", icon: ShieldCheck, match: ["/customers"] },
+  { to: "/teams", label: "Teams", icon: Users },
   { to: "/capture", label: "Capture", icon: ScanSearch },
   { to: "/feature-radar", label: "Feature radar", icon: Radar },
 ];
@@ -119,6 +121,7 @@ function useCrumbs(): string[] {
   if (pathname.startsWith("/components/"))
     return ["Components", decodeURIComponent(pathname.slice("/components/".length))];
   if (pathname === "/privileges" || pathname === "/customers") return ["Privileges"];
+  if (pathname === "/teams") return ["Teams"];
   if (pathname === "/feature-radar") return ["Feature radar"];
   return ["Admin"];
 }

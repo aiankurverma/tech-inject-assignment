@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { api } from "@ti/client";
+import type { TeamSummary } from "../lib/teams";
 
 export interface Me {
   email: string;
@@ -25,6 +26,9 @@ interface Session {
   loadingMe: boolean;
   components: ListItem[] | null;
   componentsError: string | null;
+  /** Teams the signed-in customer belongs to (empty when signed out). Never part of public data. */
+  teams: TeamSummary[];
+  refreshTeams: () => void;
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   refresh: () => void;
@@ -37,8 +41,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [loadingMe, setLoadingMe] = useState(true);
   const [components, setComponents] = useState<ListItem[] | null>(null);
   const [componentsError, setComponentsError] = useState<string | null>(null);
+  const [teams, setTeams] = useState<TeamSummary[]>([]);
   const [tick, setTick] = useState(0);
+  const [teamTick, setTeamTick] = useState(0);
   const refresh = useCallback(() => setTick((t) => t + 1), []);
+  const refreshTeams = useCallback(() => setTeamTick((t) => t + 1), []);
 
   useEffect(() => {
     api<Me | null>("/api/auth/me")
@@ -53,6 +60,17 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       .catch((e: Error) => setComponentsError(e.message));
   }, [tick]);
 
+  // Teams are private: only asked for when signed in, and dropped on sign-out.
+  useEffect(() => {
+    if (!me) {
+      setTeams([]);
+      return;
+    }
+    api<TeamSummary[]>("/api/teams")
+      .then(setTeams)
+      .catch(() => setTeams([]));
+  }, [me, teamTick]);
+
   const signIn = async (email: string, password: string) => {
     setMe(await api<Me>("/api/auth/login", { method: "POST", json: { email, password } }));
     refresh();
@@ -64,7 +82,19 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <Ctx.Provider value={{ me, loadingMe, components, componentsError, signIn, signOut, refresh }}>
+    <Ctx.Provider
+      value={{
+        me,
+        loadingMe,
+        components,
+        componentsError,
+        teams,
+        refreshTeams,
+        signIn,
+        signOut,
+        refresh,
+      }}
+    >
       {children}
     </Ctx.Provider>
   );

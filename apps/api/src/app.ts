@@ -15,8 +15,10 @@ import { makeAuth, sameOriginWrites } from "./middleware/auth";
 import { errorHandler, HttpError } from "./utils/http";
 import { adminRoutes, customerRoutes, publicRoutes } from "./routes";
 import { captureRoutes } from "./routes/captures";
+import { adminTeamRoutes, teamRoutes } from "./routes/teams";
 import { processCaptureJob, type CaptureJob } from "./services/capture";
 import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
+import { processTeamBundleJob } from "./services/teamRepo";
 import { featureRadarRoutes, type BuildJob } from "@ti/feature-radar/server";
 
 const root = (p: string) => fileURLToPath(new URL(`../../../${p}`, import.meta.url));
@@ -73,9 +75,12 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
       algorithm: tokenBucket({ name, redis, capacity: test ? 10_000 : capacity, refillPerSecond }),
       key: byIp,
     });
-  const bundleJobs = createQueue<BundleJob>("bundle-save", (job) => processBundleJob(job, cache), {
-    redis,
-  });
+  // Team jobs carry the server-resolved teamId and are saved through the team-scoped repo.
+  const bundleJobs = createQueue<BundleJob>(
+    "bundle-save",
+    (job) => (job.teamId ? processTeamBundleJob(job) : processBundleJob(job, cache)),
+    { redis },
+  );
   // Capture Engine: one headless Chrome at a time.
   const captureJobs = createQueue<CaptureJob>("capture", processCaptureJob, { redis });
   const deps = {
@@ -83,6 +88,12 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
     customerLoginLimit: loginLimit("customer-login"),
     adminLoginLimit: loginLimit("admin-login"),
     registryLimit: burstLimit("registry", 60, 2),
+    teamWriteLimit: burstLimit("team-write", 30, 0.1),
+    makeLimit: (name: string, key: (req: Request) => string) =>
+      rateLimit({
+        algorithm: tokenBucket({ name, redis, capacity: test ? 10_000 : 30, refillPerSecond: 0.1 }),
+        key,
+      }),
     bundleJobs,
   };
   app.set("trust proxy", 1);
@@ -114,6 +125,9 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   });
   app.use("/api", publicRoutes(auth, theme, env, deps));
   app.use("/api", customerRoutes(auth, deps));
+  // Team workspaces: private components, members, invites (routes/teams.ts).
+  app.use("/api", teamRoutes(auth, theme, env, deps));
+  app.use("/api/admin/teams", adminTeamRoutes(auth));
   app.use(
     "/api/admin/captures",
     captureRoutes(auth, { captureJobs, captureLimit: burstLimit("capture", 5, 0.02) }),

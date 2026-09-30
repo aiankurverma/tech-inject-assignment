@@ -118,7 +118,7 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
       const b = await authorize(slug, viewer);
       return agentPromptText(buildRegistryItem(b, theme), {
         apiOrigin,
-        premium: b.access === "premium",
+        auth: b.access === "premium" ? "premium" : "none",
       });
     },
   };
