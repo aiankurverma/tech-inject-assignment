@@ -9,6 +9,7 @@
   "files": [
     "bin",
     "lib.js",
+    "lib.d.ts",
     "config.js"
   ],
   "engines": {

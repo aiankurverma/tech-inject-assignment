@@ -52,7 +52,55 @@ export function planWrites(files, opts) {
 
 const normalize = (s) => s.replace(/\r\n/g, "\n").trimEnd();
 
-/** Minimal argv parser: kitbase add <slug> [--src src] [--overwrite] [--api URL] [--dry-run] */
+const TARGET_RE = /^(?:@([a-z0-9]+(?:-[a-z0-9]+)*)\/)?([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+
+/**
+ * Parse an install target: `slug` (public catalogue) or `@team/slug` (a team's private component).
+ * Throws on anything else, so a bad argument can never reach the URL.
+ * @param {string} arg
+ * @returns {{ team?: string, slug: string }}
+ */
+export function parseTarget(arg) {
+  const m = typeof arg === "string" ? TARGET_RE.exec(arg) : null;
+  if (!m)
+    throw new Error(`Invalid component name: ${JSON.stringify(arg)} (use slug or @team/slug)`);
+  return m[1] ? { team: m[1], slug: m[2] } : { slug: m[2] };
+}
+
+/**
+ * Registry URL for a parsed target.
+ * @param {string} api API origin without trailing slash
+ * @param {{ team?: string, slug: string }} target
+ */
+export function registryUrl(api, target) {
+  return target.team
+    ? `${api}/api/teams/${target.team}/registry/${target.slug}`
+    : `${api}/api/registry/${target.slug}`;
+}
+
+/**
+ * Refuse to send a token over a channel that could leak it: only https, or plain http to
+ * the local machine (dev servers).
+ * @param {string} api
+ * @param {boolean} hasToken
+ */
+export function assertSafeApi(api, hasToken) {
+  let url;
+  try {
+    url = new URL(api);
+  } catch {
+    throw new Error(`Invalid API URL: ${api}`);
+  }
+  if (!hasToken) return;
+  const local =
+    ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) || url.hostname === "::1";
+  if (url.protocol === "https:" || (url.protocol === "http:" && local)) return;
+  throw new Error(
+    `Refusing to send KITBASE_TOKEN over ${url.protocol}//${url.host}. Use https (or http on localhost).`,
+  );
+}
+
+/** Minimal argv parser: kitbase add <slug|@team/slug> [--src src] [--overwrite] [--api URL] [--dry-run] */
 export function parseArgs(argv) {
   const out = {
     command: argv[0],

@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import express from "express";
+import compression from "compression";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import type { Request } from "express";
@@ -15,9 +16,15 @@ import { makeAuth, sameOriginWrites } from "./middleware/auth";
 import { errorHandler, HttpError } from "./utils/http";
 import { adminRoutes, customerRoutes, publicRoutes } from "./routes";
 import { captureRoutes } from "./routes/captures";
+import { adminTeamRoutes, teamRoutes } from "./routes/teams";
 import { processCaptureJob, type CaptureJob } from "./services/capture";
+import { CLI_SLUG, createUsageRecorder } from "./services/analytics";
 import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
-import { featureRadarRoutes, type BuildJob } from "@ti/feature-radar/server";
+import { featureRadarRoutes, type BuildJob, type ProviderChain } from "@ti/feature-radar/server";
+import { screenRoutes } from "./routes/screens";
+import { findPublishedDocs } from "./services/catalog";
+import { makeScreens } from "./services/screens";
+import { processTeamBundleJob } from "./services/teamRepo";
 
 const root = (p: string) => fileURLToPath(new URL(`../../../${p}`, import.meta.url));
 
@@ -35,6 +42,49 @@ function readStyleExample(): string {
   } catch {
     return "";
   }
+}
+
+/**
+ * LLM provider chain from the environment, shared by every AI feature.
+ * AI_PROVIDER=gemini uses GEMINI_API_KEY; anything else uses ANTHROPIC_API_KEY.
+ * Fallbacks: every OpenRouter key (comma separated), then Ollama Cloud.
+ */
+export function providerChain(
+  options: AppOptions,
+): Omit<ProviderChain, "apiKey"> & { apiKey: string | undefined } {
+  const provider = process.env.AI_PROVIDER === "gemini" ? "gemini" : "anthropic";
+  return {
+    provider,
+    apiKey:
+      options.builder && "apiKey" in options.builder
+        ? options.builder.apiKey
+        : (provider === "gemini" ? process.env.GEMINI_API_KEY : process.env.ANTHROPIC_API_KEY) ||
+          undefined,
+    model:
+      process.env.FEATURE_BUILDER_MODEL ??
+      (provider === "gemini" ? "gemini-2.5-flash" : "claude-sonnet-5"),
+    fallbacks: [
+      ...(process.env.OPENROUTER_API_KEYS ?? "")
+        .split(",")
+        .map((k) => k.trim())
+        .filter(Boolean)
+        .map((apiKey) => ({
+          provider: "openrouter" as const,
+          apiKey,
+          model: process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini",
+        })),
+      ...(process.env.OLLAMA_CLOUD_KEY
+        ? [
+            {
+              provider: "ollama" as const,
+              apiKey: process.env.OLLAMA_CLOUD_KEY,
+              model: process.env.OLLAMA_CLOUD_MODEL ?? "gpt-oss:120b",
+            },
+          ]
+        : []),
+    ],
+    fetchImpl: options.builder?.fetchImpl,
+  };
 }
 
 export interface AppOptions {
@@ -73,16 +123,29 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
       algorithm: tokenBucket({ name, redis, capacity: test ? 10_000 : capacity, refillPerSecond }),
       key: byIp,
     });
-  const bundleJobs = createQueue<BundleJob>("bundle-save", (job) => processBundleJob(job, cache), {
-    redis,
-  });
+  // Team jobs carry the server-resolved teamId and are saved through the team-scoped repo.
+  const bundleJobs = createQueue<BundleJob>(
+    "bundle-save",
+    (job) => (job.teamId ? processTeamBundleJob(job) : processBundleJob(job, cache)),
+    { redis },
+  );
   // Capture Engine: one headless Chrome at a time.
   const captureJobs = createQueue<CaptureJob>("capture", processCaptureJob, { redis });
+  // Anonymous usage counters, flushed to Mongo in batches (off in tests: no DB writes).
+  const usage = createUsageRecorder({ enabled: !test });
   const deps = {
     cache,
+    usage,
+    beaconLimit: burstLimit("beacon", 120, 1),
     customerLoginLimit: loginLimit("customer-login"),
     adminLoginLimit: loginLimit("admin-login"),
     registryLimit: burstLimit("registry", 60, 2),
+    teamWriteLimit: burstLimit("team-write", 30, 0.1),
+    makeLimit: (name: string, key: (req: Request) => string) =>
+      rateLimit({
+        algorithm: tokenBucket({ name, redis, capacity: test ? 10_000 : 30, refillPerSecond: 0.1 }),
+        key,
+      }),
     bundleJobs,
   };
   app.set("trust proxy", 1);
@@ -105,6 +168,7 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
       },
     }),
   );
+  app.use(compression());
   app.use(express.json({ limit: "1mb" }));
   app.use(cookieParser());
   app.use("/api", sameOriginWrites(env));
@@ -114,14 +178,31 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   });
   app.use("/api", publicRoutes(auth, theme, env, deps));
   app.use("/api", customerRoutes(auth, deps));
+  // Team workspaces: private components, members, invites (routes/teams.ts).
+  app.use("/api", teamRoutes(auth, theme, env, deps));
+  app.use("/api/admin/teams", adminTeamRoutes(auth));
   app.use(
     "/api/admin/captures",
     captureRoutes(auth, { captureJobs, captureLimit: burstLimit("capture", 5, 0.02) }),
   );
   app.use("/api/admin", adminRoutes(auth, theme, env, deps));
+  // Prompt to screen: AI composes a page tree from published components (services/screens).
+  const chain = providerChain(options);
+  const screens = makeScreens({
+    theme,
+    apiOrigin: env.PUBLIC_ORIGIN,
+    chain:
+      chain.apiKey || chain.fallbacks?.length ? { ...chain, apiKey: chain.apiKey ?? "" } : null,
+    loadPublished: async () =>
+      (await findPublishedDocs(cache)).flatMap((d) => (d.published ? [d.published] : [])),
+  });
+  const screenLimits = {
+    generateLimit: burstLimit("screens-generate", 5, 0.05),
+    renderLimit: burstLimit("screens-render", 30, 1),
+  };
+  app.use("/api/screens", screenRoutes(auth, screens, screenLimits, "public"));
+  app.use("/api/admin/screens", screenRoutes(auth, screens, screenLimits, "admin"));
   // Plugin: search-driven feature requests (plugins/feature-radar). Own models and routes.
-  // AI_PROVIDER=gemini uses GEMINI_API_KEY; anything else uses ANTHROPIC_API_KEY.
-  const aiProvider = process.env.AI_PROVIDER === "gemini" ? "gemini" : "anthropic";
   // AI draft builds are slow (LLM calls): they always go through the queue.
   const buildJobs = createQueue<BuildJob>(
     "feature-build",
@@ -151,41 +232,10 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
       return r.ok ? { ok: true } : { ok: false, errors: r.errors };
     },
     builder: {
-      provider: aiProvider,
-      apiKey:
-        options.builder && "apiKey" in options.builder
-          ? options.builder.apiKey
-          : (aiProvider === "gemini"
-              ? process.env.GEMINI_API_KEY
-              : process.env.ANTHROPIC_API_KEY) || undefined,
-      model:
-        process.env.FEATURE_BUILDER_MODEL ??
-        (aiProvider === "gemini" ? "gemini-2.5-flash" : "claude-sonnet-5"),
-      // Fallback chain: every OpenRouter key (comma separated), then Ollama Cloud.
-      fallbacks: [
-        ...(process.env.OPENROUTER_API_KEYS ?? "")
-          .split(",")
-          .map((k) => k.trim())
-          .filter(Boolean)
-          .map((apiKey) => ({
-            provider: "openrouter" as const,
-            apiKey,
-            model: process.env.OPENROUTER_MODEL ?? "openai/gpt-4o-mini",
-          })),
-        ...(process.env.OLLAMA_CLOUD_KEY
-          ? [
-              {
-                provider: "ollama" as const,
-                apiKey: process.env.OLLAMA_CLOUD_KEY,
-                model: process.env.OLLAMA_CLOUD_MODEL ?? "gpt-oss:120b",
-              },
-            ]
-          : []),
-      ],
+      ...chain,
       styleExample: readStyleExample(),
       themeClasses: THEME_CLASSES,
       allowedDependencies: ALLOWED_DEPENDENCIES,
-      fetchImpl: options.builder?.fetchImpl,
     },
   });
   app.use("/api", featureRadar.publicRouter);
@@ -198,15 +248,24 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   const cliTgz = root("packages/cli/dist/kitbase.tgz");
   app.get("/cli/kitbase.tgz", (_req, res) => {
     if (!existsSync(cliTgz)) throw new HttpError(404, "not_found", "Installer not built.");
+    usage.record(CLI_SLUG, "install");
+    // Not versioned in the URL: let clients revalidate, but spare repeat downloads within minutes.
+    res.set("Cache-Control", "public, max-age=300");
     res.type("application/gzip").sendFile(cliTgz);
   });
 
   // Built frontends (production). Admin UI under /admin, catalogue at /.
   const serveSpa = (mount: string, dir: string) => {
     if (!existsSync(dir)) return;
+    // Vite emits content-hashed files under assets/: cache them for a year. Everything else 1h.
+    app.use(
+      `${mount === "/" ? "" : mount}/assets`,
+      express.static(`${dir}/assets`, { index: false, immutable: true, maxAge: "365d" }),
+    );
     app.use(mount, express.static(dir, { index: false, maxAge: "1h" }));
+    // `root` keeps the dotfile check to "index.html" only, so a checkout under a dot folder works.
     app.get(`${mount === "/" ? "" : mount}/{*splat}`, (_req, res) =>
-      res.sendFile(`${dir}/index.html`),
+      res.sendFile("index.html", { root: dir }),
     );
   };
   serveSpa("/admin", root("apps/admin/dist"));
@@ -215,7 +274,7 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   app.use(errorHandler);
   /** Graceful shutdown: let running jobs finish. The shared Redis connection is closed by the caller. */
   const shutdown = async () => {
-    await Promise.all([bundleJobs.close(), buildJobs.close(), captureJobs.close()]);
+    await Promise.all([usage.close(), bundleJobs.close(), buildJobs.close(), captureJobs.close()]);
   };
   return Object.assign(app, { shutdown });
 }

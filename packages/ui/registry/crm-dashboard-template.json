@@ -1,0 +1,71 @@
+{
+  "name": "CRM Dashboard",
+  "slug": "crm-dashboard-template",
+  "description": "Full-page CRM dashboard template: sidebar with trial card, KPI row with sparkline trends and the pro pipeline board with drag-and-drop deals.",
+  "category": "Templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "@tanstack/react-query",
+    "@tanstack/react-virtual",
+    "lucide-react",
+    "motion",
+    "zustand"
+  ],
+  "files": [
+    "components/crm/crm-dashboard-template.tsx",
+    "components/crm/button.tsx",
+    "components/crm/app-sidebar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/pro-pipeline-board.tsx",
+    "components/crm/avatar.tsx",
+    "components/crm/search-input.tsx",
+    "components/crm/kbd.tsx",
+    "hooks/use-controllable-state-object.ts",
+    "hooks/use-pipeline-dnd.ts",
+    "hooks/use-pipeline-store.ts",
+    "components/crm/pro-pipeline-board/model.ts",
+    "components/crm/pro-pipeline-board/context.ts",
+    "components/crm/pro-pipeline-board/stage-cell.tsx",
+    "components/crm/pro-pipeline-board/deal-card.tsx",
+    "components/crm/pro-pipeline-board/stage-header.tsx",
+    "components/crm/pro-pipeline-board/board-overlays.tsx",
+    "components/crm/template-shell.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "KPIs and pipeline",
+      "file": "crm-dashboard-template-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "kpis",
+      "type": "Kpi[]",
+      "description": "KPI tiles { label, value, delta?, invert?, caption?, trend? }",
+      "required": true
+    },
+    {
+      "name": "pipeline",
+      "type": "ProPipelineBoardProps",
+      "description": "Forwarded to ProPipelineBoard (stages, owners, deals, onMoveDeal, …)",
+      "required": true
+    },
+    {
+      "name": "trialDays",
+      "type": "number",
+      "description": "Shows the trial card in the sidebar footer",
+      "required": false
+    },
+    {
+      "name": "onAddBilling / onNewDeal / onExport",
+      "type": "() => void",
+      "description": "Header action handlers",
+      "required": false
+    }
+  ],
+  "usage": "Swap mock data for your API; pipeline accepts every ProPipelineBoard prop."
+}

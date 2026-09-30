@@ -106,6 +106,34 @@ function SidebarGroup({
   );
 }
 
+/** Private teams of the signed-in customer. Never part of search or the public index. */
+function TeamsGroup({ onNavigate }: { onNavigate?: () => void }) {
+  const { teams } = useSession();
+  if (!teams.length) return null;
+  return (
+    <div>
+      <SidebarHeading>
+        <span className="inline-flex items-center gap-1.5">
+          <Lock className="size-3" aria-hidden />
+          Your teams
+        </span>
+      </SidebarHeading>
+      {teams.map((t) => (
+        <NavLink
+          key={t.slug}
+          to={`/teams/${t.slug}`}
+          className={sideLink}
+          onClick={onNavigate}
+          title={`@${t.slug}`}
+        >
+          <span className="truncate">{t.name}</span>
+          <span className="text-xs text-muted-foreground tabular-nums">{t.componentCount}</span>
+        </NavLink>
+      ))}
+    </div>
+  );
+}
+
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { components, componentsError } = useSession();
   const location = useLocation();
@@ -162,7 +190,14 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
             <span className="text-xs text-muted-foreground tabular-nums">{components.length}</span>
           ) : null}
         </NavLink>
+        <NavLink to="/builder" className={sideLink} onClick={onNavigate}>
+          Page builder
+        </NavLink>
+        <NavLink to="/screens" className={sideLink} onClick={onNavigate}>
+          Prompt to screen
+        </NavLink>
       </div>
+      <TeamsGroup onNavigate={onNavigate} />
       {componentsError ? (
         <p className="rounded-md border border-red-200 bg-red-50 px-2.5 py-2 text-xs text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
           Could not load components: {componentsError}
@@ -260,16 +295,19 @@ const topLink = ({ isActive }: { isActive: boolean }) =>
 
 /**
  * Site shell. `wide` drops the side rails for full-width pages (landing, sign in, 404);
- * `toc` adds the "On this page" rail.
+ * `toc` adds the "On this page" rail; `bare` keeps only the header for app-like pages
+ * (the page builder) that manage their own scrolling.
  */
 export function Layout({
   children,
   toc,
   wide = false,
+  bare = false,
 }: {
   children: ReactNode;
   toc?: TocItem[];
   wide?: boolean;
+  bare?: boolean;
 }) {
   const { me, signOut } = useSession();
   const [open, setOpen] = useState(false);
@@ -342,6 +380,15 @@ export function Layout({
             <NavLink to="/components" className={topLink}>
               Components
             </NavLink>
+            <NavLink to="/builder" className={topLink}>
+              Builder
+            </NavLink>
+            <NavLink to="/screens" className={topLink}>
+              Screens
+            </NavLink>
+            <NavLink to="/theme" className={topLink}>
+              Theme
+            </NavLink>
           </nav>
           <div className="ml-auto flex items-center gap-1 text-sm sm:gap-2">
             <Search />
@@ -412,7 +459,11 @@ export function Layout({
         </div>
       ) : null}
 
-      {wide ? (
+      {bare ? (
+        <main id="main" className="flex min-h-0 flex-1 flex-col">
+          {children}
+        </main>
+      ) : wide ? (
         <main
           id="main"
           className="mx-auto flex w-full max-w-screen-2xl flex-1 flex-col px-4 sm:px-6"

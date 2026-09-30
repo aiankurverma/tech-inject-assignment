@@ -114,10 +114,7 @@ export function usePivotConfig(
     filterFields: [...new Set([...(prev?.filterFields ?? []), ...Object.keys(c.filters)])],
   });
   const [inner, setInner] = React.useState<PivotLayout>(() => toLayout(value ?? defaultValue));
-  const layout = React.useMemo(
-    () => (value ? toLayout(value, inner) : inner),
-    [value, inner],
-  );
+  const layout = React.useMemo(() => (value ? toLayout(value, inner) : inner), [value, inner]);
   const layoutRef = React.useRef(layout);
   React.useLayoutEffect(() => {
     layoutRef.current = layout;

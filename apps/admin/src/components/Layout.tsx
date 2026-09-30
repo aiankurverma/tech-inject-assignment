@@ -1,19 +1,29 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
+  BarChart3,
   Boxes,
   ChevronRight,
+  ExternalLink,
   LayoutDashboard,
+  LayoutTemplate,
   LogOut,
   Menu,
   Radar,
   ScanSearch,
   ShieldCheck,
+  Wand2,
+  Users,
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { ThemeToggle } from "../context/theme";
 import { Badge, Button, cn, focusRing, useFocusTrap } from "./ui";
+
+/** The public catalogue's page builder. Same origin in production; the web dev server locally. */
+const BUILDER_URL = `${
+  import.meta.env.VITE_WEB_ORIGIN ?? (import.meta.env.DEV ? "http://localhost:5183" : "")
+}/builder`;
 
 interface NavItem {
   to: string;
@@ -27,9 +37,12 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: "/", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/components", label: "Components", icon: Boxes, match: ["/new"] },
+  { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/privileges", label: "Privileges", icon: ShieldCheck, match: ["/customers"] },
+  { to: "/teams", label: "Teams", icon: Users },
   { to: "/capture", label: "Capture", icon: ScanSearch },
   { to: "/feature-radar", label: "Feature radar", icon: Radar },
+  { to: "/screens", label: "Screens", icon: Wand2 },
 ];
 
 function Logo() {
@@ -89,6 +102,27 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
           </NavLink>
         );
       })}
+      <p className="px-2.5 pt-4 pb-1.5 text-[11px] font-medium tracking-wide text-muted-foreground/70 uppercase">
+        Catalogue
+      </p>
+      <a
+        href={BUILDER_URL}
+        target="_blank"
+        rel="noreferrer"
+        onClick={onNavigate}
+        className={cn(
+          "group flex h-8 items-center gap-2.5 rounded-md px-2.5 text-sm font-medium text-foreground/70 transition-colors hover:bg-muted hover:text-foreground",
+          focusRing,
+          "focus-visible:ring-offset-0",
+        )}
+      >
+        <LayoutTemplate
+          className="size-4 text-muted-foreground/70 group-hover:text-foreground/70"
+          aria-hidden
+        />
+        Page builder
+        <ExternalLink className="ml-auto size-3 text-muted-foreground/60" aria-hidden />
+      </a>
     </nav>
   );
 }
@@ -119,7 +153,9 @@ function useCrumbs(): string[] {
   if (pathname.startsWith("/components/"))
     return ["Components", decodeURIComponent(pathname.slice("/components/".length))];
   if (pathname === "/privileges" || pathname === "/customers") return ["Privileges"];
+  if (pathname === "/teams") return ["Teams"];
   if (pathname === "/feature-radar") return ["Feature radar"];
+  if (pathname === "/screens") return ["Prompt to screen"];
   return ["Admin"];
 }
 

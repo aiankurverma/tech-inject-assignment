@@ -49,6 +49,16 @@ export function AccessBadge({ access, locked }: { access: "free" | "premium"; lo
   );
 }
 
+/** "Private · @team" pill for team components. */
+export function TeamBadge({ team }: { team: string }) {
+  return (
+    <span className="inline-flex h-5 items-center gap-1 rounded-full border border-border bg-background px-2 text-[11px] font-medium text-muted-foreground">
+      <Lock className="size-2.5" aria-hidden />
+      Private · @{team}
+    </span>
+  );
+}
+
 export function Skeleton({ className = "" }: { className?: string }) {
   return <div aria-hidden className={`animate-pulse rounded-md bg-muted ${className}`} />;
 }

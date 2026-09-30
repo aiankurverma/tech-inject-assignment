@@ -13,6 +13,7 @@
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.1",
     "lucide-react": "^0.469.0",
+    "recharts": "^3.10.1",
     "@ti/feature-radar": "*"
   },
   "devDependencies": {

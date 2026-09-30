@@ -11,7 +11,17 @@ import {
 } from "@ti/client";
 import { Layout } from "../components/Layout";
 import { useSession } from "../context/session";
-import { AccessBadge, Breadcrumbs, btn, EmptyState, Skeleton, Tabs } from "../components/ui";
+import { trackView } from "../lib/beacon";
+import { atLeast, componentApi } from "../lib/teams";
+import {
+  AccessBadge,
+  Breadcrumbs,
+  btn,
+  EmptyState,
+  Skeleton,
+  Tabs,
+  TeamBadge,
+} from "../components/ui";
 
 interface Detail {
   slug: string;
@@ -106,9 +116,19 @@ function PageSkeleton() {
   );
 }
 
-export function ComponentPage() {
+/**
+ * Component detail page. `apiBase` selects the API: `/api` for the public catalogue (default),
+ * `/api/teams/<team>` for a team's private component; the page itself is the same.
+ */
+export function ComponentPage({
+  apiBase = "/api",
+  teamSlug,
+}: {
+  apiBase?: string;
+  teamSlug?: string;
+}) {
   const { slug = "" } = useParams();
-  const { me } = useSession();
+  const { me, teams } = useSession();
   const [detail, setDetail] = useState<Detail | null>(null);
   const [error, setError] = useState<ApiError | null>(null);
   const [payload, setPayload] = useState<PreviewPayload | null>(null);
@@ -116,6 +136,11 @@ export function ComponentPage() {
   const [tab, setTab] = useState<"preview" | "code">("preview");
   const [install, setInstall] = useState<"cli" | "manual">("cli");
   const [previewFailed, setPreviewFailed] = useState<string | null>(null);
+  const [draft, setDraft] = useState(false);
+  const urls = componentApi(apiBase, slug);
+  const teamRole = teamSlug ? (teams.find((t) => t.slug === teamSlug)?.role ?? null) : null;
+  const canPreviewDraft = atLeast(teamRole, "admin");
+  const backTo = teamSlug ? `/teams/${teamSlug}` : "/components";
 
   useEffect(() => {
     let alive = true;
@@ -124,12 +149,14 @@ export function ComponentPage() {
     setPayload(null);
     setPreviewFailed(null);
     setExample(0);
-    api<Detail>(`/api/components/${slug}`)
+    setDraft(false);
+    api<Detail>(urls.detail)
       .then((d) => {
         if (!alive) return;
         setDetail(d);
+        if (!teamSlug) trackView(slug);
         if (!d.locked) {
-          api<PreviewPayload>(`/api/components/${slug}/preview`)
+          api<PreviewPayload>(urls.preview)
             .then((p) => alive && setPayload(p))
             .catch((e: Error) => alive && setPreviewFailed(e.message));
         }
@@ -138,7 +165,23 @@ export function ComponentPage() {
     return () => {
       alive = false;
     };
-  }, [slug, me?.plan]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- urls derive from apiBase + slug
+  }, [apiBase, slug, me?.plan]);
+
+  // Team admins can flip the frame to the unpublished draft.
+  useEffect(() => {
+    if (!detail || !teamSlug) return;
+    let alive = true;
+    setPayload(null);
+    setPreviewFailed(null);
+    api<PreviewPayload>(draft ? urls.draftPreview : urls.preview)
+      .then((p) => alive && setPayload(p))
+      .catch((e: Error) => alive && setPreviewFailed(e.message));
+    return () => {
+      alive = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- runs when the toggle changes
+  }, [draft]);
 
   if (error) {
     const notFound = error.status === 404;
@@ -148,13 +191,15 @@ export function ComponentPage() {
           icon={notFound ? <SearchX className="size-5" /> : <TriangleAlert className="size-5" />}
           title={notFound ? "Component not found" : "Something went wrong"}
           action={
-            <Link to="/components" className={btn.secondary}>
+            <Link to={backTo} className={btn.secondary}>
               <ArrowLeft className="size-4" aria-hidden />
-              Back to components
+              {teamSlug ? "Back to team" : "Back to components"}
             </Link>
           }
         >
-          {error.message}
+          {notFound && teamSlug
+            ? "This component is not published, or you are not a member of this team."
+            : error.message}
         </EmptyState>
       </Layout>
     );
@@ -170,17 +215,29 @@ export function ComponentPage() {
   const header = (
     <header className="mb-8">
       <Breadcrumbs
-        items={[
-          { label: "Components", to: "/components" },
-          { label: detail.category },
-          { label: detail.name },
-        ]}
+        items={
+          teamSlug
+            ? [
+                { label: "Teams" },
+                { label: `@${teamSlug}`, to: `/teams/${teamSlug}` },
+                { label: detail.name },
+              ]
+            : [
+                { label: "Components", to: "/components" },
+                { label: detail.category },
+                { label: detail.name },
+              ]
+        }
       />
       <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2">
         <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           {detail.name}
         </h1>
-        <AccessBadge access={detail.access} locked={!!detail.locked} />
+        {teamSlug ? (
+          <TeamBadge team={teamSlug} />
+        ) : (
+          <AccessBadge access={detail.access} locked={!!detail.locked} />
+        )}
         <span className="font-mono text-xs text-muted-foreground/70">v{detail.version}</span>
       </div>
       <p className="mt-3 max-w-2xl text-base leading-7 text-pretty text-muted-foreground sm:text-lg">
@@ -196,7 +253,7 @@ export function ComponentPage() {
         {header}
         <div className="relative overflow-hidden rounded-xl border border-border bg-[#161616]">
           <img
-            src={`/api/components/${slug}/thumbnail`}
+            src={urls.thumbnail}
             alt={`${detail.name} preview image`}
             className="h-[420px] w-full scale-105 object-cover opacity-50 blur-[2px]"
           />
@@ -255,11 +312,11 @@ export function ComponentPage() {
     <Layout toc={toc}>
       {header}
       <div className="-mt-2 mb-10 flex flex-wrap gap-2">
-        <CopyButton variant="solid" getText={() => api<string>(`/api/components/${slug}/prompt`)}>
+        <CopyButton variant="solid" getText={() => api<string>(urls.prompt)}>
           <span className="sm:hidden">Prompt</span>
           <span className="hidden sm:inline">Copy prompt</span>
         </CopyButton>
-        <CopyButton getText={() => api<string>(`/api/components/${slug}/copy`)}>
+        <CopyButton getText={() => api<string>(urls.copy)}>
           <span className="sm:hidden">Code</span>
           <span className="hidden sm:inline">Copy code</span>
         </CopyButton>
@@ -287,6 +344,17 @@ export function ComponentPage() {
               ]}
             />
           </div>
+          {canPreviewDraft ? (
+            <label className="flex items-center gap-2 px-1 text-sm text-muted-foreground">
+              <input
+                type="checkbox"
+                checked={draft}
+                onChange={(e) => setDraft(e.target.checked)}
+                className="size-4 accent-primary"
+              />
+              Preview draft
+            </label>
+          ) : null}
           {examples.length > 1 ? (
             <label className="relative block">
               <span className="sr-only">Variant</span>
@@ -353,7 +421,14 @@ export function ComponentPage() {
         <div className="doc-prose mb-4">
           <p className="text-sm! leading-6! text-muted-foreground!">
             Needs the project setup from <Link to="/docs/get-started">Get started</Link>.
-            {detail.access === "premium" ? (
+            {teamSlug ? (
+              <>
+                {" "}
+                Private to <code>@{teamSlug}</code>: set <code>KITBASE_TOKEN</code> to your personal
+                token (<Link to="/account">Account</Link>) or a team token (
+                <Link to={`/teams/${teamSlug}?tab=tokens`}>Team › Tokens</Link>).
+              </>
+            ) : detail.access === "premium" ? (
               <>
                 {" "}
                 Set <code>KITBASE_TOKEN</code> first (see <Link to="/account">Account</Link>).

@@ -37,9 +37,14 @@ export function buildRegistryItem(bundle: Bundle, theme: ThemeFiles): RegistryIt
   };
 }
 
-export function installCommand(apiOrigin: string, slug: string): string {
-  return `npx --yes ${apiOrigin}/cli/kitbase.tgz add ${slug}`;
+/** Install target: `slug` for the public catalogue, `@team/slug` for a team's private component. */
+export const installTarget = (slug: string, team?: string) => (team ? `@${team}/${slug}` : slug);
+
+export function installCommand(apiOrigin: string, slug: string, team?: string): string {
+  return `npx --yes ${apiOrigin}/cli/kitbase.tgz add ${installTarget(slug, team)}`;
 }
+
+export type PromptAuth = "none" | "premium" | "team";
 
 export function copyCodeText(item: RegistryItem): string {
   return [
@@ -56,17 +61,20 @@ export function copyCodeText(item: RegistryItem): string {
 
 export function agentPromptText(
   item: RegistryItem,
-  opts: { apiOrigin: string; premium: boolean },
+  opts: { apiOrigin: string; auth: PromptAuth; team?: string },
 ): string {
-  const auth = opts.premium
-    ? "This is a premium component. The installer reads the access token from the KITBASE_TOKEN environment variable. If it is not set, stop and ask the user to set it in their shell. Never ask for the token in chat and never write it into files."
-    : "This is a free component; no token is needed.";
+  const auth =
+    opts.auth === "premium"
+      ? "This is a premium component. The installer reads the access token from the KITBASE_TOKEN environment variable. If it is not set, stop and ask the user to set it in their shell. Never ask for the token in chat and never write it into files."
+      : opts.auth === "team"
+        ? `This component is private to team @${opts.team ?? ""}. The installer reads KITBASE_TOKEN (your personal token, or a team token). Never ask for it in chat or write it to files.`
+        : "This is a free component; no token is needed.";
   return [
     `Add the "${item.name}" component (v${item.version}) from the Kitbase component library to this React + TypeScript project.`,
     "",
     "Steps:",
     `1. Check the project uses React 18+, TypeScript and Tailwind CSS v4, and that "@/..." resolves to the src folder (tsconfig "paths" and bundler alias). Add the alias if it is missing.`,
-    `2. From the project root run: ${installCommand(opts.apiOrigin, item.slug)}`,
+    `2. From the project root run: ${installCommand(opts.apiOrigin, item.slug, opts.team)}`,
     `   ${auth}`,
     "   The installer writes only inside src/ and never overwrites changed files. If it reports a conflict, show it to the user and only use --overwrite if they approve.",
     `3. Install the dependencies it prints: npm install ${item.dependencies.join(" ")}`,
