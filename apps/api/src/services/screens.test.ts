@@ -76,7 +76,10 @@ describe("screens.generate", () => {
       "components/crm/card.tsx",
       "components/crm/stat-card.tsx",
     ]);
-    expect(r.preview.examples[0]?.code).toBe(r.code);
+    // The preview gets per-component error boundaries; exported code stays clean.
+    expect(r.code).not.toContain("KitbasePreviewGuard");
+    expect(r.preview.examples[0]?.code).toContain('<KitbasePreviewGuard label="stat-card">');
+    expect(r).not.toHaveProperty("previewCode");
 
     const system = String(calls[0]?.body.system);
     expect(system).toContain("- card:");

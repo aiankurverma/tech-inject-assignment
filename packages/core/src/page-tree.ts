@@ -140,6 +140,40 @@ export function splitType(type: string): { slug: string; exportName?: string } {
   return exportName ? { slug, exportName } : { slug };
 }
 
+const NODE_KEYS = new Set(["id", "type", "props", "children"]);
+
+/**
+ * True for a page-tree node placed inside a prop (a "slot" such as `left`, `sidebar`,
+ * `header`): an object with string `id` and `type` and no keys other than node keys.
+ */
+export function isSlotNode(value: unknown): value is PageNode {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.id === "string" &&
+    typeof v.type === "string" &&
+    Object.keys(v).every((k) => NODE_KEYS.has(k))
+  );
+}
+
+/** Nodes held by one prop value: a single node, or a non-empty array made only of nodes. */
+export function slotNodes(value: unknown): PageNode[] | null {
+  if (isSlotNode(value)) return [value];
+  if (Array.isArray(value) && value.length && value.every(isSlotNode)) return value;
+  return null;
+}
+
+/** Every node nested in a node: its children, then nodes found in slot props. */
+export function nestedNodes(node: PageNode): PageNode[] {
+  const out = [...(node.children ?? [])];
+  for (const [k, v] of Object.entries(node.props ?? {})) {
+    if (k === "children") continue;
+    const nodes = slotNodes(v);
+    if (nodes) out.push(...nodes);
+  }
+  return out;
+}
+
 /** Schema check plus the rules zod cannot express: known slugs and exports, ids, depth and size. */
 export function validatePageTree(input: unknown, components: PageComponent[]): PageTreeResult {
   const raw = JSON.stringify(input) ?? "";
@@ -167,7 +201,11 @@ export function validatePageTree(input: unknown, components: PageComponent[]): P
     }
     if (ids.has(node.id)) errors.push(`${node.id}: duplicate id`);
     ids.add(node.id);
-    if (node.props && JSON.stringify(node.props).length > PAGE_TREE_LIMITS.maxPropBytes)
+    // Slot nodes count toward the size of their own props, not their parent's.
+    const ownProps = Object.fromEntries(
+      Object.entries(node.props ?? {}).filter(([, v]) => !slotNodes(v)),
+    );
+    if (JSON.stringify(ownProps).length > PAGE_TREE_LIMITS.maxPropBytes)
       errors.push(`${node.id}: props larger than ${PAGE_TREE_LIMITS.maxPropBytes} bytes`);
     if (node.type === TEXT_NODE) {
       if (typeof node.props?.text !== "string")
@@ -181,6 +219,18 @@ export function validatePageTree(input: unknown, components: PageComponent[]): P
         errors.push(`${node.id}: "${slug}" has no export "${exportName}"`);
       else if (!exportName && c.exports.length === 0)
         errors.push(`${node.id}: "${slug}" exports no component`);
+    }
+    for (const [k, v] of Object.entries(node.props ?? {})) {
+      const slot = k === "children" ? null : slotNodes(v);
+      if (!slot) continue;
+      for (const s of slot) {
+        const r = pageNodeSchema.safeParse(s);
+        if (!r.success) {
+          errors.push(`${node.id}.props.${k}: invalid node (${r.error.issues[0]?.message ?? "?"})`);
+          continue;
+        }
+        walk(r.data, depth + 1);
+      }
     }
     for (const child of node.children ?? []) walk(child, depth + 1);
   };
@@ -199,7 +249,7 @@ export function treeSlugs(tree: PageNode): string[] {
       const { slug } = splitType(n.type);
       if (!out.includes(slug)) out.push(slug);
     }
-    n.children?.forEach(walk);
+    nestedNodes(n).forEach(walk);
   };
   walk(tree);
   return out;
@@ -208,11 +258,16 @@ export function treeSlugs(tree: PageNode): string[] {
 const jsxText = (s: string) =>
   s.replace(/[{}<>]/g, (c) => `{${JSON.stringify(c)}}`).replace(/\n/g, " ");
 
-function jsxProps(props: Record<string, JsonValue> | undefined): string {
+function jsxProps(
+  props: Record<string, JsonValue> | undefined,
+  slot: (nodes: PageNode[], many: boolean) => string,
+): string {
   if (!props) return "";
   return Object.entries(props)
     .filter(([k]) => /^[a-zA-Z_$][\w$]*$/.test(k) && k !== "children")
     .map(([k, v]) => {
+      const nodes = slotNodes(v);
+      if (nodes) return ` ${k}={${slot(nodes, Array.isArray(v))}}`;
       if (v === true) return ` ${k}`;
       if (typeof v === "string" && !/["\\\n]/.test(v)) return ` ${k}="${v}"`;
       return ` ${k}={${JSON.stringify(v)}}`;
@@ -221,10 +276,36 @@ function jsxProps(props: Record<string, JsonValue> | undefined): string {
 }
 
 /**
+ * Per-node error boundary for generated page previews (builder and prompt-to-screen).
+ * The preview sandbox registers `globalThis.KitbasePreviewGuard`; this prelude falls back to a
+ * pass-through so preview code still runs on an older sandbox. Never part of exported code.
+ */
+export const PREVIEW_GUARD_PRELUDE =
+  "const KitbasePreviewGuard = ((globalThis as any).KitbasePreviewGuard ?? ((p: { children?: unknown }) => p.children)) as any;";
+
+/** Wraps one element's JSX lines in the preview guard, labelled with the component slug. */
+export function guardLines(label: string, lines: string[], indent: string): string[] {
+  return [
+    `${indent}<KitbasePreviewGuard label=${JSON.stringify(label)}>`,
+    ...lines.map((l) => `  ${l}`),
+    `${indent}</KitbasePreviewGuard>`,
+  ];
+}
+
+export interface PageCodeOptions {
+  /** Wrap each primary component (not `slug/Export` parts) in the preview error boundary. */
+  guard?: boolean;
+}
+
+/**
  * Page.tsx source for a validated tree: one import per component, then the JSX.
  * Component names are imported as-is; a "text" node becomes a string child.
  */
-export function pageCode(tree: PageNode, components: PageComponent[]): string {
+export function pageCode(
+  tree: PageNode,
+  components: PageComponent[],
+  options: PageCodeOptions = {},
+): string {
   const bySlug = new Map(components.map((c) => [c.slug, c]));
   const imports = new Map<string, Set<string>>();
   const name = (type: string): string => {
@@ -236,13 +317,27 @@ export function pageCode(tree: PageNode, components: PageComponent[]): string {
     imports.set(slug, set);
     return n;
   };
+  /** JSX for nodes passed in a prop: one element, or a keyed array for array-valued slots. */
+  const slot = (nodes: PageNode[], many: boolean): string => {
+    const one = (n: PageNode, key: boolean) => {
+      if (n.type === TEXT_NODE) return JSON.stringify(String(n.props?.text ?? ""));
+      const el = render(key ? { ...n, props: { key: n.id, ...n.props } } : n, "").trim();
+      return el.includes("\n") ? `(\n${el}\n)` : el;
+    };
+    return many ? `[${nodes.map((n) => one(n, true)).join(", ")}]` : one(nodes[0]!, false);
+  };
   const render = (node: PageNode, indent: string): string => {
     if (node.type === TEXT_NODE) return `${indent}${jsxText(String(node.props?.text ?? ""))}`;
     const tag = name(node.type);
-    const props = jsxProps(node.props);
+    const props = jsxProps(node.props, slot);
     const kids = (node.children ?? []).map((c) => render(c, `${indent}  `));
-    if (!kids.length) return `${indent}<${tag}${props} />`;
-    return `${indent}<${tag}${props}>\n${kids.join("\n")}\n${indent}</${tag}>`;
+    const el = !kids.length
+      ? `${indent}<${tag}${props} />`
+      : `${indent}<${tag}${props}>\n${kids.join("\n")}\n${indent}</${tag}>`;
+    // Secondary exports (card/CardHeader) stay unwrapped: parents may inspect their children.
+    const { slug, exportName } = splitType(node.type);
+    if (!options.guard || exportName) return el;
+    return guardLines(slug, el.split("\n"), indent).join("\n");
   };
   const body = render(tree, "      ");
   const importLines = [...imports.entries()]
@@ -254,6 +349,7 @@ export function pageCode(tree: PageNode, components: PageComponent[]): string {
   return [
     ...importLines,
     "",
+    ...(options.guard ? [PREVIEW_GUARD_PRELUDE, ""] : []),
     "export default function Page() {",
     "  return (",
     '    <div className="min-h-screen bg-crm-bg p-6 font-crm text-crm-fg">',
@@ -268,6 +364,8 @@ export function pageCode(tree: PageNode, components: PageComponent[]): string {
 export interface PageExport {
   slugs: string[];
   code: string;
+  /** `code` with per-component error boundaries, for the sandboxed preview only. */
+  previewCode: string;
   dependencies: string[];
   /** Files from every used component, deduplicated by path (shared helpers appear once). */
   files: { path: string; content: string }[];
@@ -291,6 +389,7 @@ export function exportPage(
   return {
     slugs,
     code: pageCode(tree, components),
+    previewCode: pageCode(tree, components, { guard: true }),
     dependencies: [...deps].sort(),
     files: [...files].map(([path, content]) => ({ path, content })),
     installCommand: slugs.map((s) => installCommand(apiOrigin, s)).join("\n"),

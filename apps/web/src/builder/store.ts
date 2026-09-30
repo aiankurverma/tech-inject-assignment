@@ -38,6 +38,11 @@ export interface BuilderState {
   duplicate: (id: string) => void;
   setProp: (id: string, name: string, value: unknown) => void;
   replaceProps: (id: string, props: Record<string, unknown>) => void;
+  /**
+   * Fills a freshly added component's empty props with defaults once its metadata loads.
+   * Not an undo step of its own: it completes the insert.
+   */
+  seedProps: (id: string, props: Record<string, unknown>) => void;
   /** Replaces the whole page (import JSON); invalid input is ignored. */
   load: (tree: unknown) => boolean;
   reset: () => void;
@@ -132,6 +137,12 @@ export const createBuilderStore = (storage?: Storage) => {
         setProp: (id, name, value) =>
           commit(set, edits, (t) => setProp(t, id, name, value), undefined, `${id}\u0000${name}`),
         replaceProps: (id, props) => commit(set, edits, (t) => replaceProps(t, id, props)),
+        seedProps: (id, props) =>
+          set((s) => {
+            const node = findNode(s.tree, id);
+            if (!node || node.type !== "component" || Object.keys(node.props).length) return {};
+            return { tree: replaceProps(s.tree, id, props) };
+          }),
         load: (tree) => {
           if (!isPageNode(tree) || tree.type !== "page") return false;
           commit(

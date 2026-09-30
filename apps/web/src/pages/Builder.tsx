@@ -20,7 +20,8 @@ import { btn } from "../components/ui";
 import { useSession, type ListItem } from "../context/session";
 import { Canvas, type NodeDrag } from "../builder/Canvas";
 import { mergePreviews, metasFrom, useCatalogCache } from "../builder/catalog";
-import { generatePage } from "../builder/codegen";
+import { generatePage, resolveComponentMeta } from "../builder/codegen";
+import { defaultProps } from "../builder/defaults";
 import { resolveDrop } from "../builder/dnd";
 import { ExportDialog } from "../builder/ExportDialog";
 import { PagePreview } from "../builder/PagePreview";
@@ -105,7 +106,12 @@ export function Builder() {
 
   const metas = useMemo(() => metasFrom(details, slugs), [details, slugs]);
   const page = useMemo(() => generatePage(tree, metas), [tree, metas]);
-  const previewCode = useDebounced(page.code, 250);
+  // The live preview gets per-component error boundaries so one broken node never blanks the page.
+  const guarded = useMemo(
+    () => generatePage(tree, metas, "Page", { guard: true }).code,
+    [tree, metas],
+  );
+  const previewCode = useDebounced(guarded, 250);
   const merged = useMemo(
     () => mergePreviews(previews, slugs, previewCode),
     [previews, slugs, previewCode],
@@ -136,9 +142,39 @@ export function Builder() {
     [insert],
   );
   const addLayout = useCallback((type: LayoutType) => addNode(createLayoutNode(type)), [addNode]);
+  // Component nodes start with working props (first example, then required-prop placeholders)
+  // so required arrays like `steps` are never undefined. Details may still be loading when the
+  // node is added: those nodes are seeded as soon as their metadata arrives.
+  const pendingSeed = useRef(new Map<string, string>());
+  const newComponentNode = useCallback(
+    (slug: string) => {
+      const d = useCatalogCache.getState().details[slug];
+      if (d?.status === "ok" && !d.value.locked)
+        return createComponentNode(
+          slug,
+          defaultProps(d.value, resolveComponentMeta(d.value).exportName),
+        );
+      const node = createComponentNode(slug);
+      pendingSeed.current.set(node.id, slug);
+      ensureDetail(slug);
+      return node;
+    },
+    [ensureDetail],
+  );
+  useEffect(() => {
+    for (const [id, slug] of pendingSeed.current) {
+      const d = details[slug];
+      if (!d || d.status === "loading") continue;
+      pendingSeed.current.delete(id);
+      if (d.status === "ok" && !d.value.locked)
+        useBuilder
+          .getState()
+          .seedProps(id, defaultProps(d.value, resolveComponentMeta(d.value).exportName));
+    }
+  }, [details]);
   const addComponent = useCallback(
-    (item: ListItem) => addNode(createComponentNode(item.slug)),
-    [addNode],
+    (item: ListItem) => addNode(newComponentNode(item.slug)),
+    [addNode, newComponentNode],
   );
 
   // Undo/redo anywhere on the page except inside text inputs.
@@ -185,7 +221,7 @@ export function Builder() {
     const target = resolveDrop(current, String(e.over.id));
     if (!target) return;
     if (d.kind === "palette") {
-      const node = "layout" in d ? createLayoutNode(d.layout) : createComponentNode(d.slug);
+      const node = "layout" in d ? createLayoutNode(d.layout) : newComponentNode(d.slug);
       const parent = findNode(current, target.parentId);
       if (parent && !canContain(parent.type, node.type)) {
         say(`A ${node.type} cannot go inside a ${parent.type}.`);
