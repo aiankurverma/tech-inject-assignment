@@ -91,11 +91,30 @@ const captureSchema = new Schema(
   { timestamps: true, minimize: false },
 );
 
+/**
+ * Usage analytics: one row per (day, slug) with counters. Anonymous by design: no user id,
+ * IP, user agent or any hash of them is stored. Slug "_cli" counts installer downloads.
+ */
+const usageDailySchema = new Schema(
+  {
+    /** UTC day, YYYY-MM-DD. */
+    day: { type: String, required: true },
+    slug: { type: String, required: true },
+    views: { type: Number, default: 0 },
+    copies: { type: Number, default: 0 },
+    installs: { type: Number, default: 0 },
+    previews: { type: Number, default: 0 },
+  },
+  { versionKey: false },
+);
+usageDailySchema.index({ day: 1, slug: 1 }, { unique: true });
+
 export const Customer = mongoose.model("Customer", customerSchema);
 export const ApiToken = mongoose.model("ApiToken", apiTokenSchema);
 export const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
 export const ComponentModel = mongoose.model("Component", componentSchema);
 export const CaptureModel = mongoose.model("Capture", captureSchema);
+export const UsageDaily = mongoose.model("UsageDaily", usageDailySchema);
 
 export type CustomerDoc = InferSchemaType<typeof customerSchema> & { _id: mongoose.Types.ObjectId };
 export type ComponentRecord = {

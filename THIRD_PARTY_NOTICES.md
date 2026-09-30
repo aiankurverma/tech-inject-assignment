@@ -166,3 +166,10 @@ These are tooling dependencies, not component dependencies, so they are not in `
 - `packages/ui/src/components/crm/pro-web-terminal/xterm-styles.ts` contains a minified copy of
   `@xterm/xterm@6.0.0` `css/xterm.css` (MIT, Copyright (c) 2017-2019 The xterm.js authors), inlined so
   the Pro Web Terminal renders without the host bundler handling a CSS import.
+
+## Platform (server and admin app, not shipped in components)
+
+| Package       | Version | Licence | Source                                    | Used in                        |
+| ------------- | ------- | ------- | ----------------------------------------- | ------------------------------ |
+| `compression` | 1.8.x   | MIT     | https://github.com/expressjs/compression  | `apps/api` gzip responses      |
+| `recharts`    | 3.10.x  | MIT     | https://github.com/recharts/recharts      | `apps/admin` Analytics charts  |

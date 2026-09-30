@@ -1,27 +1,36 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Home, ComponentsIndex } from "./pages/Home";
-import { GetStarted } from "./pages/GetStarted";
-import { Screens } from "./pages/Screens";
-import { ComponentPage } from "./pages/ComponentPage";
-import { SignIn } from "./pages/SignIn";
-import { Account } from "./pages/Account";
-import { Builder } from "./pages/Builder";
 import { NotFound } from "./pages/NotFound";
 import { ThemeStudio } from "./pages/ThemeStudio";
+import { Screens } from "./pages/Screens";
+import { Builder } from "./pages/Builder";
+
+// Heavier or less-visited routes load on demand, keeping the catalogue's first paint small.
+const ComponentPage = lazy(() =>
+  import("./pages/ComponentPage").then((m) => ({ default: m.ComponentPage })),
+);
+const GetStarted = lazy(() =>
+  import("./pages/GetStarted").then((m) => ({ default: m.GetStarted })),
+);
+const SignIn = lazy(() => import("./pages/SignIn").then((m) => ({ default: m.SignIn })));
+const Account = lazy(() => import("./pages/Account").then((m) => ({ default: m.Account })));
 
 export function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/components" element={<ComponentsIndex />} />
-      <Route path="/docs/get-started" element={<GetStarted />} />
-      <Route path="/screens" element={<Screens />} />
-      <Route path="/components/:slug" element={<ComponentPage />} />
-      <Route path="/theme" element={<ThemeStudio />} />
-      <Route path="/sign-in" element={<SignIn />} />
-      <Route path="/account" element={<Account />} />
-      <Route path="/builder" element={<Builder />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/components" element={<ComponentsIndex />} />
+        <Route path="/docs/get-started" element={<GetStarted />} />
+        <Route path="/screens" element={<Screens />} />
+        <Route path="/components/:slug" element={<ComponentPage />} />
+        <Route path="/theme" element={<ThemeStudio />} />
+        <Route path="/builder" element={<Builder />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 }

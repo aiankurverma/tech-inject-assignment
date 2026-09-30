@@ -17,12 +17,12 @@ const CACHE_TTL_S = 60;
 
 /** Drop the cached published documents for `slug` (and the list) after any admin change. */
 export async function forgetPublished(cache: Cache, slug: string) {
-  await Promise.all([cache.del("list"), cache.del(`slug:${slug}`)]);
+  await Promise.all([cache.del("list"), cache.del("list:full"), cache.del(`slug:${slug}`)]);
 }
 
 /** Every published document, newest category/name order; the same cached list the catalogue uses. */
 export function findPublishedDocs(cache: Cache): Promise<ComponentRecord[]> {
-  return cache.wrap("list", CACHE_TTL_S, () =>
+  return cache.wrap("list:full", CACHE_TTL_S, () =>
     ComponentModel.find({ status: "published" })
       .sort({ "published.category": 1, "published.name": 1 })
       .lean<ComponentRecord[]>(),
@@ -54,25 +54,23 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
 
   return {
     async list(viewer: Viewer) {
-      const docs = await findPublishedDocs(cache);
-      return docs
-        .filter((d) => d.published)
-        .map((d) => {
-          const b = d.published!;
-          const decision = decideAccess({ status: d.status, access: b.access }, viewer);
-          return {
-            slug: b.slug,
-            name: b.name,
-            description: b.description,
-            category: b.category,
-            access: b.access,
-            version: b.version,
-            locked: decision.allowed ? null : decision.reason,
-            // ISO dates for "newest" sorting; cached docs may hold strings, so normalise.
-            createdAt: isoDate(d.createdAt),
-            publishedAt: isoDate(d.publishedAt),
-          };
-        });
+      // Summary fields only: no source files, examples, props or thumbnails leave Mongo.
+      const docs = await cache.wrap("list", CACHE_TTL_S, () =>
+        ComponentModel.find({ status: "published" }, LIST_PROJECTION)
+          .sort({ "published.category": 1, "published.name": 1 })
+          .lean<ComponentRecord[]>(),
+      );
+      return docs.filter((d) => d.published).map((d) => listItem(d, viewer));
+    },
+
+    /** True when `slug` is published (cached lookup; used to reject junk analytics beacons). */
+    async isPublished(slug: string) {
+      return !!(await findPublished(slug));
+    },
+
+    /** Current published version, for immutable cache headers on versioned URLs. */
+    async publishedVersion(slug: string) {
+      return (await findPublished(slug))?.published.version ?? null;
     },
 
     /** Detail page data. Locked items return metadata only - no source, examples or props. */
@@ -126,6 +124,41 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
         premium: b.access === "premium",
       });
     },
+  };
+}
+
+/** Mongo projection for the catalogue list: exactly the fields `listItem` reads. */
+export const LIST_PROJECTION = {
+  _id: 0,
+  slug: 1,
+  status: 1,
+  createdAt: 1,
+  publishedAt: 1,
+  "published.slug": 1,
+  "published.name": 1,
+  "published.description": 1,
+  "published.category": 1,
+  "published.access": 1,
+  "published.version": 1,
+} as const;
+
+/** Catalogue card for one published document (access decided per viewer, never cached). */
+export function listItem(d: Pick<ComponentRecord, "status" | "createdAt" | "publishedAt"> & {
+  published?: Pick<Bundle, "slug" | "name" | "description" | "category" | "access" | "version">;
+}, viewer: Viewer) {
+  const b = d.published!;
+  const decision = decideAccess({ status: d.status, access: b.access }, viewer);
+  return {
+    slug: b.slug,
+    name: b.name,
+    description: b.description,
+    category: b.category,
+    access: b.access,
+    version: b.version,
+    locked: decision.allowed ? null : decision.reason,
+    // ISO dates for "newest" sorting; cached docs may hold strings, so normalise.
+    createdAt: isoDate(d.createdAt),
+    publishedAt: isoDate(d.publishedAt),
   };
 }
 

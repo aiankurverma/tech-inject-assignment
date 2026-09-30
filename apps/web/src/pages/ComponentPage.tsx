@@ -11,6 +11,7 @@ import {
 } from "@ti/client";
 import { Layout } from "../components/Layout";
 import { useSession } from "../context/session";
+import { trackView } from "../lib/beacon";
 import { AccessBadge, Breadcrumbs, btn, EmptyState, Skeleton, Tabs } from "../components/ui";
 
 interface Detail {
@@ -128,6 +129,7 @@ export function ComponentPage() {
       .then((d) => {
         if (!alive) return;
         setDetail(d);
+        trackView(slug);
         if (!d.locked) {
           api<PreviewPayload>(`/api/components/${slug}/preview`)
             .then((p) => alive && setPayload(p))

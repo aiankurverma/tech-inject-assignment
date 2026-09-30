@@ -14,6 +14,7 @@ import {
   previewPayload,
 } from "../services/catalog";
 import { createDraft, updateDraft, type BundleJob } from "../services/drafts";
+import { loadUsage, type UsageRecorder } from "../services/analytics";
 import { HttpError } from "../utils/http";
 import { log } from "../utils/logger";
 import {
@@ -50,6 +51,9 @@ export interface RouteDeps {
   adminLoginLimit: RequestHandler;
   registryLimit: RequestHandler;
   bundleJobs: Queue<BundleJob>;
+  /** Anonymous usage counters (views, copies, installs, previews). */
+  usage: UsageRecorder;
+  beaconLimit: RequestHandler;
 }
 
 const sendText = (res: Response, text: string) => res.type("text/plain; charset=utf-8").send(text);
@@ -70,15 +74,24 @@ export function publicRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: Rout
     res.json(await catalog.detail(slugParam(req), await auth.viewer(req)));
   });
   r.get("/components/:slug/thumbnail", async (req, res) => {
-    const dataUrl = await catalog.thumbnail(slugParam(req));
+    const slug = slugParam(req);
+    const dataUrl = await catalog.thumbnail(slug);
+    //  URLs never change content: let browsers and CDNs keep them.
+    const v = typeof req.query.v === "string" ? req.query.v : null;
+    if (v && v === (await catalog.publishedVersion(slug)))
+      res.set("Cache-Control", "public, max-age=31536000, immutable");
     const [, mime, b64] = /^data:([^;]+);base64,(.*)$/.exec(dataUrl) ?? [];
     res.type(mime ?? "image/svg+xml").send(Buffer.from(b64 ?? "", "base64"));
   });
   r.get("/components/:slug/preview", async (req, res) => {
-    res.json(await catalog.preview(slugParam(req), await auth.viewer(req)));
+    const slug = slugParam(req);
+    res.json(await catalog.preview(slug, await auth.viewer(req)));
+    deps.usage.record(slug, "preview");
   });
   r.get("/components/:slug/copy", async (req, res) => {
-    sendText(res, await catalog.copyCode(slugParam(req), await auth.viewer(req)));
+    const slug = slugParam(req);
+    sendText(res, await catalog.copyCode(slug, await auth.viewer(req)));
+    deps.usage.record(slug, "copy");
   });
   r.get("/components/:slug/prompt", async (req, res) => {
     sendText(res, await catalog.prompt(slugParam(req), await auth.viewer(req)));
@@ -88,7 +101,20 @@ export function publicRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: Rout
     const slug = slugParam(req);
     const item = await catalog.registryItem(slug, await auth.viewer(req));
     log.info("registry download", { slug });
+    deps.usage.record(slug, "install");
     res.json(item);
+  });
+  /**
+   * Analytics beacon (navigator.sendBeacon from the catalogue). Body: { slug, type: "view" }.
+   * Copies, previews and installs are counted server-side where they happen. Nothing about the
+   * visitor is stored; the IP is only used, in memory, by the rate limiter.
+   */
+  const beacon = z.object({ slug: slugSchema, type: z.enum(["view"]) });
+  r.post("/events", deps.beaconLimit, async (req, res) => {
+    const parsed = beacon.safeParse(req.body);
+    if (parsed.success && (await catalog.isPublished(parsed.data.slug)))
+      deps.usage.record(parsed.data.slug, parsed.data.type);
+    res.status(204).end();
   });
   return r;
 }
@@ -351,6 +377,12 @@ export function adminRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: Route
     log.info("customer updated", { customer: String(c._id), ...update });
     return customerView(c);
   };
+
+  r.get("/analytics", async (req, res) => {
+    const days = req.query.days === "30" ? 30 : 7;
+    await deps.usage.flush(); // include this instance's buffered events
+    res.json(await loadUsage(days));
+  });
 
   r.get("/customers", async (_req, res) => {
     const customers = await Customer.find().sort({ email: 1 }).lean<CustomerDoc[]>();

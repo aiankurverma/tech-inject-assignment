@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import {
+  BarChart3,
   Boxes,
   ChevronRight,
   ExternalLink,
@@ -35,6 +36,7 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: "/", label: "Overview", icon: LayoutDashboard, end: true },
   { to: "/components", label: "Components", icon: Boxes, match: ["/new"] },
+  { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/privileges", label: "Privileges", icon: ShieldCheck, match: ["/customers"] },
   { to: "/capture", label: "Capture", icon: ScanSearch },
   { to: "/feature-radar", label: "Feature radar", icon: Radar },
