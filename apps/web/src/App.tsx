@@ -7,6 +7,7 @@ import { SignIn } from "./pages/SignIn";
 import { Account } from "./pages/Account";
 import { Builder } from "./pages/Builder";
 import { NotFound } from "./pages/NotFound";
+import { ThemeStudio } from "./pages/ThemeStudio";
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
       <Route path="/docs/get-started" element={<GetStarted />} />
       <Route path="/screens" element={<Screens />} />
       <Route path="/components/:slug" element={<ComponentPage />} />
+      <Route path="/theme" element={<ThemeStudio />} />
       <Route path="/sign-in" element={<SignIn />} />
       <Route path="/account" element={<Account />} />
       <Route path="/builder" element={<Builder />} />
