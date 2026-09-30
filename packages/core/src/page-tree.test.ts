@@ -168,3 +168,55 @@ describe("pageCode / exportPage", () => {
     );
   });
 });
+
+describe("slot props holding nodes", () => {
+  const split: PageNode = {
+    id: "root",
+    type: "card",
+    props: {
+      title: "Support inbox",
+      left: { id: "l", type: "stat-card", props: { label: "Open tickets" } },
+      right: [
+        { id: "r1", type: "card/CardHeader", props: { title: "Ticket #42" } },
+        { id: "r2", type: "stat-card", props: { label: "Comments" } },
+      ],
+    },
+  };
+
+  it("validates slot nodes like children and counts them toward the limits", () => {
+    expect(validatePageTree(split, components)).toMatchObject({ ok: true });
+    const bad = { ...split, props: { left: { id: "x", type: "nope" } } };
+    const r = validatePageTree(bad, components);
+    expect(r).toMatchObject({ ok: false });
+    if (!r.ok) expect(r.errors.join()).toMatch(/unknown component "nope"/);
+    const dup = { ...split, props: { left: { id: "root", type: "stat-card" } } };
+    expect(validatePageTree(dup, components)).toMatchObject({ ok: false });
+    let deep: PageNode = { id: "d0", type: "stat-card" };
+    for (let i = 1; i <= PAGE_TREE_LIMITS.maxDepth + 1; i++)
+      deep = { id: `d${i}`, type: "card", props: { left: deep as never } };
+    const d = validatePageTree(deep, components);
+    expect(d).toMatchObject({ ok: false });
+    if (!d.ok) expect(d.errors.join()).toMatch(/nested deeper/);
+  });
+
+  it("renders slot nodes as JSX, never as plain objects", () => {
+    for (const code of [
+      pageCode(split, components),
+      pageCode(split, components, { guard: true }),
+    ]) {
+      expect(code).not.toContain('"type":');
+      expect(code).toContain('title="Support inbox"');
+      expect(code).toContain('import { StatCard } from "@/components/crm/stat-card";');
+      expect(code).toContain('<CardHeader key="r1" title="Ticket #42" />');
+      expect(code).toContain('<StatCard key="r2" label="Comments" />');
+    }
+    expect(pageCode(split, components)).toContain('left={<StatCard label="Open tickets" />}');
+    expect(pageCode(split, components, { guard: true })).toContain(
+      '<KitbasePreviewGuard label="stat-card">',
+    );
+    expect(exportPage(split, components, "https://kit.example").slugs).toEqual([
+      "card",
+      "stat-card",
+    ]);
+  });
+});

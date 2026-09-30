@@ -140,6 +140,40 @@ export function splitType(type: string): { slug: string; exportName?: string } {
   return exportName ? { slug, exportName } : { slug };
 }
 
+const NODE_KEYS = new Set(["id", "type", "props", "children"]);
+
+/**
+ * True for a page-tree node placed inside a prop (a "slot" such as `left`, `sidebar`,
+ * `header`): an object with string `id` and `type` and no keys other than node keys.
+ */
+export function isSlotNode(value: unknown): value is PageNode {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const v = value as Record<string, unknown>;
+  return (
+    typeof v.id === "string" &&
+    typeof v.type === "string" &&
+    Object.keys(v).every((k) => NODE_KEYS.has(k))
+  );
+}
+
+/** Nodes held by one prop value: a single node, or a non-empty array made only of nodes. */
+export function slotNodes(value: unknown): PageNode[] | null {
+  if (isSlotNode(value)) return [value];
+  if (Array.isArray(value) && value.length && value.every(isSlotNode)) return value;
+  return null;
+}
+
+/** Every node nested in a node: its children, then nodes found in slot props. */
+export function nestedNodes(node: PageNode): PageNode[] {
+  const out = [...(node.children ?? [])];
+  for (const [k, v] of Object.entries(node.props ?? {})) {
+    if (k === "children") continue;
+    const nodes = slotNodes(v);
+    if (nodes) out.push(...nodes);
+  }
+  return out;
+}
+
 /** Schema check plus the rules zod cannot express: known slugs and exports, ids, depth and size. */
 export function validatePageTree(input: unknown, components: PageComponent[]): PageTreeResult {
   const raw = JSON.stringify(input) ?? "";
@@ -167,7 +201,11 @@ export function validatePageTree(input: unknown, components: PageComponent[]): P
     }
     if (ids.has(node.id)) errors.push(`${node.id}: duplicate id`);
     ids.add(node.id);
-    if (node.props && JSON.stringify(node.props).length > PAGE_TREE_LIMITS.maxPropBytes)
+    // Slot nodes count toward the size of their own props, not their parent's.
+    const ownProps = Object.fromEntries(
+      Object.entries(node.props ?? {}).filter(([, v]) => !slotNodes(v)),
+    );
+    if (JSON.stringify(ownProps).length > PAGE_TREE_LIMITS.maxPropBytes)
       errors.push(`${node.id}: props larger than ${PAGE_TREE_LIMITS.maxPropBytes} bytes`);
     if (node.type === TEXT_NODE) {
       if (typeof node.props?.text !== "string")
@@ -181,6 +219,18 @@ export function validatePageTree(input: unknown, components: PageComponent[]): P
         errors.push(`${node.id}: "${slug}" has no export "${exportName}"`);
       else if (!exportName && c.exports.length === 0)
         errors.push(`${node.id}: "${slug}" exports no component`);
+    }
+    for (const [k, v] of Object.entries(node.props ?? {})) {
+      const slot = k === "children" ? null : slotNodes(v);
+      if (!slot) continue;
+      for (const s of slot) {
+        const r = pageNodeSchema.safeParse(s);
+        if (!r.success) {
+          errors.push(`${node.id}.props.${k}: invalid node (${r.error.issues[0]?.message ?? "?"})`);
+          continue;
+        }
+        walk(r.data, depth + 1);
+      }
     }
     for (const child of node.children ?? []) walk(child, depth + 1);
   };
@@ -199,7 +249,7 @@ export function treeSlugs(tree: PageNode): string[] {
       const { slug } = splitType(n.type);
       if (!out.includes(slug)) out.push(slug);
     }
-    n.children?.forEach(walk);
+    nestedNodes(n).forEach(walk);
   };
   walk(tree);
   return out;
@@ -208,11 +258,16 @@ export function treeSlugs(tree: PageNode): string[] {
 const jsxText = (s: string) =>
   s.replace(/[{}<>]/g, (c) => `{${JSON.stringify(c)}}`).replace(/\n/g, " ");
 
-function jsxProps(props: Record<string, JsonValue> | undefined): string {
+function jsxProps(
+  props: Record<string, JsonValue> | undefined,
+  slot: (nodes: PageNode[], many: boolean) => string,
+): string {
   if (!props) return "";
   return Object.entries(props)
     .filter(([k]) => /^[a-zA-Z_$][\w$]*$/.test(k) && k !== "children")
     .map(([k, v]) => {
+      const nodes = slotNodes(v);
+      if (nodes) return ` ${k}={${slot(nodes, Array.isArray(v))}}`;
       if (v === true) return ` ${k}`;
       if (typeof v === "string" && !/["\\\n]/.test(v)) return ` ${k}="${v}"`;
       return ` ${k}={${JSON.stringify(v)}}`;
@@ -262,10 +317,19 @@ export function pageCode(
     imports.set(slug, set);
     return n;
   };
+  /** JSX for nodes passed in a prop: one element, or a keyed array for array-valued slots. */
+  const slot = (nodes: PageNode[], many: boolean): string => {
+    const one = (n: PageNode, key: boolean) => {
+      if (n.type === TEXT_NODE) return JSON.stringify(String(n.props?.text ?? ""));
+      const el = render(key ? { ...n, props: { key: n.id, ...n.props } } : n, "").trim();
+      return el.includes("\n") ? `(\n${el}\n)` : el;
+    };
+    return many ? `[${nodes.map((n) => one(n, true)).join(", ")}]` : one(nodes[0]!, false);
+  };
   const render = (node: PageNode, indent: string): string => {
     if (node.type === TEXT_NODE) return `${indent}${jsxText(String(node.props?.text ?? ""))}`;
     const tag = name(node.type);
-    const props = jsxProps(node.props);
+    const props = jsxProps(node.props, slot);
     const kids = (node.children ?? []).map((c) => render(c, `${indent}  `));
     const el = !kids.length
       ? `${indent}<${tag}${props} />`
