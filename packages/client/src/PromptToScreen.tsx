@@ -64,10 +64,13 @@ function describe(e: unknown): { message: string; details: string[] } {
 export function PromptToScreen({
   endpoint,
   componentHref,
+  themeCss,
 }: {
   endpoint: string;
   /** Link for a used component's slug (catalogue or admin editor). Plain text when omitted. */
   componentHref?: (slug: string) => string;
+  /** Theme Studio `@theme` block applied to the preview. */
+  themeCss?: string;
 }) {
   const [prompt, setPrompt] = useState("");
   const [busy, setBusy] = useState<"generate" | "render" | null>(null);
@@ -251,6 +254,7 @@ export function PromptToScreen({
               example={0}
               height={600}
               title="Generated page preview"
+              themeCss={themeCss}
             />
           </div>
           <div

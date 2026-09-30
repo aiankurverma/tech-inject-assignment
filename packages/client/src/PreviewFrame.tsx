@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { PreviewPayload } from "./api";
 
 const PREVIEW_ORIGIN = import.meta.env.VITE_PREVIEW_ORIGIN ?? "http://localhost:5185";
@@ -32,14 +32,16 @@ function PreviewSkeleton({ slow }: { slow: boolean }) {
  * no cookies, no storage, no access to this page. Code is sent by postMessage.
  * `scale` zooms the rendered page (e.g. 1.25 for small primitives); `frameClassName`
  * replaces the iframe's border/radius classes when the frame sits inside a card.
+ * `themeCss` (a Theme Studio `@theme` block) is appended after the bundle's own theme.
  */
 export function PreviewFrame({
-  payload,
+  payload: basePayload,
   example,
   height = 360,
   title,
   scale = 1,
   frameClassName = "rounded-lg border border-neutral-200",
+  themeCss,
 }: {
   payload: PreviewPayload | null;
   example: number;
@@ -47,7 +49,15 @@ export function PreviewFrame({
   title: string;
   scale?: number;
   frameClassName?: string;
+  themeCss?: string;
 }) {
+  const payload = useMemo(
+    () =>
+      basePayload && themeCss
+        ? { ...basePayload, themeCss: `${basePayload.themeCss}\n${themeCss}` }
+        : basePayload,
+    [basePayload, themeCss],
+  );
   const ref = useRef<HTMLIFrameElement>(null);
   const [ready, setReady] = useState(false);
   const [rendered, setRendered] = useState(false);

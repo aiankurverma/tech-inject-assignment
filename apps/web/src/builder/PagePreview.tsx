@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { MonitorSmartphone } from "lucide-react";
+import { MonitorSmartphone, Palette } from "lucide-react";
+import { Link } from "react-router-dom";
 import { PreviewFrame, type PreviewPayload } from "@ti/client";
 
 /** Fills its panel with the sandboxed preview; the frame height follows the panel size. */
@@ -8,11 +9,16 @@ export function PagePreview({
   empty,
   pending,
   failed,
+  themeCss,
+  themeName,
 }: {
   payload: PreviewPayload | null;
   empty: boolean;
   pending: string[];
   failed: { slug: string; message: string }[];
+  /** Theme Studio `@theme` block and the theme's name shown in the toolbar. */
+  themeCss?: string;
+  themeName?: string;
 }) {
   const box = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(320);
@@ -44,6 +50,15 @@ export function PagePreview({
             {failed.length} unavailable: {failed.map((f) => f.slug).join(", ")}
           </span>
         ) : null}
+        {themeName ? (
+          <Link
+            to="/theme"
+            className="ml-auto inline-flex items-center gap-1 truncate hover:text-foreground"
+          >
+            <Palette className="size-3.5" aria-hidden />
+            Theme: {themeName}
+          </Link>
+        ) : null}
       </div>
       <div ref={box} className="min-h-0 flex-1">
         {empty ? (
@@ -57,6 +72,7 @@ export function PagePreview({
             height={height}
             title="Page preview"
             frameClassName="rounded-none border-0"
+            themeCss={themeCss}
           />
         )}
       </div>
