@@ -148,6 +148,16 @@ Notes:
 - `@xterm/xterm` is included because `@xterm/addon-fit` is only a plugin for it.
 - `ajv` is pinned to v8 in the workspaces (v6 remains only as an ESLint transitive).
 
+## MCP server (`packages/mcp`)
+
+| Package                     | License | Source                                                  |
+| --------------------------- | ------- | ------------------------------------------------------- |
+| `@modelcontextprotocol/sdk` | MIT     | https://github.com/modelcontextprotocol/typescript-sdk |
+| `zod`                       | MIT     | https://github.com/colinhacks/zod                      |
+| `esbuild` (build only)      | MIT     | https://github.com/evanw/esbuild                        |
+
+These are tooling dependencies, not component dependencies, so they are not in `ALLOWED_DEPENDENCIES`.
+
 ## Adapted code
 
 - `packages/ui/src/components/crm/pro-workflow-builder/flow-styles.ts` inlines the structural rules of

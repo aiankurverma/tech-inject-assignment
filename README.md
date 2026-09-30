@@ -82,6 +82,50 @@ Then start the main CSS with the three printed lines (Geist font import, `@impor
 
 The page is a JSON tree `{ id, type, props, children }` kept in a zustand store with immer-based undo/redo and saved to `localStorage` only; nothing is written to the database. Code: `apps/web/src/builder/` (pure `tree.ts`, `codegen.ts`, `propsSchema.ts`, `dnd.ts` are unit tested).
 
+## MCP server
+
+`packages/mcp` (`kitbase-mcp`) exposes the library to AI coding tools over stdio. Tools:
+`search_components(query, category?)`, `list_categories`, `get_component(slug)` (props, usage,
+examples, dependencies) and `install_component(slug, dir?, src?, overwrite?, dryRun?)`, which reuses
+the CLI's installer logic (safe paths, no overwrite without the flag, prints dependencies instead of
+running npm). It reads the public API: `KITBASE_API` (default `https://kitbase.onrender.com`) and
+`KITBASE_TOKEN` for premium. Build with `npm run build -w packages/mcp` (outputs `dist/index.js`);
+from a checkout run `node packages/mcp/dist/index.js`, or `npx -y kitbase-mcp` once published.
+
+Claude Code:
+
+```bash
+claude mcp add kitbase -e KITBASE_TOKEN=<token> -- npx -y kitbase-mcp
+```
+
+Cursor (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "kitbase": { "command": "npx", "args": ["-y", "kitbase-mcp"], "env": { "KITBASE_TOKEN": "<token>" } }
+  }
+}
+```
+
+VS Code (`.vscode/mcp.json`):
+
+```json
+{
+  "inputs": [{ "type": "promptString", "id": "kitbase-token", "description": "Kitbase token", "password": true }],
+  "servers": {
+    "kitbase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "kitbase-mcp"],
+      "env": { "KITBASE_TOKEN": "${input:kitbase-token}" }
+    }
+  }
+}
+```
+
+The server writes relative to its working directory unless `dir` (or `KITBASE_PROJECT_DIR`) is set.
+
 ## Capture Engine
 
 Admin page **Capture** (`/admin/capture`): paste a public URL, get its design tokens and a
