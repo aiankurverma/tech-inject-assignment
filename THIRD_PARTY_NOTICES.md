@@ -148,6 +148,15 @@ Notes:
 - `@xterm/xterm` is included because `@xterm/addon-fit` is only a plugin for it.
 - `ajv` is pinned to v8 in the workspaces (v6 remains only as an ESLint transitive).
 
+## Test tooling
+
+Dev-only (root `devDependencies`); never shipped in components or the installer.
+
+| Package                 | Version | Licence    | Source                                                    |
+| ----------------------- | ------- | ---------- | --------------------------------------------------------- |
+| `@playwright/test`      | 1.63.0  | Apache-2.0 | https://github.com/microsoft/playwright                   |
+| `mongodb-memory-server` | 11.3.0  | MIT        | https://github.com/typegoose/mongodb-memory-server        |
+
 ## Adapted code
 
 - `packages/ui/src/components/crm/pro-workflow-builder/flow-styles.ts` inlines the structural rules of
