@@ -1,0 +1,69 @@
+{
+  "name": "Analytics Overview",
+  "slug": "analytics-overview-template",
+  "description": "Full-page analytics template: period switcher, KPI row, revenue trend vs. previous period, stacked revenue by channel, segment donut and signup-to-paid funnel.",
+  "category": "Templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": ["@radix-ui/react-slot", "lucide-react"],
+  "files": [
+    "components/crm/analytics-overview-template.tsx",
+    "components/crm/bar-chart.tsx",
+    "components/crm/button.tsx",
+    "components/crm/card.tsx",
+    "components/crm/donut-chart.tsx",
+    "components/crm/funnel-chart.tsx",
+    "components/crm/line-chart.tsx",
+    "components/crm/segmented-control.tsx",
+    "components/crm/template-shell.tsx",
+    "components/crm/app-sidebar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "30 and 90 days",
+      "file": "analytics-overview-template-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "periods",
+      "type": "Record<string, AnalyticsPeriodData>",
+      "description": "{ kpis, trend, channels, segments, funnel } per period id",
+      "required": true
+    },
+    {
+      "name": "periodLabels",
+      "type": "Record<string, string>",
+      "description": "Display label per period id",
+      "required": false
+    },
+    {
+      "name": "defaultPeriod",
+      "type": "string",
+      "description": "Initial period, defaults to the first key",
+      "required": false
+    },
+    {
+      "name": "currency",
+      "type": "string",
+      "description": "ISO currency for the funnel, default USD",
+      "required": false
+    },
+    {
+      "name": "formatValue",
+      "type": "(v: number) => string",
+      "description": "Axis and tooltip formatter",
+      "required": false
+    },
+    {
+      "name": "onExport",
+      "type": "(period: string) => void",
+      "description": "Export button handler",
+      "required": false
+    }
+  ],
+  "usage": "Feed each period from your warehouse query; charts are dependency-free SVG."
+}

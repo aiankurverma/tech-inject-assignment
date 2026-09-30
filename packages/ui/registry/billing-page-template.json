@@ -1,0 +1,62 @@
+{
+  "name": "Billing Page",
+  "slug": "billing-page-template",
+  "description": "Full-page billing & subscription template: spend KPIs plus the pro self-serve billing portal (plan, payment methods, invoices, billing details, usage).",
+  "category": "Templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-slot",
+    "@radix-ui/react-tabs",
+    "@tanstack/react-query",
+    "@tanstack/react-table",
+    "date-fns",
+    "lucide-react",
+    "react-hook-form",
+    "zod"
+  ],
+  "files": [
+    "components/crm/billing-page-template.tsx",
+    "components/crm/button.tsx",
+    "components/crm/pro-billing-portal.tsx",
+    "components/crm/tabs.tsx",
+    "components/crm/pro-billing-portal/billing-types.ts",
+    "components/crm/pro-billing-portal/plan-panel.tsx",
+    "components/crm/pro-billing-portal/payment-methods-panel.tsx",
+    "components/crm/pro-billing-portal/invoices-panel.tsx",
+    "components/crm/pro-billing-portal/details-panel.tsx",
+    "components/crm/pro-billing-portal/usage-panel.tsx",
+    "components/crm/template-shell.tsx",
+    "components/crm/app-sidebar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Subscription and invoices",
+      "file": "billing-page-template-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "kpis",
+      "type": "Kpi[]",
+      "description": "KPI tiles (plan, next invoice, seats, spend)",
+      "required": false
+    },
+    {
+      "name": "billing",
+      "type": "ProBillingPortalProps",
+      "description": "Forwarded to ProBillingPortal; the api adapter does all IO",
+      "required": true
+    },
+    {
+      "name": "onContactSales",
+      "type": "() => void",
+      "description": "Header action",
+      "required": false
+    }
+  ],
+  "usage": "Implement BillingApi against Stripe, Paddle or your own backend."
+}
