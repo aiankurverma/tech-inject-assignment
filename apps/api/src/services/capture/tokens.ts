@@ -1,7 +1,16 @@
 // Pure token maths for the Capture Engine: colour clustering + roles, scale detection, theme CSS.
 // No I/O here, so every function is unit-tested (capture.test.ts).
 
-import { chroma, contrast, deltaE, lightness, parseColor, readableOn, toHex, type Rgb } from "@ti/core";
+import {
+  chroma,
+  contrast,
+  deltaE,
+  lightness,
+  parseColor,
+  readableOn,
+  toHex,
+  type Rgb,
+} from "@ti/core";
 
 export { chroma, contrast, deltaE, lightness, parseColor, toHex, toLab, type Rgb } from "@ti/core";
 

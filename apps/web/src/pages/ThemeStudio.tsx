@@ -250,7 +250,9 @@ export function ThemeStudio() {
             <h2 id="contrast-h" className="text-lg font-semibold text-foreground">
               Contrast{" "}
               <span className="text-sm font-normal text-muted-foreground">
-                {failing ? `${failing} pair${failing > 1 ? "s" : ""} below WCAG AA` : "all pairs pass"}
+                {failing
+                  ? `${failing} pair${failing > 1 ? "s" : ""} below WCAG AA`
+                  : "all pairs pass"}
               </span>
             </h2>
             <ul className="divide-y divide-border rounded-lg border border-border text-sm">

@@ -8,7 +8,7 @@ import {
   type ToolDeps,
 } from "./tools.js";
 
-const slug = z.string().min(1).max(100).describe("Component slug, e.g. \"deal-card\"");
+const slug = z.string().min(1).max(100).describe('Component slug, e.g. "deal-card"');
 
 /** Wrap a handler so results and errors both come back as MCP text content. */
 function run<A>(fn: (args: A) => Promise<unknown>) {
@@ -32,7 +32,7 @@ export function createServer(deps: ToolDeps, version = "1.0.0") {
       description:
         "Search the Kitbase CRM component library. Returns slug, name, description, category and access (free/premium).",
       inputSchema: {
-        query: z.string().max(200).describe("Keywords, e.g. \"pipeline board\""),
+        query: z.string().max(200).describe('Keywords, e.g. "pipeline board"'),
         category: z.string().max(100).optional().describe("Exact category from list_categories"),
       },
       annotations: { readOnlyHint: true },
@@ -67,8 +67,18 @@ export function createServer(deps: ToolDeps, version = "1.0.0") {
         "Write a Kitbase component's source files into the user's project (<dir>/<src>/...). Never overwrites changed files unless overwrite is true. Does not run npm install; returns the dependencies to install.",
       inputSchema: {
         slug,
-        dir: z.string().max(500).optional().describe("Project root (folder with package.json). Defaults to the server's working directory."),
-        src: z.string().max(100).optional().describe("Source folder inside the project. Default \"src\"."),
+        dir: z
+          .string()
+          .max(500)
+          .optional()
+          .describe(
+            "Project root (folder with package.json). Defaults to the server's working directory.",
+          ),
+        src: z
+          .string()
+          .max(100)
+          .optional()
+          .describe('Source folder inside the project. Default "src".'),
         overwrite: z.boolean().optional().describe("Replace files that differ. Default false."),
         dryRun: z.boolean().optional().describe("Only report what would be written."),
       },

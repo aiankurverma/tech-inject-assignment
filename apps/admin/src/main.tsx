@@ -10,6 +10,7 @@ import { Login } from "./pages/Login";
 import { Overview } from "./pages/Overview";
 import { Privileges } from "./pages/Privileges";
 import { Screens } from "./pages/Screens";
+import { Teams } from "./pages/Teams";
 import { initTheme } from "./context/theme";
 import { Card, EmptyState, PageHeader, ToastProvider, buttonClass } from "./components/ui";
 import "./index.css";
@@ -96,6 +97,7 @@ function App() {
           <Route path="/new" element={<Editor />} />
           <Route path="/privileges" element={<Privileges />} />
           <Route path="/customers" element={<Privileges />} />
+          <Route path="/teams" element={<Teams />} />
           <Route path="/capture" element={<Capture />} />
           <Route path="/capture/:id" element={<Capture />} />
           <Route path="/feature-radar" element={<FeatureRadarPage />} />

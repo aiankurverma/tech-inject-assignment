@@ -106,6 +106,34 @@ function SidebarGroup({
   );
 }
 
+/** Private teams of the signed-in customer. Never part of search or the public index. */
+function TeamsGroup({ onNavigate }: { onNavigate?: () => void }) {
+  const { teams } = useSession();
+  if (!teams.length) return null;
+  return (
+    <div>
+      <SidebarHeading>
+        <span className="inline-flex items-center gap-1.5">
+          <Lock className="size-3" aria-hidden />
+          Your teams
+        </span>
+      </SidebarHeading>
+      {teams.map((t) => (
+        <NavLink
+          key={t.slug}
+          to={`/teams/${t.slug}`}
+          className={sideLink}
+          onClick={onNavigate}
+          title={`@${t.slug}`}
+        >
+          <span className="truncate">{t.name}</span>
+          <span className="text-xs text-muted-foreground tabular-nums">{t.componentCount}</span>
+        </NavLink>
+      ))}
+    </div>
+  );
+}
+
 function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
   const { components, componentsError } = useSession();
   const location = useLocation();
@@ -169,6 +197,7 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           Prompt to screen
         </NavLink>
       </div>
+      <TeamsGroup onNavigate={onNavigate} />
       {componentsError ? (
         <p className="rounded-md border border-red-200 bg-red-50 px-2.5 py-2 text-xs text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
           Could not load components: {componentsError}

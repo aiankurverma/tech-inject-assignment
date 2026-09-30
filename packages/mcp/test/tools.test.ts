@@ -12,9 +12,30 @@ import {
 const root = path.resolve("/tmp/app");
 
 const list = [
-  { slug: "button", name: "Button", description: "Action trigger", category: "Inputs", access: "free", locked: null },
-  { slug: "deal-card", name: "Deal Card", description: "Pipeline deal summary", category: "Data", access: "free", locked: null },
-  { slug: "pro-pipeline-board", name: "Pipeline Board", description: "Kanban of deals", category: "Data", access: "premium", locked: "premium_required" },
+  {
+    slug: "button",
+    name: "Button",
+    description: "Action trigger",
+    category: "Inputs",
+    access: "free",
+    locked: null,
+  },
+  {
+    slug: "deal-card",
+    name: "Deal Card",
+    description: "Pipeline deal summary",
+    category: "Data",
+    access: "free",
+    locked: null,
+  },
+  {
+    slug: "pro-pipeline-board",
+    name: "Pipeline Board",
+    description: "Kanban of deals",
+    category: "Data",
+    access: "premium",
+    locked: "premium_required",
+  },
 ];
 
 function mockFetch(routes: Record<string, { status?: number; body: unknown }>) {
@@ -75,16 +96,31 @@ describe("get_component", () => {
   it("returns props, usage, examples and dependencies", async () => {
     const { deps: d } = deps({
       "/components/button": {
-        body: { ...list[0], version: "1.0.0", props: [{ name: "variant" }], usage: "<Button />", examples: [], dependencies: ["clsx"], files: [] },
+        body: {
+          ...list[0],
+          version: "1.0.0",
+          props: [{ name: "variant" }],
+          usage: "<Button />",
+          examples: [],
+          dependencies: ["clsx"],
+          files: [],
+        },
       },
     });
     const c = await getComponent(d, { slug: "button" });
-    expect(c).toMatchObject({ slug: "button", locked: null, dependencies: ["clsx"], usage: "<Button />" });
+    expect(c).toMatchObject({
+      slug: "button",
+      locked: null,
+      dependencies: ["clsx"],
+      usage: "<Button />",
+    });
     expect(c).not.toHaveProperty("files");
   });
 
   it("explains locked premium components", async () => {
-    const { deps: d } = deps({ "/components/pro-pipeline-board": { body: { ...list[2], version: "1.0.0" } } });
+    const { deps: d } = deps({
+      "/components/pro-pipeline-board": { body: { ...list[2], version: "1.0.0" } },
+    });
     const c = await getComponent(d, { slug: "pro-pipeline-board" });
     expect(c).toMatchObject({ locked: "premium_required" });
     expect(c).toHaveProperty("hint", expect.stringContaining("KITBASE_TOKEN"));
@@ -142,7 +178,9 @@ describe("install_component", () => {
       { "/registry/pro-pipeline-board": { status: 401, body: { message: "Premium component." } } },
       { fs },
     );
-    await expect(installComponent(d, { slug: "pro-pipeline-board" })).rejects.toThrow(/KITBASE_TOKEN/);
+    await expect(installComponent(d, { slug: "pro-pipeline-board" })).rejects.toThrow(
+      /KITBASE_TOKEN/,
+    );
   });
 
   it("dry run writes nothing", async () => {

@@ -1,6 +1,14 @@
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { checkRegistryItem, parseArgs, planWrites, resolveTarget } from "../lib.js";
+import {
+  assertSafeApi,
+  checkRegistryItem,
+  parseArgs,
+  parseTarget,
+  planWrites,
+  registryUrl,
+  resolveTarget,
+} from "../lib.js";
 
 const root = path.resolve("/tmp/project");
 
@@ -79,5 +87,63 @@ describe("parseArgs / checkRegistryItem", () => {
     expect(
       checkRegistryItem({ slug: "x", files: [], dependencies: ["@radix-ui/react-slot"] }),
     ).toBeTruthy();
+  });
+});
+
+describe("parseTarget / registryUrl (team targets)", () => {
+  it("accepts a public slug and an @team/slug", () => {
+    expect(parseTarget("x")).toEqual({ slug: "x" });
+    expect(parseTarget("pipeline-card")).toEqual({ slug: "pipeline-card" });
+    expect(parseTarget("@a/x")).toEqual({ team: "a", slug: "x" });
+    expect(parseTarget("@acme-inc/pipeline-card")).toEqual({
+      team: "acme-inc",
+      slug: "pipeline-card",
+    });
+  });
+
+  it.each([
+    "@A/x",
+    "@a/",
+    "@/x",
+    "a/x",
+    "@a/b/c",
+    "../x",
+    "",
+    "@a/x/",
+    "x ",
+    "@a//x",
+    "-x",
+    "@-a/x",
+  ])("rejects %j", (arg) => {
+    expect(() => parseTarget(arg)).toThrow(/Invalid component name/);
+  });
+
+  it("builds both registry URL forms", () => {
+    expect(registryUrl("https://kit.example", { slug: "x" })).toBe(
+      "https://kit.example/api/registry/x",
+    );
+    expect(registryUrl("https://kit.example", { team: "acme", slug: "x" })).toBe(
+      "https://kit.example/api/teams/acme/registry/x",
+    );
+  });
+});
+
+describe("assertSafeApi", () => {
+  it("blocks a token over remote http", () => {
+    expect(() => assertSafeApi("http://kit.example", true)).toThrow(
+      /Refusing to send KITBASE_TOKEN/,
+    );
+    expect(() => assertSafeApi("http://10.0.0.5:4000", true)).toThrow(/Refusing/);
+    expect(() => assertSafeApi("ftp://localhost", true)).toThrow(/Refusing/);
+  });
+  it("allows https anywhere and http on the local machine", () => {
+    expect(() => assertSafeApi("https://kit.example", true)).not.toThrow();
+    expect(() => assertSafeApi("http://localhost:4000", true)).not.toThrow();
+    expect(() => assertSafeApi("http://127.0.0.1:4000", true)).not.toThrow();
+    expect(() => assertSafeApi("http://[::1]:4000", true)).not.toThrow();
+  });
+  it("does not care without a token, but still needs a valid URL", () => {
+    expect(() => assertSafeApi("http://kit.example", false)).not.toThrow();
+    expect(() => assertSafeApi("not a url", false)).toThrow(/Invalid API URL/);
   });
 });

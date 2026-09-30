@@ -121,7 +121,7 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
       const b = await authorize(slug, viewer);
       return agentPromptText(buildRegistryItem(b, theme), {
         apiOrigin,
-        premium: b.access === "premium",
+        auth: b.access === "premium" ? "premium" : "none",
       });
     },
   };
@@ -143,9 +143,12 @@ export const LIST_PROJECTION = {
 } as const;
 
 /** Catalogue card for one published document (access decided per viewer, never cached). */
-export function listItem(d: Pick<ComponentRecord, "status" | "createdAt" | "publishedAt"> & {
-  published?: Pick<Bundle, "slug" | "name" | "description" | "category" | "access" | "version">;
-}, viewer: Viewer) {
+export function listItem(
+  d: Pick<ComponentRecord, "status" | "createdAt" | "publishedAt"> & {
+    published?: Pick<Bundle, "slug" | "name" | "description" | "category" | "access" | "version">;
+  },
+  viewer: Viewer,
+) {
   const b = d.published!;
   const decision = decideAccess({ status: d.status, access: b.access }, viewer);
   return {

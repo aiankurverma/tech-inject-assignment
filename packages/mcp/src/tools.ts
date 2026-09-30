@@ -70,7 +70,8 @@ export async function searchComponents(
 
 export async function listCategories(deps: ToolDeps) {
   const counts = new Map<string, number>();
-  for (const c of await listAll(deps.api)) counts.set(c.category, (counts.get(c.category) ?? 0) + 1);
+  for (const c of await listAll(deps.api))
+    counts.set(c.category, (counts.get(c.category) ?? 0) + 1);
   return [...counts]
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([category, count]) => ({ category, count }));
@@ -145,7 +146,8 @@ export async function installComponent(
     return {
       installed: false,
       conflicts,
-      message: "Files already exist with different content. Nothing was written. Retry with overwrite: true to replace them.",
+      message:
+        "Files already exist with different content. Nothing was written. Retry with overwrite: true to replace them.",
     };
   }
   if (!input.dryRun) {

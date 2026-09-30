@@ -53,7 +53,9 @@ describe("theme generation", () => {
   });
 
   it("emits crm-theme.css variable names", () => {
-    const vars = Object.fromEntries(themeVariables({ ...DEFAULT_THEME, radius: 4, density: "compact" }));
+    const vars = Object.fromEntries(
+      themeVariables({ ...DEFAULT_THEME, radius: 4, density: "compact" }),
+    );
     expect(vars["--color-crm-primary"]).toBe("#4124fb");
     expect(vars["--color-crm-primary-fg"]).toBe("#ffffff");
     expect(vars["--radius-crm"]).toBe("4px");
@@ -80,7 +82,13 @@ describe("theme generation", () => {
         },
       },
     });
-    expect(spec).toMatchObject({ bg: "#ffffff", surface: "#ffffff", text: "#111111", font: "Inter", radius: 12 });
+    expect(spec).toMatchObject({
+      bg: "#ffffff",
+      surface: "#ffffff",
+      text: "#111111",
+      font: "Inter",
+      radius: 12,
+    });
     expect(spec.primary).toMatch(/^#[0-9a-f]{6}$/);
     expect(() => themeFromCapture({ foo: 1 })).toThrow(/roles/);
     expect(() => themeFromCapture("x")).toThrow();

@@ -111,7 +111,11 @@ describe("catalogue list projection", () => {
     const find = vi
       .spyOn(ComponentModel, "find")
       .mockReturnValue({ sort: () => ({ lean }) } as never);
-    const catalog = makeCatalog({} as ThemeFiles, "http://x", createCache({ redis: null, prefix: "t:", defaultTtlSeconds: 60 }));
+    const catalog = makeCatalog(
+      {} as ThemeFiles,
+      "http://x",
+      createCache({ redis: null, prefix: "t:", defaultTtlSeconds: 60 }),
+    );
     const viewer = { kind: "anonymous" } as const;
 
     const [item] = await catalog.list(viewer);

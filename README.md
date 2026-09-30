@@ -44,7 +44,7 @@ Requires Node 22 and MongoDB (local or Atlas). Redis is optional.
 ```bash
 npm install
 cp .env.example .env   # set MONGODB_URI, JWT_SECRET, ADMIN_PASSWORD, seed passwords
-npm run seed           # 2 test customers + 26 components (3 premium demo fixtures)
+npm run seed           # 2 test customers + every packages/ui registry component (355; 3 premium demo fixtures)
 npm run dev            # API :4000, catalogue :5183, admin :5184, preview :5185
 ```
 
@@ -103,7 +103,11 @@ Cursor (`.cursor/mcp.json`):
 ```json
 {
   "mcpServers": {
-    "kitbase": { "command": "npx", "args": ["-y", "kitbase-mcp"], "env": { "KITBASE_TOKEN": "<token>" } }
+    "kitbase": {
+      "command": "npx",
+      "args": ["-y", "kitbase-mcp"],
+      "env": { "KITBASE_TOKEN": "<token>" }
+    }
   }
 }
 ```
@@ -112,7 +116,14 @@ VS Code (`.vscode/mcp.json`):
 
 ```json
 {
-  "inputs": [{ "type": "promptString", "id": "kitbase-token", "description": "Kitbase token", "password": true }],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "kitbase-token",
+      "description": "Kitbase token",
+      "password": true
+    }
+  ],
   "servers": {
     "kitbase": {
       "type": "stdio",
@@ -171,6 +182,18 @@ Describe a page (public `/screens`, admin `/admin/screens`) and the AI composes 
 - The response carries `code` (Page.tsx), `files` (every used component, deduplicated), `dependencies`, `installCommand` and a `preview` payload for the sandboxed `PreviewFrame`.
 - Known limits: props are JSON only (no icons, callbacks or JSX), so components whose required props are React nodes render with defaults.
 
+## Team workspaces
+
+A customer can create a team (up to 3 owned) and share **private components** with its members. Private components live in their own collection (`TeamComponent`), never in the public catalogue, its cache or the public registry.
+
+- **Roles:** `member` reads published components; `admin` also uploads, publishes, invites and manages members; `owner` also changes owners, renames and deletes the team. One `decideTeamAccess()` in `packages/core/src/access.ts` decides every request: anonymous → 401, non-member, disabled or missing team → 404 (identical body), role too low → 403.
+- **Invites:** by email (shown on the invitee's Account page; unknown emails get the same 201) or by single-use 7-day link `PUBLIC_ORIGIN/join#kbi_…`. Only the sha256 of the link token is stored, the token travels in the URL fragment and a POST body only, and accepting re-checks that the team is live and the inviter is still an admin. Two concurrent accepts yield one success and one 410.
+- **Tokens:** a personal `ti_` token works for every team you belong to. A **team-scoped** token (Account › Scope, or Team › Tokens) only installs `@team/…` components and never unlocks public premium (`401 token_scope`). It is revoked when its owner leaves the team.
+- **Install:** `npx --yes <origin>/cli/kitbase.tgz add @team/slug` → `GET /api/teams/:team/registry/:slug`. The CLI refuses to send `KITBASE_TOKEN` over plain http except to localhost.
+- **Bundle rules for teams:** files under `components/<team>/`, PNG/WebP thumbnails only (no SVG), `access` forced to `free`.
+- **Isolation:** every query carries the server-resolved `teamId` (`services/teamRepo.ts` is the only importer of `TeamComponent`; a Mongoose plugin throws on any unscoped query), lookups by id use `{ _id, teamId }`, membership is read from MongoDB on every request with no caching, and all team responses are `Cache-Control: no-store`. Writes are cookie-only (bearer tokens can only read and install).
+- **Platform admin:** `/admin/teams` shows slug, owners, counts and status, can disable a team or assign an owner, and never sees team source code.
+
 ## Security
 
 - **Sessions:** httpOnly, SameSite=strict cookies (Secure in production). A 15-minute access JWT plus a rotating 10-day refresh token (stored as sha256); reusing an old refresh token revokes the chain. Admin and customer use separate cookies and JWT audiences.
@@ -181,17 +204,23 @@ Describe a page (public `/screens`, admin `/admin/screens`) and the AI composes 
 
 ## Tests
 
-`npm run check` is clean; **130 unit tests** pass (32 of them cover the page builder).
+`npm run check` is clean; **373 unit tests** pass across 26 files.
 
-| File                                                 | Covers                                                                |
-| ---------------------------------------------------- | --------------------------------------------------------------------- |
-| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses               |
-| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                                    |
-| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                                     |
-| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                                     |
-| `apps/web/src/builder/*.test.ts`                     | tree ops, undo/redo + persistence, codegen, prop schema, drop targets |
-| `packages/core/src/page-tree.test.ts`                | page tree limits, exports, Page.tsx code generation     |
-| `apps/api/src/services/screens.test.ts`              | prompt to screen with a fake provider, retry, fallback  |
+| File                                                 | Covers                                                                                                    |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses                                                   |
+| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                                                                        |
+| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                                                                         |
+| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                                                                         |
+| `apps/web/src/builder/*.test.ts`                     | tree ops, undo/redo + persistence, codegen, prop schema, drop targets                                     |
+| `packages/core/src/page-tree.test.ts`                | page tree limits, exports, Page.tsx code generation                                                       |
+| `apps/api/src/services/screens.test.ts`              | prompt to screen with a fake provider, retry, fallback                                                    |
+| `packages/core/src/teams.test.ts`                    | full `decideTeamAccess` matrix, invite roles, team bundle rules, `@team/slug` install text                |
+| `apps/api/test/teams.isolation.test.ts`              | public never leaks, cross-tenant 404s, IDOR, slug collision, team tokens, revocation, bearer cannot write |
+| `apps/api/test/teams.roles.test.ts`                  | member/admin/owner limits, last owner, per-team limits                                                    |
+| `apps/api/test/teams.invites.test.ts`                | single-use links, concurrent accept, expiry, revocation, email lock, hash-only storage                    |
+| `apps/api/test/teams.components.test.ts`             | upload, validate, publish, unpublish, immutable snapshot, forced free, queued upload                      |
+| `apps/web/src/lib/teams.test.ts`                     | `/join` hash clearing, `apiBase` URLs, install command                                                    |
 
 **End-to-end** (Playwright, Chromium): catalogue, search, component page + live preview, copy
 code, premium lock for signed-out visitors, admin sign-in and publish. The API runs against an
@@ -243,5 +272,6 @@ Recovery: unpublish or re-publish a previous version; roll back a deploy in Rend
 - Deploys are manual; there is no CI/CD pipeline.
 - Free plan cold starts are reduced by the keep-alive ping, not removed.
 - End-to-end behaviour is verified on the live site rather than by automated browser tests.
+- Team workspaces v1 has no audit log, no email delivery for invites (the invitee sees them on their Account page), no shadcn `/r/*.json` registry for team items, and a member's team tokens stop working when that member leaves (by design). "Private" means private from other customers, not from the platform operator.
 
 Time spent: about 6 hours.

@@ -15,14 +15,18 @@ import {
 } from "../services/catalog";
 import { createDraft, updateDraft, type BundleJob } from "../services/drafts";
 import { loadUsage, type UsageRecorder } from "../services/analytics";
-import { HttpError } from "../utils/http";
+import { TEAM_LIMITS } from "../services/teamRepo";
+import { HttpError, parseBody, teamErrors } from "../utils/http";
 import { log } from "../utils/logger";
 import {
   ApiToken,
   ComponentModel,
   Customer,
+  Team,
+  TeamMember,
   type ComponentRecord,
   type CustomerDoc,
+  type TeamDoc,
 } from "../models";
 
 const slugParam = (req: Request) => {
@@ -31,32 +35,35 @@ const slugParam = (req: Request) => {
   return parsed.data;
 };
 
-function parseBody<T extends z.ZodTypeAny>(schema: T, body: unknown): z.infer<T> {
-  const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    throw new HttpError(
-      400,
-      "invalid_input",
-      "Check the highlighted fields.",
-      parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
-    );
-  }
-  return parsed.data;
-}
-
 /** Shared infrastructure built in app.ts (cache, rate limits, queues). */
 export interface RouteDeps {
   cache: Cache;
   customerLoginLimit: RequestHandler;
   adminLoginLimit: RequestHandler;
   registryLimit: RequestHandler;
+  /** Team invites, join and token creation (per IP). */
+  teamWriteLimit: RequestHandler;
+  /** Builds an extra limiter keyed by something other than the IP (e.g. the customer id). */
+  makeLimit: (name: string, key: (req: Request) => string) => RequestHandler;
   bundleJobs: Queue<BundleJob>;
   /** Anonymous usage counters (views, copies, installs, previews). */
   usage: UsageRecorder;
   beaconLimit: RequestHandler;
 }
 
-const sendText = (res: Response, text: string) => res.type("text/plain; charset=utf-8").send(text);
+export const sendText = (res: Response, text: string) =>
+  res.type("text/plain; charset=utf-8").send(text);
+
+/**
+ * Thumbnails are customer-uploaded bytes served from the API origin: never let the browser
+ * sniff a type or run anything inside them.
+ */
+export const sendThumbnail = (res: Response, dataUrl: string) => {
+  const [, mime, b64] = /^data:([^;]+);base64,(.*)$/.exec(dataUrl) ?? [];
+  res.set("X-Content-Type-Options", "nosniff");
+  res.set("Content-Security-Policy", "sandbox");
+  res.type(mime ?? "image/svg+xml").send(Buffer.from(b64 ?? "", "base64"));
+};
 
 export function publicRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: RouteDeps) {
   const r = Router();
@@ -76,12 +83,11 @@ export function publicRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: Rout
   r.get("/components/:slug/thumbnail", async (req, res) => {
     const slug = slugParam(req);
     const dataUrl = await catalog.thumbnail(slug);
-    //  URLs never change content: let browsers and CDNs keep them.
+    // Versioned URLs never change content: let browsers and CDNs keep them.
     const v = typeof req.query.v === "string" ? req.query.v : null;
     if (v && v === (await catalog.publishedVersion(slug)))
       res.set("Cache-Control", "public, max-age=31536000, immutable");
-    const [, mime, b64] = /^data:([^;]+);base64,(.*)$/.exec(dataUrl) ?? [];
-    res.type(mime ?? "image/svg+xml").send(Buffer.from(b64 ?? "", "base64"));
+    sendThumbnail(res, dataUrl);
   });
   r.get("/components/:slug/preview", async (req, res) => {
     const slug = slugParam(req);
@@ -155,30 +161,62 @@ export function customerRoutes(auth: Auth, deps: RouteDeps) {
 
   // Personal access tokens for the CLI and AI agents. Any customer may create them;
   // access is still decided per request from the customer's current plan.
+  // A token may instead be scoped to one team: it then only installs that team's components.
   r.get("/tokens", auth.requireCustomer, async (_req, res) => {
     const c = res.locals.customer as CustomerDoc;
     const tokens = await ApiToken.find({ customerId: c._id, revokedAt: null })
       .sort({ createdAt: -1 })
       .lean();
+    const teamIds = tokens.map((t) => t.teamId).filter((id) => id != null);
+    const teams = teamIds.length
+      ? await Team.find({ _id: { $in: teamIds } }).lean<TeamDoc[]>()
+      : [];
+    const teamSlug = new Map(teams.map((t) => [String(t._id), t.slug]));
     res.json(
       tokens.map((t) => ({
         id: String(t._id),
         name: t.name,
         prefix: t.prefix,
+        team: t.teamId ? (teamSlug.get(String(t.teamId)) ?? null) : null,
         createdAt: t.createdAt,
         lastUsedAt: t.lastUsedAt,
       })),
     );
   });
-  r.post("/tokens", auth.requireCustomer, async (req, res) => {
-    const { name } = parseBody(z.object({ name: z.string().trim().min(1).max(60) }), req.body);
+  r.post("/tokens", auth.requireCustomer, deps.teamWriteLimit, async (req, res) => {
+    const { name, team } = parseBody(
+      z.object({ name: z.string().trim().min(1).max(60), team: slugSchema.optional() }),
+      req.body,
+    );
     const c = res.locals.customer as CustomerDoc;
-    const count = await ApiToken.countDocuments({ customerId: c._id, revokedAt: null });
-    if (count >= 10)
-      throw new HttpError(400, "too_many_tokens", "Revoke an old token first (max 10).");
+    let teamId: TeamDoc["_id"] | undefined;
+    if (team) {
+      // Membership is checked here; the token itself is re-checked on every request it makes.
+      const doc = await Team.findOne({ slug: team, disabled: false }).lean<TeamDoc>();
+      const member = doc
+        ? await TeamMember.findOne({ teamId: doc._id, customerId: c._id }).lean()
+        : null;
+      if (!doc || !member) throw teamErrors.notFound();
+      const teamCount = await ApiToken.countDocuments({
+        customerId: c._id,
+        teamId: doc._id,
+        revokedAt: null,
+      });
+      if (teamCount >= TEAM_LIMITS.teamTokensPerMember)
+        throw teamErrors.limit(`${TEAM_LIMITS.teamTokensPerMember} tokens for this team`);
+      teamId = doc._id;
+    } else {
+      const count = await ApiToken.countDocuments({
+        customerId: c._id,
+        teamId: null,
+        revokedAt: null,
+      });
+      if (count >= 10)
+        throw new HttpError(400, "too_many_tokens", "Revoke an old token first (max 10).");
+    }
     const { token, hash, prefix } = newApiToken();
-    const doc = await ApiToken.create({ customerId: c._id, name, hash, prefix });
-    res.status(201).json({ id: String(doc._id), name, prefix, token });
+    const doc = await ApiToken.create({ customerId: c._id, name, hash, prefix, teamId });
+    res.status(201).json({ id: String(doc._id), name, prefix, team: team ?? null, token });
   });
   r.delete("/tokens/:id", auth.requireCustomer, async (req, res) => {
     const c = res.locals.customer as CustomerDoc;
@@ -298,9 +336,7 @@ export function adminRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: Route
   });
   r.get("/components/:slug/thumbnail", async (req, res) => {
     const doc = await load(slugParam(req));
-    const dataUrl = doc.draft.thumbnail ?? placeholderThumbnail(doc.draft.name);
-    const [, mime, b64] = /^data:([^;]+);base64,(.*)$/.exec(dataUrl) ?? [];
-    res.type(mime ?? "image/svg+xml").send(Buffer.from(b64 ?? "", "base64"));
+    sendThumbnail(res, doc.draft.thumbnail ?? placeholderThumbnail(doc.draft.name));
   });
   r.post("/components/:slug/publish", async (req, res) => {
     const slug = slugParam(req);

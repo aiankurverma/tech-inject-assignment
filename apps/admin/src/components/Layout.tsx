@@ -13,6 +13,7 @@ import {
   ScanSearch,
   ShieldCheck,
   Wand2,
+  Users,
   X,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -38,6 +39,7 @@ const NAV: NavItem[] = [
   { to: "/components", label: "Components", icon: Boxes, match: ["/new"] },
   { to: "/analytics", label: "Analytics", icon: BarChart3 },
   { to: "/privileges", label: "Privileges", icon: ShieldCheck, match: ["/customers"] },
+  { to: "/teams", label: "Teams", icon: Users },
   { to: "/capture", label: "Capture", icon: ScanSearch },
   { to: "/feature-radar", label: "Feature radar", icon: Radar },
   { to: "/screens", label: "Screens", icon: Wand2 },
@@ -151,6 +153,7 @@ function useCrumbs(): string[] {
   if (pathname.startsWith("/components/"))
     return ["Components", decodeURIComponent(pathname.slice("/components/".length))];
   if (pathname === "/privileges" || pathname === "/customers") return ["Privileges"];
+  if (pathname === "/teams") return ["Teams"];
   if (pathname === "/feature-radar") return ["Feature radar"];
   if (pathname === "/screens") return ["Prompt to screen"];
   return ["Admin"];

@@ -174,7 +174,12 @@ export function Analytics() {
                       <XAxis type="number" allowDecimals={false} tick={axis} />
                       <YAxis type="category" dataKey="slug" tick={axis} width={140} />
                       <Tooltip contentStyle={tooltipStyle} cursor={{ fillOpacity: 0.08 }} />
-                      <Bar dataKey="count" name={top.label} fill={top.color} radius={[0, 4, 4, 0]} />
+                      <Bar
+                        dataKey="count"
+                        name={top.label}
+                        fill={top.color}
+                        radius={[0, 4, 4, 0]}
+                      />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -183,7 +188,10 @@ export function Analytics() {
                     <li key={r.slug} className="flex items-center justify-between gap-3">
                       <Link
                         to={`/components/${r.slug}`}
-                        className={cn("truncate rounded text-foreground hover:underline", focusRing)}
+                        className={cn(
+                          "truncate rounded text-foreground hover:underline",
+                          focusRing,
+                        )}
                       >
                         <span className="mr-2 text-muted-foreground tabular-nums">{i + 1}.</span>
                         {r.slug}

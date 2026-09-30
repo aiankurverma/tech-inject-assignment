@@ -150,11 +150,11 @@ Notes:
 
 ## MCP server (`packages/mcp`)
 
-| Package                     | License | Source                                                  |
-| --------------------------- | ------- | ------------------------------------------------------- |
+| Package                     | License | Source                                                 |
+| --------------------------- | ------- | ------------------------------------------------------ |
 | `@modelcontextprotocol/sdk` | MIT     | https://github.com/modelcontextprotocol/typescript-sdk |
 | `zod`                       | MIT     | https://github.com/colinhacks/zod                      |
-| `esbuild` (build only)      | MIT     | https://github.com/evanw/esbuild                        |
+| `esbuild` (build only)      | MIT     | https://github.com/evanw/esbuild                       |
 
 These are tooling dependencies, not component dependencies, so they are not in `ALLOWED_DEPENDENCIES`.
 
@@ -178,7 +178,7 @@ Dev-only (root `devDependencies`); never shipped in components or the installer.
 
 ## Platform (server and admin app, not shipped in components)
 
-| Package       | Version | Licence | Source                                    | Used in                        |
-| ------------- | ------- | ------- | ----------------------------------------- | ------------------------------ |
-| `compression` | 1.8.x   | MIT     | https://github.com/expressjs/compression  | `apps/api` gzip responses      |
-| `recharts`    | 3.10.x  | MIT     | https://github.com/recharts/recharts      | `apps/admin` Analytics charts  |
+| Package       | Version | Licence | Source                                   | Used in                       |
+| ------------- | ------- | ------- | ---------------------------------------- | ----------------------------- |
+| `compression` | 1.8.x   | MIT     | https://github.com/expressjs/compression | `apps/api` gzip responses     |
+| `recharts`    | 3.10.x  | MIT     | https://github.com/recharts/recharts     | `apps/admin` Analytics charts |
