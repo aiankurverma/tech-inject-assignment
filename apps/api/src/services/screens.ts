@@ -26,7 +26,7 @@ export interface ScreenDeps {
 }
 
 /** What the page shows: the tree plus everything needed to preview and export it. */
-export type ScreenResult = PageExport & {
+export type ScreenResult = Omit<PageExport, "previewCode"> & {
   tree: PageNode;
   preview: ReturnType<typeof previewPayload>;
 };
@@ -56,7 +56,7 @@ export function makeScreens(deps: ScreenDeps) {
   }
 
   function assemble(tree: PageNode, list: PageComponent[]): ScreenResult {
-    const page = exportPage(tree, list, deps.apiOrigin);
+    const { previewCode, ...page } = exportPage(tree, list, deps.apiOrigin);
     return {
       ...page,
       tree,
@@ -65,7 +65,7 @@ export function makeScreens(deps: ScreenDeps) {
           slug: "page",
           version: "1.0.0",
           files: page.files,
-          examples: [{ title: "Page", code: page.code }],
+          examples: [{ title: "Page", code: previewCode }],
         },
         deps.theme,
       ),

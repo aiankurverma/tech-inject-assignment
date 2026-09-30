@@ -18,6 +18,31 @@ const detail = (over: Partial<ComponentDetail>): ComponentDetail => ({
   ...over,
 });
 
+describe("generatePage guard", () => {
+  it("wraps each component in the preview guard only for the live preview", () => {
+    const meta: ComponentMeta = {
+      slug: "stat-card",
+      name: "Stat card",
+      exportName: "StatCard",
+      importPath: "@/components/crm/stat-card",
+      installCommand: "npx kitbase add stat-card",
+      dependencies: [],
+    };
+    const tree = insertNode(
+      createPage(),
+      "page",
+      createComponentNode("stat-card", { label: "Deals" }),
+    );
+    const plain = generatePage(tree, { "stat-card": meta }).code;
+    expect(plain).not.toContain("KitbasePreviewGuard");
+    const guarded = generatePage(tree, { "stat-card": meta }, "Page", { guard: true }).code;
+    expect(guarded).toContain('<KitbasePreviewGuard label="stat-card">');
+    expect(guarded).toContain('<StatCard label="Deals" />');
+    expect(guarded).toContain("</KitbasePreviewGuard>");
+    expect(guarded).toContain("globalThis as any).KitbasePreviewGuard");
+  });
+});
+
 describe("resolveComponentMeta", () => {
   it("reads the export name and path from the first example", () => {
     const m = resolveComponentMeta(

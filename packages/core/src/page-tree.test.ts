@@ -5,6 +5,7 @@ import {
   exportPage,
   PAGE_TREE_LIMITS,
   pageCode,
+  PREVIEW_GUARD_PRELUDE,
   validatePageTree,
   type PageComponent,
   type PageNode,
@@ -134,6 +135,18 @@ describe("pageCode / exportPage", () => {
     expect(code).toContain('<StatCard label="Deals" value={12} wide />');
     expect(code).toContain('Hello {"<"}world{">"} {"{"}x{"}"}');
     expect(code).toContain("export default function Page()");
+  });
+  it("wraps primary components in the preview guard only when asked", () => {
+    expect(pageCode(tree, components)).not.toContain("KitbasePreviewGuard");
+    const guarded = pageCode(tree, components, { guard: true });
+    expect(guarded).toContain(PREVIEW_GUARD_PRELUDE);
+    expect(guarded).toContain('<KitbasePreviewGuard label="card">');
+    expect(guarded).toContain('<KitbasePreviewGuard label="stat-card">');
+    // secondary exports stay unwrapped so parents can still inspect them
+    expect(guarded).not.toMatch(/label="card\/CardHeader"/);
+    const out = exportPage(tree, components, "https://kit.example");
+    expect(out.code).not.toContain("KitbasePreviewGuard");
+    expect(out.previewCode).toContain("KitbasePreviewGuard");
   });
   it("collects files once, unions dependencies and lists install commands", () => {
     const out = exportPage(tree, components, "https://kit.example");

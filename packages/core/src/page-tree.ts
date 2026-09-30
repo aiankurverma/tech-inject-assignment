@@ -221,10 +221,36 @@ function jsxProps(props: Record<string, JsonValue> | undefined): string {
 }
 
 /**
+ * Per-node error boundary for generated page previews (builder and prompt-to-screen).
+ * The preview sandbox registers `globalThis.KitbasePreviewGuard`; this prelude falls back to a
+ * pass-through so preview code still runs on an older sandbox. Never part of exported code.
+ */
+export const PREVIEW_GUARD_PRELUDE =
+  "const KitbasePreviewGuard = ((globalThis as any).KitbasePreviewGuard ?? ((p: { children?: unknown }) => p.children)) as any;";
+
+/** Wraps one element's JSX lines in the preview guard, labelled with the component slug. */
+export function guardLines(label: string, lines: string[], indent: string): string[] {
+  return [
+    `${indent}<KitbasePreviewGuard label=${JSON.stringify(label)}>`,
+    ...lines.map((l) => `  ${l}`),
+    `${indent}</KitbasePreviewGuard>`,
+  ];
+}
+
+export interface PageCodeOptions {
+  /** Wrap each primary component (not `slug/Export` parts) in the preview error boundary. */
+  guard?: boolean;
+}
+
+/**
  * Page.tsx source for a validated tree: one import per component, then the JSX.
  * Component names are imported as-is; a "text" node becomes a string child.
  */
-export function pageCode(tree: PageNode, components: PageComponent[]): string {
+export function pageCode(
+  tree: PageNode,
+  components: PageComponent[],
+  options: PageCodeOptions = {},
+): string {
   const bySlug = new Map(components.map((c) => [c.slug, c]));
   const imports = new Map<string, Set<string>>();
   const name = (type: string): string => {
@@ -241,8 +267,13 @@ export function pageCode(tree: PageNode, components: PageComponent[]): string {
     const tag = name(node.type);
     const props = jsxProps(node.props);
     const kids = (node.children ?? []).map((c) => render(c, `${indent}  `));
-    if (!kids.length) return `${indent}<${tag}${props} />`;
-    return `${indent}<${tag}${props}>\n${kids.join("\n")}\n${indent}</${tag}>`;
+    const el = !kids.length
+      ? `${indent}<${tag}${props} />`
+      : `${indent}<${tag}${props}>\n${kids.join("\n")}\n${indent}</${tag}>`;
+    // Secondary exports (card/CardHeader) stay unwrapped: parents may inspect their children.
+    const { slug, exportName } = splitType(node.type);
+    if (!options.guard || exportName) return el;
+    return guardLines(slug, el.split("\n"), indent).join("\n");
   };
   const body = render(tree, "      ");
   const importLines = [...imports.entries()]
@@ -254,6 +285,7 @@ export function pageCode(tree: PageNode, components: PageComponent[]): string {
   return [
     ...importLines,
     "",
+    ...(options.guard ? [PREVIEW_GUARD_PRELUDE, ""] : []),
     "export default function Page() {",
     "  return (",
     '    <div className="min-h-screen bg-crm-bg p-6 font-crm text-crm-fg">',
@@ -268,6 +300,8 @@ export function pageCode(tree: PageNode, components: PageComponent[]): string {
 export interface PageExport {
   slugs: string[];
   code: string;
+  /** `code` with per-component error boundaries, for the sandboxed preview only. */
+  previewCode: string;
   dependencies: string[];
   /** Files from every used component, deduplicated by path (shared helpers appear once). */
   files: { path: string; content: string }[];
@@ -291,6 +325,7 @@ export function exportPage(
   return {
     slugs,
     code: pageCode(tree, components),
+    previewCode: pageCode(tree, components, { guard: true }),
     dependencies: [...deps].sort(),
     files: [...files].map(([path, content]) => ({ path, content })),
     installCommand: slugs.map((s) => installCommand(apiOrigin, s)).join("\n"),
