@@ -20,6 +20,15 @@ export async function forgetPublished(cache: Cache, slug: string) {
   await Promise.all([cache.del("list"), cache.del(`slug:${slug}`)]);
 }
 
+/** Every published document, newest category/name order; the same cached list the catalogue uses. */
+export function findPublishedDocs(cache: Cache): Promise<ComponentRecord[]> {
+  return cache.wrap("list", CACHE_TTL_S, () =>
+    ComponentModel.find({ status: "published" })
+      .sort({ "published.category": 1, "published.name": 1 })
+      .lean<ComponentRecord[]>(),
+  );
+}
+
 /**
  * Public (non-admin) read side. Only ever touches the `published` snapshot.
  * Only the DB documents are cached (same for every viewer); access is decided on every request.
@@ -45,11 +54,7 @@ export function makeCatalog(theme: ThemeFiles, apiOrigin: string, cache: Cache) 
 
   return {
     async list(viewer: Viewer) {
-      const docs = await cache.wrap("list", CACHE_TTL_S, () =>
-        ComponentModel.find({ status: "published" })
-          .sort({ "published.category": 1, "published.name": 1 })
-          .lean<ComponentRecord[]>(),
-      );
+      const docs = await findPublishedDocs(cache);
       return docs
         .filter((d) => d.published)
         .map((d) => {
@@ -132,7 +137,10 @@ export function isoDate(v: Date | string | undefined | null): string | null {
 }
 
 /** What the sandboxed preview iframe needs to render a bundle. */
-export function previewPayload(b: Bundle, theme: ThemeFiles) {
+export function previewPayload(
+  b: Pick<Bundle, "slug" | "version" | "files" | "examples">,
+  theme: ThemeFiles,
+) {
   return {
     slug: b.slug,
     version: b.version,

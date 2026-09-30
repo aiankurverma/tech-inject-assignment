@@ -12,7 +12,8 @@ export interface ProviderConfig {
   model: string;
 }
 
-export interface BuildOptions {
+/** Which LLM to ask, and what to try next when it fails. Shared by every AI feature. */
+export interface ProviderChain {
   /** Defaults to "anthropic". */
   provider?: AiProvider;
   /** Tried in order when the primary provider fails (bad key, HTTP error, unreachable). */
@@ -20,6 +21,9 @@ export interface BuildOptions {
   apiKey: string;
   model: string;
   fetchImpl?: typeof fetch;
+}
+
+export interface BuildOptions extends ProviderChain {
   styleExample: string;
   themeClasses: string;
   allowedDependencies?: readonly string[];
@@ -27,6 +31,7 @@ export interface BuildOptions {
 }
 
 export type BuildResult = { ok: true; bundle: unknown } | { ok: false; error: string };
+export type JsonResult = { ok: true; json: unknown } | { ok: false; error: string };
 
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const geminiUrl = (model: string) =>
@@ -37,7 +42,7 @@ const PROVIDERS: Record<
   AiProvider,
   {
     keyName: string;
-    request: (system: string, user: string, opts: BuildOptions) => [string, RequestInit];
+    request: (system: string, user: string, opts: ProviderChain) => [string, RequestInit];
     text: (body: unknown) => string;
   }
 > = {
@@ -182,31 +187,49 @@ function extractJson(text: string): unknown {
 
 /** Tries the primary provider, then each fallback, returning the first usable reply. */
 export async function buildBundle(term: string, opts: BuildOptions): Promise<BuildResult> {
-  const chain: BuildOptions[] = [
+  const slug = termToSlug(term);
+  let user = `Build a component for the feature request: "${term}".`;
+  if (opts.fixErrors && opts.fixErrors.length > 0) {
+    user += `
+Your previous bundle failed validation: ${opts.fixErrors.slice(0, 20).join("; ")}
+Return a corrected full JSON bundle.`;
+  }
+  const r = await completeJson(systemPrompt(slug, opts), user, opts);
+  return r.ok ? { ok: true, bundle: r.json } : r;
+}
+
+/**
+ * Asks for one JSON object, trying the primary provider and then each fallback.
+ * Transport and key errors move on to the next provider; an unparsable reply does not.
+ */
+export async function completeJson(
+  system: string,
+  user: string,
+  opts: ProviderChain,
+): Promise<JsonResult> {
+  const chain: ProviderChain[] = [
     opts,
     ...(opts.fallbacks ?? []).map((f) => ({ ...opts, ...f, fallbacks: undefined })),
   ];
   const errors: string[] = [];
   for (const attempt of chain) {
-    const result = await buildOnce(term, attempt);
+    const result = await completeOnce(system, user, attempt);
     if (result.ok || !/rejected|HTTP|reach|unreadable/i.test(result.error)) return result;
     errors.push(`${attempt.provider ?? "anthropic"}: ${result.error}`);
   }
   return { ok: false, error: errors.join(" | ") };
 }
 
-async function buildOnce(term: string, opts: BuildOptions): Promise<BuildResult> {
-  const slug = termToSlug(term);
+async function completeOnce(
+  system: string,
+  user: string,
+  opts: ProviderChain,
+): Promise<JsonResult> {
   const doFetch = opts.fetchImpl ?? fetch;
-  let user = `Build a component for the feature request: "${term}".`;
-  if (opts.fixErrors && opts.fixErrors.length > 0) {
-    user += `\nYour previous bundle failed validation: ${opts.fixErrors.slice(0, 20).join("; ")}\nReturn a corrected full JSON bundle.`;
-  }
-
   const provider = PROVIDERS[opts.provider ?? "anthropic"];
   let res: Response;
   try {
-    res = await doFetch(...provider.request(systemPrompt(slug, opts), user, opts));
+    res = await doFetch(...provider.request(system, user, opts));
   } catch {
     return { ok: false, error: "Could not reach the AI API." };
   }
@@ -230,7 +253,7 @@ async function buildOnce(term: string, opts: BuildOptions): Promise<BuildResult>
     return { ok: false, error: "AI API returned an unreadable response." };
   }
   try {
-    return { ok: true, bundle: extractJson(text) };
+    return { ok: true, json: extractJson(text) };
   } catch {
     return { ok: false, error: "AI reply was not valid JSON." };
   }
