@@ -44,26 +44,59 @@ function readStyleExample(): string {
   }
 }
 
+const PRIMARY_KEYS = {
+  anthropic: "ANTHROPIC_API_KEY",
+  gemini: "GEMINI_API_KEY",
+  inception: "INCEPTION_API_KEY",
+} as const;
+type PrimaryProvider = keyof typeof PRIMARY_KEYS;
+
+const DEFAULT_INCEPTION_MODEL = "mercury-2.5";
+
 /**
  * LLM provider chain from the environment, shared by every AI feature.
- * AI_PROVIDER=gemini uses GEMINI_API_KEY; anything else uses ANTHROPIC_API_KEY.
- * Fallbacks: every OpenRouter key (comma separated), then Ollama Cloud.
+ * AI_PROVIDER=gemini uses GEMINI_API_KEY, AI_PROVIDER=inception uses INCEPTION_API_KEY
+ * (model INCEPTION_MODEL); anything else uses ANTHROPIC_API_KEY.
+ * Fallbacks: Inception (when its key is set and it is not the primary), every OpenRouter key
+ * (comma separated), then Ollama Cloud.
+ * Token use: identical requests are answered from a short-lived cache (AI_CACHE_TTL_SECONDS,
+ * default 600, 0 disables) and every reply's token counts are logged.
  */
 export function providerChain(
   options: AppOptions,
 ): Omit<ProviderChain, "apiKey"> & { apiKey: string | undefined } {
-  const provider = process.env.AI_PROVIDER === "gemini" ? "gemini" : "anthropic";
+  const requested = process.env.AI_PROVIDER;
+  const provider: PrimaryProvider =
+    requested === "gemini" || requested === "inception" ? requested : "anthropic";
+  const inceptionModel = process.env.INCEPTION_MODEL || DEFAULT_INCEPTION_MODEL;
+  const cacheSeconds = Number(process.env.AI_CACHE_TTL_SECONDS ?? 600);
   return {
     provider,
     apiKey:
       options.builder && "apiKey" in options.builder
         ? options.builder.apiKey
-        : (provider === "gemini" ? process.env.GEMINI_API_KEY : process.env.ANTHROPIC_API_KEY) ||
-          undefined,
+        : process.env[PRIMARY_KEYS[provider]] || undefined,
     model:
-      process.env.FEATURE_BUILDER_MODEL ??
-      (provider === "gemini" ? "gemini-2.5-flash" : "claude-sonnet-5"),
+      provider === "inception"
+        ? inceptionModel
+        : (process.env.FEATURE_BUILDER_MODEL ??
+          (provider === "gemini" ? "gemini-2.5-flash" : "claude-sonnet-5")),
+    // Tests inject a fake fetch and expect every call to reach it.
+    cacheTtlMs:
+      options.builder?.fetchImpl || !Number.isFinite(cacheSeconds)
+        ? 0
+        : Math.max(0, cacheSeconds) * 1000,
+    onUsage: (u) => log.info("ai usage", { ...u }),
     fallbacks: [
+      ...(provider !== "inception" && process.env.INCEPTION_API_KEY
+        ? [
+            {
+              provider: "inception" as const,
+              apiKey: process.env.INCEPTION_API_KEY,
+              model: inceptionModel,
+            },
+          ]
+        : []),
       ...(process.env.OPENROUTER_API_KEYS ?? "")
         .split(",")
         .map((k) => k.trim())

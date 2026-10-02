@@ -170,7 +170,7 @@ copy another company's brand, logos or content.
 
 - **Components:** upload, validate, preview the draft, publish/unpublish, switch free/premium (applies to the live snapshot at once), delete.
 - **Privileges:** grant/revoke Premium and Block/Unblock customers. A blocked customer cannot sign in, and their tokens and sessions stop working immediately.
-- **Feature radar:** searches with no result become feature requests with real counts (hidden below 5). The admin marks them valid, rejected or building with an ETA, and users see "Coming soon". For building requests, **Generate with AI** runs in the queue (Gemini, then OpenRouter, then Ollama as fallbacks), must pass the same `validateBundle()` rules, and is saved **only as a draft**.
+- **Feature radar:** searches with no result become feature requests with real counts (hidden below 5). The admin marks them valid, rejected or building with an ETA, and users see "Coming soon". For building requests, **Generate with AI** runs in the queue (the `AI_PROVIDER` primary — Anthropic, Gemini or Inception Mercury — then Inception, OpenRouter and Ollama as fallbacks; identical requests are cached for `AI_CACHE_TTL_SECONDS` and token usage is logged as `ai usage`), must pass the same `validateBundle()` rules, and is saved **only as a draft**.
 
 ## Prompt to screen
 

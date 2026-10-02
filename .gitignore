@@ -20,3 +20,4 @@ docs/admin-ui/
 docs/render-check/
 playwright-report
 test-results
+.playwright-mcp/
