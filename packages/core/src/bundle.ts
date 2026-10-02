@@ -87,8 +87,17 @@ export function findImports(source: string): string[] {
 const RESERVED = [THEME_FILE_PATH, UTILS_FILE_PATH];
 const stripExt = (p: string) => p.replace(/\.(tsx|ts|css)$/, "");
 
+export interface ValidateOptions {
+  /**
+   * Team slug for a private (team) bundle. Adds two rules: no SVG thumbnails (an SVG served
+   * from the API origin could run script), and component files must live under
+   * `components/<team>/` so installs never collide with the public catalogue.
+   */
+  team?: string;
+}
+
 /** Schema check plus import, dependency and size rules that zod cannot express. */
-export function validateBundle(input: unknown): ValidationResult {
+export function validateBundle(input: unknown, opts: ValidateOptions = {}): ValidationResult {
   const parsed = bundleSchema.safeParse(input);
   if (!parsed.success) {
     return {
@@ -98,6 +107,16 @@ export function validateBundle(input: unknown): ValidationResult {
   }
   const bundle = parsed.data;
   const errors: string[] = [];
+
+  if (opts.team) {
+    if (bundle.thumbnail && !/^data:image\/(png|webp);base64,/.test(bundle.thumbnail))
+      errors.push("thumbnail: team bundles must use a PNG or WebP thumbnail (SVG is not allowed)");
+    const prefix = `components/${opts.team}/`;
+    for (const f of bundle.files) {
+      if (f.path.startsWith("components/") && !f.path.startsWith(prefix))
+        errors.push(`files: ${f.path} must be under ${prefix}`);
+    }
+  }
 
   const paths = new Set<string>();
   let total = 0;

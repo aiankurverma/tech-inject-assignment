@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import type { z } from "zod";
 import type { DenyReason } from "@ti/core";
 
 export class HttpError extends Error {
@@ -24,9 +25,46 @@ const DENY: Record<DenyReason, HttpError> = {
     "premium_required",
     "Premium access required. Ask the library admin to upgrade your account.",
   ),
+  team_role_required: new HttpError(
+    403,
+    "team_role_required",
+    "Your role in this team does not allow that.",
+  ),
 };
 
 export const denyError = (reason: DenyReason) => DENY[reason];
+
+/** Parses a request body with a zod schema; 400 `invalid_input` with one line per problem. */
+export function parseBody<T extends z.ZodTypeAny>(schema: T, body: unknown): z.infer<T> {
+  const parsed = schema.safeParse(body);
+  if (!parsed.success) {
+    throw new HttpError(
+      400,
+      "invalid_input",
+      "Check the highlighted fields.",
+      parsed.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
+    );
+  }
+  return parsed.data;
+}
+
+/** Team workspace errors. Kept in one place so every route returns the same body. */
+export const teamErrors = {
+  /** Anonymous callers: same body whether or not the team exists. */
+  signIn: () =>
+    new HttpError(
+      401,
+      "sign_in_required",
+      "Sign in (or set KITBASE_TOKEN) to use team components.",
+    ),
+  notFound: () => new HttpError(404, "not_found", "Not found."),
+  lastOwner: () => new HttpError(409, "last_owner", "A team needs at least one owner."),
+  slugTaken: () => new HttpError(409, "slug_taken", "That slug is already used."),
+  inviteInvalid: () => new HttpError(410, "invite_invalid", "This invite is no longer valid."),
+  tokenScope: () =>
+    new HttpError(401, "token_scope", "This is a team token; it only installs @team components."),
+  limit: (what: string) => new HttpError(409, "limit_reached", `Limit reached: ${what}.`),
+};
 
 export function errorHandler(err: unknown, _req: Request, res: Response, _next: NextFunction) {
   if (err instanceof HttpError) {

@@ -1,6 +1,7 @@
 import "@tailwindcss/browser";
 import { Component, type ComponentType, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
+import { registerPreviewGuard } from "./guard";
 import { loadModules } from "./modules";
 import { loadModule, type PreviewFile } from "./runtime";
 
@@ -61,6 +62,8 @@ const ErrorView = ({ message }: { message: string }) => (
     Preview error: {message}
   </div>
 );
+
+registerPreviewGuard();
 
 const root = createRoot(document.getElementById("root")!);
 let parentOrigin = "";

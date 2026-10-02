@@ -1,0 +1,85 @@
+{
+  "name": "Admin Panel",
+  "slug": "admin-panel-template",
+  "description": "Full-page workspace admin template: member KPIs, sidebar switching between the pro RBAC roles & permissions matrix and the pro audit log with before/after diffs.",
+  "category": "Templates",
+  "version": "1.0.0",
+  "access": "free",
+  "dependencies": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-slot",
+    "@radix-ui/react-tabs",
+    "@radix-ui/react-toggle-group",
+    "@tanstack/react-query",
+    "@tanstack/react-table",
+    "@tanstack/react-virtual",
+    "date-fns",
+    "immer",
+    "jsondiffpatch",
+    "lucide-react",
+    "papaparse",
+    "react-day-picker"
+  ],
+  "files": [
+    "components/crm/admin-panel-template.tsx",
+    "components/crm/button.tsx",
+    "components/crm/pro-audit-log.tsx",
+    "components/crm/pro-audit-log/event-drawer.tsx",
+    "components/crm/pro-audit-log/json-diff.tsx",
+    "components/crm/pro-audit-log/format.ts",
+    "components/crm/pro-audit-log/types.ts",
+    "components/crm/pro-audit-log/event-table.tsx",
+    "components/crm/pro-audit-log/filter-bar.tsx",
+    "components/crm/pro-rbac-matrix.tsx",
+    "lib/rbac-matrix.ts",
+    "hooks/use-rbac-state.ts",
+    "components/crm/pro-rbac-matrix/matrix-cell.tsx",
+    "components/crm/pro-rbac-matrix/diff-panel.tsx",
+    "components/crm/template-shell.tsx",
+    "components/crm/app-sidebar.tsx",
+    "components/crm/badge.tsx",
+    "components/crm/kpi-grid.tsx",
+    "components/crm/sparkline.tsx"
+  ],
+  "examples": [
+    {
+      "title": "Roles and audit log",
+      "file": "admin-panel-template-1.tsx"
+    }
+  ],
+  "props": [
+    {
+      "name": "kpis",
+      "type": "Kpi[]",
+      "description": "KPI tiles above the section",
+      "required": false
+    },
+    {
+      "name": "rbac",
+      "type": "ProRbacMatrixProps",
+      "description": "Forwarded to ProRbacMatrix (roles, permissions, value/defaultValue, onSave, …)",
+      "required": true
+    },
+    {
+      "name": "audit",
+      "type": "ProAuditLogProps",
+      "description": "Forwarded to ProAuditLog (fetchPage, pageSize, …)",
+      "required": true
+    },
+    {
+      "name": "defaultSection",
+      "type": "\"roles\" | \"audit\"",
+      "description": "Section shown first",
+      "required": false
+    },
+    {
+      "name": "onInvite",
+      "type": "() => void",
+      "description": "Invite member button",
+      "required": false
+    }
+  ],
+  "usage": "Wire rbac.onSave and audit.fetchPage to your API."
+}

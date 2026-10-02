@@ -14,13 +14,11 @@ import { Customer, ComponentModel } from "./models";
 
 const ui = (p: string) => fileURLToPath(new URL(`../../../packages/ui/${p}`, import.meta.url));
 
-const seedEnv = z
-  .object({
-    MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/techinject"),
-    SEED_FREE_EMAIL: z.string().email(),
-    SEED_FREE_PASSWORD: z.string().min(10),
-  })
-  .parse(process.env);
+const seedEnvSchema = z.object({
+  MONGODB_URI: z.string().default("mongodb://127.0.0.1:27017/techinject"),
+  SEED_FREE_EMAIL: z.string().email(),
+  SEED_FREE_PASSWORD: z.string().min(10),
+});
 
 const entrySchema = z.object({
   name: z.string(),
@@ -62,6 +60,8 @@ export function loadRepoBundles() {
 }
 
 async function main() {
+  // Parsed here (not at import) so tests can reuse loadRepoBundles without seed credentials.
+  const seedEnv = seedEnvSchema.parse(process.env);
   await mongoose.connect(seedEnv.MONGODB_URI);
   const customers = [
     {

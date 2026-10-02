@@ -14,7 +14,7 @@ MERN + TypeScript (strict) + Tailwind CSS v4: MongoDB (Mongoose), Express 5, Rea
 apps/
   api/       Express API (MVC: models/, routes/, services/, middleware/, config/, utils/).
              Also serves the built catalogue (/) and admin (/admin), so cookies are same-origin.
-  web/       Public catalogue (pages/, components/, context/)
+  web/       Public catalogue (pages/, components/, context/) and the page builder (builder/)
   admin/     Admin panel: Overview, Components, Editor, Privileges, Feature radar
   preview/   Sandboxed renderer on its own origin; compiles component TSX in the browser
 packages/
@@ -44,7 +44,7 @@ Requires Node 22 and MongoDB (local or Atlas). Redis is optional.
 ```bash
 npm install
 cp .env.example .env   # set MONGODB_URI, JWT_SECRET, ADMIN_PASSWORD, seed passwords
-npm run seed           # 2 test customers + 26 components (3 premium demo fixtures)
+npm run seed           # 2 test customers + every packages/ui registry component (355; 3 premium demo fixtures)
 npm run dev            # API :4000, catalogue :5183, admin :5184, preview :5185
 ```
 
@@ -69,6 +69,73 @@ npm install <printed dependencies>
 Then start the main CSS with the three printed lines (Geist font import, `@import "tailwindcss";`, then the theme). The installer writes only inside `src/`, rejects unsafe paths, never overwrites a changed file without `--overwrite` (exit code 2), and prints dependencies instead of running commands. Options: `--src`, `--dry-run`, `--api`.
 
 **Premium:** the admin grants Premium (no payments, no self-upgrade). The customer creates a token on the **Account** page and sets `KITBASE_TOKEN` in the shell; the token is stored only as a sha256 hash. Signed-out requests get 401, free accounts 403. Revocation blocks the next request; code already installed stays in the consumer's project.
+
+## Page builder
+
+`/builder` (top nav "Builder", also linked from the admin sidebar) composes a page from catalogue components without writing code:
+
+- **Palette** (left): layout blocks (Section, Row, Column) and every registry component, searchable and grouped by category. Click adds to the selected container; drag drops at a position. Locked components are disabled until you sign in / have Premium.
+- **Canvas** (centre, top): the page as nested cards. Drag handles reorder and nest (`@dnd-kit`); a card's buttons and shortcuts do the rest: `Del` delete, `Ctrl+D` duplicate, `Alt+Arrows` move, `Ctrl+Z` / `Ctrl+Y` undo and redo. Focus a drag handle and press `Space` to sort with the keyboard.
+- **Live preview** (centre, bottom): the generated page rendered in the same sandboxed preview iframe as the docs, so the CRM theme and premium checks are identical (`/api/components/:slug/preview` per component, merged client-side).
+- **Props** (right): a form generated from each registry entry's `props` metadata (text, number, select from literal unions, boolean, string lists). Callbacks and complex types are edited in the JSON editor underneath.
+- **Export**: `Page.tsx` built from the tree (imports, layout wrappers as Tailwind classes, props as JSX) plus one `kitbase add <slug>` command per component and the `npm install` line. Copy or download.
+
+The page is a JSON tree `{ id, type, props, children }` kept in a zustand store with immer-based undo/redo and saved to `localStorage` only; nothing is written to the database. Code: `apps/web/src/builder/` (pure `tree.ts`, `codegen.ts`, `propsSchema.ts`, `dnd.ts` are unit tested).
+
+## MCP server
+
+`packages/mcp` (`kitbase-mcp`) exposes the library to AI coding tools over stdio. Tools:
+`search_components(query, category?)`, `list_categories`, `get_component(slug)` (props, usage,
+examples, dependencies) and `install_component(slug, dir?, src?, overwrite?, dryRun?)`, which reuses
+the CLI's installer logic (safe paths, no overwrite without the flag, prints dependencies instead of
+running npm). It reads the public API: `KITBASE_API` (default `https://kitbase.onrender.com`) and
+`KITBASE_TOKEN` for premium. Build with `npm run build -w packages/mcp` (outputs `dist/index.js`);
+from a checkout run `node packages/mcp/dist/index.js`, or `npx -y kitbase-mcp` once published.
+
+Claude Code:
+
+```bash
+claude mcp add kitbase -e KITBASE_TOKEN=<token> -- npx -y kitbase-mcp
+```
+
+Cursor (`.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "kitbase": {
+      "command": "npx",
+      "args": ["-y", "kitbase-mcp"],
+      "env": { "KITBASE_TOKEN": "<token>" }
+    }
+  }
+}
+```
+
+VS Code (`.vscode/mcp.json`):
+
+```json
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "kitbase-token",
+      "description": "Kitbase token",
+      "password": true
+    }
+  ],
+  "servers": {
+    "kitbase": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "kitbase-mcp"],
+      "env": { "KITBASE_TOKEN": "${input:kitbase-token}" }
+    }
+  }
+}
+```
+
+The server writes relative to its working directory unless `dir` (or `KITBASE_PROJECT_DIR`) is set.
 
 ## Capture Engine
 
@@ -105,6 +172,28 @@ copy another company's brand, logos or content.
 - **Privileges:** grant/revoke Premium and Block/Unblock customers. A blocked customer cannot sign in, and their tokens and sessions stop working immediately.
 - **Feature radar:** searches with no result become feature requests with real counts (hidden below 5). The admin marks them valid, rejected or building with an ETA, and users see "Coming soon". For building requests, **Generate with AI** runs in the queue (Gemini, then OpenRouter, then Ollama as fallbacks), must pass the same `validateBundle()` rules, and is saved **only as a draft**.
 
+## Prompt to screen
+
+Describe a page (public `/screens`, admin `/admin/screens`) and the AI composes it from **published catalogue components only**, as a tree of `{ id, type, props, children }` nodes (`packages/core/src/page-tree.ts`). `type` is a registry slug, `slug/Export` for a secondary export, or `text`.
+
+- `POST /api/screens/generate` `{ prompt }` (also `/api/admin/screens/generate`): rate-limited per IP (token bucket, 5 burst / 3 per minute), zod-validated. Uses the same provider chain as the feature radar (`AI_PROVIDER` + fallbacks) via `completeJson()` in `plugins/feature-radar`. The reply is validated with `validatePageTree()`: unknown slugs/exports, non-JSON props, duplicate ids, more than 80 nodes, deeper than 8 levels or over 60 KB are rejected; one retry carries the errors back to the model.
+- Public callers only get components they may use (premium needs a premium session); admin gets everything published.
+- `POST /api/screens/render` `{ tree }` rebuilds a hand-edited tree without AI.
+- The response carries `code` (Page.tsx), `files` (every used component, deduplicated), `dependencies`, `installCommand` and a `preview` payload for the sandboxed `PreviewFrame`.
+- Known limits: props are JSON only (no icons, callbacks or JSX), so components whose required props are React nodes render with defaults.
+
+## Team workspaces
+
+A customer can create a team (up to 3 owned) and share **private components** with its members. Private components live in their own collection (`TeamComponent`), never in the public catalogue, its cache or the public registry.
+
+- **Roles:** `member` reads published components; `admin` also uploads, publishes, invites and manages members; `owner` also changes owners, renames and deletes the team. One `decideTeamAccess()` in `packages/core/src/access.ts` decides every request: anonymous → 401, non-member, disabled or missing team → 404 (identical body), role too low → 403.
+- **Invites:** by email (shown on the invitee's Account page; unknown emails get the same 201) or by single-use 7-day link `PUBLIC_ORIGIN/join#kbi_…`. Only the sha256 of the link token is stored, the token travels in the URL fragment and a POST body only, and accepting re-checks that the team is live and the inviter is still an admin. Two concurrent accepts yield one success and one 410.
+- **Tokens:** a personal `ti_` token works for every team you belong to. A **team-scoped** token (Account › Scope, or Team › Tokens) only installs `@team/…` components and never unlocks public premium (`401 token_scope`). It is revoked when its owner leaves the team.
+- **Install:** `npx --yes <origin>/cli/kitbase.tgz add @team/slug` → `GET /api/teams/:team/registry/:slug`. The CLI refuses to send `KITBASE_TOKEN` over plain http except to localhost.
+- **Bundle rules for teams:** files under `components/<team>/`, PNG/WebP thumbnails only (no SVG), `access` forced to `free`.
+- **Isolation:** every query carries the server-resolved `teamId` (`services/teamRepo.ts` is the only importer of `TeamComponent`; a Mongoose plugin throws on any unscoped query), lookups by id use `{ _id, teamId }`, membership is read from MongoDB on every request with no caching, and all team responses are `Cache-Control: no-store`. Writes are cookie-only (bearer tokens can only read and install).
+- **Platform admin:** `/admin/teams` shows slug, owners, counts and status, can disable a team or assign an owner, and never sees team source code.
+
 ## Security
 
 - **Sessions:** httpOnly, SameSite=strict cookies (Secure in production). A 15-minute access JWT plus a rotating 10-day refresh token (stored as sha256); reusing an old refresh token revokes the chain. Admin and customer use separate cookies and JWT audiences.
@@ -115,14 +204,36 @@ copy another company's brand, logos or content.
 
 ## Tests
 
-`npm run check` is clean; **32 unit tests** pass.
+`npm run check` is clean; **373 unit tests** pass across 26 files.
 
-| File                                                 | Covers                                                  |
-| ---------------------------------------------------- | ------------------------------------------------------- |
-| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses |
-| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                      |
-| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                       |
-| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                       |
+| File                                                 | Covers                                                                                                    |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `packages/cli/test/lib.test.ts`                      | unsafe paths, overwrite rules, arguments, bad responses                                                   |
+| `plugins/feature-radar/src/server/normalize.test.ts` | term normalising, real counts only                                                                        |
+| `packages/cache/src/cache.test.ts`                   | TTL, invalidation, wrap, hit/miss                                                                         |
+| `packages/queue/src/queue.test.ts`                   | job status, failures, concurrency                                                                         |
+| `apps/web/src/builder/*.test.ts`                     | tree ops, undo/redo + persistence, codegen, prop schema, drop targets                                     |
+| `packages/core/src/page-tree.test.ts`                | page tree limits, exports, Page.tsx code generation                                                       |
+| `apps/api/src/services/screens.test.ts`              | prompt to screen with a fake provider, retry, fallback                                                    |
+| `packages/core/src/teams.test.ts`                    | full `decideTeamAccess` matrix, invite roles, team bundle rules, `@team/slug` install text                |
+| `apps/api/test/teams.isolation.test.ts`              | public never leaks, cross-tenant 404s, IDOR, slug collision, team tokens, revocation, bearer cannot write |
+| `apps/api/test/teams.roles.test.ts`                  | member/admin/owner limits, last owner, per-team limits                                                    |
+| `apps/api/test/teams.invites.test.ts`                | single-use links, concurrent accept, expiry, revocation, email lock, hash-only storage                    |
+| `apps/api/test/teams.components.test.ts`             | upload, validate, publish, unpublish, immutable snapshot, forced free, queued upload                      |
+| `apps/web/src/lib/teams.test.ts`                     | `/join` hash clearing, `apiBase` URLs, install command                                                    |
+
+**End-to-end** (Playwright, Chromium): catalogue, search, component page + live preview, copy
+code, premium lock for signed-out visitors, admin sign-in and publish. The API runs against an
+in-memory MongoDB, so no `.env` or database is needed:
+
+```sh
+npx playwright install chromium   # once
+npm run build && npm run test:e2e
+```
+
+Details in [`tests/e2e/README.md`](tests/e2e/README.md). CI (`.github/workflows/ci.yml`) runs
+format check, lint, typecheck, unit tests, build and e2e on every push and pull request, with no
+secrets.
 
 ## Deployed checks (live, 2026-09-27)
 
@@ -161,5 +272,6 @@ Recovery: unpublish or re-publish a previous version; roll back a deploy in Rend
 - Deploys are manual; there is no CI/CD pipeline.
 - Free plan cold starts are reduced by the keep-alive ping, not removed.
 - End-to-end behaviour is verified on the live site rather than by automated browser tests.
+- Team workspaces v1 has no audit log, no email delivery for invites (the invitee sees them on their Account page), no shadcn `/r/*.json` registry for team items, and a member's team tokens stop working when that member leaves (by design). "Private" means private from other customers, not from the platform operator.
 
 Time spent: about 6 hours.

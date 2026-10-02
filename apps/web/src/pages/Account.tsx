@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
-import { KeyRound, LogIn, TriangleAlert } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { KeyRound, LogIn, Mail, TriangleAlert, Users } from "lucide-react";
 import { api, CodeBlock } from "@ti/client";
 import { Layout } from "../components/Layout";
 import { useSession } from "../context/session";
+import { slugify } from "../lib/teams";
 import {
   alertClass,
   btn,
@@ -18,24 +19,66 @@ interface Token {
   id: string;
   name: string;
   prefix: string;
+  /** Team slug for a team-scoped token, null for a personal one. */
+  team: string | null;
   createdAt: string;
   lastUsedAt?: string;
 }
 
+interface PendingInvite {
+  id: string;
+  role: "admin" | "member";
+  team: { slug: string; name: string };
+  expiresAt: string;
+}
+
 export function Account() {
-  const { me, loadingMe } = useSession();
+  const { me, loadingMe, teams, refreshTeams } = useSession();
   const [tokens, setTokens] = useState<Token[] | null>(null);
   const [created, setCreated] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [invites, setInvites] = useState<PendingInvite[]>([]);
+  const [teamError, setTeamError] = useState<string | null>(null);
+  const [teamName, setTeamName] = useState("");
+  const navigate = useNavigate();
 
   const load = useCallback(() => {
     api<Token[]>("/api/tokens")
       .then(setTokens)
       .catch((e: Error) => setError(e.message));
+    api<PendingInvite[]>("/api/invites")
+      .then(setInvites)
+      .catch(() => setInvites([]));
   }, []);
   useEffect(() => {
     if (me) load();
   }, [me, load]);
+
+  const answerInvite = async (id: string, action: "accept" | "decline") => {
+    setTeamError(null);
+    try {
+      const res = await api<{ team?: string }>(`/api/invites/${id}/${action}`, { method: "POST" });
+      load();
+      refreshTeams();
+      if (action === "accept" && res.team) navigate(`/teams/${res.team}`);
+    } catch (e) {
+      setTeamError(e instanceof Error ? e.message : "Could not update the invite");
+    }
+  };
+  const onCreateTeam = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    const name = String(form.get("name"));
+    const slug = String(form.get("slug"));
+    setTeamError(null);
+    try {
+      await api("/api/teams", { method: "POST", json: { name, slug } });
+      refreshTeams();
+      navigate(`/teams/${slug}`);
+    } catch (err) {
+      setTeamError(err instanceof Error ? err.message : "Could not create the team");
+    }
+  };
 
   if (loadingMe)
     return (
@@ -69,10 +112,15 @@ export function Account() {
 
   const onCreate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const name = String(new FormData(e.currentTarget).get("name"));
+    const form = new FormData(e.currentTarget);
+    const name = String(form.get("name"));
+    const scope = String(form.get("scope") ?? "");
     setError(null);
     try {
-      const res = await api<{ token: string }>("/api/tokens", { method: "POST", json: { name } });
+      const res = await api<{ token: string }>("/api/tokens", {
+        method: "POST",
+        json: { name, ...(scope ? { team: scope } : {}) },
+      });
       setCreated(res.token);
       load();
       e.currentTarget?.reset();
@@ -99,6 +147,132 @@ export function Account() {
           </p>
         ) : null}
 
+        {invites.length ? (
+          <section className="mb-8 rounded-xl border border-primary">
+            <div className="border-b border-border p-5">
+              <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
+                <Mail className="size-4" aria-hidden />
+                Team invites
+              </h2>
+            </div>
+            <ul className="divide-y divide-border">
+              {invites.map((i) => (
+                <li
+                  key={i.id}
+                  className="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 text-sm"
+                >
+                  <span>
+                    <span className="font-medium text-foreground">{i.team.name}</span>{" "}
+                    <span className="text-muted-foreground">
+                      (@{i.team.slug}) as {i.role} · expires{" "}
+                      {new Date(i.expiresAt).toLocaleDateString()}
+                    </span>
+                  </span>
+                  <span className="flex gap-2">
+                    <button
+                      type="button"
+                      className={`${btn.primary} h-8 px-3`}
+                      onClick={() => void answerInvite(i.id, "accept")}
+                    >
+                      Accept
+                    </button>
+                    <button
+                      type="button"
+                      className={`${btn.secondary} h-8 px-3`}
+                      onClick={() => void answerInvite(i.id, "decline")}
+                    >
+                      Decline
+                    </button>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        <section className="mb-8 rounded-xl border border-border">
+          <div className="border-b border-border p-5">
+            <h2 className="flex items-center gap-2 text-base font-semibold text-foreground">
+              <Users className="size-4" aria-hidden />
+              Your teams
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              A team shares private components with its members. Only members can see them; the
+              installer uses <code>@team/slug</code>.
+            </p>
+            <form onSubmit={onCreateTeam} className="mt-4 flex flex-col gap-2 sm:flex-row">
+              <label className="sr-only" htmlFor="team-name">
+                Team name
+              </label>
+              <input
+                id="team-name"
+                name="name"
+                required
+                minLength={2}
+                maxLength={60}
+                placeholder="Team name, e.g. Acme"
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+                className={`${inputClass} sm:flex-1`}
+              />
+              <label className="sr-only" htmlFor="team-slug">
+                Team slug
+              </label>
+              <input
+                id="team-slug"
+                name="slug"
+                required
+                pattern="[a-z0-9]+(-[a-z0-9]+)*"
+                defaultValue={slugify(teamName)}
+                key={slugify(teamName)}
+                placeholder="slug"
+                className={`${inputClass} font-mono sm:w-44`}
+              />
+              <button type="submit" className={btn.primary}>
+                Create team
+              </button>
+            </form>
+            <p className="mt-2 text-xs text-muted-foreground">
+              The slug is used in install commands (<code>@slug/component</code>) and can&apos;t
+              change. You can own up to 3 teams.
+            </p>
+            {teamError ? (
+              <p role="alert" className={`${alertClass} mt-3`}>
+                {teamError}
+              </p>
+            ) : null}
+          </div>
+          {teams.length === 0 ? (
+            <p className="px-5 py-8 text-center text-sm text-muted-foreground">No teams yet.</p>
+          ) : (
+            <ul className="divide-y divide-border">
+              {teams.map((t) => (
+                <li
+                  key={t.slug}
+                  className="flex items-center justify-between gap-3 px-5 py-3.5 text-sm"
+                >
+                  <span>
+                    <Link
+                      to={`/teams/${t.slug}`}
+                      className="font-medium text-foreground hover:underline"
+                    >
+                      {t.name}
+                    </Link>
+                    <span className="ml-2 font-mono text-xs text-muted-foreground">@{t.slug}</span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">
+                      {t.role} · {t.memberCount} member{t.memberCount === 1 ? "" : "s"} ·{" "}
+                      {t.componentCount} component{t.componentCount === 1 ? "" : "s"}
+                    </span>
+                  </span>
+                  <Link to={`/teams/${t.slug}`} className={`${btn.secondary} h-8 px-3`}>
+                    Open
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
         <section className="rounded-xl border border-border">
           <div className="border-b border-border p-5">
             <h2 className="text-base font-semibold text-foreground">Access tokens</h2>
@@ -121,6 +295,22 @@ export function Account() {
                 placeholder="Token name, e.g. laptop"
                 className={`${inputClass} sm:flex-1`}
               />
+              <label className="sr-only" htmlFor="token-scope">
+                Scope
+              </label>
+              <select
+                id="token-scope"
+                name="scope"
+                defaultValue=""
+                className={`${inputClass} sm:w-44`}
+              >
+                <option value="">Personal</option>
+                {teams.map((t) => (
+                  <option key={t.slug} value={t.slug}>
+                    Team @{t.slug}
+                  </option>
+                ))}
+              </select>
               <button type="submit" className={btn.primary}>
                 Create token
               </button>
@@ -161,6 +351,9 @@ export function Account() {
                       <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-muted-foreground">
                         {t.prefix}...
                       </code>
+                      <span className="rounded-full border border-border px-2 text-[11px] text-muted-foreground">
+                        {t.team ? `Team @${t.team}` : "Personal"}
+                      </span>
                     </span>
                     <span className="mt-0.5 block text-xs text-muted-foreground">
                       Created {new Date(t.createdAt).toLocaleDateString()}

@@ -148,6 +148,25 @@ Notes:
 - `@xterm/xterm` is included because `@xterm/addon-fit` is only a plugin for it.
 - `ajv` is pinned to v8 in the workspaces (v6 remains only as an ESLint transitive).
 
+## MCP server (`packages/mcp`)
+
+| Package                     | License | Source                                                 |
+| --------------------------- | ------- | ------------------------------------------------------ |
+| `@modelcontextprotocol/sdk` | MIT     | https://github.com/modelcontextprotocol/typescript-sdk |
+| `zod`                       | MIT     | https://github.com/colinhacks/zod                      |
+| `esbuild` (build only)      | MIT     | https://github.com/evanw/esbuild                       |
+
+These are tooling dependencies, not component dependencies, so they are not in `ALLOWED_DEPENDENCIES`.
+
+## Test tooling
+
+Dev-only (root `devDependencies`); never shipped in components or the installer.
+
+| Package                 | Version | Licence    | Source                                             |
+| ----------------------- | ------- | ---------- | -------------------------------------------------- |
+| `@playwright/test`      | 1.63.0  | Apache-2.0 | https://github.com/microsoft/playwright            |
+| `mongodb-memory-server` | 11.3.0  | MIT        | https://github.com/typegoose/mongodb-memory-server |
+
 ## Adapted code
 
 - `packages/ui/src/components/crm/pro-workflow-builder/flow-styles.ts` inlines the structural rules of
@@ -156,3 +175,10 @@ Notes:
 - `packages/ui/src/components/crm/pro-web-terminal/xterm-styles.ts` contains a minified copy of
   `@xterm/xterm@6.0.0` `css/xterm.css` (MIT, Copyright (c) 2017-2019 The xterm.js authors), inlined so
   the Pro Web Terminal renders without the host bundler handling a CSS import.
+
+## Platform (server and admin app, not shipped in components)
+
+| Package       | Version | Licence | Source                                   | Used in                       |
+| ------------- | ------- | ------- | ---------------------------------------- | ----------------------------- |
+| `compression` | 1.8.x   | MIT     | https://github.com/expressjs/compression | `apps/api` gzip responses     |
+| `recharts`    | 3.10.x  | MIT     | https://github.com/recharts/recharts     | `apps/admin` Analytics charts |

@@ -1,11 +1,34 @@
 import crypto from "node:crypto";
 import jwt from "jsonwebtoken";
 import type { NextFunction, Request, Response } from "express";
-import type { Viewer } from "@ti/core";
+import type { Types } from "mongoose";
+import { decideTeamAccess, type ComponentStatus, type TeamAction, type Viewer } from "@ti/core";
 import type { Env } from "../config/env";
-import { ApiToken, Customer, type CustomerDoc } from "../models";
-import { HttpError } from "../utils/http";
+import {
+  ApiToken,
+  Customer,
+  Team,
+  TeamMember,
+  type CustomerDoc,
+  type TeamDoc,
+  type TeamMemberDoc,
+} from "../models";
+import { denyError, HttpError, teamErrors } from "../utils/http";
 import { issueRefresh, REFRESH_TTL_S, revokeRefresh, rotateRefresh } from "../services/refresh";
+import { teamScope, type TeamScope } from "../services/teamRepo";
+
+export interface Principal {
+  customer: CustomerDoc;
+  /** Set when the caller used a team-scoped API token. */
+  tokenTeamId: Types.ObjectId | null;
+}
+
+export interface TeamContext {
+  customer: CustomerDoc;
+  team: TeamDoc;
+  member: TeamMemberDoc;
+  repo: TeamScope;
+}
 
 export const CUSTOMER_COOKIE = "ti_session";
 export const ADMIN_COOKIE = "ti_admin";
@@ -15,6 +38,9 @@ const CUSTOMER_REFRESH_PATH = "/api/auth";
 const ADMIN_PATH = "/api/admin";
 /** Short-lived access JWT; the 10-day refresh token (refresh.ts) renews it. */
 export const ACCESS_TTL_S = 15 * 60;
+
+/** True when the request authenticates with an API token (same test `principal()` uses). */
+export const usesBearer = (req: Request) => !!req.get("authorization")?.startsWith("Bearer ");
 
 export const sha256 = (value: string) => crypto.createHash("sha256").update(value).digest("hex");
 
@@ -132,10 +158,14 @@ export function makeAuth(env: Env) {
       res.clearCookie(ADMIN_REFRESH_COOKIE, { path: ADMIN_PATH });
     },
 
-    /** Loads the customer fresh from the DB on every request, so plan changes apply at once. */
-    async currentCustomer(req: Request): Promise<CustomerDoc | null> {
+    /**
+     * Who is calling: bearer token (CLI, agents) or session cookie. Loaded fresh from the DB on
+     * every request, so plan changes, blocks and revocations apply at once.
+     * `tokenTeamId` is set for team-scoped tokens; they may only touch that team's routes.
+     */
+    async principal(req: Request): Promise<Principal | null> {
       const header = req.get("authorization");
-      if (header?.startsWith("Bearer ")) {
+      if (header && usesBearer(req)) {
         const token = await ApiToken.findOne({
           hash: sha256(header.slice(7).trim()),
           revokedAt: null,
@@ -143,16 +173,73 @@ export function makeAuth(env: Env) {
         if (!token)
           throw new HttpError(401, "invalid_token", "The access token is invalid or revoked.");
         await ApiToken.updateOne({ _id: token._id }, { lastUsedAt: new Date() });
-        return findActiveCustomer(token.customerId);
+        const customer = await findActiveCustomer(token.customerId);
+        return customer ? { customer, tokenTeamId: token.teamId ?? null } : null;
       }
       const id = verify(req.cookies?.[CUSTOMER_COOKIE], "customer");
       if (!id) return null;
-      return findActiveCustomer(id);
+      const customer = await findActiveCustomer(id);
+      return customer ? { customer, tokenTeamId: null } : null;
+    },
+
+    /** Public catalogue identity. A team token never counts here, so it can never use its owner's plan. */
+    async currentCustomer(req: Request): Promise<CustomerDoc | null> {
+      const p = await this.principal(req);
+      if (p?.tokenTeamId) throw teamErrors.tokenScope();
+      return p?.customer ?? null;
     },
 
     async viewer(req: Request): Promise<Viewer> {
       const c = await this.currentCustomer(req);
       return c ? { kind: "customer", plan: c.plan } : { kind: "anonymous" };
+    },
+
+    /**
+     * Resolves a team request: who is calling, which team, what role, and whether `action` is
+     * allowed. Order is fixed so anonymous callers learn nothing (401 before any DB lookup),
+     * non-members and unknown/disabled teams look identical (404), and only members with too
+     * low a role see 403. Membership is read from Mongo on every call - nothing is cached.
+     */
+    async teamContext(
+      req: Request,
+      teamSlug: string,
+      action: TeamAction,
+      component?: { status: ComponentStatus } | null,
+    ): Promise<TeamContext> {
+      return this.teamContextFor(await this.principal(req), teamSlug, action, component);
+    },
+
+    /** Same as `teamContext` for an already resolved principal (cookie routes after `requireCustomer`). */
+    async teamContextFor(
+      p: Principal | null,
+      teamSlug: string,
+      action: TeamAction,
+      component?: { status: ComponentStatus } | null,
+    ): Promise<TeamContext> {
+      if (!p) throw teamErrors.signIn();
+      const team = await Team.findOne({ slug: teamSlug, disabled: false }).lean<TeamDoc>();
+      if (!team) throw teamErrors.notFound();
+      if (p.tokenTeamId && !p.tokenTeamId.equals(team._id)) throw teamErrors.notFound();
+      const member = await TeamMember.findOne({
+        teamId: team._id,
+        customerId: p.customer._id,
+      }).lean<TeamMemberDoc>();
+      const decision = decideTeamAccess(
+        component === undefined ? { status: "published" } : component,
+        { kind: "customer", role: member?.role ?? null },
+        action,
+      );
+      if (!decision.allowed) {
+        if (decision.reason === "not_found") throw teamErrors.notFound();
+        if (decision.reason === "sign_in_required") throw teamErrors.signIn();
+        throw denyError(decision.reason);
+      }
+      return {
+        customer: p.customer,
+        team,
+        member: member!,
+        repo: teamScope(team._id, team.slug, p.customer._id),
+      };
     },
 
     requireCustomer: async (req: Request, res: Response, next: NextFunction) => {
