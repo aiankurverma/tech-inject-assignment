@@ -1,15 +1,25 @@
 /**
- * AI draft builder: asks an LLM (Anthropic Messages API or Google Gemini, plain fetch)
+ * AI draft builder: asks an LLM (Anthropic, Gemini, Inception, OpenRouter or Ollama, plain fetch)
  * to write a component bundle for a requested feature term. The caller validates and
  * stores the result as a DRAFT; nothing here publishes anything.
  */
+import { createHash } from "node:crypto";
 
-export type AiProvider = "anthropic" | "gemini" | "openrouter" | "ollama";
+export type AiProvider = "anthropic" | "gemini" | "inception" | "openrouter" | "ollama";
 
 export interface ProviderConfig {
   provider: AiProvider;
   apiKey: string;
   model: string;
+}
+
+/** Token counts reported by the provider for one call (0 when it reports nothing). */
+export interface AiUsage {
+  provider: AiProvider;
+  model: string;
+  inputTokens: number;
+  outputTokens: number;
+  cachedInputTokens: number;
 }
 
 /** Which LLM to ask, and what to try next when it fails. Shared by every AI feature. */
@@ -21,6 +31,12 @@ export interface ProviderChain {
   apiKey: string;
   model: string;
   fetchImpl?: typeof fetch;
+  /** Output token cap per call (default 8000). Keep it near the largest valid reply. */
+  maxTokens?: number;
+  /** Reuse a successful reply to an identical request for this long; 0 or unset disables. */
+  cacheTtlMs?: number;
+  /** Called after every provider reply that reports token usage. */
+  onUsage?: (usage: AiUsage) => void;
 }
 
 export interface BuildOptions extends ProviderChain {
@@ -37,13 +53,55 @@ const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const geminiUrl = (model: string) =>
   `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
 
-/** Provider-specific request and reply text extraction; everything else is shared. */
+const DEFAULT_MAX_TOKENS = 8000;
+const maxTokens = (opts: ProviderChain) => opts.maxTokens ?? DEFAULT_MAX_TOKENS;
+
+type Tokens = Omit<AiUsage, "provider" | "model">;
+const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : 0);
+
+/** OpenAI-style chat completions (OpenRouter, Inception). */
+const chatRequest = (
+  url: string,
+  system: string,
+  user: string,
+  opts: ProviderChain,
+  extra: Record<string, unknown> = {},
+): [string, RequestInit] => [
+  url,
+  {
+    method: "POST",
+    headers: { authorization: `Bearer ${opts.apiKey}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      model: opts.model,
+      max_tokens: maxTokens(opts),
+      messages: [
+        { role: "system", content: system },
+        { role: "user", content: user },
+      ],
+      ...extra,
+    }),
+  },
+];
+const chatText = (body: unknown) =>
+  (body as { choices?: { message?: { content?: string } }[] }).choices?.[0]?.message?.content ?? "";
+const chatUsage = (body: unknown): Tokens => {
+  const u = (body as { usage?: Record<string, unknown> }).usage ?? {};
+  const details = (u.prompt_tokens_details ?? {}) as Record<string, unknown>;
+  return {
+    inputTokens: num(u.prompt_tokens),
+    outputTokens: num(u.completion_tokens),
+    cachedInputTokens: num(details.cached_tokens),
+  };
+};
+
+/** Provider-specific request, reply text and usage extraction; everything else is shared. */
 const PROVIDERS: Record<
   AiProvider,
   {
     keyName: string;
     request: (system: string, user: string, opts: ProviderChain) => [string, RequestInit];
     text: (body: unknown) => string;
+    usage: (body: unknown) => Tokens;
   }
 > = {
   anthropic: {
@@ -59,7 +117,7 @@ const PROVIDERS: Record<
         },
         body: JSON.stringify({
           model: opts.model,
-          max_tokens: 8000,
+          max_tokens: maxTokens(opts),
           system,
           messages: [{ role: "user", content: user }],
         }),
@@ -70,6 +128,14 @@ const PROVIDERS: Record<
         .filter((c) => c.type === "text" && typeof c.text === "string")
         .map((c) => c.text)
         .join(""),
+    usage: (body) => {
+      const u = (body as { usage?: Record<string, unknown> }).usage ?? {};
+      return {
+        inputTokens: num(u.input_tokens),
+        outputTokens: num(u.output_tokens),
+        cachedInputTokens: num(u.cache_read_input_tokens),
+      };
+    },
   },
   gemini: {
     keyName: "GEMINI_API_KEY",
@@ -81,7 +147,10 @@ const PROVIDERS: Record<
         body: JSON.stringify({
           systemInstruction: { parts: [{ text: system }] },
           contents: [{ role: "user", parts: [{ text: user }] }],
-          generationConfig: { responseMimeType: "application/json", maxOutputTokens: 8192 },
+          generationConfig: {
+            responseMimeType: "application/json",
+            maxOutputTokens: opts.maxTokens ?? 8192,
+          },
         }),
       },
     ],
@@ -92,27 +161,31 @@ const PROVIDERS: Record<
       )
         .map((p) => p.text ?? "")
         .join(""),
+    usage: (body) => {
+      const u = (body as { usageMetadata?: Record<string, unknown> }).usageMetadata ?? {};
+      return {
+        inputTokens: num(u.promptTokenCount),
+        outputTokens: num(u.candidatesTokenCount),
+        cachedInputTokens: num(u.cachedContentTokenCount),
+      };
+    },
+  },
+  // Inception (Mercury diffusion models): OpenAI-compatible; JSON mode avoids prose and fences.
+  inception: {
+    keyName: "INCEPTION_API_KEY",
+    request: (system, user, opts) =>
+      chatRequest("https://api.inceptionlabs.ai/v1/chat/completions", system, user, opts, {
+        response_format: { type: "json_object" },
+      }),
+    text: chatText,
+    usage: chatUsage,
   },
   openrouter: {
     keyName: "OPENROUTER_API_KEYS",
-    request: (system, user, opts) => [
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: { authorization: `Bearer ${opts.apiKey}`, "content-type": "application/json" },
-        body: JSON.stringify({
-          model: opts.model,
-          max_tokens: 8000,
-          messages: [
-            { role: "system", content: system },
-            { role: "user", content: user },
-          ],
-        }),
-      },
-    ],
-    text: (body) =>
-      (body as { choices?: { message?: { content?: string } }[] }).choices?.[0]?.message?.content ??
-      "",
+    request: (system, user, opts) =>
+      chatRequest("https://openrouter.ai/api/v1/chat/completions", system, user, opts),
+    text: chatText,
+    usage: chatUsage,
   },
   ollama: {
     keyName: "OLLAMA_CLOUD_KEY",
@@ -133,8 +206,39 @@ const PROVIDERS: Record<
       },
     ],
     text: (body) => (body as { message?: { content?: string } }).message?.content ?? "",
+    usage: (body) => {
+      const b = body as Record<string, unknown>;
+      return {
+        inputTokens: num(b.prompt_eval_count),
+        outputTokens: num(b.eval_count),
+        cachedInputTokens: 0,
+      };
+    },
   },
 };
+
+/** Successful replies by request hash, so an identical request is not paid for twice. */
+const replyCache = new Map<string, { at: number; json: unknown }>();
+const REPLY_CACHE_MAX = 200;
+
+const cacheKey = (system: string, user: string, opts: ProviderChain) =>
+  createHash("sha256")
+    .update(
+      JSON.stringify([
+        opts.provider ?? "anthropic",
+        opts.model,
+        maxTokens(opts),
+        (opts.fallbacks ?? []).map((f) => `${f.provider}:${f.model}`),
+        system,
+        user,
+      ]),
+    )
+    .digest("hex");
+
+/** Test hook: forget cached replies. */
+export function clearReplyCache(): void {
+  replyCache.clear();
+}
 
 /** "kanban board" → "kanban-board" (matches the bundle slug rules). */
 export function termToSlug(term: string): string {
@@ -207,6 +311,13 @@ export async function completeJson(
   user: string,
   opts: ProviderChain,
 ): Promise<JsonResult> {
+  const ttl = opts.cacheTtlMs ?? 0;
+  const key = ttl > 0 ? cacheKey(system, user, opts) : "";
+  if (key) {
+    const hit = replyCache.get(key);
+    if (hit && Date.now() - hit.at < ttl) return { ok: true, json: hit.json };
+    if (hit) replyCache.delete(key);
+  }
   const chain: ProviderChain[] = [
     opts,
     ...(opts.fallbacks ?? []).map((f) => ({ ...opts, ...f, fallbacks: undefined })),
@@ -214,6 +325,13 @@ export async function completeJson(
   const errors: string[] = [];
   for (const attempt of chain) {
     const result = await completeOnce(system, user, attempt);
+    if (result.ok && key) {
+      if (replyCache.size >= REPLY_CACHE_MAX) {
+        const oldest = replyCache.keys().next().value;
+        if (oldest !== undefined) replyCache.delete(oldest);
+      }
+      replyCache.set(key, { at: Date.now(), json: result.json });
+    }
     if (result.ok || !/rejected|HTTP|reach|unreadable/i.test(result.error)) return result;
     errors.push(`${attempt.provider ?? "anthropic"}: ${result.error}`);
   }
@@ -246,12 +364,20 @@ async function completeOnce(
   }
   if (!res.ok) return { ok: false, error: `AI API returned HTTP ${res.status}.` };
 
+  let body: unknown;
   let text: string;
   try {
-    text = provider.text(await res.json());
+    body = await res.json();
+    text = provider.text(body);
   } catch {
     return { ok: false, error: "AI API returned an unreadable response." };
   }
+  const tokens =
+    body && typeof body === "object"
+      ? provider.usage(body)
+      : { inputTokens: 0, outputTokens: 0, cachedInputTokens: 0 };
+  if (opts.onUsage && tokens.inputTokens + tokens.outputTokens > 0)
+    opts.onUsage({ provider: opts.provider ?? "anthropic", model: opts.model, ...tokens });
   try {
     return { ok: true, json: extractJson(text) };
   } catch {

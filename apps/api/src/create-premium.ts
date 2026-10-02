@@ -19,7 +19,12 @@ await mongoose.connect(env.MONGODB_URI);
 const email = env.NEW_PREMIUM_EMAIL.toLowerCase();
 await Customer.updateOne(
   { email },
-  { email, name: "Premium Tester", plan: "premium", passwordHash: await bcrypt.hash(env.NEW_PREMIUM_PASSWORD, 12) },
+  {
+    email,
+    name: "Premium Tester",
+    plan: "premium",
+    passwordHash: await bcrypt.hash(env.NEW_PREMIUM_PASSWORD, 12),
+  },
   { upsert: true },
 );
 console.log(`Premium account ready: ${email}`);
