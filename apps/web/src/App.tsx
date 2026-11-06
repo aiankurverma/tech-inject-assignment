@@ -18,6 +18,7 @@ const ThemeStudio = lazy(() =>
   import("./pages/ThemeStudio").then((m) => ({ default: m.ThemeStudio })),
 );
 const SignIn = lazy(() => import("./pages/SignIn").then((m) => ({ default: m.SignIn })));
+const SignUp = lazy(() => import("./pages/SignUp").then((m) => ({ default: m.SignUp })));
 const Account = lazy(() => import("./pages/Account").then((m) => ({ default: m.Account })));
 
 /** Same page as the public catalogue, pointed at the team's private API. */
@@ -41,6 +42,7 @@ export function App() {
         <Route path="/theme" element={<ThemeStudio />} />
         <Route path="/builder" element={<Builder />} />
         <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
         <Route path="/account" element={<Account />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

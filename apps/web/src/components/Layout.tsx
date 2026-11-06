@@ -411,9 +411,14 @@ export function Layout({
                 </button>
               </>
             ) : (
-              <Link to="/sign-in" className={`${btn.secondary} h-8 px-3`}>
-                Sign in
-              </Link>
+              <>
+                <Link to="/sign-in" className={`${btn.secondary} h-8 px-3`}>
+                  Sign in
+                </Link>
+                <Link to="/sign-up" className={`${btn.primary} h-8 px-3`}>
+                  Sign up
+                </Link>
+              </>
             )}
           </div>
         </div>

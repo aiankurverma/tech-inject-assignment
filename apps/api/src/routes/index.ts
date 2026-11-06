@@ -140,6 +140,37 @@ export function customerRoutes(auth: Auth, deps: RouteDeps) {
     await auth.startCustomerSession(res, String(customer._id));
     res.json({ email: customer.email, name: customer.name, plan: customer.plan });
   });
+  // Public self-service registration. New accounts start on the free plan and are signed in
+  // immediately, so the catalogue, private teams and CLI tokens are usable without admin help.
+  const register = z.object({
+    name: z.string().trim().min(1).max(80),
+    email: z.string().email().max(200),
+    password: z.string().min(8).max(200),
+  });
+  r.post("/auth/register", deps.customerLoginLimit, async (req, res) => {
+    const { name, email, password } = parseBody(register, req.body);
+    const passwordHash = await bcrypt.hash(password, 10);
+    let customer: CustomerDoc;
+    try {
+      customer = await Customer.create({
+        name,
+        email: email.toLowerCase(),
+        passwordHash,
+        plan: "free",
+      });
+    } catch (e) {
+      if (typeof e === "object" && e !== null && "code" in e && e.code === 11000)
+        throw new HttpError(
+          409,
+          "email_taken",
+          "An account with this email already exists. Sign in instead.",
+        );
+      throw e;
+    }
+    await auth.startCustomerSession(res, String(customer._id));
+    log.info("customer registered", { customer: String(customer._id) });
+    res.status(201).json({ email: customer.email, name: customer.name, plan: customer.plan });
+  });
   r.post("/auth/logout", async (req, res) => {
     await auth.endCustomerSession(req, res);
     res.json({ ok: true });

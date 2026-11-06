@@ -1,7 +1,6 @@
 import { PromptToScreen } from "@ti/client";
 import { Layout } from "../components/Layout";
 import { Breadcrumbs, PageHeader } from "../components/ui";
-import { useSession } from "../context/session";
 import { useThemeCss, useThemeStore } from "../theme/store";
 import { Link } from "react-router-dom";
 
@@ -12,7 +11,6 @@ const toc = [
 
 /** Public "prompt to screen": compose a page from the components this visitor may use. */
 export function Screens() {
-  const { me } = useSession();
   const themeCss = useThemeCss();
   const themeName = useThemeStore((s) => s.theme.name);
   return (
@@ -22,10 +20,8 @@ export function Screens() {
         <div className="mt-4">
           <PageHeader title="Prompt to screen">
             Describe a page and get a layout built only from Kitbase components, with a live
-            preview, the JSON tree, a ready Page.tsx and the install commands.
-            {me?.plan === "premium"
-              ? " Your premium plan includes the Pro components."
-              : " Sign in with a premium account to compose with Pro components too."}
+            preview, the JSON tree, a ready Page.tsx and the install commands. Every published
+            component is available, including Pro components.
           </PageHeader>
         </div>
         <section id="prompt" className="scroll-mt-20">

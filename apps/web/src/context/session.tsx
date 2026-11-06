@@ -30,6 +30,7 @@ interface Session {
   teams: TeamSummary[];
   refreshTeams: () => void;
   signIn: (email: string, password: string) => Promise<void>;
+  signUp: (name: string, email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   refresh: () => void;
 }
@@ -75,6 +76,10 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setMe(await api<Me>("/api/auth/login", { method: "POST", json: { email, password } }));
     refresh();
   };
+  const signUp = async (name: string, email: string, password: string) => {
+    setMe(await api<Me>("/api/auth/register", { method: "POST", json: { name, email, password } }));
+    refresh();
+  };
   const signOut = async () => {
     await api("/api/auth/logout", { method: "POST" });
     setMe(null);
@@ -91,6 +96,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
         teams,
         refreshTeams,
         signIn,
+        signUp,
         signOut,
         refresh,
       }}

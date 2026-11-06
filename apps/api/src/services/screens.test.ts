@@ -84,8 +84,8 @@ describe("screens.generate", () => {
     const system = String(calls[0]?.body.system);
     expect(system).toContain("- card:");
     expect(system).toContain("exports: Card, CardHeader");
-    // Anonymous viewers never see premium components in the catalogue.
-    expect(system).not.toContain("pro-data-grid");
+    // Every published component is public, including premium ones.
+    expect(system).toContain("pro-data-grid");
     expect(JSON.stringify(calls[0]?.body.messages)).toContain("A pipeline overview");
   });
 
@@ -99,7 +99,7 @@ describe("screens.generate", () => {
   it("rejects unknown slugs, retries once with the errors, then fails with 422", async () => {
     const { fetchImpl, calls } = fakeFetch([
       { id: "a", type: "made-up" },
-      { id: "a", type: "card", children: [{ id: "b", type: "pro-data-grid" }] },
+      { id: "a", type: "card", children: [{ id: "b", type: "not-a-component" }] },
     ]);
     const err = await make(fetchImpl)
       .generate("Something odd", anonymous)
@@ -108,7 +108,7 @@ describe("screens.generate", () => {
     expect(err).toMatchObject({
       status: 422,
       code: "invalid_tree",
-      details: ['b: unknown component "pro-data-grid"'],
+      details: ['b: unknown component "not-a-component"'],
     });
     expect(calls).toHaveLength(2);
     expect(JSON.stringify(calls[1]?.body.messages)).toContain("unknown component");
@@ -151,10 +151,10 @@ describe("screens.render", () => {
     expect(r.code).toContain('<StatCard label="Deals" value={12} />');
     expect(calls).toHaveLength(0);
   });
-  it("rejects trees the viewer may not build", async () => {
+  it("rejects unknown components in a hand-edited tree", async () => {
     const { fetchImpl } = fakeFetch([]);
     await expect(
-      make(fetchImpl).render({ id: "g", type: "pro-data-grid" }, anonymous),
-    ).rejects.toMatchObject({ status: 422, details: ['g: unknown component "pro-data-grid"'] });
+      make(fetchImpl).render({ id: "g", type: "not-a-component" }, anonymous),
+    ).rejects.toMatchObject({ status: 422, details: ['g: unknown component "not-a-component"'] });
   });
 });

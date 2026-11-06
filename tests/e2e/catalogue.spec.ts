@@ -33,13 +33,16 @@ test("component page renders the live preview and copies code", async ({ page })
   expect(copied).toContain("export");
 });
 
-test("premium component is locked for a signed-out visitor", async ({ page, request }) => {
+test("premium component is available to a signed-out visitor", async ({ page, request }) => {
   await page.goto(`/components/${PREMIUM_SLUG}`);
   await expect(page.getByRole("heading", { level: 1, name: PREMIUM_NAME })).toBeVisible();
-  await expect(page.getByText("Sign in with a premium account")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Copy code" })).toHaveCount(0);
 
-  // Enforced by the server, not only hidden in the UI.
+  // The preview runs on a separate origin in a sandboxed iframe; wait for it to render.
+  const frame = page.frameLocator(`iframe[title="${PREMIUM_NAME} preview"]`);
+  await expect(frame.locator("#root > *").first()).toBeVisible({ timeout: 30_000 });
+  await expect(page.getByRole("button", { name: "Copy code" })).toBeVisible();
+
+  // Enforced by the server, not only shown in the UI.
   const res = await request.get(`/api/components/${PREMIUM_SLUG}/copy`);
-  expect(res.status()).toBe(401);
+  expect(res.status()).toBe(200);
 });

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { Layout } from "../components/Layout";
 import { useSession } from "../context/session";
@@ -38,7 +38,7 @@ export function SignIn() {
             Customer sign in
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            Accounts are created by the library admin. There is no public sign-up.
+            Sign in to manage tokens, teams and your account.
           </p>
         </div>
         <form
@@ -77,6 +77,16 @@ export function SignIn() {
           </button>
         </form>
         <p className="mt-6 text-center text-sm text-muted-foreground">
+          New here?{" "}
+          <Link
+            to="/sign-up"
+            state={{ from }}
+            className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-4 hover:decoration-foreground"
+          >
+            Create a free account
+          </Link>
+        </p>
+        <p className="mt-3 text-center text-sm text-muted-foreground">
           Library admin?{" "}
           <a
             href="/admin/"

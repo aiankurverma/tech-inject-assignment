@@ -8,16 +8,16 @@ export type DenyReason =
   "not_found" | "sign_in_required" | "premium_required" | "team_role_required";
 export type AccessDecision = { allowed: true } | { allowed: false; reason: DenyReason };
 
+/**
+ * Everything that is published is public. The `access` label is kept for the admin UI and
+ * analytics, but it no longer gates preview, source, installer or agent prompt requests.
+ */
 export function decideAccess(
   component: { status: ComponentStatus; access: AccessLevel },
-  viewer: Viewer,
+  _viewer: Viewer,
 ): AccessDecision {
   if (component.status !== "published") return { allowed: false, reason: "not_found" };
-  if (component.access === "free") return { allowed: true };
-  if (viewer.kind === "anonymous") return { allowed: false, reason: "sign_in_required" };
-  return viewer.plan === "premium"
-    ? { allowed: true }
-    : { allowed: false, reason: "premium_required" };
+  return { allowed: true };
 }
 
 // ---------------------------------------------------------------------------

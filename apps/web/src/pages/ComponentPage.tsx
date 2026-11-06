@@ -428,11 +428,6 @@ export function ComponentPage({
                 token (<Link to="/account">Account</Link>) or a team token (
                 <Link to={`/teams/${teamSlug}?tab=tokens`}>Team › Tokens</Link>).
               </>
-            ) : detail.access === "premium" ? (
-              <>
-                {" "}
-                Set <code>KITBASE_TOKEN</code> first (see <Link to="/account">Account</Link>).
-              </>
             ) : null}
           </p>
         </div>

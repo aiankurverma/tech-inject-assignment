@@ -99,8 +99,7 @@ export function Join() {
     if (loadingMe || (!me && token))
       return (
         <EmptyState icon={<Loader2 className="size-5 animate-spin" />} title="One moment">
-          Checking your session. Accounts are created by the Kitbase admin; there is no public
-          sign-up.
+          Checking your session. Sign in or create a free account to accept this invite.
         </EmptyState>
       );
     if (state === "declined")
