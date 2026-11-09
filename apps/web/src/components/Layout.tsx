@@ -196,6 +196,12 @@ function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
         <NavLink to="/screens" className={sideLink} onClick={onNavigate}>
           Prompt to screen
         </NavLink>
+        <NavLink to="/requests" className={sideLink} onClick={onNavigate}>
+          Component requests
+        </NavLink>
+        <NavLink to="/changelog" className={sideLink} onClick={onNavigate}>
+          Changelog
+        </NavLink>
       </div>
       <TeamsGroup onNavigate={onNavigate} />
       {componentsError ? (
@@ -342,8 +348,25 @@ export function Layout({
   }, [open]);
 
   const footer = (
-    <footer className="mt-24 flex flex-wrap items-center justify-between gap-2 border-t border-border py-6 text-xs text-muted-foreground">
+    <footer className="mt-24 flex flex-wrap items-center justify-between gap-3 border-t border-border py-6 text-xs text-muted-foreground">
       <span>Kitbase. Components you copy, own and change.</span>
+      <nav aria-label="Footer" className="flex flex-wrap items-center gap-3">
+        <Link to="/components" className="hover:text-foreground">
+          Components
+        </Link>
+        <Link to="/requests" className="hover:text-foreground">
+          Requests
+        </Link>
+        <Link to="/changelog" className="hover:text-foreground">
+          Changelog
+        </Link>
+        <a href="/llms.txt" className="hover:text-foreground">
+          llms.txt
+        </a>
+        <a href="/registry.json" className="hover:text-foreground">
+          registry.json
+        </a>
+      </nav>
       <span>Independent project. Not affiliated with Meta, Astryx or shadcn/ui.</span>
     </footer>
   );
@@ -388,6 +411,9 @@ export function Layout({
             </NavLink>
             <NavLink to="/theme" className={topLink}>
               Theme
+            </NavLink>
+            <NavLink to="/requests" className={topLink}>
+              Requests
             </NavLink>
           </nav>
           <div className="ml-auto flex items-center gap-1 text-sm sm:gap-2">

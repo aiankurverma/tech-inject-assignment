@@ -12,6 +12,7 @@ import {
   Radar,
   ScanSearch,
   ShieldCheck,
+  Target,
   Wand2,
   Users,
   X,
@@ -42,6 +43,7 @@ const NAV: NavItem[] = [
   { to: "/teams", label: "Teams", icon: Users },
   { to: "/capture", label: "Capture", icon: ScanSearch },
   { to: "/feature-radar", label: "Feature radar", icon: Radar },
+  { to: "/demand", label: "Demand pipeline", icon: Target },
   { to: "/screens", label: "Screens", icon: Wand2 },
 ];
 
@@ -155,6 +157,7 @@ function useCrumbs(): string[] {
   if (pathname === "/privileges" || pathname === "/customers") return ["Privileges"];
   if (pathname === "/teams") return ["Teams"];
   if (pathname === "/feature-radar") return ["Feature radar"];
+  if (pathname === "/demand") return ["Demand pipeline"];
   if (pathname === "/screens") return ["Prompt to screen"];
   return ["Admin"];
 }

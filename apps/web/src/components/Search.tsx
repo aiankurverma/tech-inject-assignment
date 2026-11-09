@@ -4,6 +4,7 @@ import { CornerDownLeft, Lock, Search as SearchIcon } from "lucide-react";
 import { ComingSoonNotice } from "@ti/feature-radar/client";
 import { useSession } from "../context/session";
 import { searchGroups } from "../lib/catalogue";
+import { reportSearch } from "../lib/demand";
 
 /** Visible Ctrl+K results; the rest is one click away on the index page. */
 const MAX_RESULTS = 40;
@@ -64,6 +65,15 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
     total,
   } = useMemo(() => searchGroups(components ?? [], query, MAX_RESULTS), [components, query]);
 
+  // Log every real query (debounced) with its result count. Zero-result queries are the
+  // strongest demand signal, so they must not depend on the user clicking anything.
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) return;
+    const t = window.setTimeout(() => reportSearch({ query: q, resultCount: total }), 700);
+    return () => window.clearTimeout(t);
+  }, [query, total]);
+
   useEffect(() => setActive(0), [query]);
   useEffect(() => {
     listRef.current
@@ -79,6 +89,12 @@ function SearchDialog({ onClose }: { onClose: () => void }) {
   }, []);
 
   const go = (slug: string) => {
+    reportSearch({
+      query: query.trim(),
+      resultCount: total,
+      clicked: true,
+      matchedSlug: slug,
+    });
     onClose();
     navigate(`/components/${slug}`);
   };

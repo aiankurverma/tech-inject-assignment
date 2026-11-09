@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Kitbase">
+  <rect width="64" height="64" fill="#0a0a0a" />
+  <rect x="5" y="5" width="54" height="54" rx="10" fill="#fafafa" />
+  <path
+    d="M24 16v32M24 33l17-17M24 33l17 17"
+    fill="none"
+    stroke="#0a0a0a"
+    stroke-width="6"
+    stroke-linecap="square"
+  />
+</svg>

@@ -20,6 +20,7 @@ import {
   type SortKey,
 } from "../lib/catalogue";
 import { AccessBadge, btn, EmptyState, PageHeader, Skeleton } from "../components/ui";
+import { reportSearch } from "../lib/demand";
 
 /** Thumbnails whose component is tiny in the capture get extra zoom. */
 /** Wide captures that should not be zoomed or centre-cropped in grid cards. */
@@ -59,7 +60,7 @@ function Thumb({
   );
 }
 
-function ComponentCard({ c, eager }: { c: ListItem; eager: boolean }) {
+export function ComponentCard({ c, eager }: { c: ListItem; eager: boolean }) {
   return (
     <Link
       to={`/components/${c.slug}`}
@@ -106,7 +107,7 @@ function GridSkeleton() {
 }
 
 /** Loading / error / empty handling shared by the landing page and the index. */
-function ComponentsState({
+export function ComponentsState({
   children,
   loading = <GridSkeleton />,
 }: {
@@ -393,6 +394,13 @@ function Catalogue({ items }: { items: ListItem[] }) {
       }),
     [items, draft, catKey, state.access, state.sort],
   );
+  // The catalogue filter is a search too. Log it anonymously, with the live result count.
+  useEffect(() => {
+    const q = draft.trim();
+    if (q.length < 2) return;
+    const t = window.setTimeout(() => reportSearch({ query: q, resultCount: shown.length }), 900);
+    return () => window.clearTimeout(t);
+  }, [draft, shown.length]);
   const toggleCat = (cat: string) =>
     update({
       categories: state.categories.includes(cat)

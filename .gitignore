@@ -21,3 +21,8 @@ docs/render-check/
 playwright-report
 test-results
 .playwright-mcp/
+# Generated demand reports (keep the format doc)
+reports/*
+!reports/README.md
+# Local share folder produced by the feature-radar plugin
+feature-radar-share/
