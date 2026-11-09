@@ -31,6 +31,15 @@ export type ScreenResult = Omit<PageExport, "previewCode"> & {
   preview: ReturnType<typeof previewPayload>;
 };
 
+/**
+ * Optional run hooks for the background job processor: durable progress writes, and a
+ * checkpoint that throws when the job was paused or cancelled while the AI was working.
+ */
+export interface ScreenRunHooks {
+  progress(percent: number, stage: string): Promise<void> | void;
+  checkpoint(): Promise<void>;
+}
+
 const systemPrompt = (catalogue: string) =>
   [
     "You compose one screen for a dark CRM web app out of an existing React component catalogue.",
@@ -85,20 +94,36 @@ export function makeScreens(deps: ScreenDeps) {
     },
 
     /** Asks the AI for a tree; one retry with the validation errors, then gives up. */
-    async generate(prompt: string, viewer: Viewer): Promise<ScreenResult> {
+    async generate(prompt: string, viewer: Viewer, hooks?: ScreenRunHooks): Promise<ScreenResult> {
       if (!deps.chain)
         throw new HttpError(503, "builder_not_configured", "AI is not configured on this server.");
+      await hooks?.progress(5, "Preparing the component catalogue");
       const list = await components(viewer);
       if (list.length === 0)
         throw new HttpError(409, "no_components", "No published components to build from.");
+      await hooks?.progress(12, `Loaded ${list.length} components`);
+      await hooks?.checkpoint();
       const system = systemPrompt(catalogueSummary(list));
       let user = `Screen description: "${prompt}"`;
       let errors: string[] = [];
       for (let attempt = 0; attempt < 2; attempt++) {
+        await hooks?.checkpoint();
+        await hooks?.progress(
+          attempt === 0 ? 20 : 60,
+          attempt === 0
+            ? "Asking the AI to compose the screen"
+            : "Asking the AI to fix the rejected layout",
+        );
         const r = await completeJson(system, user, deps.chain);
         if (!r.ok) throw new HttpError(502, "ai_failed", r.error);
+        await hooks?.checkpoint();
+        await hooks?.progress(attempt === 0 ? 55 : 80, "Checking the layout against the catalogue");
         const v = validatePageTree(r.json, list);
-        if (v.ok) return assemble(v.tree, list);
+        if (v.ok) {
+          await hooks?.progress(90, "Building the preview and Page.tsx");
+          await hooks?.checkpoint();
+          return assemble(v.tree, list);
+        }
         errors = v.errors;
         user += `\nYour previous tree was rejected: ${errors.slice(0, 15).join("; ")}\nReturn a corrected full JSON tree.`;
       }

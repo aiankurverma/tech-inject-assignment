@@ -96,6 +96,36 @@ const captureSchema = new Schema(
 );
 
 /**
+ * Prompt-to-screen generation job. Lives in Mongo (not only the queue), so progress, results,
+ * pause/cancel survive a page reload, a logout or a server restart. The client holds an
+ * unguessable token (stored hashed) instead of a session, so it can keep polling after signing out.
+ */
+const screenJobSchema = new Schema(
+  {
+    tokenHash: { type: String, required: true },
+    prompt: { type: String, required: true },
+    /** Viewer snapshot taken when the job was queued (access is evaluated then, not per poll). */
+    viewer: { type: Schema.Types.Mixed, required: true },
+    /** Set for signed-in customers; not used for authorisation (the token is). */
+    owner: { type: Schema.Types.ObjectId, ref: "Customer", index: true },
+    status: {
+      type: String,
+      enum: ["queued", "running", "paused", "done", "failed", "cancelled"],
+      default: "queued",
+      required: true,
+      index: true,
+    },
+    progress: { type: Number, default: 0, required: true },
+    stage: { type: String, default: "Queued", required: true },
+    result: { type: Schema.Types.Mixed },
+    error: { type: Schema.Types.Mixed },
+    finishedAt: { type: Date },
+  },
+  { timestamps: true, minimize: false },
+);
+screenJobSchema.index({ status: 1, updatedAt: 1 });
+
+/**
  * Usage analytics: one row per (day, slug) with counters. Anonymous by design: no user id,
  * IP, user agent or any hash of them is stored. Slug "_cli" counts installer downloads.
  */
@@ -226,6 +256,7 @@ export const ApiToken = mongoose.model("ApiToken", apiTokenSchema);
 export const RefreshToken = mongoose.model("RefreshToken", refreshTokenSchema);
 export const ComponentModel = mongoose.model("Component", componentSchema);
 export const CaptureModel = mongoose.model("Capture", captureSchema);
+export const ScreenJob = mongoose.model("ScreenJob", screenJobSchema);
 export const UsageDaily = mongoose.model("UsageDaily", usageDailySchema);
 export const Team = mongoose.model("Team", teamSchema);
 export const TeamMember = mongoose.model("TeamMember", teamMemberSchema);

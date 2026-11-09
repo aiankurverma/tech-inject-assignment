@@ -24,6 +24,7 @@ import { featureRadarRoutes, type BuildJob, type ProviderChain } from "@ti/featu
 import { screenRoutes } from "./routes/screens";
 import { findPublishedDocs } from "./services/catalog";
 import { makeScreens } from "./services/screens";
+import { processScreenJob, recoverScreenJobs, type ScreenJobRef } from "./services/screenJobs";
 import { processTeamBundleJob } from "./services/teamRepo";
 
 const root = (p: string) => fileURLToPath(new URL(`../../../${p}`, import.meta.url));
@@ -233,8 +234,18 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
     generateLimit: burstLimit("screens-generate", 5, 0.05),
     renderLimit: burstLimit("screens-render", 30, 1),
   };
-  app.use("/api/screens", screenRoutes(auth, screens, screenLimits, "public"));
-  app.use("/api/admin/screens", screenRoutes(auth, screens, screenLimits, "admin"));
+  // AI screen generation: time-consuming, so it runs on the queue and persists progress in Mongo.
+  const screenJobs = createQueue<ScreenJobRef>("screens", (job) => processScreenJob(job, screens), {
+    redis,
+  });
+  void recoverScreenJobs(screenJobs).catch((e: unknown) =>
+    log.warn("screen job recovery failed", { error: String(e) }),
+  );
+  app.use("/api/screens", screenRoutes(auth, screens, { ...screenLimits, screenJobs }, "public"));
+  app.use(
+    "/api/admin/screens",
+    screenRoutes(auth, screens, { ...screenLimits, screenJobs }, "admin"),
+  );
   // Plugin: search-driven feature requests (plugins/feature-radar). Own models and routes.
   // AI draft builds are slow (LLM calls): they always go through the queue.
   const buildJobs = createQueue<BuildJob>(
@@ -307,7 +318,13 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   app.use(errorHandler);
   /** Graceful shutdown: let running jobs finish. The shared Redis connection is closed by the caller. */
   const shutdown = async () => {
-    await Promise.all([usage.close(), bundleJobs.close(), buildJobs.close(), captureJobs.close()]);
+    await Promise.all([
+      usage.close(),
+      bundleJobs.close(),
+      buildJobs.close(),
+      captureJobs.close(),
+      screenJobs.close(),
+    ]);
   };
   return Object.assign(app, { shutdown });
 }

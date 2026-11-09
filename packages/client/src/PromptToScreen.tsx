@@ -1,11 +1,11 @@
-import { useState, type FormEvent } from "react";
-import { Loader2, RefreshCw, Sparkles, TriangleAlert } from "lucide-react";
+import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { Loader2, Pause, Play, RefreshCw, Sparkles, TriangleAlert, X } from "lucide-react";
 import { api, ApiError, type PreviewPayload } from "./api";
 import { CodeBlock } from "./CodeBlock";
 import { CopyButton } from "./CopyButton";
 import { PreviewFrame } from "./PreviewFrame";
 
-/** Reply of POST <endpoint>/generate and <endpoint>/render. */
+/** Reply of POST <endpoint>/render. */
 export interface ScreenResult {
   tree: unknown;
   slugs: string[];
@@ -14,6 +14,51 @@ export interface ScreenResult {
   files: { path: string; content: string }[];
   installCommand: string;
   preview: PreviewPayload;
+}
+
+export type ScreenJobStatus = "queued" | "running" | "paused" | "done" | "failed" | "cancelled";
+
+/** Progress document stored by the API; `result` appears once the job is done. */
+export interface ScreenJob {
+  id: string;
+  status: ScreenJobStatus;
+  progress: number;
+  stage: string;
+  prompt: string;
+  result?: ScreenResult;
+  error?: { code: string; message: string; details: string[] };
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+/** What the browser remembers so it can reattach after a reload or a sign-out. */
+interface JobHandle {
+  id: string;
+  token: string;
+}
+
+const storageKey = (endpoint: string) => `kitbase.screen-job:${endpoint}`;
+
+function loadHandle(endpoint: string): JobHandle | null {
+  try {
+    const raw = localStorage.getItem(storageKey(endpoint));
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<JobHandle>;
+    return typeof parsed.id === "string" && typeof parsed.token === "string"
+      ? { id: parsed.id, token: parsed.token }
+      : null;
+  } catch {
+    return null; // storage blocked: generation still works for this page view
+  }
+}
+
+function saveHandle(endpoint: string, handle: JobHandle | null) {
+  try {
+    if (handle) localStorage.setItem(storageKey(endpoint), JSON.stringify(handle));
+    else localStorage.removeItem(storageKey(endpoint));
+  } catch {
+    // Storage blocked: only this tab can reattach.
+  }
 }
 
 const EXAMPLES = [
@@ -56,9 +101,12 @@ function describe(e: unknown): { message: string; details: string[] } {
   return { message: e instanceof Error ? e.message : "Something went wrong.", details: [] };
 }
 
+const isActive = (s: ScreenJobStatus) => s === "queued" || s === "running" || s === "paused";
+
 /**
- * Describe a page, get a tree of catalogue components back, preview it in the sandboxed frame,
- * edit the JSON and re-render, then export Page.tsx with its install command.
+ * Describe a page and queue a background generation job. The job id + token are kept in
+ * localStorage, so progress survives reloads and sign-outs; pause/resume/cancel change the
+ * stored job status and are checked by the worker at every expensive step.
  * `endpoint` is "/api/screens" (public) or "/api/admin/screens" (admin).
  */
 export function PromptToScreen({
@@ -73,35 +121,129 @@ export function PromptToScreen({
   themeCss?: string;
 }) {
   const [prompt, setPrompt] = useState("");
-  const [busy, setBusy] = useState<"generate" | "render" | null>(null);
+  const [rendering, setRendering] = useState(false);
+  const [action, setAction] = useState<"pause" | "resume" | "cancel" | null>(null);
   const [error, setError] = useState<{ message: string; details: string[] } | null>(null);
   const [result, setResult] = useState<ScreenResult | null>(null);
+  const [job, setJob] = useState<ScreenJob | null>(null);
+  const [handle, setHandle] = useState<JobHandle | null>(null);
   const [tab, setTab] = useState<Tab>("preview");
   const [treeText, setTreeText] = useState("");
+  const jobStatus = job?.status;
+  const jobId = job?.id;
 
-  const apply = (r: ScreenResult) => {
+  const apply = useCallback((r: ScreenResult) => {
     setResult(r);
     setTreeText(JSON.stringify(r.tree, null, 2));
     setError(null);
-  };
+  }, []);
+
+  // Reattach after a reload: the job keeps running server-side even if the page (or session) is gone.
+  useEffect(() => {
+    const stored = loadHandle(endpoint);
+    if (!stored) return;
+    let cancelled = false;
+    setHandle(stored);
+    api<ScreenJob>(`${endpoint}/jobs/${stored.id}`, {
+      headers: { "x-screen-job-token": stored.token },
+    })
+      .then((j) => {
+        if (cancelled) return;
+        setJob(j);
+        if (j.status === "done" && j.result) apply(j.result);
+        if (j.status === "failed") setError(jobError(j));
+        if (j.status === "cancelled" || j.status === "failed") {
+          saveHandle(endpoint, null);
+          setHandle(null);
+        }
+      })
+      .catch(() => {
+        // Expired or deleted job: forget it rather than showing a permanent error on load.
+        if (!cancelled) {
+          saveHandle(endpoint, null);
+          setHandle(null);
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [endpoint, apply]);
+
+  // Poll while queued/running. Paused jobs need no polling; resume starts it again.
+  useEffect(() => {
+    if (!handle || !job || (jobStatus !== "queued" && jobStatus !== "running")) return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const poll = async () => {
+      try {
+        const j = await api<ScreenJob>(`${endpoint}/jobs/${handle.id}`, {
+          headers: { "x-screen-job-token": handle.token },
+        });
+        if (cancelled) return;
+        setJob(j);
+        if (j.status === "done" && j.result) apply(j.result);
+        if (j.status === "failed") {
+          setError(jobError(j));
+          saveHandle(endpoint, null);
+          setHandle(null);
+        }
+        if (j.status === "queued" || j.status === "running") timer = setTimeout(poll, 1500);
+      } catch (e) {
+        if (cancelled) return;
+        setError(describe(e));
+      }
+    };
+    timer = setTimeout(poll, 600);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+  }, [endpoint, handle, jobId, jobStatus, apply]);
 
   const generate = async (e: FormEvent) => {
     e.preventDefault();
-    if (busy) return;
-    setBusy("generate");
+    if (isActive(job?.status ?? "done")) return;
     setError(null);
     try {
-      apply(await api<ScreenResult>(`${endpoint}/generate`, { method: "POST", json: { prompt } }));
+      const created = await api<ScreenJob & { token: string }>(`${endpoint}/generate`, {
+        method: "POST",
+        json: { prompt },
+      });
+      const next = { id: created.id, token: created.token };
+      saveHandle(endpoint, next);
+      setHandle(next);
+      setJob(created);
+      setResult(null);
+      setTreeText("");
       setTab("preview");
     } catch (err) {
       setError(describe(err));
+    }
+  };
+
+  const control = async (kind: "pause" | "resume" | "cancel") => {
+    if (!handle || action) return;
+    setAction(kind);
+    try {
+      const j = await api<ScreenJob>(`${endpoint}/jobs/${handle.id}/${kind}`, {
+        method: "POST",
+        headers: { "x-screen-job-token": handle.token },
+        json: {},
+      });
+      setJob(j);
+      if (j.status === "cancelled") {
+        saveHandle(endpoint, null);
+        setHandle(null);
+      }
+    } catch (err) {
+      setError(describe(err));
     } finally {
-      setBusy(null);
+      setAction(null);
     }
   };
 
   const rerender = async () => {
-    if (busy) return;
+    if (rendering) return;
     let tree: unknown;
     try {
       tree = JSON.parse(treeText) as unknown;
@@ -109,7 +251,7 @@ export function PromptToScreen({
       setError({ message: "The tree is not valid JSON.", details: [] });
       return;
     }
-    setBusy("render");
+    setRendering(true);
     setError(null);
     try {
       apply(await api<ScreenResult>(`${endpoint}/render`, { method: "POST", json: { tree } }));
@@ -117,11 +259,13 @@ export function PromptToScreen({
     } catch (err) {
       setError(describe(err));
     } finally {
-      setBusy(null);
+      setRendering(false);
     }
   };
 
   const treeDirty = result !== null && treeText !== JSON.stringify(result.tree, null, 2);
+  const active = job !== null && isActive(job.status);
+  const cancelled = job?.status === "cancelled";
 
   return (
     <div className="space-y-6">
@@ -141,17 +285,17 @@ export function PromptToScreen({
           className={`${field} min-h-24 resize-y`}
         />
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            type="submit"
-            disabled={busy !== null || prompt.trim().length < 8}
-            className={solid}
-          >
-            {busy === "generate" ? (
+          <button type="submit" disabled={active || prompt.trim().length < 8} className={solid}>
+            {job?.status === "queued" || job?.status === "running" ? (
               <Loader2 className="size-4 animate-spin" aria-hidden />
             ) : (
               <Sparkles className="size-4" aria-hidden />
             )}
-            {busy === "generate" ? "Composing..." : "Generate screen"}
+            {job?.status === "queued" || job?.status === "running"
+              ? "Composing..."
+              : job?.status === "paused"
+                ? "Generation paused"
+                : "Generate screen"}
           </button>
           <span className={`text-xs ${muted}`}>Try:</span>
           {EXAMPLES.map((ex) => (
@@ -166,6 +310,88 @@ export function PromptToScreen({
           ))}
         </div>
       </form>
+
+      {active && job ? (
+        <section
+          aria-label="Generation progress"
+          aria-live="polite"
+          className="space-y-3 rounded-md border border-neutral-200 p-4 [.dark_&]:border-neutral-800"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
+            <span className="font-medium">
+              {job.status === "paused" ? "Paused" : job.stage}
+              {job.status === "queued" ? " (queued)" : ""}
+            </span>
+            <span className={`text-xs tabular-nums ${muted}`}>{job.progress}%</span>
+          </div>
+          <div
+            role="progressbar"
+            aria-label={job.stage}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={job.progress}
+            className="h-2 w-full overflow-hidden rounded-full bg-neutral-100 [.dark_&]:bg-neutral-800"
+          >
+            <div
+              className="h-full rounded-full bg-neutral-900 transition-[width] duration-500 [.dark_&]:bg-neutral-100"
+              style={{ width: `${job.progress}%` }}
+            />
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {job.status === "paused" ? (
+              <button
+                type="button"
+                onClick={() => void control("resume")}
+                disabled={action !== null}
+                className={solid}
+              >
+                {action === "resume" ? (
+                  <Loader2 className="size-4 animate-spin" aria-hidden />
+                ) : (
+                  <Play className="size-4" aria-hidden />
+                )}
+                Resume
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => void control("pause")}
+                disabled={action !== null}
+                className={outline}
+              >
+                {action === "pause" ? (
+                  <Loader2 className="size-4 animate-spin" aria-hidden />
+                ) : (
+                  <Pause className="size-4" aria-hidden />
+                )}
+                Pause
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => void control("cancel")}
+              disabled={action !== null}
+              className={`${outline} text-red-600 [.dark_&]:text-red-400`}
+            >
+              {action === "cancel" ? (
+                <Loader2 className="size-4 animate-spin" aria-hidden />
+              ) : (
+                <X className="size-4" aria-hidden />
+              )}
+              Cancel
+            </button>
+            <span className={`text-xs ${muted}`}>
+              Runs in the background: you can reload or sign out and come back.
+            </span>
+          </div>
+        </section>
+      ) : null}
+
+      {cancelled ? (
+        <p role="status" className={`text-sm ${muted}`}>
+          Generation cancelled. Describe a screen and generate again whenever you like.
+        </p>
+      ) : null}
 
       {error ? (
         <div
@@ -287,10 +513,10 @@ export function PromptToScreen({
             <button
               type="button"
               onClick={() => void rerender()}
-              disabled={busy !== null || !treeDirty}
+              disabled={rendering || !treeDirty}
               className={outline}
             >
-              {busy === "render" ? (
+              {rendering ? (
                 <Loader2 className="size-4 animate-spin" aria-hidden />
               ) : (
                 <RefreshCw className="size-4" aria-hidden />
@@ -316,4 +542,11 @@ export function PromptToScreen({
       ) : null}
     </div>
   );
+}
+
+function jobError(j: ScreenJob): { message: string; details: string[] } {
+  return {
+    message: j.error?.message ?? "Screen generation failed.",
+    details: j.error?.details ?? [],
+  };
 }
