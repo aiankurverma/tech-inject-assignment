@@ -6,8 +6,19 @@ const schema = z.object({
   MONGODB_URI: z.string().min(1).default("mongodb://127.0.0.1:27017/techinject"),
   /** Public origin of this server, used in install commands and prompts. */
   PUBLIC_ORIGIN: z.string().url().default("http://localhost:4000"),
+  /**
+   * Canonical public origin for SEO (canonical tags, sitemap, Open Graph). Defaults to
+   * PUBLIC_ORIGIN. Set this to https://kitbaseapp.site when the app is also reachable on an
+   * onrender.com host or on www, so every canonical URL uses one host.
+   */
+  CANONICAL_ORIGIN: z.preprocess((v) => (v === "" ? undefined : v), z.string().url().optional()),
   /** Separate origin that renders previews (sandboxed iframe). */
   PREVIEW_ORIGIN: z.string().url().default("http://localhost:5185"),
+  /** Cloudflare Web Analytics beacon token. Public value; leave unset to disable the beacon. */
+  CF_ANALYTICS_TOKEN: z.preprocess(
+    (v) => (v === "" ? undefined : v),
+    z.string().max(200).optional(),
+  ),
   JWT_SECRET: z.string().min(32, "JWT_SECRET must be at least 32 characters"),
   ADMIN_USERNAME: z.string().min(3),
   ADMIN_PASSWORD: z.string().min(12, "ADMIN_PASSWORD must be at least 12 characters"),

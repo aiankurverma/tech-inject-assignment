@@ -4,7 +4,7 @@ import express from "express";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
-import type { Request } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { getRedis } from "@ti/redis";
 import { createCache, type Cache } from "@ti/cache";
 import { rateLimit, slidingWindow, tokenBucket } from "@ti/rate-limit";
@@ -20,12 +20,20 @@ import { adminTeamRoutes, teamRoutes } from "./routes/teams";
 import { processCaptureJob, type CaptureJob } from "./services/capture";
 import { CLI_SLUG, createUsageRecorder } from "./services/analytics";
 import { createDraft, processBundleJob, updateDraft, type BundleJob } from "./services/drafts";
-import { featureRadarRoutes, type BuildJob, type ProviderChain } from "@ti/feature-radar/server";
+import {
+  FeatureRequest,
+  featureRadarRoutes,
+  type BuildJob,
+  type ProviderChain,
+} from "@ti/feature-radar/server";
+import { demandAdminRoutes, demandPublicRoutes } from "./demand/router";
 import { screenRoutes } from "./routes/screens";
 import { findPublishedDocs } from "./services/catalog";
 import { makeScreens } from "./services/screens";
 import { processScreenJob, recoverScreenJobs, type ScreenJobRef } from "./services/screenJobs";
 import { processTeamBundleJob } from "./services/teamRepo";
+import { renderDocument, renderSeoPage, isAppRoute } from "./seo/render";
+import { canonicalOrigin, seoFileRoutes } from "./seo/files";
 
 const root = (p: string) => fileURLToPath(new URL(`../../../${p}`, import.meta.url));
 
@@ -128,6 +136,32 @@ export interface AppOptions {
   cache?: Cache;
 }
 
+/**
+ * Paths that only vulnerability scanners ask for. We never serve them: a tiny 404 avoids
+ * wasting bandwidth on a full SPA shell and keeps the logs useful.
+ */
+const SCANNER_PATH =
+  /(?:^\/data:|\.env|\.git|wp-|wp-json|wp-admin|xmlrpc|META-INF|\.\.;|gcp-key|phpinfo|phpmyadmin|\.aws|\.ssh|cgi-bin|\.DS_Store|\/vendor\/)/i;
+
+const isScannerPath = (pathname: string) => SCANNER_PATH.test(pathname);
+
+/** 301 www -> canonical host and http -> https in production. API and non-GET traffic is left alone. */
+function canonicalRedirect(env: Env) {
+  const canonical = new URL(env.CANONICAL_ORIGIN ?? env.PUBLIC_ORIGIN);
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (env.NODE_ENV !== "production") return next();
+    if (req.method !== "GET" && req.method !== "HEAD") return next();
+    if (req.path.startsWith("/api/") || req.path.startsWith("/cli/")) return next();
+    const host = (req.hostname || "").toLowerCase();
+    const canonicalHost = canonical.hostname.toLowerCase();
+    const isWww = host === `www.${canonicalHost}`;
+    const wrongProto = canonical.protocol === "https:" && req.protocol !== "https";
+    if (!isWww && !wrongProto) return next();
+    const destination = isWww ? canonical.origin : `https://${host}`;
+    res.redirect(301, `${destination}${req.originalUrl}`);
+  };
+}
+
 export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {}) {
   const app = express();
   const auth = makeAuth(env);
@@ -191,25 +225,48 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
         directives: {
           defaultSrc: ["'self'"],
           // Hash of the tiny inline theme script in apps/web/index.html (applies dark/light before first paint).
-          scriptSrc: ["'self'", "'sha256-nJAN6+vI38DXNyARo5GBbRuzeCwTYcvGrGig2WALhKU='"],
+          scriptSrc: [
+            "'self'",
+            "'sha256-nJAN6+vI38DXNyARo5GBbRuzeCwTYcvGrGig2WALhKU='",
+            "https://static.cloudflareinsights.com",
+          ],
           frameSrc: [env.PREVIEW_ORIGIN],
           imgSrc: ["'self'", "data:"],
           styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
           fontSrc: ["'self'", "https://fonts.gstatic.com"],
-          connectSrc: ["'self'"],
+          connectSrc: ["'self'", "https://cloudflareinsights.com"],
           frameAncestors: ["'none'"],
         },
       },
     }),
   );
+  app.use((_req, res, next) => {
+    res.setHeader(
+      "Permissions-Policy",
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+    );
+    res.setHeader("X-Content-Type-Options", "nosniff");
+    next();
+  });
+  // Scanner probes never reach the SPA, a route handler or the database.
+  app.use((req, res, next) => {
+    if (!isScannerPath(req.path)) return next();
+    log.warn("blocked scanner path", { path: req.path.slice(0, 200) });
+    res.status(404).set("Cache-Control", "no-store").type("text/plain").send("Not found");
+  });
+  app.use(canonicalRedirect(env));
   app.use(compression());
   app.use(express.json({ limit: "1mb" }));
   app.use(cookieParser());
   app.use("/api", sameOriginWrites(env));
 
+  // Minimal, dependency-free liveness response. Uptime monitors hit this often; it must not
+  // touch Mongo/Redis and must never be cached.
   app.get("/api/health", (_req, res) => {
-    res.json({ ok: true });
+    res.set("Cache-Control", "no-store").json({ ok: true });
   });
+  // Coarse safety net for API probing; auth routes have their own, stricter limits.
+  app.use("/api", burstLimit("api-global", 600, 5));
   app.use("/api", publicRoutes(auth, theme, env, deps));
   app.use("/api", customerRoutes(auth, deps));
   // Team workspaces: private components, members, invites (routes/teams.ts).
@@ -284,6 +341,31 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
   });
   app.use("/api", featureRadar.publicRouter);
   app.use("/api/admin/features", featureRadar.adminRouter);
+  // Demand pipeline: anonymous search signals, a public request board, GSC imports, quality
+  // gates and human-approved publishing. The AI draft step reuses the feature-radar builder.
+  const demandOptions = {
+    auth,
+    cache,
+    env,
+    requireAdmin: auth.requireAdmin,
+    searchLimit: burstLimit("demand-search", 60, 1),
+    writeLimit: burstLimit("demand-write", 20, 0.05),
+    adminWriteLimit: burstLimit("demand-admin", 60, 0.5),
+    enqueueDraft: async (_opportunityId: string, term: string) => {
+      const feature = await FeatureRequest.findOneAndUpdate(
+        { term },
+        {
+          $set: { status: "building", lastSearchedAt: new Date() },
+          $setOnInsert: { term, searchCount: 1, createdAt: new Date() },
+        },
+        { upsert: true, new: true, setDefaultsOnInsert: true },
+      );
+      await buildJobs.add({ id: String(feature._id), term });
+      return String(feature._id);
+    },
+  };
+  app.use("/api/demand", demandPublicRoutes(demandOptions));
+  app.use("/api/admin/demand", demandAdminRoutes(demandOptions));
   app.use("/api", () => {
     throw new HttpError(404, "not_found", "Unknown API route.");
   });
@@ -298,22 +380,71 @@ export function createApp(env: Env, theme: ThemeFiles, options: AppOptions = {})
     res.type("application/gzip").sendFile(cliTgz);
   });
 
+  // Crawler/agent files must be generated from the live catalogue, not the stale public/ copies.
+  app.use("/", seoFileRoutes(auth, theme, env, cache));
+
   // Built frontends (production). Admin UI under /admin, catalogue at /.
-  const serveSpa = (mount: string, dir: string) => {
+  const serveSpa = (mount: string, dir: string, seo = false) => {
     if (!existsSync(dir)) return;
-    // Vite emits content-hashed files under assets/: cache them for a year. Everything else 1h.
+    // Vite emits content-hashed files under assets/: cache them for a year. HTML must revalidate.
     app.use(
       `${mount === "/" ? "" : mount}/assets`,
       express.static(`${dir}/assets`, { index: false, immutable: true, maxAge: "365d" }),
     );
-    app.use(mount, express.static(dir, { index: false, maxAge: "1h" }));
-    // `root` keeps the dotfile check to "index.html" only, so a checkout under a dot folder works.
-    app.get(`${mount === "/" ? "" : mount}/{*splat}`, (_req, res) =>
-      res.sendFile("index.html", { root: dir }),
+    app.use(
+      mount,
+      express.static(dir, {
+        index: false,
+        maxAge: "1h",
+        setHeaders: (res, file) => {
+          if (file.endsWith(".html")) res.setHeader("Cache-Control", "no-cache");
+        },
+      }),
     );
+    if (!seo) {
+      // `root` keeps the dotfile check to "index.html" only, so a checkout under a dot folder works.
+      app.get(`${mount === "/" ? "" : mount}/{*splat}`, (_req, res) =>
+        res.sendFile("index.html", { root: dir }),
+      );
+      return;
+    }
+    // Public catalogue: render real HTML (head + body) for every route. Unknown URLs get a
+    // real 404 instead of the old catch-all index.html soft-404.
+    const indexHtml = readFileSync(`${dir}/index.html`, "utf8");
+    const origin = canonicalOrigin(env);
+    const handler = async (req: Request, res: Response) => {
+      const pathname = req.path;
+      // Missing hashed assets and other file-looking paths should not return an HTML shell.
+      if (/\.[a-z0-9]+$/i.test(pathname) && !isAppRoute(pathname)) {
+        res.status(404).set("Cache-Control", "no-store").type("text/plain").send("Not found");
+        return;
+      }
+      const page = await renderSeoPage(pathname, {
+        origin,
+        cache,
+        analyticsToken: env.CF_ANALYTICS_TOKEN,
+      });
+      const status = page?.status ?? 404;
+      res
+        .status(status)
+        // Real pages must revalidate; error pages must never be cached.
+        .set("Cache-Control", status >= 400 ? "no-store" : "no-cache")
+        .type("html")
+        .send(
+          page
+            ? renderDocument(indexHtml, page, { analyticsToken: env.CF_ANALYTICS_TOKEN })
+            : "Not found",
+        );
+    };
+    if (mount === "/") {
+      app.get("/", handler);
+      app.get("/{*splat}", handler);
+    } else {
+      app.get(`${mount}/{*splat}`, handler);
+    }
   };
   serveSpa("/admin", root("apps/admin/dist"));
-  serveSpa("/", root("apps/web/dist"));
+  serveSpa("/", root("apps/web/dist"), true);
 
   app.use(errorHandler);
   /** Graceful shutdown: let running jobs finish. The shared Redis connection is closed by the caller. */

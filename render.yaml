@@ -19,6 +19,10 @@ services:
         sync: false
       - key: PUBLIC_ORIGIN
         sync: false # e.g. https://kitbase.onrender.com
+      - key: CANONICAL_ORIGIN
+        sync: false # https://kitbaseapp.site (canonical host for SEO, sitemap and OG URLs)
+      - key: CF_ANALYTICS_TOKEN
+        sync: false # Cloudflare Web Analytics beacon token (public; leave empty to disable)
       - key: PREVIEW_ORIGIN
         sync: false # e.g. https://kitbase-preview.onrender.com
       - key: VITE_PREVIEW_ORIGIN

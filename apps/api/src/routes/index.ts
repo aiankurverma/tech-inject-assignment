@@ -75,6 +75,10 @@ export function publicRoutes(auth: Auth, theme: ThemeFiles, env: Env, deps: Rout
   });
 
   r.get("/components", async (req, res) => {
+    // Public catalogue summary. `locked` varies by viewer, so caches must key on the cookie;
+    // the response still saves a database round-trip and compresses well.
+    res.vary("Cookie");
+    res.set("Cache-Control", "public, max-age=300, stale-while-revalidate=600");
     res.json(await catalog.list(await auth.viewer(req)));
   });
   r.get("/components/:slug", async (req, res) => {
@@ -187,6 +191,8 @@ export function customerRoutes(auth: Auth, deps: RouteDeps) {
     const c =
       (await auth.currentCustomer(req)) ??
       (req.cookies?.[CUSTOMER_REFRESH_COOKIE] ? await auth.refreshCustomerSession(req, res) : null);
+    // User-specific: never cached by a browser or a shared proxy. Signed-out callers get null.
+    res.set("Cache-Control", "private, no-store");
     res.json(c ? { email: c.email, name: c.name, plan: c.plan } : null);
   });
 
