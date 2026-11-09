@@ -74,7 +74,7 @@ services:
       - key: NODE_VERSION
         value: "22"
       - key: VITE_PARENT_ORIGINS
-        sync: false # e.g. https://kitbase.onrender.com
+        sync: false # comma separated, e.g. https://kitbase.onrender.com,https://kitbaseapp.site (built-in fallbacks keep the custom domain working)
     headers:
       - path: /*
         name: Content-Security-Policy

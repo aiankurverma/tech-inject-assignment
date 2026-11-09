@@ -123,14 +123,14 @@ function NavList({
  * slide-in navigation sheet under 768px.
  */
 export function ShellSidebar({
-  sections,
+  sections = [],
   activeId,
   defaultActiveId,
   onNavigate,
-  workspaces,
+  workspaces = [],
   workspaceId,
   onWorkspaceChange,
-  user,
+  user = { name: "User", email: "" },
   onSignOut,
   userMenu,
   breadcrumbs,

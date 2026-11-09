@@ -8,13 +8,30 @@ import { loadModule, type PreviewFile } from "./runtime";
 /**
  * Receives { type: "render", payload, example } by postMessage from the catalogue/admin,
  * compiles the bundle and renders one example. Never fetches anything itself.
+ *
+ * Deployment origins are merged with, never replaced by, VITE_PARENT_ORIGINS: the preview is a
+ * static build baked at build time, so a custom domain must keep working even when the Render
+ * environment only lists the old onrender host.
  */
-const allowed = (
-  import.meta.env.VITE_PARENT_ORIGINS ??
-  "http://localhost:5183,http://localhost:5184,http://localhost:4000"
-)
-  .split(",")
-  .map((o: string) => o.trim());
+const BUILT_IN_PARENT_ORIGINS = [
+  "http://localhost:5183",
+  "http://localhost:5184",
+  "http://localhost:4000",
+  "https://kitbase.onrender.com",
+  "https://kitbaseapp.site",
+  "https://www.kitbaseapp.site",
+];
+const allowed = [
+  ...new Set(
+    [
+      ...BUILT_IN_PARENT_ORIGINS,
+      ...(import.meta.env.VITE_PARENT_ORIGINS ?? "")
+        .split(",")
+        .map((o: string) => o.trim())
+        .filter(Boolean),
+    ].map((origin) => origin.replace(/\/$/, "")),
+  ),
+];
 
 interface RenderMessage {
   type: "render";

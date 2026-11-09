@@ -270,20 +270,30 @@ export function ThemeStudio() {
                     >
                       <span
                         aria-hidden
-                        className="flex size-6 shrink-0 overflow-hidden rounded border border-border"
-                        style={{ background: s.bg }}
+                        className="flex size-7 shrink-0 overflow-hidden rounded border border-border"
+                        title={`${s.bg} · ${s.surface} · ${s.primary} · ${s.accent}`}
                       >
-                        <span
-                          className="m-auto size-3 rounded-full"
-                          style={{ background: s.primary }}
-                        />
+                        <span className="flex-1" style={{ background: s.bg }} />
+                        <span className="flex-1" style={{ background: s.surface }} />
+                        <span className="flex-1" style={{ background: s.primary }} />
+                        <span className="flex-1" style={{ background: s.accent }} />
                       </span>
-                      <span className="truncate">{p.name}</span>
+                      <span className="min-w-0 flex-1 truncate">{p.name}</span>
+                      {p.id === "crm" ? (
+                        <span className="rounded-full border border-border px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                          Best
+                        </span>
+                      ) : null}
                     </button>
                   </li>
                 );
               })}
             </ul>
+            <p className="text-xs text-muted-foreground">
+              Every preset is a starting point: change any colour, radius, font, density or shadow
+              below and the preview updates live. <strong>CRM default</strong> is the safest match
+              for the catalogue; Midnight and Forest are the strongest dark looks.
+            </p>
             <div className="flex gap-2">
               <label className="sr-only" htmlFor="harmony">
                 Harmony scheme
